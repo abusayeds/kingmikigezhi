@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
 import '../../utils/app_colors.dart';
 import '../../utils/style.dart';
 
@@ -26,7 +25,7 @@ class CustomButton extends StatelessWidget {
       child: ElevatedButton(onPressed:loading? (){}:onTap,
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(24.r)
+                borderRadius: BorderRadius.circular(8.r)
             ),
             backgroundColor: color??AppColors.primaryColor,
             minimumSize:Size(width??Get.width, height??53.h),
@@ -36,7 +35,7 @@ class CustomButton extends StatelessWidget {
             height: 20.h,
             width: 20.h,
             child: const CircularProgressIndicator(color: Colors.white,),
-          ):Text(text,style:textStyle?? AppStyles.h3(fontWeight: FontWeight.w500,color:Colors.white),)),
+          ):Text(text,style:textStyle?? AppStyles.h3(fontWeight: FontWeight.w500,color: Colors.black ??color ),)),
     );
   }
 }
