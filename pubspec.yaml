@@ -40,6 +40,22 @@ dependencies:
   flutter_screenutil:
   flutter_svg:
   flutter_spinkit:
+  pin_code_fields:
+  image_picker:
+  internet_connection_checker:
+  connectivity_plus:
+  fluttertoast:
+  flutter_html:
+  mime_type:
+  cached_network_image:
+  intl:
+  timeago:
+  shimmer:
+  path_provider:
+  photo_view:
+  grouped_list:
+  webview_flutter:
+
 
 
 dev_dependencies:
@@ -81,10 +97,10 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
