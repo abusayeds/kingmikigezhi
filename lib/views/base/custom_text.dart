@@ -16,7 +16,7 @@ class CustomText extends StatelessWidget {
         this.textHeight,
         this.decoration,
         this.fontWeight = FontWeight.w400,
-        this.color = Colors.black,
+        this.color = Colors.white,
         this.text = ""});
 
   final double left;
@@ -50,7 +50,7 @@ class CustomText extends StatelessWidget {
           decorationColor: AppColors.primaryColor,
           fontFamily: fontName ?? "Poppins",
           fontWeight: fontWeight,
-          color: Colors.white ?? color ,
+          color:  color ?? Colors.white,
         )
       ),
     );
