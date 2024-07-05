@@ -1,3 +1,4 @@
+import 'package:event_sharing/helpers/route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -29,6 +30,7 @@ class OnboardSecondScreen extends StatelessWidget {
                 SizedBox(height: 200.h),
                 CustomText(
                   text: AppStrings.beautifulPlaces,
+                  color: Colors.white,
                   fontsize: 22.sp,
                   maxline: 2,
                   fontWeight: FontWeight.w700,
@@ -37,6 +39,7 @@ class OnboardSecondScreen extends StatelessWidget {
                 CustomText(
                   text: AppStrings.chooseYourDream,
                   bottom: 16.h,
+                  color: Colors.white,
                   maxline: 2,
                 ),
                 //=====================> Continue With Google Button <==============
@@ -76,9 +79,14 @@ class OnboardSecondScreen extends StatelessWidget {
                 //========================> Log In Button <====================
                 SizedBox(height: 32.h),
                 TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.toNamed(AppRoutes.logInScreen);
+                    },
                     child: CustomText(
                       text: AppStrings.logIn,
+                      color: Colors.white,
+                      fontsize: 16.sp,
+                      fontWeight: FontWeight.w500,
                     ))
               ],
             ),

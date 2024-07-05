@@ -16,7 +16,7 @@ class CustomText extends StatelessWidget {
         this.textHeight,
         this.decoration,
         this.fontWeight = FontWeight.w400,
-        this.color = Colors.white,
+        this.color = Colors.black,
         this.text = ""});
 
   final double left;

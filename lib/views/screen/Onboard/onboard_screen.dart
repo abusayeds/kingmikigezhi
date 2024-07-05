@@ -1,8 +1,10 @@
+import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/utils/app_strings.dart';
 import 'package:event_sharing/views/base/custom_button.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 import '../../../utils/app_images.dart';
 
@@ -27,6 +29,7 @@ class OnboardScreen extends StatelessWidget {
                 SizedBox(height: 300.h),
                 CustomText(
                   text: AppStrings.yourEvent,
+                  color: Colors.white,
                   fontsize: 22.sp,
                   fontWeight: FontWeight.w700,
                   bottom: 16.h,
@@ -34,9 +37,14 @@ class OnboardScreen extends StatelessWidget {
                 CustomText(
                   text: AppStrings.letStart,
                   bottom: 32.h,
+                  color: Colors.white,
                 ),
                 //========================> Get Start Button <====================
-                CustomButton(onTap: () {}, text: AppStrings.getStart, color: Colors.white,)
+                CustomButton(
+                  onTap: () {
+                  Get.toNamed(AppRoutes.onboardSecondScreen);
+                },
+                  text: AppStrings.getStart, color: Colors.white,)
               ],
             ),
           ),
