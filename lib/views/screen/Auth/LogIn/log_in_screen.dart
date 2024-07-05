@@ -124,7 +124,9 @@ class _LogInScreenState extends State<LogInScreen> {
                       ),
                       //=================================> Forgot Password Button <================================
                       TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.toNamed(AppRoutes.forgotPasswordScreen);
+                          },
                           child: CustomText(
                             text: AppStrings.forgotPassword,
                             color: AppColors.primaryColor,
