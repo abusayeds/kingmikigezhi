@@ -1,0 +1,149 @@
+import 'package:event_sharing/utils/app_icons.dart';
+import 'package:event_sharing/utils/app_strings.dart';
+import 'package:event_sharing/views/base/custom_button.dart';
+import 'package:event_sharing/views/base/custom_text.dart';
+import 'package:event_sharing/views/base/custom_text_field.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
+
+import '../../../../utils/app_colors.dart';
+
+class LogInScreen extends StatefulWidget {
+  const LogInScreen({super.key});
+
+  @override
+  State<LogInScreen> createState() => _LogInScreenState();
+}
+
+class _LogInScreenState extends State<LogInScreen> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController emailCTRl = TextEditingController();
+  final TextEditingController passwordCTRl = TextEditingController();
+  bool isChecked = false;
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 24.w),
+          child: Form(
+            key: _formKey,
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(height: 108.h),
+                  CustomText(
+                    text: AppStrings.logIn,
+                    fontWeight: FontWeight.w600,
+                    fontsize: 22.sp,
+                    bottom: 8.h,
+                  ),
+                  CustomText(
+                    text: AppStrings.chooseYourDream,
+                    bottom: 8.h,
+                    maxline: 2,
+                  ),
+                  SizedBox(height: 213.h),
+                  //=================================> Email Text Field <=========================
+                  CustomTextField(
+                    controller: emailCTRl,
+                    hintText: AppStrings.email,
+                    prifixicon: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 12.w),
+                      child: SvgPicture.asset(
+                        AppIcons.mailIcon,
+                        color: AppColors.primaryColor,
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please enter your email";
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 16.h),
+                  //=================================> Password Text Field <=========================
+                  CustomTextField(
+                    controller: passwordCTRl,
+                    hintText: AppStrings.password,
+                    isPassword: true,
+                    prifixicon: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 12.w),
+                      child: SvgPicture.asset(
+                        AppIcons.lockIcon,
+                        color: AppColors.primaryColor,
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please enter your password";
+                      }
+                      return null;
+                    },
+                  ),
+                  //================================> Log In Button <======================================
+                  SizedBox(height: 35.h),
+                  CustomButton(
+                    onTap: () {},
+                    text: AppStrings.logIn,
+                    textColor: Colors.white,
+                  ),
+                  SizedBox(height: 16.h),
+                  //=======================================> CheckBox Section <==============================
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Checkbox(
+                            checkColor: Colors.white,
+                            activeColor: AppColors.primaryColor,
+                            focusColor: AppColors.greyColor,
+                            value: isChecked,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                isChecked = value ?? false;
+                              });
+                            },
+                          ),
+                          CustomText(
+                            text: AppStrings.rememberMe,
+                          ),
+                        ],
+                      ),
+                      //=================================> Forgot Password Button <================================
+                      TextButton(
+                          onPressed: () {},
+                          child: CustomText(
+                            text: AppStrings.forgotPassword,
+                            color: AppColors.primaryColor,
+                          ))
+                    ],
+                  ),
+                  SizedBox(height: 2.h),
+                  //========================================> Don't have an account text <============================
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CustomText(
+                        text: AppStrings.doNotHaveAccount,
+                      ),
+                      TextButton(
+                          onPressed: () {},
+                          child: CustomText(
+                            text: AppStrings.signUp,
+                          ))
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

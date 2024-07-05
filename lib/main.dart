@@ -6,6 +6,7 @@ import 'controllers/theme_controller.dart';
 import 'helpers/di.dart' as di;
 import 'helpers/route.dart';
 import 'themes/dark_theme.dart';
+import 'themes/light_theme.dart';
 import 'utils/app_constants.dart';
 import 'utils/message.dart';
 
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
                 debugShowCheckedModeBanner: false,
                 navigatorKey: Get.key,
                 // theme: themeController.darkTheme ? dark(): light(),
-                theme: dark(),
+                theme: light(),
                 defaultTransition: Transition.topLevel,
                 locale: localizeController.locale,
                 translations: Messages(languages: languages),
@@ -42,7 +43,7 @@ class MyApp extends StatelessWidget {
                     AppConstants.languages[0].countryCode),
                 transitionDuration: const Duration(milliseconds: 500),
                 getPages: AppRoutes.page,
-                initialRoute: AppRoutes.onboardSecondScreen,
+                initialRoute: AppRoutes.onboardScreen,
               );
             });
       });
