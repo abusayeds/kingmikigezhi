@@ -42,7 +42,7 @@ class AppStrings{
 //================> Verification Code Screen <====================
   static String verificationCode = "Verification Code";
   static String enterTheCode = "Enter the code we sent you";
-  static String didNotReceiveCode = "didn’t receive the Code?";
+  static String didNotReceiveCode = "Didn’t receive the Code?";
   static String resend = "Resend";
 
 //================> Reset Password Screen <====================

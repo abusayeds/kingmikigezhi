@@ -1,6 +1,8 @@
+import 'package:event_sharing/helpers/route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_icons.dart';
 import '../../../../utils/app_strings.dart';
@@ -66,7 +68,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   //================================> Get Otp Button <======================================
                   SizedBox(height: 35.h),
                   CustomButton(
-                    onTap: () {},
+                    onTap: () {
+                      Get.toNamed(AppRoutes.verificationCodeScreen);
+                    },
                     text: AppStrings.getOTP,
                     textColor: Colors.white,
                   ),
