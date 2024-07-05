@@ -23,7 +23,7 @@ class AppIcons{
   static String addFillIcon="$baseUrl/plus-circle.svg";
   static String personIcon="$baseUrl/profile_icon.svg";
   static String privacyIcon="$baseUrl/shield-check.svg";
-  static String personalInformationIcon="$baseUrl/user.svg";
+  static String singlePerson="$baseUrl/user.svg";
   static String memberProfileIcon="$baseUrl/user-group.svg";
   static String ownershipIcon="$baseUrl/users.svg";
   static String eyeOffIcon="$baseUrl/eye-off.svg";

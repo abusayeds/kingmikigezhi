@@ -1,3 +1,4 @@
+import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/utils/app_icons.dart';
 import 'package:event_sharing/utils/app_strings.dart';
 import 'package:event_sharing/views/base/custom_button.dart';
@@ -6,6 +7,7 @@ import 'package:event_sharing/views/base/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 
 import '../../../../utils/app_colors.dart';
 
@@ -138,7 +140,9 @@ class _LogInScreenState extends State<LogInScreen> {
                         text: AppStrings.doNotHaveAccount,
                       ),
                       TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.toNamed(AppRoutes.signUpScreen);
+                          },
                           child: CustomText(
                             text: AppStrings.signUp,
                           ))
