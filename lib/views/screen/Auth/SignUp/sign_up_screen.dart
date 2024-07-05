@@ -341,7 +341,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   prifixicon: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 12.w),
                     child: SvgPicture.asset(
-                      AppIcons.singlePerson,
+                      AppIcons.lockIcon ,
                       color: AppColors.primaryColor,
                     ),
                   ),
@@ -367,7 +367,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   prifixicon: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 12.w),
                     child: SvgPicture.asset(
-                      AppIcons.singlePerson,
+                      AppIcons.lockIcon,
                       color: AppColors.primaryColor,
                     ),
                   ),
