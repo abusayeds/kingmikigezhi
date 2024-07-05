@@ -1,41 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../../utils/app_colors.dart';
-import '../../utils/app_constants.dart';
+import '../../utils/app_icons.dart';
 
 class CustomTextField extends StatefulWidget {
   final TextEditingController controller;
   final TextInputType? keyboardType;
   final bool? isObscureText;
-  final String? obscure;
+  final String? obscureCharacrter;
   final Color? filColor;
-  final Widget? prefixIcon;
+  final Widget? prifixicon;
   final String? labelText;
   final String? hintText;
-  final double? contentPaddingHorizontal;
-  final double? contentPaddingVertical;
-  final Widget? suffixIcon;
+  final double? contenpaddingHorizontal;
+  final double? contenpaddingVertical;
+  final Widget? sufixicons;
   final FormFieldValidator? validator;
+  final VoidCallback? onTab;
   final bool isPassword;
   final bool? isEmail;
+  final bool? readOnly;
 
-  const CustomTextField(
-      {super.key,
-      this.contentPaddingHorizontal,
-      this.contentPaddingVertical,
-      this.hintText,
-      this.prefixIcon,
-      this.suffixIcon,
-      this.validator,
-      this.isEmail,
-      required this.controller,
-      this.keyboardType = TextInputType.text,
-      this.isObscureText = false,
-      this.obscure = '*',
-      this.filColor,
-      this.labelText,
-      this.isPassword = false});
+  const CustomTextField({
+    super.key,
+    this.contenpaddingHorizontal,
+    this.contenpaddingVertical,
+    this.hintText,
+    this.prifixicon,
+    this.sufixicons,
+    this.validator,
+    this.isEmail,
+    required this.controller,
+    this.keyboardType = TextInputType.text,
+    this.isObscureText = false,
+    this.obscureCharacrter = '*',
+    this.filColor,
+    this.labelText,
+    this.isPassword = false,
+    this.readOnly = false,
+    this.onTab,
+  });
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -53,12 +59,14 @@ class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      onTap: widget.onTab,
+      readOnly: widget.readOnly!,
       controller: widget.controller,
       keyboardType: widget.keyboardType,
-      obscuringCharacter: widget.obscure!,
-      // validator: widget.validator,
-      validator: widget.validator ??
-          (value) {
+      obscuringCharacter: widget.obscureCharacrter!,
+      validator: widget.validator,
+      /*validator: widget.validator ??
+              (value) {
             if (widget.isEmail == null) {
               if (value!.isEmpty) {
                 return "Please enter ${widget.hintText!.toLowerCase()}";
@@ -79,31 +87,62 @@ class _CustomTextFieldState extends State<CustomTextField> {
               }
             }
             return null;
-          },
+          },*/
       cursorColor: AppColors.primaryColor,
       obscureText: widget.isPassword ? obscureText : false,
-      style: TextStyle(color: Colors.white, fontSize: 16.sp),
+      style: const TextStyle(color: Colors.black),
       decoration: InputDecoration(
         contentPadding: EdgeInsets.symmetric(
-            horizontal: widget.contentPaddingHorizontal ?? 20.w,
-            vertical: widget.contentPaddingVertical ?? 20.w),
-        fillColor: widget.filColor,
-        prefixIcon: widget.prefixIcon,
+            horizontal: widget.contenpaddingHorizontal ?? 12.w,
+            vertical: widget.contenpaddingVertical ?? 16.w),
+        filled: true,
+        fillColor: widget.filColor ?? AppColors.fillColor,
+        prefixIcon: widget.prifixicon,
         suffixIcon: widget.isPassword
             ? GestureDetector(
-                onTap: toggle,
-                child: _suffixIcon(
-                    obscureText ? Icons.visibility_off : Icons.visibility),
-              )
-            : widget.suffixIcon,
-        prefixIconConstraints: BoxConstraints(minHeight: 24.w, minWidth: 24.w),
+          onTap: toggle,
+          child: _suffixIcon(obscureText ? AppIcons.eyeOffIcon : AppIcons.eyeIcon),
+        )
+            : widget.sufixicons,
+        prefixIconConstraints: BoxConstraints(minHeight: 24.h, minWidth: 24.w),
+        suffixIconConstraints: BoxConstraints(minHeight: 24.h, minWidth: 24.w),
+        errorStyle: TextStyle(color: AppColors.primaryColor),
+        suffixIconColor: AppColors.primaryColor,
+        prefixIconColor: AppColors.primaryColor,
         labelText: widget.labelText,
         hintText: widget.hintText,
+        hintStyle: TextStyle(color: AppColors.hintColor, fontFamily: 'Poppins'),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.r),
+          borderSide: BorderSide(
+            width: 1.w,
+            color: AppColors.primaryColor,
+          ),
+        ),
+        errorBorder: _buildOutlineInputBorder(),
+        focusedBorder: _buildOutlineInputBorder(),
+        enabledBorder: _buildOutlineInputBorder(),
+        disabledBorder: _buildOutlineInputBorder(),
       ),
     );
   }
 
-  _suffixIcon(IconData icon) {
-    return Padding(padding: const EdgeInsets.all(12.0), child: Icon(icon));
+  _suffixIcon(String icon) {
+    return Padding(
+      padding: EdgeInsets.only(right: 15.w),
+      child: SvgPicture.asset(
+        color: AppColors.primaryColor,
+        icon,
+      ),
+    );
+  }
+
+  _buildOutlineInputBorder() {
+    return OutlineInputBorder(
+      borderSide: BorderSide(
+        width: 1.w,
+        color: AppColors.primaryColor,
+      ),
+    );
   }
 }

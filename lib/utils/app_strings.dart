@@ -9,6 +9,47 @@ class AppStrings{
   static String signUp = "Sign Up";
   static String logIn = "Log In";
 
+  //================> Log In Screen <====================
+  static String email = "Email";
+  static String password = "Password";
+  static String rememberMe  = "Remember me";
+  static String forgotPassword  = "Forgot Password ?";
+  static String doNotHaveAccount  = "Don’t have an account ?";
+
+//================> Sign Up Screen <====================
+  static String signUpAn = "Sign up an account";
+  static String userName = "User name";
+  static String firstName = "Fast name";
+  static String lastName = "Last name";
+  static String gender = "Gender";
+  static String phoneNumber = "Phone number";
+  static String birthday = "Birthday";
+  static String day = "Day";
+  static String month = "Month";
+  static String year = "Year";
+  static String location = "Location";
+  static String confirmPassword = "Confirm Password";
+  static String byCreatingAccount = "By creating an account, I accept the";
+  static String termsAndConditions = "Terms & Conditions";
+  static String privacyPolicy = "Privacy Policy";
+  static String alreadyHaveAccount = "Already have an account?";
+
+//================> Forgot Password Screen <====================
+  static String forgotPasswords = "Forgot Password";
+  static String enterYourEmail = "Enter your email address";
+  static String getOTP = "Get OTP";
+
+//================> Verification Code Screen <====================
+  static String verificationCode = "Verification Code";
+  static String enterTheCode = "Enter the code we sent you";
+  static String didNotReceiveCode = "didn’t receive the Code?";
+  static String resend = "Resend";
+
+//================> Reset Password Screen <====================
+  static String resetPassword = "Reset Password";
+  static String enterNewPassword = "Enter a new password";
+  static String setNewPassword = "Set new password";
+  static String confirmpasswords  = "Confirm password";
 
 
 }
