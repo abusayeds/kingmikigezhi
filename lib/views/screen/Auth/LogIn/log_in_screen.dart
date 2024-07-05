@@ -24,6 +24,7 @@ class _LogInScreenState extends State<LogInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -34,6 +35,7 @@ class _LogInScreenState extends State<LogInScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(height: 108.h),
+                  //================================> Log In Text Section <========================
                   CustomText(
                     text: AppStrings.logIn,
                     fontWeight: FontWeight.w600,
@@ -45,7 +47,7 @@ class _LogInScreenState extends State<LogInScreen> {
                     bottom: 8.h,
                     maxline: 2,
                   ),
-                  SizedBox(height: 213.h),
+                  SizedBox(height: 56.h),
                   //=================================> Email Text Field <=========================
                   CustomTextField(
                     controller: emailCTRl,
@@ -108,6 +110,10 @@ class _LogInScreenState extends State<LogInScreen> {
                                 isChecked = value ?? false;
                               });
                             },
+                            side: BorderSide(
+                              color: isChecked ? AppColors.primaryColor : AppColors.primaryColor,
+                              width: 1.w ,
+                            ),
                           ),
                           CustomText(
                             text: AppStrings.rememberMe,
