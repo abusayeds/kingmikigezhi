@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import '../views/screen/Auth/ForgotPass/forgot_password_screen.dart';
 import '../views/screen/Auth/LogIn/log_in_screen.dart';
 import '../views/screen/Auth/SignUp/sign_up_screen.dart';
 import '../views/screen/Home/home_screen.dart';
@@ -10,14 +11,15 @@ import '../views/screen/Wallet/wallet_screen.dart';
 
 class AppRoutes{
 
-  static String splashScreen="/splash_screen";
-  static String homeScreen="/home_screen";
-  static String profileScreen="/profile_screen";
-  static String walletScreen="/wallet_screen";
-  static String onboardScreen="/onboarding_screen";
-  static String onboardSecondScreen="/onboard_second_screen";
-  static String logInScreen="/log_in_screen";
-  static String signUpScreen="/sign_up_screen";
+  static String splashScreen ="/splash_screen";
+  static String homeScreen ="/home_screen";
+  static String profileScreen ="/profile_screen";
+  static String walletScreen ="/wallet_screen";
+  static String onboardScreen ="/onboarding_screen";
+  static String onboardSecondScreen ="/onboard_second_screen";
+  static String logInScreen ="/log_in_screen";
+  static String signUpScreen ="/sign_up_screen";
+  static String forgotPasswordScreen ="/forgot_password_screen";
 
  static List<GetPage> page=[
     GetPage(name:splashScreen, page: ()=>const SplashScreen()),
@@ -28,6 +30,7 @@ class AppRoutes{
     GetPage(name:onboardSecondScreen, page: ()=>const OnboardSecondScreen()),
     GetPage(name:logInScreen, page: ()=>const LogInScreen()),
     GetPage(name:signUpScreen, page: ()=>const SignUpScreen()),
+    GetPage(name:forgotPasswordScreen, page: ()=>const ForgotPasswordScreen()),
 
   ];
 }
