@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import '../views/screen/Auth/ForgotPass/forgot_password_screen.dart';
 import '../views/screen/Auth/LogIn/log_in_screen.dart';
+import '../views/screen/Auth/ResetPass/reset_password_screen.dart';
 import '../views/screen/Auth/SignUp/sign_up_screen.dart';
 import '../views/screen/Auth/Verification/verification_code_screen.dart';
 import '../views/screen/Home/home_screen.dart';
@@ -22,6 +23,7 @@ class AppRoutes{
   static String signUpScreen ="/sign_up_screen";
   static String forgotPasswordScreen ="/forgot_password_screen";
   static String verificationCodeScreen ="/verification_code_screen";
+  static String resetPasswordScreen ="/reset_password_screen";
 
  static List<GetPage> page=[
     GetPage(name:splashScreen, page: ()=>const SplashScreen()),
@@ -34,6 +36,7 @@ class AppRoutes{
     GetPage(name:signUpScreen, page: ()=>const SignUpScreen()),
     GetPage(name:forgotPasswordScreen, page: ()=>const ForgotPasswordScreen()),
     GetPage(name:verificationCodeScreen, page: ()=>const VerificationCodeScreen()),
+    GetPage(name:resetPasswordScreen, page: ()=>const ResetPasswordScreen()),
 
   ];
 }

@@ -61,7 +61,7 @@ class VerificationCodeScreen extends StatelessWidget {
                   text: AppStrings.verificationCode,
                   textColor: Colors.white,
                   onTap: () {
-                    //Get.toNamed(AppRoutes.resetScreen);
+                    Get.toNamed(AppRoutes.resetPasswordScreen);
                   }),
               SizedBox(height: 74.h)
             ],
