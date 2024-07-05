@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import '../views/screen/Auth/LogIn/log_in_screen.dart';
+import '../views/screen/Auth/SignUp/sign_up_screen.dart';
 import '../views/screen/Home/home_screen.dart';
 import '../views/screen/Onboard/onboard_screen.dart';
 import '../views/screen/Onboard/onboard_second_screen.dart';
@@ -16,6 +17,7 @@ class AppRoutes{
   static String onboardScreen="/onboarding_screen";
   static String onboardSecondScreen="/onboard_second_screen";
   static String logInScreen="/log_in_screen";
+  static String signUpScreen="/sign_up_screen";
 
  static List<GetPage> page=[
     GetPage(name:splashScreen, page: ()=>const SplashScreen()),
@@ -25,6 +27,7 @@ class AppRoutes{
     GetPage(name:onboardScreen, page: ()=>const OnboardScreen()),
     GetPage(name:onboardSecondScreen, page: ()=>const OnboardSecondScreen()),
     GetPage(name:logInScreen, page: ()=>const LogInScreen()),
+    GetPage(name:signUpScreen, page: ()=>const SignUpScreen()),
 
   ];
 }

@@ -4,7 +4,7 @@ class AppStrings{
   static String letStart = "Let’s start your one stop Event Guide.";
   static String getStart = "Get Started";
   static String beautifulPlaces = "Beautiful places to Book around you.";
-  static String chooseYourDream = "Choose your dream destination, arena and much more for your event.";
+  static String chooseYourDream = "Choose your dream destination, arena and \nmuch more for your event.";
   static String continueWithGoogle = "Continue with Google";
   static String signUp = "Sign Up";
   static String logIn = "Log In";
@@ -19,7 +19,7 @@ class AppStrings{
 //================> Sign Up Screen <====================
   static String signUpAn = "Sign up an account";
   static String userName = "User name";
-  static String firstName = "Fast name";
+  static String firstName = "First name";
   static String lastName = "Last name";
   static String gender = "Gender";
   static String phoneNumber = "Phone number";

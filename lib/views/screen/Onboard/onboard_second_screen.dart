@@ -72,7 +72,9 @@ class OnboardSecondScreen extends StatelessWidget {
                 //========================> Sign Up Button <====================
                 SizedBox(height: 16.h),
                 CustomButton(
-                  onTap: () {},
+                  onTap: () {
+                    Get.toNamed(AppRoutes.signUpScreen);
+                  },
                   text: AppStrings.signUp,
                   color: Colors.white,
                 ),
