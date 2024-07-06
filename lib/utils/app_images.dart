@@ -5,5 +5,6 @@ class AppImages{
   static String splashBg="$baseUrl/SplashScreenbg.png";
   static String onboardingBg="$baseUrl/OnboardingBg.png";
   static String onboardingBg2="$baseUrl/OnboardingBg2.png";
+  static String profileContainer="$baseUrl/profileContainer.png";
 
 }
