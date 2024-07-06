@@ -8,6 +8,7 @@ import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_icons.dart';
 import '../../../base/bottom_menu..dart';
 import '../../../base/custom_text.dart';
+import 'InnerWidget/custom_alert.dart';
 import 'InnerWidget/custom_list_tile.dart';
 import 'InnerWidget/top_profile_card.dart';
 
@@ -29,7 +30,7 @@ class ProfileScreen extends StatelessWidget {
                   //============================> Personal Information List Tile <=================
                   CustomListTile(
                     onTap: () {
-                      //Get.toNamed(AppRoutes.personalInformationScreen);
+                      Get.toNamed(AppRoutes.personalInformationScreen);
                     },
                     title: AppStrings.personalInformation,
                     prefixIcon: SvgPicture.asset(AppIcons.singlePerson,
@@ -101,7 +102,11 @@ class ProfileScreen extends StatelessWidget {
                   //============================> Logout List Tile <=================
                   CustomListTile(
                     onTap: () {
-                      //Get.toNamed(AppRoutes.logoutScreen);
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return CustomAlert();
+                          });
                     },
                     title: AppStrings.logout,
                     prefixIcon: SvgPicture.asset(AppIcons.logOutIcon,

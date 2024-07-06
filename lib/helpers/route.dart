@@ -10,6 +10,8 @@ import '../views/screen/Categories/categories_screen.dart';
 import '../views/screen/Home/home_screen.dart';
 import '../views/screen/Onboard/onboard_screen.dart';
 import '../views/screen/Onboard/onboard_second_screen.dart';
+import '../views/screen/Profile/EditProfile/edit_profile_screen.dart';
+import '../views/screen/Profile/Personalinform/personal_information_screen.dart';
 import '../views/screen/Profile/profileScreen/profile_screen.dart';
 import '../views/screen/Splash/splash_screen.dart';
 import '../views/screen/Wallet/wallet_screen.dart';
@@ -29,6 +31,8 @@ class AppRoutes{
   static String resetPasswordScreen ="/reset_password_screen";
   static String categoriesScreen ="/categories_screen";
   static String calenderScreen ="/calender_screen";
+  static String personalInformationScreen ="/personal_information_screen";
+  static String editProfileScreen ="/edit_profile_screen";
   //static String bottomMenu ="/bottom_menu";
 
  static List<GetPage> page=[
@@ -45,6 +49,8 @@ class AppRoutes{
     GetPage(name:resetPasswordScreen, page: ()=>const ResetPasswordScreen()),
     GetPage(name:categoriesScreen, page: ()=>const CategoriesScreen()),
     GetPage(name:calenderScreen, page: ()=>const CalenderScreen()),
+    GetPage(name:personalInformationScreen, page: ()=>const PersonalInformationScreen()),
+    GetPage(name:editProfileScreen, page: ()=>const EditProfileScreen()),
     //GetPage(name:bottomMenu, page: ()=> BottomMenu()),
 
   ];

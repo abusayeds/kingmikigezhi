@@ -18,7 +18,7 @@ class TopProfileCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 408.h,
+      height: 395.h,
       width: double.infinity,
       decoration: BoxDecoration(
         image: DecorationImage(
