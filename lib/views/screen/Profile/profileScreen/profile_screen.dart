@@ -54,7 +54,7 @@ class ProfileScreen extends StatelessWidget {
                   //============================> Member Profile List Tile <=================
                   CustomListTile(
                     onTap: () {
-                      //Get.toNamed(AppRoutes.memberProfileScreen);
+                      Get.toNamed(AppRoutes.memberProfileScreen);
                     },
                     title: AppStrings.memberProfile,
                     prefixIcon: SvgPicture.asset(AppIcons.memberProfileIcon,

@@ -25,9 +25,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController emailCTRl = TextEditingController();
   final TextEditingController genderCTRl = TextEditingController();
   final TextEditingController phoneCTRl = TextEditingController();
-  final TextEditingController dayCTRl = TextEditingController();
-  final TextEditingController monthCTRl = TextEditingController();
-  final TextEditingController yearCTRl = TextEditingController();
+  final TextEditingController birthDayCTRl = TextEditingController();
   final TextEditingController locationCTRl = TextEditingController();
   final TextEditingController passwordCTRl = TextEditingController();
   final TextEditingController confirmPasswordCTRl = TextEditingController();
@@ -223,52 +221,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   fontsize: 16.sp,
                   bottom: 8.h,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(
-                      width: 105.w,
-                      child: CustomTextField(
-                        contenpaddingHorizontal: 30.w,
-                        controller: dayCTRl,
-                        hintText: 'Day',
-                        /*validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Please enter your first name";
-                          }
-                          return null;
-                        },*/
-                      ),
+                CustomTextField(
+                  onTab: () {
+                    birthDate(context);
+                  },
+                  readOnly: true,
+                  controller: birthDayCTRl,
+                  hintText: 'Month-Day-year',
+                  sufixicons: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    child: SvgPicture.asset(
+                      AppIcons.downArrowIcon,
+                      color: AppColors.primaryColor,
                     ),
-                    SizedBox(
-                      width: 105.w,
-                      child: CustomTextField(
-                        contenpaddingHorizontal: 20.w,
-                        controller: dayCTRl,
-                        hintText: 'Month',
-                        /*validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Please enter your first name";
-                          }
-                          return null;
-                        },*/
-                      ),
-                    ),
-                    SizedBox(
-                      width: 105.w,
-                      child: CustomTextField(
-                        contenpaddingHorizontal: 20.w,
-                        controller: dayCTRl,
-                        hintText: 'Year',
-                        /*validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Please enter your first name";
-                          }
-                          return null;
-                        },*/
-                      ),
-                    ),
-                  ],
+                  ),
+                  /*validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Please enter your first name";
+                    }
+                    return null;
+                  },*/
                 ),
 
                 SizedBox(height: 24.h),
@@ -279,52 +251,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   fontsize: 16.sp,
                   bottom: 8.h,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(
-                      width: 105.w,
-                      child: CustomTextField(
-                        contenpaddingHorizontal: 20.w,
-                        controller: dayCTRl,
-                        hintText: 'Line 1',
-                        /*validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Please enter your first name";
-                          }
-                          return null;
-                        },*/
-                      ),
-                    ),
-                    SizedBox(
-                      width: 105.w,
-                      child: CustomTextField(
-                        contenpaddingHorizontal: 20.w,
-                        controller: dayCTRl,
-                        hintText: 'Line 2',
-                        /*validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Please enter your first name";
-                          }
-                          return null;
-                        },*/
-                      ),
-                    ),
-                    SizedBox(
-                      width: 105.w,
-                      child: CustomTextField(
-                        contenpaddingHorizontal: 20.w,
-                        controller: dayCTRl,
-                        hintText: 'Line 3',
-                        /*validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Please enter your first name";
-                          }
-                          return null;
-                        },*/
-                      ),
-                    ),
-                  ],
+                CustomTextField(
+                  controller: locationCTRl,
+                  hintText: 'Type your address',
+                  /*validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Please enter your first name";
+                    }
+                    return null;
+                  },*/
                 ),
                 SizedBox(height: 24.h),
                 //=================================> Password Text Field <=========================
@@ -341,7 +276,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   prifixicon: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 12.w),
                     child: SvgPicture.asset(
-                      AppIcons.lockIcon ,
+                      AppIcons.lockIcon,
                       color: AppColors.primaryColor,
                     ),
                   ),
@@ -459,5 +394,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
       ),
     );
+  }
+  //===============================> Show Calender Function <=======================
+
+  Future<void> birthDate(BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime(3050),
+    );
+    if (pickedDate != null) {
+      // setState(() {
+      birthDayCTRl.text =
+          "${pickedDate.month}-${pickedDate.day}-${pickedDate.year}";
+      // date = "${pickedDate.year}-${pickedDate.month}-${pickedDate.day}";
+      // });
+      print('Selected date: ${birthDayCTRl.text}');
+    }
   }
 }
