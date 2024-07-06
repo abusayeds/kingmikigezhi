@@ -92,7 +92,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   SizedBox(height: 35.h),
                   CustomButton(
                     onTap: () {
-                      Get.toNamed(AppRoutes.logInScreen);
+                      Get.toNamed(AppRoutes.homeScreen);
                     },
                     text: AppStrings.resetPassword,
                     textColor: Colors.white,

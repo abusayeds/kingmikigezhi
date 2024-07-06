@@ -52,4 +52,20 @@ class AppStrings{
   static String confirmpasswords  = "Confirm password";
 
 
+//================> Profile Screen <====================
+  static String profile = "Profile";
+  static String personalInformation = "Personal Information";
+  static String ownership = "Ownership";
+  static String memberProfile  = "Member Profile";
+  static String myDonate  = "My Donate";
+  static String myEvent  = "My Event";
+  static String settings  = "Settings";
+  static String logout  = "Logout";
+  static String editProfile  = "Edit Profile";
+  static String updateProfile  = "Update Profile";
+  static String areYouSure  = "Are you sure you want to log out ?";
+  static String on  = "No";
+  static String yes  = "Yes";
+
+
 }
