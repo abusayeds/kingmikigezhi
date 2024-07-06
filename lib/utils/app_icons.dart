@@ -35,6 +35,7 @@ class AppIcons{
   static String selNavProfile="$baseUrl/selNavProfile.svg";
   static String selCalendar="$baseUrl/selCalendar.svg";
   static String rightArrow="$baseUrl/arrow-right.svg";
+  static String editFram="$baseUrl/editFram.svg";
 
 
 
