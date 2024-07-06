@@ -27,6 +27,14 @@ class AppIcons{
   static String memberProfileIcon="$baseUrl/user-group.svg";
   static String ownershipIcon="$baseUrl/users.svg";
   static String eyeOffIcon="$baseUrl/eye-off.svg";
+  static String categories="$baseUrl/categories.svg";
+  static String calendarOutline="$baseUrl/calendarOutline.svg";
+  static String navProfile="$baseUrl/navProfile.svg";
+  static String selCategories="$baseUrl/selCategories.svg";
+  static String selHome="$baseUrl/selHome.svg";
+  static String selNavProfile="$baseUrl/selNavProfile.svg";
+  static String selCalendar="$baseUrl/selCalendar.svg";
+  static String rightArrow="$baseUrl/arrow-right.svg";
 
 
 

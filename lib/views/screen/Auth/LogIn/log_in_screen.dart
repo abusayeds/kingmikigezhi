@@ -91,7 +91,9 @@ class _LogInScreenState extends State<LogInScreen> {
                   //================================> Log In Button <======================================
                   SizedBox(height: 35.h),
                   CustomButton(
-                    onTap: () {},
+                    onTap: () {
+                      Get.toNamed(AppRoutes.homeScreen);
+                    },
                     text: AppStrings.logIn,
                     textColor: Colors.white,
                   ),
