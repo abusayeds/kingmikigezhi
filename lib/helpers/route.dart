@@ -7,6 +7,7 @@ import '../views/screen/Auth/SignUp/sign_up_screen.dart';
 import '../views/screen/Auth/Verification/verification_code_screen.dart';
 import '../views/screen/Calender/calender_screen.dart';
 import '../views/screen/Categories/categories_screen.dart';
+import '../views/screen/DetailsEvent/details_event_screen.dart';
 import '../views/screen/Home/home_screen.dart';
 import '../views/screen/Onboard/onboard_screen.dart';
 import '../views/screen/Onboard/onboard_second_screen.dart';
@@ -22,6 +23,7 @@ import '../views/screen/Settings/PrivacyPolicy/privacy_policy_screen.dart';
 import '../views/screen/Settings/TermsConditions/terms_condition_screen.dart';
 import '../views/screen/Settings/settingsScreen/settings_screen.dart';
 import '../views/screen/Splash/splash_screen.dart';
+import '../views/screen/UpComingEvent/upcoming_event_screen.dart';
 import '../views/screen/Wallet/wallet_screen.dart';
 
 class AppRoutes{
@@ -47,6 +49,8 @@ class AppRoutes{
   static String privacyPolicyScreen ="/privacy_policy_screen";
   static String termsConditionScreen ="/terms_condition_screen";
   static String aboutusScreen ="/aboutus_screen";
+  static String upcomingEventScreen ="/upcoming_event_screen";
+  static String detailsEventScreen ="/details_event_screen";
   //static String bottomMenu ="/bottom_menu";
 
  static List<GetPage> page=[
@@ -71,6 +75,8 @@ class AppRoutes{
     GetPage(name:privacyPolicyScreen, page: ()=> PrivacyPolicyScreen()),
     GetPage(name:termsConditionScreen, page: ()=> TermsConditionScreen()),
     GetPage(name:aboutusScreen, page: ()=> AboutusScreen()),
+    GetPage(name:upcomingEventScreen, page: ()=> UpcomingEventScreen()),
+    GetPage(name:detailsEventScreen, page: ()=> DetailsEventScreen()),
     //GetPage(name:bottomMenu, page: ()=> BottomMenu()),
 
   ];

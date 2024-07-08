@@ -113,7 +113,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         hintText: widget.hintText,
         hintStyle: TextStyle(color: AppColors.hintColor, fontFamily: 'Poppins'),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8.r),
+          borderRadius: BorderRadius.circular(10.r),
           borderSide: BorderSide(
             width: 1.w,
             color: AppColors.primaryColor,
