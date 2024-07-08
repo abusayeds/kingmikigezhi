@@ -7,7 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_icons.dart';
 import '../../../base/custom_text.dart';
-import '../profileScreen/InnerWidget/custom_list_tile.dart';
+import '../../../base/custom_list_tile.dart';
 
 class PersonalInformationScreen extends StatelessWidget {
   const PersonalInformationScreen({super.key});

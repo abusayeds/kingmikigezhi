@@ -13,7 +13,7 @@ class AppStrings{
   static String email = "Email";
   static String password = "Password";
   static String rememberMe  = "Remember me";
-  static String forgotPassword  = "Forgot Password ?";
+  static String forgotPassword  = "Forgot Password?";
   static String doNotHaveAccount  = "Don’t have an account ?";
 
 //================> Sign Up Screen <====================
@@ -66,6 +66,14 @@ class AppStrings{
   static String areYouSure  = "Are you sure you want to log out ?";
   static String on  = "No";
   static String yes  = "Yes";
+
+
+//================> Settings Screen <====================
+  static String changePassword = "Change Password";
+  static String aboutUs = "About Us";
+  static String oldPassword = "Old password";
+  static String reNewPassword = "Re-enter new password";
+
 
 
 }

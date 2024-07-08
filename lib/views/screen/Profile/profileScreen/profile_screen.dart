@@ -9,7 +9,7 @@ import '../../../../utils/app_icons.dart';
 import '../../../base/bottom_menu..dart';
 import '../../../base/custom_text.dart';
 import 'InnerWidget/custom_alert.dart';
-import 'InnerWidget/custom_list_tile.dart';
+import '../../../base/custom_list_tile.dart';
 import 'InnerWidget/top_profile_card.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -90,7 +90,7 @@ class ProfileScreen extends StatelessWidget {
                   //============================> Settings List Tile <=================
                   CustomListTile(
                     onTap: () {
-                      //Get.toNamed(AppRoutes.settingsScreen);
+                      Get.toNamed(AppRoutes.settingsScreen);
                     },
                     title: AppStrings.settings,
                     prefixIcon: SvgPicture.asset(AppIcons.settingsIcon,

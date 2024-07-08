@@ -14,6 +14,7 @@ import '../views/screen/Profile/EditProfile/edit_profile_screen.dart';
 import '../views/screen/Profile/MemberProfile/member_profile_screen.dart';
 import '../views/screen/Profile/Personalinform/personal_information_screen.dart';
 import '../views/screen/Profile/profileScreen/profile_screen.dart';
+import '../views/screen/Settings/settingsScreen/settings_screen.dart';
 import '../views/screen/Splash/splash_screen.dart';
 import '../views/screen/Wallet/wallet_screen.dart';
 
@@ -35,6 +36,7 @@ class AppRoutes{
   static String personalInformationScreen ="/personal_information_screen";
   static String editProfileScreen ="/edit_profile_screen";
   static String memberProfileScreen ="/member_profile_screen";
+  static String settingsScreen ="/settings_screen";
   //static String bottomMenu ="/bottom_menu";
 
  static List<GetPage> page=[
@@ -54,6 +56,7 @@ class AppRoutes{
     GetPage(name:personalInformationScreen, page: ()=>const PersonalInformationScreen()),
     GetPage(name:editProfileScreen, page: ()=>const EditProfileScreen()),
     GetPage(name:memberProfileScreen, page: ()=>const MemberProfileScreen()),
+    GetPage(name:settingsScreen, page: ()=>const SettingsScreen()),
     //GetPage(name:bottomMenu, page: ()=> BottomMenu()),
 
   ];
