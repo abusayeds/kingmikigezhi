@@ -74,6 +74,17 @@ class AppStrings{
   static String oldPassword = "Old password";
   static String reNewPassword = "Re-enter new password";
 
+  //================> Home Screen <====================
+  static String welcomeBack = "Welcome, back hope your feeling good to day.";
+  static String categories = "Categories";
+  static String seeAll = "See all";
+  static String upcomingEvent = "Upcoming Event";
+  static String notifications = "Notifications";
+  static String detailsEvent = "Details Event";
+  static String aboutEvent = "About Event";
+  static String eventMap = "Event Map";
+  static String search = "Search";
+
 
 
 }

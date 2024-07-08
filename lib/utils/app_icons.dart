@@ -37,6 +37,7 @@ class AppIcons{
   static String rightArrow="$baseUrl/arrow-right.svg";
   static String editFram="$baseUrl/editFram.svg";
   static String cake="$baseUrl/cake.svg";
+  static String helloIcon="$baseUrl/helloIcon.svg";
 
 
 

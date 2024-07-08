@@ -48,7 +48,7 @@ class SettingsScreen extends StatelessWidget {
             //=================================> Privacy Policy Section <=======================
             CustomListTile(
               onTap: () {
-                // Get.toNamed(AppRoutes.privacyPolicyScreen);
+                 Get.toNamed(AppRoutes.privacyPolicyScreen);
               },
               title: AppStrings.privacyPolicy,
               prefixIcon: SvgPicture.asset(
@@ -63,7 +63,7 @@ class SettingsScreen extends StatelessWidget {
             //=================================> Terms & Conditions Section <=======================
             CustomListTile(
               onTap: () {
-                // Get.toNamed(AppRoutes.termsConditionScreen);
+                 Get.toNamed(AppRoutes.termsConditionScreen);
               },
               title: AppStrings.termsAndConditions,
               prefixIcon: SvgPicture.asset(
@@ -78,7 +78,7 @@ class SettingsScreen extends StatelessWidget {
             //=================================> About Us Section <=======================
             CustomListTile(
               onTap: () {
-                // Get.toNamed(AppRoutes.aboutusScreen);
+                 Get.toNamed(AppRoutes.aboutusScreen);
               },
               title: AppStrings.aboutUs,
               prefixIcon: SvgPicture.asset(
