@@ -33,7 +33,7 @@ class SettingsScreen extends StatelessWidget {
             //=================================> Change Password Section <=======================
             CustomListTile(
               onTap: () {
-                //Get.toNamed(AppRoutes.changePasswordScreen);
+                Get.toNamed(AppRoutes.changePasswordScreen);
               },
               title: AppStrings.changePassword,
               prefixIcon: SvgPicture.asset(
