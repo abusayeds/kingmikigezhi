@@ -1,3 +1,4 @@
+import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_strings.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
@@ -5,6 +6,7 @@ import 'package:event_sharing/views/screen/Home/InnerWidget/home_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import '../../../utils/app_icons.dart';
 import '../../base/bottom_menu..dart';
 import '../../base/custom_text_field.dart';
@@ -73,7 +75,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(height: 120.h, child: _buildCategoryList()),
                 _buildSectionHeader(
                   title: AppStrings.upcomingEvent,
-                  onSeeAllPressed: () {},
+                  onSeeAllPressed: () {
+                    Get.toNamed(AppRoutes.upcomingEventScreen);
+                  },
                 ),
                 SizedBox(height: 245.h, child: _buildEventList()),
               ],
@@ -181,7 +185,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-//===============================> Event ListView Section <=========================================
+//===============================> Upcoming Event ListView Section <=========================================
   _buildEventList() {
     return ListView.builder(
       scrollDirection: Axis.horizontal,
