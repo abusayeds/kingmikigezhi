@@ -49,7 +49,7 @@ dependencies:
   mime_type:
   cached_network_image:
   intl:
-  timeago:
+  timeago: ^3.7.0
   shimmer:
   path_provider:
   photo_view:
