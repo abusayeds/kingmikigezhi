@@ -86,6 +86,7 @@ class AppStrings{
   static String search = "Search";
   static String startTime = "Start Time";
   static String endTime = "End Time";
+  static String filter = "Filter";
 
 
 
