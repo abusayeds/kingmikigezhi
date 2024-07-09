@@ -121,14 +121,20 @@ class _CalenderScreenState extends State<CalenderScreen> {
                   ),
                 ),
                 SizedBox(width: 16.w),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(10.r)),
-                    border: Border.all(width: 1.w, color: AppColors.primaryColor)
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 15.h),
-                    child: SvgPicture.asset(AppIcons.filterIcon, width: 24.w,height: 24.h,color: AppColors.primaryColor,),
+                //=================================> Filter Icon <=========================
+                GestureDetector(
+                  onTap: (){
+                    Get.toNamed(AppRoutes.filterScreen);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(10.r)),
+                      border: Border.all(width: 1.w, color: AppColors.primaryColor)
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 15.h),
+                      child: SvgPicture.asset(AppIcons.filterIcon, width: 24.w,height: 24.h,color: AppColors.primaryColor,),
+                    ),
                   ),
                 )
               ],
