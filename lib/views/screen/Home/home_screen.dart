@@ -62,24 +62,27 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                //===========================> AppBar Section <======================
                 HomeAppBar(),
                 SizedBox(height: 20.h),
-                _buildSearchBar(context),
+                _searchBar(context),
                 SizedBox(height: 16.h),
-                _buildGreetingSection(),
+                _greetingSection(),
+                //===========================> Categories Section <======================
                 SizedBox(height: 28.h),
-                _buildSectionHeader(
+                _sectionHeader(
                   title: AppStrings.categories,
                   onSeeAllPressed: () {},
                 ),
-                SizedBox(height: 120.h, child: _buildCategoryList()),
-                _buildSectionHeader(
+                SizedBox(height: 120.h, child: _categoryList()),
+                //=========================> Upcoming Event Section <=====================
+                _sectionHeader(
                   title: AppStrings.upcomingEvent,
                   onSeeAllPressed: () {
                     Get.toNamed(AppRoutes.upcomingEventScreen);
                   },
                 ),
-                SizedBox(height: 245.h, child: _buildEventList()),
+                SizedBox(height: 245.h, child: _eventList()),
               ],
             ),
           ),
@@ -89,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
 //===============================> Search Bar Section <=========================================
-  _buildSearchBar(BuildContext context) {
+  _searchBar(BuildContext context) {
     return CustomTextField(
       onTab: () => searchDate(context),
       readOnly: true,
@@ -110,7 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
 //===============================> Hello Section <=========================================
-  _buildGreetingSection() {
+  _greetingSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -141,7 +144,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
 //===============================> Categories Text Section <=========================================
-  _buildSectionHeader(
+  _sectionHeader(
       {required String title, required VoidCallback onSeeAllPressed}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -163,7 +166,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
 //===============================> Categories ListView Section <=========================================
-  _buildCategoryList() {
+  _categoryList() {
     return ListView.builder(
       scrollDirection: Axis.horizontal,
       itemCount: categories.length,
@@ -186,7 +189,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
 //===============================> Upcoming Event ListView Section <=========================================
-  _buildEventList() {
+  _eventList() {
     return ListView.builder(
       scrollDirection: Axis.horizontal,
       itemCount: events.length,

@@ -9,6 +9,7 @@ import '../views/screen/Calender/calender_screen.dart';
 import '../views/screen/Categories/categories_screen.dart';
 import '../views/screen/DetailsEvent/details_event_screen.dart';
 import '../views/screen/Home/home_screen.dart';
+import '../views/screen/Notifications/notifications_screen.dart';
 import '../views/screen/Onboard/onboard_screen.dart';
 import '../views/screen/Onboard/onboard_second_screen.dart';
 import '../views/screen/Profile/EditProfile/edit_profile_screen.dart';
@@ -53,6 +54,7 @@ class AppRoutes{
   static String upcomingEventScreen ="/upcoming_event_screen";
   static String detailsEventScreen ="/details_event_screen";
   static String searchEventScreen ="/search_event_screen";
+  static String notificationsScreen ="/notifications_screen";
   //static String bottomMenu ="/bottom_menu";
 
  static List<GetPage> page=[
@@ -80,6 +82,7 @@ class AppRoutes{
     GetPage(name:upcomingEventScreen, page: ()=> UpcomingEventScreen()),
     GetPage(name:detailsEventScreen, page: ()=> DetailsEventScreen()),
     GetPage(name:searchEventScreen, page: ()=> SearchEventScreen()),
+    GetPage(name:notificationsScreen, page: ()=> NotificationsScreen()),
     //GetPage(name:bottomMenu, page: ()=> BottomMenu()),
 
   ];
