@@ -15,6 +15,7 @@ import '../views/screen/Profile/EditProfile/edit_profile_screen.dart';
 import '../views/screen/Profile/MemberProfile/member_profile_screen.dart';
 import '../views/screen/Profile/Personalinform/personal_information_screen.dart';
 import '../views/screen/Profile/profileScreen/profile_screen.dart';
+import '../views/screen/SearchEvent/search_event_screen.dart';
 import '../views/screen/Settings/AboutUs/aboutus_screen.dart';
 import '../views/screen/Settings/ChangePass/change_password.dart';
 import '../views/screen/Settings/ChangePass/change_password.dart';
@@ -51,6 +52,7 @@ class AppRoutes{
   static String aboutusScreen ="/aboutus_screen";
   static String upcomingEventScreen ="/upcoming_event_screen";
   static String detailsEventScreen ="/details_event_screen";
+  static String searchEventScreen ="/search_event_screen";
   //static String bottomMenu ="/bottom_menu";
 
  static List<GetPage> page=[
@@ -77,6 +79,7 @@ class AppRoutes{
     GetPage(name:aboutusScreen, page: ()=> AboutusScreen()),
     GetPage(name:upcomingEventScreen, page: ()=> UpcomingEventScreen()),
     GetPage(name:detailsEventScreen, page: ()=> DetailsEventScreen()),
+    GetPage(name:searchEventScreen, page: ()=> SearchEventScreen()),
     //GetPage(name:bottomMenu, page: ()=> BottomMenu()),
 
   ];

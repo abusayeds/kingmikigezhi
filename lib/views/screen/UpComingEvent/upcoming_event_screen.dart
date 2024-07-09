@@ -35,7 +35,10 @@ class _UpcomingEventScreenState extends State<UpcomingEventScreen> {
           children: [
             //==========================> Search Bar <=====================
             CustomTextField(
-              onTab: () {},
+              onTab: () {
+                Get.toNamed(AppRoutes.searchEventScreen);
+              },
+              readOnly: true,
               controller: _searchController,
               hintText: 'Sports',
               sufixicons: Padding(
@@ -105,7 +108,7 @@ class EventCard extends StatelessWidget {
                       padding: EdgeInsets.symmetric(
                           horizontal: 16.w, vertical: 16.h),
                       child: CustomText(
-                        text: '28 Feb',
+                        text: '20 Feb',
                         fontsize: 10.sp,
                         color: AppColors.white,
                       ),
