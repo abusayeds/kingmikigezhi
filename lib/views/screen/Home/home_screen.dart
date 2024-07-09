@@ -74,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   title: AppStrings.categories,
                   onSeeAllPressed: () {},
                 ),
-                SizedBox(height: 120.h, child: _categoryList()),
+                SizedBox(height: 139.h, child: _categoryList()),
                 //=========================> Upcoming Event Section <=====================
                 _sectionHeader(
                   title: AppStrings.upcomingEvent,
