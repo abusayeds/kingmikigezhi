@@ -69,7 +69,7 @@ class AppRoutes{
     GetPage(name:forgotPasswordScreen, page: ()=>const ForgotPasswordScreen()),
     GetPage(name:verificationCodeScreen, page: ()=>const VerificationCodeScreen()),
     GetPage(name:resetPasswordScreen, page: ()=>const ResetPasswordScreen()),
-    GetPage(name:categoriesScreen, page: ()=>const CategoriesScreen()),
+    GetPage(name:categoriesScreen, page: ()=> CategoriesScreen()),
     GetPage(name:calenderScreen, page: ()=>const CalenderScreen()),
     GetPage(name:personalInformationScreen, page: ()=>const PersonalInformationScreen()),
     GetPage(name:editProfileScreen, page: ()=>const EditProfileScreen()),
