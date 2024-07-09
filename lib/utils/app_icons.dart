@@ -38,7 +38,9 @@ class AppIcons{
   static String editFram="$baseUrl/editFram.svg";
   static String cake="$baseUrl/cake.svg";
   static String helloIcon="$baseUrl/helloIcon.svg";
+  static String filterIcon="$baseUrl/filter.svg";
 
 
 
 }
+

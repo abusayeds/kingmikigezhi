@@ -109,81 +109,87 @@ class _SearchEventScreenState extends State<SearchEventScreen> {
                 itemCount: events.length,
                 itemBuilder: (context, index) {
                   final event = events[index];
-                  return Card(
-                    margin: EdgeInsets.symmetric(vertical: 8.h),
-                    child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-                      child: Row(
-                        children: [
-                          //=====================> Event Image Section <=========================
-                          Container(
-                            width: 77.w,
-                            height: 76.h,
-                            decoration: BoxDecoration(
-                                color: AppColors.primaryColor,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10.r))),
-                            child: Image.asset(
-                              event['imageUrl']!,
-                              fit: BoxFit.cover,
+                  return GestureDetector(
+                    onTap: (){
+                      Get.toNamed(AppRoutes.detailsEventScreen);
+                    },
+                    child: Card(
+                      color: const Color(0xffedf2f4),
+                      margin: EdgeInsets.symmetric(vertical: 8.h),
+                      child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                        child: Row(
+                          children: [
+                            //=====================> Event Image Section <=========================
+                            Container(
+                              width: 77.w,
+                              height: 76.h,
+                              decoration: BoxDecoration(
+                                  color: AppColors.primaryColor,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10.r))),
+                              child: Image.asset(
+                                event['imageUrl']!,
+                                fit: BoxFit.cover,
+                              ),
                             ),
-                          ),
-                          SizedBox(width: 16.h),
-                          //=====================> Event Title Section <=========================
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            SizedBox(width: 16.h),
+                            //=====================> Event Title Section <=========================
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  CustomText(
+                                    text: event['title']!,
+                                    fontsize: 14.sp,
+                                  ),
+                                  SizedBox(height: 8.h),
+                                  //=====================> Event Location Section <=========================
+                                  Row(
+                                    children: [
+                                      SvgPicture.asset(
+                                        AppIcons.locationIcon,
+                                        color: AppColors.primaryColor,
+                                      ),
+                                      CustomText(
+                                        text: event['location']!,
+                                        fontsize: 10.sp,
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                CustomText(
-                                  text: event['title']!,
-                                  fontsize: 14.sp,
-                                ),
+                                //===========================> Share Icon Button <======================
+                                InkWell(
+                                    onTap: () {},
+                                    child: Icon(
+                                      Icons.share,
+                                      color: AppColors.primaryColor,
+                                      size: 20.h,
+                                    )),
                                 SizedBox(height: 8.h),
-                                //=====================> Event Location Section <=========================
+                                //=====================> Event Time Section <=========================
                                 Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     SvgPicture.asset(
-                                      AppIcons.locationIcon,
+                                      AppIcons.timeIcon,
                                       color: AppColors.primaryColor,
                                     ),
-                                    CustomText(
-                                      text: event['location']!,
-                                      fontsize: 10.sp,
-                                    ),
+                                    SizedBox(width: 5.w),
+                                    CustomText(text: event['time']!),
                                   ],
                                 ),
                               ],
                             ),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              //===========================> Share Icon Button <======================
-                              InkWell(
-                                  onTap: () {},
-                                  child: Icon(
-                                    Icons.share,
-                                    color: AppColors.primaryColor,
-                                    size: 20.h,
-                                  )),
-                              SizedBox(height: 8.h),
-                              //=====================> Event Time Section <=========================
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  SvgPicture.asset(
-                                    AppIcons.timeIcon,
-                                    color: AppColors.primaryColor,
-                                  ),
-                                  SizedBox(width: 5.w),
-                                  CustomText(text: event['time']!),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   );
