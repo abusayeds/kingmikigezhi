@@ -84,6 +84,8 @@ class AppStrings{
   static String aboutEvent = "About Event";
   static String eventMap = "Event Map";
   static String search = "Search";
+  static String startTime = "Start Time";
+  static String endTime = "End Time";
 
 
 
