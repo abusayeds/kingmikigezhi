@@ -88,6 +88,32 @@ class AppStrings{
   static String endTime = "End Time";
   static String filter = "Filter";
 
+  //================> Create New Event Screen <====================
+  static String createNewEvent = "Create New Event";
+  static String addCoverPhoto = "Add Cover Photo";
+  static String eventDetails = "Event Details";
+  static String eventName = "Event name";
+  static String typeYourEventName = "Type your Event name";
+  static String eventType = "Event Type";
+  static String typeYourEventType = "Type your Event Type";
+  static String venueName = "Venue name";
+  static String typeYourVenueName = "Type your Venue name";
+  static String venueAddress = "Venue Address";
+  static String typeYourVenueAddress = "Type your Venue Address";
+  static String next = "Next";
+  static String eventStatus = "Event Status";
+  static String typeYourEventStatus = "Type your Event Status";
+  static String registrationCost = "Registration Cost";
+  static String typeYourEventCost = "Type your Event Cost";
+  static String selectDate = "Select Date";
+  static String startDate = "Start date";
+  static String endDate = "End date";
+  static String selectTime = "Select Time";
+  static String eventDescription = "Event Description";
+  static String typeYourEventDescription = "Type your Event Description...";
+  static String createEvent  = "Create Event";
+
+
 
 
 }
