@@ -55,6 +55,7 @@ dependencies:
   photo_view:
   grouped_list:
   webview_flutter:
+  dotted_border: ^2.1.0
 
 
 
