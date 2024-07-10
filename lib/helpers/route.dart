@@ -5,11 +5,13 @@ import '../views/screen/Auth/LogIn/log_in_screen.dart';
 import '../views/screen/Auth/ResetPass/reset_password_screen.dart';
 import '../views/screen/Auth/SignUp/sign_up_screen.dart';
 import '../views/screen/Auth/Verification/verification_code_screen.dart';
-import '../views/screen/Calender/InnerWidget/filter_screen.dart';
+import '../views/screen/Calender/filter_screen.dart';
 import '../views/screen/Calender/calender_screen.dart';
 import '../views/screen/Categories/categories_screen.dart';
 import '../views/screen/DetailsEvent/details_event_screen.dart';
 import '../views/screen/Home/home_screen.dart';
+import '../views/screen/MyEvent/create_event_one.dart';
+import '../views/screen/MyEvent/my_event_screen.dart';
 import '../views/screen/Notifications/notifications_screen.dart';
 import '../views/screen/Onboard/onboard_screen.dart';
 import '../views/screen/Onboard/onboard_second_screen.dart';
@@ -57,6 +59,8 @@ class AppRoutes{
   static String searchEventScreen ="/search_event_screen";
   static String notificationsScreen ="/notifications_screen";
   static String filterScreen ="/filter_screen";
+  static String myEventScreen ="/my_event_screen";
+  static String createEventOne ="/create_event_one";
   //static String bottomMenu ="/bottom_menu";
 
  static List<GetPage> page=[
@@ -86,6 +90,8 @@ class AppRoutes{
     GetPage(name:searchEventScreen, page: ()=> SearchEventScreen()),
     GetPage(name:notificationsScreen, page: ()=> NotificationsScreen()),
     GetPage(name:filterScreen, page: ()=> FilterScreen()),
+    GetPage(name:myEventScreen, page: ()=> MyEventScreen()),
+    GetPage(name:createEventOne, page: ()=> CreateEventOne()),
     //GetPage(name:bottomMenu, page: ()=> BottomMenu()),
 
   ];
