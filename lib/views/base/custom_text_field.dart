@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -11,6 +13,7 @@ class CustomTextField extends StatefulWidget {
   final bool? isObscureText;
   final String? obscureCharacrter;
   final Color? filColor;
+  final int? maxLines;
   final Widget? prifixicon;
   final String? labelText;
   final String? hintText;
@@ -37,6 +40,7 @@ class CustomTextField extends StatefulWidget {
     this.isObscureText = false,
     this.obscureCharacrter = '*',
     this.filColor,
+    this.maxLines= 1,
     this.labelText,
     this.isPassword = false,
     this.readOnly = false,
@@ -59,6 +63,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      maxLines: widget.maxLines,
       onTap: widget.onTab,
       readOnly: widget.readOnly!,
       controller: widget.controller,

@@ -1,9 +1,14 @@
-import 'package:dotted_border/dotted_border.dart';
+import 'dart:io';
+
+import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/views/base/custom_button.dart';
 import 'package:event_sharing/views/base/custom_text_field.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../../utils/app_strings.dart';
 import '../../base/custom_text.dart';
 import 'InnerWidget/dotted_border_container.dart';
@@ -16,8 +21,12 @@ class CreateEventOne extends StatefulWidget {
 }
 
 class _CreateEventOneState extends State<CreateEventOne> {
-  final TextEditingController _eventNameCTRL = TextEditingController();
-
+  final TextEditingController eventNameCTRL = TextEditingController();
+  final TextEditingController venueNameCTRL = TextEditingController();
+  final TextEditingController venueAddressCTRL = TextEditingController();
+  var parameter = Get.parameters;
+  Uint8List? _image;
+  File? selectedIMage;
   final List<String> _categories = [
     'Concert',
     'Sports',
@@ -48,48 +57,133 @@ class _CreateEventOneState extends State<CreateEventOne> {
               DottedBorderContainer(
                 child: AspectRatio(
                   aspectRatio: 16 / 9,
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        IconButton(
-                            onPressed: () {},
-                            icon: Icon(
-                              Icons.add_circle_outlined,
-                              color: AppColors.primaryColor,
-                              size: 20.w,
-                            )),
-                        CustomText(
-                          text: AppStrings.addCoverPhoto,
-                          color: Colors.grey,
+                  child: _image != null
+                      ? Image.memory(
+                          _image!,
+                          fit: BoxFit.cover,
+                        )
+                      : Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              IconButton(
+                                  onPressed: () {
+                                    _pickImageFromGallery();
+                                  },
+                                  icon: Icon(
+                                    Icons.add_circle_outlined,
+                                    color: AppColors.primaryColor,
+                                    size: 20.w,
+                                  )),
+                              CustomText(
+                                text: AppStrings.addCoverPhoto,
+                                color: Colors.grey,
+                              ),
+                            ],
+                          ),
                         ),
-                      ],
-                    ),
-                  ),
                 ),
               ),
               SizedBox(height: 23.h),
               //====================================> Image Row <==============================
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: List.generate(
-                    4,
-                    (index) => DottedBorderContainer(
-                          child: SizedBox(
-                            width: 70.w,
-                            height: 70.h,
-                            child: Center(
-                              child: IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.add_circle_outlined,
-                                    color: AppColors.primaryColor,
-                                    size: 16.w,
-                                  )),
-                            ),
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                DottedBorderContainer(
+                  child: _image != null
+                      ? Image.memory(
+                          _image!,
+                          fit: BoxFit.cover,
+                          width: 75.w,
+                          height: 77.h,
+                        )
+                      : SizedBox(
+                          width: 75.w,
+                          height: 77.h,
+                          child: Center(
+                            child: IconButton(
+                                onPressed: () {
+                                  _pickImageFromGallery();
+                                },
+                                icon: Icon(
+                                  Icons.add_circle_outlined,
+                                  color: AppColors.primaryColor,
+                                  size: 16.w,
+                                )),
                           ),
-                        )),
-              ),
+                        ),
+                ),
+                DottedBorderContainer(
+                  child: _image != null
+                      ? Image.memory(
+                          _image!,
+                          fit: BoxFit.cover,
+                          width: 75.w,
+                          height: 77.h,
+                        )
+                      : SizedBox(
+                          width: 75.w,
+                          height: 77.h,
+                          child: Center(
+                            child: IconButton(
+                                onPressed: () {
+                                  _pickImageFromGallery();
+                                },
+                                icon: Icon(
+                                  Icons.add_circle_outlined,
+                                  color: AppColors.primaryColor,
+                                  size: 16.w,
+                                )),
+                          ),
+                        ),
+                ),
+                DottedBorderContainer(
+                  child: _image != null
+                      ? Image.memory(
+                          _image!,
+                          fit: BoxFit.cover,
+                          width: 75.w,
+                          height: 77.h,
+                        )
+                      : SizedBox(
+                          width: 75.w,
+                          height: 77.h,
+                          child: Center(
+                            child: IconButton(
+                                onPressed: () {
+                                  _pickImageFromGallery();
+                                },
+                                icon: Icon(
+                                  Icons.add_circle_outlined,
+                                  color: AppColors.primaryColor,
+                                  size: 16.w,
+                                )),
+                          ),
+                        ),
+                ),
+                DottedBorderContainer(
+                  child: _image != null
+                      ? Image.memory(
+                          _image!,
+                          fit: BoxFit.cover,
+                          width: 75.w,
+                          height: 77.h,
+                        )
+                      : SizedBox(
+                          width: 75.w,
+                          height: 77.h,
+                          child: Center(
+                            child: IconButton(
+                                onPressed: () {
+                                  _pickImageFromGallery();
+                                },
+                                icon: Icon(
+                                  Icons.add_circle_outlined,
+                                  color: AppColors.primaryColor,
+                                  size: 16.w,
+                                )),
+                          ),
+                        ),
+                ),
+              ]),
               SizedBox(height: 32.h),
               //==============================> Event Details Text <=============================
               CustomText(
@@ -106,7 +200,7 @@ class _CreateEventOneState extends State<CreateEventOne> {
                 bottom: 8.h,
               ),
               CustomTextField(
-                controller: _eventNameCTRL,
+                controller: eventNameCTRL,
                 hintText: AppStrings.typeYourEventName,
               ),
               SizedBox(height: 16.h),
@@ -172,7 +266,7 @@ class _CreateEventOneState extends State<CreateEventOne> {
                 bottom: 8.h,
               ),
               CustomTextField(
-                controller: _eventNameCTRL,
+                controller: venueNameCTRL,
                 hintText: AppStrings.typeYourVenueName,
               ),
               SizedBox(height: 16.h),
@@ -184,13 +278,15 @@ class _CreateEventOneState extends State<CreateEventOne> {
                 bottom: 8.h,
               ),
               CustomTextField(
-                controller: _eventNameCTRL,
+                controller: venueAddressCTRL,
                 hintText: AppStrings.typeYourVenueAddress,
               ),
               SizedBox(height: 32.h),
               //==============================> Next Button <=============================
               CustomButton(
-                onTap: () {},
+                onTap: () {
+                  Get.toNamed(AppRoutes.createEventTwo);
+                },
                 text: AppStrings.next,
                 textColor: Colors.white,
               ),
@@ -200,5 +296,85 @@ class _CreateEventOneState extends State<CreateEventOne> {
         ),
       ),
     );
+  }
+  //==================================> ShowImagePickerOption Function <===============================
+
+  void showImagePickerOption(BuildContext context) {
+    showModalBottomSheet(
+        backgroundColor: AppColors.backgroundColor,
+        context: context,
+        builder: (builder) {
+          return Padding(
+            padding: const EdgeInsets.all(18.0),
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height / 4.2,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        _pickImageFromGallery();
+                      },
+                      child: SizedBox(
+                        child: Column(
+                          children: [
+                            Icon(
+                              Icons.image,
+                              size: 50.w,
+                              color: AppColors.primaryColor,
+                            ),
+                            CustomText(text: 'Gallery')
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        _pickImageFromCamera();
+                      },
+                      child: SizedBox(
+                        child: Column(
+                          children: [
+                            Icon(Icons.camera_alt,
+                                size: 50.w, color: AppColors.primaryColor),
+                            CustomText(text: 'Camera')
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  //==================================> Gallery <===============================
+  Future _pickImageFromGallery() async {
+    final returnImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (returnImage == null) return;
+    setState(() {
+      selectedIMage = File(returnImage.path);
+      _image = File(returnImage.path).readAsBytesSync();
+    });
+    //Get.back();
+  }
+
+//==================================> Camera <===============================
+  Future _pickImageFromCamera() async {
+    final returnImage =
+        await ImagePicker().pickImage(source: ImageSource.camera);
+    if (returnImage == null) return;
+    setState(() {
+      selectedIMage = File(returnImage.path);
+      _image = File(returnImage.path).readAsBytesSync();
+    });
+    Get.back();
   }
 }
