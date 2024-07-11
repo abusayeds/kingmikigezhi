@@ -1,103 +1,130 @@
+import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_icons.dart';
 import 'package:event_sharing/views/base/custom_button.dart';
+import 'package:event_sharing/views/base/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 import '../../base/custom_text.dart';
+import 'package:geocoding/geocoding.dart';
+
 
 class MapScreen extends StatefulWidget {
+  const MapScreen({super.key});
+
   @override
   _MapScreenState createState() => _MapScreenState();
 }
 
 class _MapScreenState extends State<MapScreen> {
-  GoogleMapController? _controller;
-  LatLng _initialPosition =
-      LatLng(19.432608, -99.133209); // Default to Mexico City
-  TextEditingController _searchController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    _getUserLocation();
-  }
-
-  void _getUserLocation() async {
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-    setState(() {
-      _initialPosition = LatLng(position.latitude, position.longitude);
-    });
-  }
+  GoogleMapController? mapController;
+  Marker? _selectedLocationMarker;
+  final LatLng _center = const LatLng(23.8103, 90.4125);
+  final TextEditingController _locationController = TextEditingController();
+  CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(23.791275582872142, 90.39232734518325),
+    zoom: 14.4746,
+  );
 
   void _onMapCreated(GoogleMapController controller) {
-    _controller = controller;
+    mapController = controller;
+  }
+
+  void _confirmLocation() async {
+    String location = _locationController.text;
+    try {
+      List<Location> locations = await locationFromAddress(location);
+      if (locations.isNotEmpty) {
+        final LatLng position =
+            LatLng(locations.first.latitude, locations.first.longitude);
+
+        setState(() {
+          _selectedLocationMarker = Marker(
+            markerId: const MarkerId('selected-location'),
+            position: position,
+            infoWindow: InfoWindow(title: location),
+          );
+        });
+
+        mapController
+            ?.animateCamera(CameraUpdate.newLatLngZoom(position, 14.0));
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Location not found")));
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Error finding location: $e")));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: CustomText(
-          text: 'Select Your Lcation',
-          fontsize: 18.sp,
-        ),
-        centerTitle: true,
-      ),
       body: Stack(
-        children: <Widget>[
+        children: [
           GoogleMap(
+            mapType: MapType.normal,
+            zoomGesturesEnabled: true,
+            zoomControlsEnabled: true,
+            initialCameraPosition: _kGooglePlex,
             onMapCreated: _onMapCreated,
-            initialCameraPosition: CameraPosition(
-              target: _initialPosition,
-              zoom: 14.0,
-            ),
-            myLocationEnabled: true,
+            markers: _selectedLocationMarker != null
+                ? {_selectedLocationMarker!}
+                : {},
           ),
           Positioned(
-            top: 20.h,
-            right: 15.w,
-            left: 15.w,
-            child: TypeAheadField(
-              textFieldConfiguration: TextFieldConfiguration(
-                controller: _searchController,
-                decoration: InputDecoration(
-                  hintText: 'Search for a place',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  contentPadding: const EdgeInsets.all(10.0),
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              padding: EdgeInsets.all(16.h),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20.r),
+                  topRight: Radius.circular(20.r),
                 ),
               ),
-              suggestionsCallback: (pattern) async {
-                // Here, you can use a service to get place suggestions
-                return []; // Return a list of suggestions
-              },
-              itemBuilder: (context, suggestion) {
-                return ListTile(
-                  leading: SvgPicture.asset(AppIcons.locationIcon),
-                  title: CustomText(text: suggestion.toString()),
-                );
-              },
-              onSuggestionSelected: (suggestion) {
-                // Handle the selected suggestion
-                // Update the map location based on the suggestion
-              },
+              //===========================> Select location Text Field <======================
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CustomText(
+                    text: 'Select your location',
+                    fontsize: 22.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  SizedBox(height: 16.h),
+                  //===========================> Location Text Field <======================
+                  CustomTextField(
+                    controller: _locationController,
+                    hintText: 'Type your location',
+                    prifixicon: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 12.w, vertical: 12.h),
+                      child: SvgPicture.asset(
+                        AppIcons.locationIcon,
+                        color: AppColors.primaryColor,
+                      ),
+                    ),
+                    sufixicons: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 12.w, vertical: 12.h),
+                      child: const Icon(Icons.search),
+                    ),
+                  ),
+                  //===========================> Confirm location Field <======================
+                  SizedBox(height: 16.h),
+                  CustomButton(
+                      onTap: _confirmLocation,
+                      textColor: Colors.white,
+                      text: 'Confirm Location'),
+                ],
+              ),
             ),
           ),
-          //==========================> Confirm location Button <==========================
-          Positioned(
-              bottom: 20.h,
-              left: 15.w,
-              right: 15.w,
-              child: CustomButton(
-                onTap: () {},
-                text: 'Confirm location',
-                textColor: Colors.white,
-              )),
         ],
       ),
     );
