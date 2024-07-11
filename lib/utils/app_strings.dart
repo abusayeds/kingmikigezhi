@@ -112,6 +112,10 @@ class AppStrings{
   static String eventDescription = "Event Description";
   static String typeYourEventDescription = "Type your Event Description...";
   static String createEvent  = "Create Event";
+  static String inviteEvent  = "Invite Event";
+  static String enterYourNameFROM  = "Enter your name (FROM)";
+  static String enterReceiversName   = "Enter receivers name (TO)";
+  static String share   = "Share";
 
 
 

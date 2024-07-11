@@ -217,7 +217,9 @@ class _CalenderScreenState extends State<CalenderScreen> {
                               children: [
                                 //===========================> Share Icon Button <======================
                                 InkWell(
-                                    onTap: () {},
+                                    onTap: () {
+                                      Get.toNamed(AppRoutes.inviteEventScreen);
+                                    },
                                     child: Icon(
                                       Icons.share,
                                       color: AppColors.primaryColor,
