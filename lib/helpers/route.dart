@@ -17,6 +17,7 @@ import '../views/screen/MyEvent/my_event_screen.dart';
 import '../views/screen/Notifications/notifications_screen.dart';
 import '../views/screen/Onboard/onboard_screen.dart';
 import '../views/screen/Onboard/onboard_second_screen.dart';
+import '../views/screen/OwnerShip/ownership_screen.dart';
 import '../views/screen/Profile/EditProfile/edit_profile_screen.dart';
 import '../views/screen/Profile/MemberProfile/member_profile_screen.dart';
 import '../views/screen/Profile/Personalinform/personal_information_screen.dart';
@@ -65,6 +66,7 @@ class AppRoutes{
   static String createEventOne ="/create_event_one";
   static String createEventTwo ="/create_event_two";
   static String inviteEventScreen ="/invite_event_screen";
+  static String ownershipScreen ="/ownership_screen";
   //static String bottomMenu ="/bottom_menu";
 
  static List<GetPage> page=[
@@ -98,6 +100,7 @@ class AppRoutes{
     GetPage(name:createEventOne, page: ()=> CreateEventOne()),
     GetPage(name:createEventTwo, page: ()=> CreateEventTwo()),
     GetPage(name:inviteEventScreen, page: ()=> InviteEventScreen()),
+    GetPage(name:ownershipScreen, page: ()=> OwnershipScreen()),
     //GetPage(name:bottomMenu, page: ()=> BottomMenu()),
 
   ];

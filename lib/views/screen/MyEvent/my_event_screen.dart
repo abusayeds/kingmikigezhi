@@ -182,7 +182,7 @@ class _MyEventScreenState extends State<MyEventScreen> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                //===========================> Share Icon Button <======================
+                                //===========================> Delete Icon Button <======================
                                 InkWell(
                                     onTap: () {
                                       showDialog(
