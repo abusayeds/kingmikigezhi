@@ -56,6 +56,9 @@ dependencies:
   grouped_list:
   webview_flutter:
   dotted_border: ^2.1.0
+  google_maps_flutter: ^2.1.2
+  geolocator: ^9.0.2
+  flutter_typeahead: ^4.1.1
 
 
 
