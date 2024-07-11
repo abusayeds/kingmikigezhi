@@ -42,7 +42,7 @@ class ProfileScreen extends StatelessWidget {
                   //============================> OwnerShip List Tile <=================
                   CustomListTile(
                     onTap: () {
-                      //Get.toNamed(AppRoutes.ownershipScreen);
+                      Get.toNamed(AppRoutes.ownershipScreen);
                     },
                     title: AppStrings.ownership,
                     prefixIcon: SvgPicture.asset(AppIcons.ownershipIcon,
