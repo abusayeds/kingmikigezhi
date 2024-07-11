@@ -117,7 +117,9 @@ class AppStrings{
   static String enterReceiversName   = "Enter receivers name (TO)";
   static String share   = "Share";
 
-
+  //================>  Ownership list Screen <====================
+  static String  ownershipList   = " Ownership List";
+  static String  addOwnership   = " Add Ownership";
 
 
 }
