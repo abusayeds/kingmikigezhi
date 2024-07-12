@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -19,16 +20,17 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController userNameCTRl = TextEditingController();
-  final TextEditingController firstNameCTRl = TextEditingController();
-  final TextEditingController lastNameCTRl = TextEditingController();
-  final TextEditingController emailCTRl = TextEditingController();
-  final TextEditingController genderCTRl = TextEditingController();
-  final TextEditingController phoneCTRl = TextEditingController();
-  final TextEditingController birthDayCTRl = TextEditingController();
-  final TextEditingController locationCTRl = TextEditingController();
-  final TextEditingController passwordCTRl = TextEditingController();
-  final TextEditingController confirmPasswordCTRl = TextEditingController();
+  final TextEditingController userNameController = TextEditingController();
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController genderController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController birthDayController = TextEditingController();
+  final TextEditingController locationController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
 
   bool isChecked = false;
 
@@ -45,348 +47,50 @@ class _SignUpScreenState extends State<SignUpScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 70.h),
-                //================================> Sign Up Text Section <========================
-                Center(
-                  child: Column(
-                    children: [
-                      CustomText(
-                        text: AppStrings.signUpAn,
-                        fontWeight: FontWeight.w600,
-                        fontsize: 22.sp,
-                        bottom: 8.h,
-                      ),
-                      CustomText(
-                        text: AppStrings.chooseYourDream,
-                        bottom: 8.h,
-                        maxline: 3,
-                      ),
-                    ],
-                  ),
-                ),
+                //==========================> Sign Up Text Section <=======================
+                _signUpTextSection(),
                 SizedBox(height: 51.h),
-                //=================================> User Name Field <=========================
-                CustomText(
-                  text: AppStrings.userName,
-                  fontWeight: FontWeight.w500,
-                  fontsize: 16.sp,
-                  bottom: 8.h,
-                ),
-                CustomTextField(
-                  controller: userNameCTRl,
-                  hintText: 'Enter your user name',
-                  prifixicon: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12.w),
-                    child: SvgPicture.asset(
-                      AppIcons.singlePerson,
-                      color: AppColors.primaryColor,
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Please enter your user name";
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 24.h),
-                //=================================> First Name Text Field <=========================
-                CustomText(
-                  text: AppStrings.firstName,
-                  fontWeight: FontWeight.w500,
-                  fontsize: 16.sp,
-                  bottom: 8.h,
-                ),
-                CustomTextField(
-                  controller: firstNameCTRl,
-                  hintText: 'Enter your first name',
-                  prifixicon: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12.w),
-                    child: SvgPicture.asset(
-                      AppIcons.singlePerson,
-                      color: AppColors.primaryColor,
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Please enter your first name";
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 24.h),
-                //=================================> Last Name Text Field <=========================
-                CustomText(
-                  text: AppStrings.lastName,
-                  fontWeight: FontWeight.w500,
-                  fontsize: 16.sp,
-                  bottom: 8.h,
-                ),
-                CustomTextField(
-                  controller: lastNameCTRl,
-                  hintText: 'Enter your last name',
-                  prifixicon: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12.w),
-                    child: SvgPicture.asset(
-                      AppIcons.singlePerson,
-                      color: AppColors.primaryColor,
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Please enter your last name";
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 24.h),
-                //=================================> Email Text Field <=========================
-                CustomText(
-                  text: AppStrings.email,
-                  fontWeight: FontWeight.w500,
-                  fontsize: 16.sp,
-                  bottom: 8.h,
-                ),
-                CustomTextField(
-                  controller: emailCTRl,
-                  hintText: AppStrings.email,
-                  prifixicon: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12.w),
-                    child: SvgPicture.asset(
-                      AppIcons.mailIcon,
-                      color: AppColors.primaryColor,
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Please enter your e-mail";
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 24.h),
-                //=================================> Gender Text Field <=========================
-                CustomText(
-                  text: AppStrings.gender,
-                  fontWeight: FontWeight.w500,
-                  fontsize: 16.sp,
-                  bottom: 8.h,
-                ),
-                CustomTextField(
-                  controller: genderCTRl,
-                  hintText: 'Gender',
-                  prifixicon: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12.w),
-                    child: SvgPicture.asset(
-                      AppIcons.singlePerson,
-                      color: AppColors.primaryColor,
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Please enter your gender";
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 24.h),
-                //=================================> Phone Number Text Field <=========================
-                CustomText(
-                  text: AppStrings.phoneNumber,
-                  fontWeight: FontWeight.w500,
-                  fontsize: 16.sp,
-                  bottom: 8.h,
-                ),
-                CustomTextField(
-                  controller: phoneCTRl,
-                  hintText: 'Phone number',
-                  prifixicon: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12.w),
-                    child: SvgPicture.asset(
-                      AppIcons.phoneIcon,
-                      color: AppColors.primaryColor,
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Please enter your first name";
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 24.h),
-                //=================================> Birthday Text Field <=========================
-                CustomText(
-                  text: AppStrings.birthday,
-                  fontWeight: FontWeight.w500,
-                  fontsize: 16.sp,
-                  bottom: 8.h,
-                ),
-                CustomTextField(
-                  onTab: () {
-                    birthDate(context);
-                  },
-                  readOnly: true,
-                  controller: birthDayCTRl,
-                  hintText: 'Month-Day-year',
-                  sufixicons: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: SvgPicture.asset(
-                      AppIcons.downArrowIcon,
-                      color: AppColors.primaryColor,
-                    ),
-                  ),
-                  /*validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Please enter your first name";
-                    }
-                    return null;
-                  },*/
-                ),
-
-                SizedBox(height: 24.h),
-                //=================================> Location Text Field <=========================
-                CustomText(
-                  text: AppStrings.location,
-                  fontWeight: FontWeight.w500,
-                  fontsize: 16.sp,
-                  bottom: 8.h,
-                ),
-                CustomTextField(
-                  controller: locationCTRl,
-                  hintText: 'Type your address',
-                  /*validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Please enter your first name";
-                    }
-                    return null;
-                  },*/
-                ),
-                SizedBox(height: 24.h),
-                //=================================> Password Text Field <=========================
-                CustomText(
-                  text: AppStrings.password,
-                  fontWeight: FontWeight.w500,
-                  fontsize: 16.sp,
-                  bottom: 8.h,
-                ),
-                CustomTextField(
-                  controller: passwordCTRl,
-                  hintText: AppStrings.password,
-                  isPassword: true,
-                  prifixicon: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12.w),
-                    child: SvgPicture.asset(
-                      AppIcons.lockIcon,
-                      color: AppColors.primaryColor,
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Please enter your password";
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 24.h),
-                //=================================> Confirm Password Text Field <=========================
-                CustomText(
-                  text: AppStrings.confirmPassword,
-                  fontWeight: FontWeight.w500,
-                  fontsize: 16.sp,
-                  bottom: 8.h,
-                ),
-                CustomTextField(
-                  controller: confirmPasswordCTRl,
-                  hintText: AppStrings.confirmpasswords,
-                  isPassword: true,
-                  prifixicon: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12.w),
-                    child: SvgPicture.asset(
-                      AppIcons.lockIcon,
-                      color: AppColors.primaryColor,
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Please re-enter your password";
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 16.h),
-                //=======================================> CheckBox Section <==============================
-                Row(
-                  children: [
-                    Checkbox(
-                      checkColor: Colors.white,
-                      activeColor: AppColors.primaryColor,
-                      focusColor: AppColors.greyColor,
-                      value: isChecked,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          isChecked = value ?? false;
-                        });
-                      },
-                      side: BorderSide(
-                        color: isChecked
-                            ? AppColors.primaryColor
-                            : AppColors.primaryColor,
-                        width: 1.w,
-                      ),
-                    ),
-                    Text.rich(
-                      maxLines: 2,
-                      TextSpan(
-                        text: 'By creating an account, I accept \nthe ',
-                        style: TextStyle(
-                            fontSize: 14.w, fontWeight: FontWeight.w500),
-                        children: [
-                          TextSpan(
-                            text: 'Terms & Conditions',
-                            style: TextStyle(
-                                color: AppColors.primaryColor,
-                                fontSize: 14.w,
-                                fontWeight: FontWeight.w500),
-                          ),
-                          const TextSpan(
-                            text: ' & ',
-                          ),
-                          TextSpan(
-                            text: 'Privacy Policy.',
-                            style: TextStyle(
-                                color: AppColors.primaryColor,
-                                fontSize: 14.w,
-                                fontWeight: FontWeight.w500),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                //================================> Sign Up Button <======================================
+                //==========================> User Name Text Field <=======================
+                _textFieldSection(AppStrings.userName, userNameController,
+                    AppIcons.singlePerson, 'Enter your user name'),
+                //==========================> First Name Text Field <=======================
+                _textFieldSection(AppStrings.firstName, firstNameController,
+                    AppIcons.singlePerson, 'Enter your first name'),
+                //==========================> Last Name Text Field <=======================
+                _textFieldSection(AppStrings.lastName, lastNameController,
+                    AppIcons.singlePerson, 'Enter your last name'),
+                //==========================> Email Text Field <=======================
+                _textFieldSection(AppStrings.email, emailController,
+                    AppIcons.mailIcon, AppStrings.email),
+                //==========================> Gender Text Field <=======================
+                _textFieldSection(AppStrings.gender, genderController,
+                    AppIcons.singlePerson, 'Gender'),
+                //==========================> Phone Number Text Field <=======================
+                _textFieldSection(AppStrings.phoneNumber, phoneController,
+                    AppIcons.phoneIcon, 'Phone number'),
+                //==========================> Birth Date Text Field <=======================
+                _birthDateField(),
+                //==========================> Location Text Field <=======================
+                _textFieldSection(AppStrings.location, locationController, null,
+                    'Type your address', false),
+                //==========================> Password Text Field <=======================
+                _textFieldSection(AppStrings.password, passwordController,
+                    AppIcons.lockIcon, AppStrings.password, true),
+                //==========================> Confirm Password Text Field <=======================
+                _textFieldSection(
+                    AppStrings.confirmPassword,
+                    confirmPasswordController,
+                    AppIcons.lockIcon,
+                    AppStrings.confirmpasswords,
+                    true),
+                //==========================> Check Box Section <=======================
+                _checkboxSection(),
                 SizedBox(height: 32.h),
-                CustomButton(
-                  onTap: () {},
-                  text: AppStrings.signUp,
-                  textColor: Colors.white,
-                ),
+                //==========================> Sign Up Button <=======================
+                _signUpButton(),
                 SizedBox(height: 32.h),
-                //========================================> Already have an account text <============================
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CustomText(
-                      text: AppStrings.alreadyHaveAccount,
-                    ),
-                    TextButton(
-                        onPressed: () {
-                          Get.toNamed(AppRoutes.logInScreen);
-                        },
-                        child: CustomText(
-                          text: AppStrings.logIn,
-                        ))
-                  ],
-                ),
+                //==========================> Already Have Account Text <=======================
+                _alreadyHaveAccountText(),
                 SizedBox(height: 40.h),
               ],
             ),
@@ -395,9 +99,181 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
     );
   }
-  //===============================> Show Calender Function <=======================
+  //==========================> Sign Up Text Widget <=======================
+  _signUpTextSection() {
+    return Center(
+      child: Column(
+        children: [
+          CustomText(
+            text: AppStrings.signUpAn,
+            fontWeight: FontWeight.w600,
+            fontsize: 22.sp,
+            bottom: 8.h,
+          ),
+          CustomText(
+            text: AppStrings.chooseYourDream,
+            bottom: 8.h,
+            maxline: 3,
+          ),
+        ],
+      ),
+    );
+  }
+  //==========================> Text Field Widget <=======================
+  _textFieldSection(String label, TextEditingController controller,
+      String? icon, String hintText,
+      [bool isPassword = false]) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 24.h),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CustomText(
+            text: label,
+            fontWeight: FontWeight.w500,
+            fontsize: 16.sp,
+            bottom: 8.h,
+          ),
+          CustomTextField(
+            controller: controller,
+            hintText: hintText,
+            isPassword: isPassword,
+            prifixicon: icon != null
+                ? Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 12.w),
+                    child: SvgPicture.asset(
+                      icon,
+                      color: AppColors.primaryColor,
+                    ),
+                  )
+                : null,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return "Please enter your $label";
+              }
+              return null;
+            },
+          ),
+        ],
+      ),
+    );
+  }
+  //==========================> Birth Date Text Field <=======================
+  _birthDateField() {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 24.h),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CustomText(
+            text: AppStrings.birthday,
+            fontWeight: FontWeight.w500,
+            fontsize: 16.sp,
+            bottom: 8.h,
+          ),
+          CustomTextField(
+            onTab: () {
+              _pickBirthDate(context);
+            },
+            readOnly: true,
+            controller: birthDayController,
+            hintText: 'Month-Day-year',
+            sufixicons: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: SvgPicture.asset(
+                AppIcons.downArrowIcon,
+                color: AppColors.primaryColor,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+  //==========================> Checkbox Section Widget <=======================
+  _checkboxSection() {
+    return Row(
+      children: [
+        Checkbox(
+          checkColor: Colors.white,
+          activeColor: AppColors.primaryColor,
+          focusColor: AppColors.greyColor,
+          value: isChecked,
+          onChanged: (bool? value) {
+            setState(() {
+              isChecked = value ?? false;
+            });
+          },
+          side: BorderSide(
+            color: isChecked ? AppColors.primaryColor : AppColors.primaryColor,
+            width: 1.w,
+          ),
+        ),
+        Text.rich(
+          maxLines: 2,
+          TextSpan(
+            text: 'By creating an account, I accept \nthe ',
+            style: TextStyle(fontSize: 14.w, fontWeight: FontWeight.w500),
+            children: [
+              TextSpan(
+                text: 'Terms & Conditions',
+                style: TextStyle(
+                    color: AppColors.primaryColor,
+                    fontSize: 14.w,
+                    fontWeight: FontWeight.w500),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () {
+                    Get.toNamed(AppRoutes.termsConditionScreen);
+                  },
+              ),
+              const TextSpan(text: ' & '),
+              TextSpan(
+                text: 'Privacy Policy.',
+                style: TextStyle(
+                    color: AppColors.primaryColor,
+                    fontSize: 14.w,
+                    fontWeight: FontWeight.w500),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () {
+                    Get.toNamed(AppRoutes.privacyPolicyScreen);
+                  },
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+  //==========================> Sign Up Button <=======================
+  _signUpButton() {
+    return CustomButton(
+      onTap: () {
+        if (_formKey.currentState!.validate()) {
+          // Perform sign up action
+        }
+      },
+      text: AppStrings.signUp,
+      textColor: Colors.white,
+    );
+  }
+  //==========================> Already Have Account Text <=======================
+  _alreadyHaveAccountText() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        CustomText(text: AppStrings.alreadyHaveAccount),
+        TextButton(
+          onPressed: () {
+            Get.toNamed(AppRoutes.logInScreen);
+          },
+          child: CustomText(text: AppStrings.logIn),
+        ),
+      ],
+    );
+  }
 
-  Future<void> birthDate(BuildContext context) async {
+  //==========================> Show Calender Function <=======================
+  Future<void> _pickBirthDate(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -405,12 +281,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
       lastDate: DateTime(3050),
     );
     if (pickedDate != null) {
-      // setState(() {
-      birthDayCTRl.text =
-          "${pickedDate.month}-${pickedDate.day}-${pickedDate.year}";
-      // date = "${pickedDate.year}-${pickedDate.month}-${pickedDate.day}";
-      // });
-      print('Selected date: ${birthDayCTRl.text}');
+      setState(() {
+        birthDayController.text ="${pickedDate.month}-${pickedDate.day}-${pickedDate.year}";
+      });
     }
   }
 }
