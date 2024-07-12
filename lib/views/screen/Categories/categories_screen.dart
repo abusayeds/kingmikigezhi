@@ -4,11 +4,14 @@ import '../../base/bottom_menu..dart';
 import '../../base/custom_text.dart';
 
 class CategoriesScreen extends StatefulWidget {
+  const CategoriesScreen({super.key});
+
   @override
   State<CategoriesScreen> createState() => _CategoriesScreenState();
 }
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
+
   final List<Map<String, String>> categories = [
     {"name": "Concert", "imageUrl": "assets/images/song.png"},
     {"name": "Sports", "imageUrl": "assets/images/shoot.png"},
@@ -38,8 +41,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
         child: GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            childAspectRatio: 1.03.w,
-            crossAxisSpacing: 8.0.h,
+            childAspectRatio: 1.0,
+            crossAxisSpacing: 8.0.w,
             mainAxisSpacing: 8.0.h,
           ),
           itemCount: categories.length,
@@ -50,32 +53,37 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                   borderRadius: BorderRadius.circular(16.r)),
               child: Stack(
                 children: [
-                  Container(
-                    width: 165.w,
-                    //height: 175.h,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(16.r))),
-                    child: Image.asset(
-                      category["imageUrl"]!,
-                      fit: BoxFit.fill,
+                  Positioned.fill(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16.r),
+                      child: Image.asset(
+                        category["imageUrl"]!,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                   Positioned(
-                    bottom: 0.h,
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
                     child: Container(
-                      width: 161.w,
                       decoration: BoxDecoration(
-                          color: Colors.grey.withOpacity(0.8),
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(12.r),
-                              bottomRight: Radius.circular(12.r))),
+                        color: Colors.grey.withOpacity(0.8),
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(16.r),
+                          bottomRight: Radius.circular(16.r),
+                        ),
+                      ),
                       child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 12.w, vertical: 8.h),
-                          child: CustomText(
-                            text: category["name"]!,
-                            fontWeight: FontWeight.w500,
-                          )),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 12.w,
+                          vertical: 8.h,
+                        ),
+                        child: CustomText(
+                          text: category["name"]!,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
                     ),
                   )
                 ],
