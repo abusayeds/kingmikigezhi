@@ -28,37 +28,42 @@ class HomeAppBar extends StatelessWidget {
         //==========================> Profile image <=============================
         // _profileController.profileModel.value.data?.attributes?.image?.publicFileUrl == null?
         Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  SvgPicture.asset(
-                    AppIcons.locationIcon,
-                    height: 20.h,
-                    width: 22.w,
-                    color: AppColors.primaryColor,
-                  ),
-                  SizedBox(
-                    width: 5.w,
-                  ),
-                  CustomText(
-                    text: 'Dhaka',
-                    fontsize: 14.h,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  SvgPicture.asset(
-                    AppIcons.downArrowIcon,
-                    width: 20.w,
-                    height: 22.h,
-                  )
-                ],
-              ),
-              CustomText(
-                text: 'Banasree, Rampura',
-                //"${_profileController.profileModel.value.data?.attributes?.name}" ?? '',
-              )
-            ],
+          child: GestureDetector(
+            onTap: () {
+              Get.toNamed(AppRoutes.mapScreen);
+            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    SvgPicture.asset(
+                      AppIcons.locationIcon,
+                      height: 20.h,
+                      width: 22.w,
+                      color: AppColors.primaryColor,
+                    ),
+                    SizedBox(
+                      width: 5.w,
+                    ),
+                    CustomText(
+                      text: 'Dhaka',
+                      fontsize: 14.h,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    SvgPicture.asset(
+                      AppIcons.downArrowIcon,
+                      width: 20.w,
+                      height: 22.h,
+                    )
+                  ],
+                ),
+                CustomText(
+                  text: 'Banasree, Rampura',
+                  //"${_profileController.profileModel.value.data?.attributes?.name}" ?? '',
+                )
+              ],
+            ),
           ),
         ),
         SizedBox(width: 10.w),
