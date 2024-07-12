@@ -98,7 +98,6 @@ class _MyEventScreenState extends State<MyEventScreen> {
                   Get.toNamed(AppRoutes.createEventOne);
                 },
                 child: Container(
-                  width: 118.w,
                   decoration: BoxDecoration(
                     color: AppColors.primaryColor,
                       borderRadius: BorderRadius.all(Radius.circular(20.r)),
@@ -107,6 +106,7 @@ class _MyEventScreenState extends State<MyEventScreen> {
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
                     child: Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Icon(Icons.add_circle_outlined, color: Colors.white,size: 16.h,),
                         SizedBox(width: 5.w),
