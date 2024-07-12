@@ -115,8 +115,10 @@ class _LogInScreenState extends State<LogInScreen> {
                               });
                             },
                             side: BorderSide(
-                              color: isChecked ? AppColors.primaryColor : AppColors.primaryColor,
-                              width: 1.w ,
+                              color: isChecked
+                                  ? AppColors.primaryColor
+                                  : AppColors.primaryColor,
+                              width: 1.w,
                             ),
                           ),
                           CustomText(
