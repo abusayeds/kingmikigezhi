@@ -111,7 +111,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             : widget.sufixicons,
         prefixIconConstraints: BoxConstraints(minHeight: 24.h, minWidth: 24.w),
         suffixIconConstraints: BoxConstraints(minHeight: 24.h, minWidth: 24.w),
-        errorStyle: TextStyle(color: AppColors.primaryColor),
+        errorStyle: const TextStyle(color: Colors.red),
         suffixIconColor: AppColors.primaryColor,
         prefixIconColor: AppColors.primaryColor,
         labelText: widget.labelText,
