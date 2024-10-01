@@ -24,27 +24,111 @@ class OnboardScreen extends StatelessWidget {
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 //=========================> Text Section <=======================
-                SizedBox(height: 300.h),
+                // SizedBox(height: 150.h),
                 CustomText(
-                  text: AppStrings.yourEvent,
+                  text: 'What is Dai Wa Bu Yi?',
                   color: Colors.white,
                   fontsize: 22.sp,
                   fontWeight: FontWeight.w700,
                   bottom: 16.h,
                 ),
                 CustomText(
-                  text: AppStrings.letStart,
-                  bottom: 32.h,
+                  text:
+                      'This is a first platform for parents to manage and share activities and events for their families:',
+                  maxline: 15,
+                  fontWeight: FontWeight.w500,
+                  textAlign: TextAlign.start,
                   color: Colors.white,
                 ),
+                SizedBox(height: 24.h),
+
+                Row(
+                  children: [
+                    Icon(Icons.circle, color: Colors.white, size: 8.w),
+                    SizedBox(width: 8.w),
+                    CustomText(
+                      text: 'Event Calendars:',
+                      textAlign: TextAlign.start,
+                      color: Colors.white,
+                    ),
+                  ],
+                ),
+                CustomText(
+                  text:
+                      'Shared calendars for tracking family activities and appointments.',
+                  maxline: 5,
+                  textAlign: TextAlign.start,
+                  color: Colors.white,
+                ),
+                SizedBox(height: 16.h),
+                Row(
+                  children: [
+                    Icon(Icons.circle, color: Colors.white, size: 8.w),
+                    SizedBox(width: 8.w),
+                    CustomText(
+                      text: 'Activity Suggestions: ',
+                      textAlign: TextAlign.start,
+                      color: Colors.white,
+                    ),
+                  ],
+                ),
+                CustomText(
+                  text:
+                      'Recommendations for local events and activities based on interests.',
+                  maxline: 5,
+                  textAlign: TextAlign.start,
+                  color: Colors.white,
+                ),
+                SizedBox(height: 16.h),
+                Row(
+                  children: [
+                    Icon(Icons.circle, color: Colors.white, size: 8.w),
+                    SizedBox(width: 8.w),
+                    CustomText(
+                      text: 'Resource Sharing: ',
+                      textAlign: TextAlign.start,
+                      color: Colors.white,
+                    ),
+                  ],
+                ),
+                CustomText(
+                  text:
+                      'Sections for sharing parenting tips, local services, and educational materials.',
+                  maxline: 5,
+                  textAlign: TextAlign.start,
+                  color: Colors.white,
+                ),
+                SizedBox(height: 16.h),
+                Row(
+                  children: [
+                    Icon(Icons.circle, color: Colors.white, size: 8.w),
+                    SizedBox(width: 8.w),
+                    CustomText(
+                      text: 'Customizable Profiles: ',
+                      textAlign: TextAlign.start,
+                      color: Colors.white,
+                    ),
+                  ],
+                ),
+                CustomText(
+                  text:
+                      'Individual profiles for tracking personal schedules and preferences.',
+                  maxline: 5,
+                  textAlign: TextAlign.start,
+                  color: Colors.white,
+                ),
+                SizedBox(height: 89.h),
                 //========================> Get Start Button <====================
                 CustomButton(
                   onTap: () {
-                  Get.toNamed(AppRoutes.onboardSecondScreen);
-                },
-                  text: AppStrings.getStart, color: Colors.white,)
+                    Get.toNamed(AppRoutes.onboardSecondScreen);
+                  },
+                  text: AppStrings.getStart,
+                  color: Colors.white,
+                )
               ],
             ),
           ),
