@@ -39,15 +39,10 @@ class _LogInScreenState extends State<LogInScreen> {
                   SizedBox(height: 108.h),
                   //================================> Log In Text Section <========================
                   CustomText(
-                    text: AppStrings.logIn,
+                    text: 'Sign In',
                     fontWeight: FontWeight.w600,
                     fontsize: 22.sp,
                     bottom: 8.h,
-                  ),
-                  CustomText(
-                    text: AppStrings.chooseYourDream,
-                    bottom: 8.h,
-                    maxline: 2,
                   ),
                   SizedBox(height: 56.h),
                   //=================================> Email Text Field <=========================
@@ -88,13 +83,14 @@ class _LogInScreenState extends State<LogInScreen> {
                       return null;
                     },
                   ),
-                  //================================> Log In Button <======================================
+                  //================================> Sign In Button <======================================
                   SizedBox(height: 35.h),
                   CustomButton(
                     onTap: () {
                       Get.toNamed(AppRoutes.homeScreen);
                     },
-                    text: AppStrings.logIn,
+                    text: 'Sign In',
+                    color: AppColors.buttonColor,
                     textColor: Colors.white,
                   ),
                   SizedBox(height: 16.h),
@@ -132,6 +128,7 @@ class _LogInScreenState extends State<LogInScreen> {
                             Get.toNamed(AppRoutes.forgotPasswordScreen);
                           },
                           child: CustomText(
+                            fontWeight: FontWeight.bold,
                             text: AppStrings.forgotPassword,
                             color: AppColors.primaryColor,
                           ))
@@ -144,6 +141,7 @@ class _LogInScreenState extends State<LogInScreen> {
                     children: [
                       CustomText(
                         text: AppStrings.doNotHaveAccount,
+                        fontWeight: FontWeight.w700,
                       ),
                       TextButton(
                           onPressed: () {
@@ -151,6 +149,8 @@ class _LogInScreenState extends State<LogInScreen> {
                           },
                           child: CustomText(
                             text: AppStrings.signUp,
+                            color: AppColors.primaryColor,
+                            fontWeight: FontWeight.w700,
                           ))
                     ],
                   )
