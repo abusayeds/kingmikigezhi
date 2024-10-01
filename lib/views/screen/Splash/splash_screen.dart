@@ -10,9 +10,11 @@ class SplashScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Container(
-        decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage(AppImages.splashBg), fit: BoxFit.cover)),
+        decoration: const BoxDecoration(
+          color: Color(0xff4C7E95),
+          /*image: DecorationImage(
+                image: AssetImage(AppImages.splashBg), fit: BoxFit.cover)*/
+        ),
         child: Center(
           child: Image.asset(
             AppImages.appLogo,
