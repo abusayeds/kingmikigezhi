@@ -9,6 +9,7 @@ import '../../../../utils/app_strings.dart';
 import '../../../base/custom_button.dart';
 import '../../../base/custom_text.dart';
 import '../../../base/custom_text_field.dart';
+import '../../../base/pin_code_text_field.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
@@ -42,45 +43,74 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     bottom: 8.h,
                   ),
                   CustomText(
-                    text: AppStrings.enterYourEmail,
-                    bottom: 8.h,
+                    text: 'We just send you authentication code',
                     maxline: 2,
                   ),
-                  SizedBox(height: 122.h),
-                  //=================================> Email Text Field <=========================
-                  CustomTextField(
-                    controller: emailCTRl,
-                    hintText: AppStrings.email,
-                    prifixicon: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12.w),
-                      child: SvgPicture.asset(
-                        AppIcons.mailIcon,
-                        color: AppColors.primaryColor,
-                      ),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Please enter your email";
-                      }
-                      return null;
-                    },
+                  CustomText(
+                    text: 'Basharxxxxxx@gmail.com',
+                    fontWeight: FontWeight.w600,
+                    fontsize: 16.sp,
+                    color: AppColors.primaryColor,
                   ),
-                  //================================> Get Otp Button <======================================
-                  SizedBox(height: 35.h),
+                  SizedBox(height: 122.h),
+                  //==============================> Pin Code Text Field <=====================
+                  CustomPinCodeTextField(),
+                  CustomText(
+                    text: 'Code Time',
+                  ),
+                  CustomText(
+                    text: '00.60s',
+                  ),
+                  //================================> Resend code Button <======================================
+                  SizedBox(height: 32.h),
                   CustomButton(
                     onTap: () {
                       Get.toNamed(AppRoutes.verificationCodeScreen);
                     },
-                    text: AppStrings.getOTP,
+                    text: 'Resend code',
                     textColor: Colors.white,
                   ),
-                  SizedBox(height: 16.h),
+                  //================================> Verify Button <======================================
+                  SizedBox(height: 32.h),
+                  CustomButton(
+                    onTap: () {
+                      Get.toNamed(AppRoutes.verificationCodeScreen);
+                    },
+                    text: 'Verify',
+                    textColor: Colors.white,
+                    color: AppColors.buttonColor,
+                  ),
+                  SizedBox(height: 32.h),
+                  _alreadyHaveAccountText()
                 ],
               ),
             ),
           ),
         ),
       ),
+    );
+  }
+  //==========================> Already Have Account Text <=======================
+  _alreadyHaveAccountText() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        CustomText(
+          text: AppStrings.alreadyHaveAccount,
+          fontWeight: FontWeight.w700,
+
+        ),
+        TextButton(
+          onPressed: () {
+            Get.toNamed(AppRoutes.signInScreen);
+          },
+          child: CustomText(
+            text: "Sign In",
+            fontWeight: FontWeight.w700,
+            color: AppColors.primaryColor,
+          ),
+        ),
+      ],
     );
   }
 }

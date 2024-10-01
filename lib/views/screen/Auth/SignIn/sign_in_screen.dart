@@ -11,14 +11,14 @@ import 'package:get/get.dart';
 
 import '../../../../utils/app_colors.dart';
 
-class LogInScreen extends StatefulWidget {
-  const LogInScreen({super.key});
+class SignInScreen extends StatefulWidget {
+  const SignInScreen({super.key});
 
   @override
-  State<LogInScreen> createState() => _LogInScreenState();
+  State<SignInScreen> createState() => _SignInScreenState();
 }
 
-class _LogInScreenState extends State<LogInScreen> {
+class _SignInScreenState extends State<SignInScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController emailCTRl = TextEditingController();
   final TextEditingController passwordCTRl = TextEditingController();
@@ -145,7 +145,7 @@ class _LogInScreenState extends State<LogInScreen> {
                       ),
                       TextButton(
                           onPressed: () {
-                            Get.toNamed(AppRoutes.signUpScreen);
+                            Get.toNamed(AppRoutes.createAccountScreen);
                           },
                           child: CustomText(
                             text: AppStrings.signUp,
