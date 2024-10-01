@@ -7,7 +7,7 @@ import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_strings.dart';
 import '../../../base/custom_button.dart';
 import '../../../base/custom_text.dart';
-import 'InnerWidget/pin_code_text_field.dart';
+import '../../../base/pin_code_text_field.dart';
 
 class VerificationCodeScreen extends StatelessWidget {
   const VerificationCodeScreen({super.key});
