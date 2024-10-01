@@ -73,7 +73,7 @@ class OnboardSecondScreen extends StatelessWidget {
                 SizedBox(height: 16.h),
                 CustomButton(
                   onTap: () {
-                    Get.toNamed(AppRoutes.signUpScreen);
+                    Get.toNamed(AppRoutes.createAccountScreen);
                   },
                   text: AppStrings.signUp,
                   color: Colors.white,
@@ -82,7 +82,7 @@ class OnboardSecondScreen extends StatelessWidget {
                 SizedBox(height: 32.h),
                 TextButton(
                     onPressed: () {
-                      Get.toNamed(AppRoutes.logInScreen);
+                      Get.toNamed(AppRoutes.signInScreen);
                     },
                     child: CustomText(
                       text: AppStrings.logIn,

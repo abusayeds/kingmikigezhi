@@ -43,11 +43,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     fontsize: 22.sp,
                     bottom: 8.h,
                   ),
-                  CustomText(
-                    text: AppStrings.enterNewPassword,
-                    bottom: 8.h,
-                    maxline: 2,
-                  ),
                   SizedBox(height: 68.h),
                   //=================================> Password Text Field <=========================
                   CustomTextField(
@@ -96,6 +91,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     },
                     text: AppStrings.resetPassword,
                     textColor: Colors.white,
+                    color: AppColors.buttonColor,
                   ),
                   SizedBox(height: 16.h),
                 ],
