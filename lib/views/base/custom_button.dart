@@ -1,3 +1,4 @@
+import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -15,7 +16,7 @@ class CustomButton extends StatelessWidget {
       this.loading = false,
       this.width,
       this.height,
-        this.textColor});
+      this.textColor});
   final Function() onTap;
   final String text;
   final bool loading;
@@ -29,8 +30,8 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: padding,
-      child: ElevatedButton(
+        padding: padding,
+        child: ElevatedButton(
           onPressed: loading ? () {} : onTap,
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
@@ -46,13 +47,11 @@ class CustomButton extends StatelessWidget {
                     color: Colors.white,
                   ),
                 )
-              : Text(
-                  text,
-                  style: textStyle ??
-                      AppStyles.h3(
-                          fontWeight: FontWeight.w500,
-                          color:  textColor ?? Colors.black ),
-                )),
-    );
+              : CustomText(
+                  text: text,
+                  fontWeight: FontWeight.w500,
+                  fontsize: 16.sp,
+                  color: textColor ?? Colors.black),
+        ));
   }
 }
