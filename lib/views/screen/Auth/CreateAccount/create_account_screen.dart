@@ -11,14 +11,14 @@ import '../../../base/custom_button.dart';
 import '../../../base/custom_text.dart';
 import '../../../base/custom_text_field.dart';
 
-class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key});
+class CreateAccountScreen extends StatefulWidget {
+  const CreateAccountScreen({super.key});
 
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
+  State<CreateAccountScreen> createState() => _CreateAccountScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _CreateAccountScreenState extends State<CreateAccountScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController userNameController = TextEditingController();
   final TextEditingController firstNameController = TextEditingController();
@@ -252,6 +252,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           // Perform sign up action
         }
       },
+      color: AppColors.buttonColor,
       text: AppStrings.signUp,
       textColor: Colors.white,
     );
@@ -261,12 +262,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        CustomText(text: AppStrings.alreadyHaveAccount),
+        CustomText(
+            text: AppStrings.alreadyHaveAccount,
+          fontWeight: FontWeight.w700,
+
+        ),
         TextButton(
           onPressed: () {
-            Get.toNamed(AppRoutes.logInScreen);
+            Get.toNamed(AppRoutes.signInScreen);
           },
-          child: CustomText(text: AppStrings.logIn),
+          child: CustomText(
+            text: AppStrings.logIn,
+            fontWeight: FontWeight.w700,
+            color: AppColors.primaryColor,
+          ),
         ),
       ],
     );
