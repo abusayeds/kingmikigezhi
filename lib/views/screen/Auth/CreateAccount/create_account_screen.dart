@@ -29,10 +29,13 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   final TextEditingController birthDayController = TextEditingController();
   final TextEditingController locationController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-      TextEditingController();
-
+  final TextEditingController confirmPasswordController = TextEditingController();
   bool isChecked = false;
+  String? selectedGender;
+  List<String> genderList = [
+    'Male',
+    'Female',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +49,6 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 70.h),
                 //==========================> Sign Up Text Section <=======================
                 _signUpTextSection(),
                 SizedBox(height: 51.h),
@@ -59,20 +61,163 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 //==========================> Last Name Text Field <=======================
                 _textFieldSection(AppStrings.lastName, lastNameController,
                     AppIcons.singlePerson, 'Enter your last name'),
-                //==========================> Email Text Field <=======================
-                _textFieldSection(AppStrings.email, emailController,
-                    AppIcons.mailIcon, AppStrings.email),
-                //==========================> Gender Text Field <=======================
-                _textFieldSection(AppStrings.gender, genderController,
-                    AppIcons.singlePerson, 'Gender'),
-                //==========================> Phone Number Text Field <=======================
-                _textFieldSection(AppStrings.phoneNumber, phoneController,
-                    AppIcons.phoneIcon, 'Phone number'),
-                //==========================> Birth Date Text Field <=======================
-                _birthDateField(),
-                //==========================> Location Text Field <=======================
-                _textFieldSection(AppStrings.location, locationController, null,
-                    'Type your address', false),
+                //==========================> Gender DropdownButton <=======================
+                CustomText(
+                  text: 'Gender',
+                  fontWeight: FontWeight.w500,
+                  fontsize: 16.sp,
+                  bottom: 8.h,
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  decoration: BoxDecoration(
+                    color: AppColors.fillColor,
+                    borderRadius: BorderRadius.circular(8.r),
+                    border: Border.all(color: AppColors.primaryColor, width: 1),
+                  ),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      value: selectedGender,
+                      dropdownColor: AppColors.fillColor,
+                      menuWidth: 245.w,
+                      borderRadius: BorderRadius.circular(8.r),
+                      hint: Text(
+                        "Select your Gender",
+                        style: TextStyle(
+                            fontSize: 18.sp, fontWeight: FontWeight.w500),
+                      ),
+                      icon: SvgPicture.asset(
+                        AppIcons.downArrowIcon,
+                        width: 16.w,
+                        color: AppColors.primaryColor,
+                      ),
+                      isExpanded: true,
+                      items: genderList.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(
+                            value,
+                            style: const TextStyle(color: Colors.black),
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (newValue) {
+                        setState(() {
+                          selectedGender = newValue;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+                SizedBox(height: 16.h),
+                //==========================> Birth Date Text Field Row <=======================
+                CustomText(
+                  text: 'Birthday',
+                  fontWeight: FontWeight.w500,
+                  fontsize: 16.sp,
+                  bottom: 8.h,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: 108.w,
+                      child: CustomTextField(
+                        controller: birthDayController,
+                        hintText: 'Year',
+                        sufixicons: Padding(
+                          padding: EdgeInsets.only(right: 12.w),
+                          child: SvgPicture.asset(
+                            AppIcons.downArrowIcon,
+                            width: 16.w,
+                            color: AppColors.primaryColor,
+                          ),
+                        ),
+
+                      ),
+                    ),
+                    SizedBox(
+                      width: 108.w,
+                      child: CustomTextField(
+                        controller: birthDayController,
+                        hintText: 'Month',
+                        sufixicons: Padding(
+                          padding: EdgeInsets.only(right: 12.w),
+                          child: SvgPicture.asset(
+                            AppIcons.downArrowIcon,
+                            width: 16.w,
+                            color: AppColors.primaryColor,
+                          ),
+                        ),
+
+                      ),
+                    ),
+                    SizedBox(
+                      width: 108.w,
+                      child: CustomTextField(
+                        controller: birthDayController,
+                        hintText: 'Day',
+                        sufixicons: Padding(
+                          padding: EdgeInsets.only(right: 12.w),
+                          child: SvgPicture.asset(
+                            AppIcons.downArrowIcon,
+                            width: 16.w,
+                            color: AppColors.primaryColor,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 16.h),
+                //==========================> Location Text Field Row <=======================
+                CustomText(
+                  text: 'Location',
+                  fontWeight: FontWeight.w500,
+                  fontsize: 16.sp,
+                  bottom: 8.h,
+                ),
+               Row(
+                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                 children: [
+                   SizedBox(
+                     width: 108.w,
+                     child: CustomTextField(
+                         controller: locationController,
+                       hintText: 'Country',
+                       sufixicons: Padding(
+                         padding: EdgeInsets.only(right: 12.w),
+                         child: SvgPicture.asset(
+                           AppIcons.downArrowIcon,
+                           width: 16.w,
+                           color: AppColors.primaryColor,
+                         ),
+                       ),
+
+                     ),
+                   ),
+                   SizedBox(
+                     width: 108.w,
+                     child: CustomTextField(
+                       controller: locationController,
+                       hintText: 'State',
+
+                     ),
+                   ),
+                   SizedBox(
+                     width: 108.w,
+                     child: CustomTextField(
+                       controller: locationController,
+                       hintText: 'City',
+
+                     ),
+                   ),
+                 ],
+               ),
+               SizedBox(height: 16.h),
+
+               /* _textFieldSection(AppStrings.location, locationController, null,
+                    'Type your address', false),*/
                 //==========================> Password Text Field <=======================
                 _textFieldSection(AppStrings.password, passwordController,
                     AppIcons.lockIcon, AppStrings.password, true),
@@ -85,10 +230,10 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     true),
                 //==========================> Check Box Section <=======================
                 _checkboxSection(),
-                SizedBox(height: 32.h),
+                SizedBox(height: 24.h),
                 //==========================> Sign Up Button <=======================
                 _signUpButton(),
-                SizedBox(height: 32.h),
+                SizedBox(height: 24.h),
                 //==========================> Already Have Account Text <=======================
                 _alreadyHaveAccountText(),
                 SizedBox(height: 40.h),
@@ -99,6 +244,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
       ),
     );
   }
+
   //==========================> Sign Up Text Widget <=======================
   _signUpTextSection() {
     return Center(
@@ -119,6 +265,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
       ),
     );
   }
+
   //==========================> Text Field Widget <=======================
   _textFieldSection(String label, TextEditingController controller,
       String? icon, String hintText,
@@ -158,6 +305,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
       ),
     );
   }
+
   //==========================> Birth Date Text Field <=======================
   _birthDateField() {
     return Padding(
@@ -190,6 +338,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
       ),
     );
   }
+
   //==========================> Checkbox Section Widget <=======================
   _checkboxSection() {
     return Row(
@@ -244,6 +393,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
       ],
     );
   }
+
   //==========================> Sign Up Button <=======================
   _signUpButton() {
     return CustomButton(
@@ -257,15 +407,15 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
       textColor: Colors.white,
     );
   }
+
   //==========================> Already Have Account Text <=======================
   _alreadyHaveAccountText() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         CustomText(
-            text: AppStrings.alreadyHaveAccount,
+          text: AppStrings.alreadyHaveAccount,
           fontWeight: FontWeight.w700,
-
         ),
         TextButton(
           onPressed: () {
@@ -291,7 +441,8 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
     );
     if (pickedDate != null) {
       setState(() {
-        birthDayController.text ="${pickedDate.month}-${pickedDate.day}-${pickedDate.year}";
+        birthDayController.text =
+            "${pickedDate.month}-${pickedDate.day}-${pickedDate.year}";
       });
     }
   }
