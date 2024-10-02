@@ -32,38 +32,57 @@ class HomeAppBar extends StatelessWidget {
             onTap: () {
               Get.toNamed(AppRoutes.mapScreen);
             },
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Row(
               children: [
-                Row(
+                Image.asset(AppImages.logo, width: 42.w,height: 42.h),
+                SizedBox(width: 6.w),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SvgPicture.asset(
-                      AppIcons.locationIcon,
-                      height: 20.h,
-                      width: 22.w,
-                      color: AppColors.primaryColor,
-                    ),
-                    SizedBox(
-                      width: 5.w,
+                    Row(
+                      children: [
+                        SvgPicture.asset(
+                          AppIcons.locationIcon,
+                          height: 20.h,
+                          width: 22.w,
+                          color: AppColors.primaryColor,
+                        ),
+                        SizedBox(
+                          width: 5.w,
+                        ),
+                        CustomText(
+                          text: 'Dhaka',
+                          fontsize: 14.h,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        SvgPicture.asset(
+                          AppIcons.downArrowIcon,
+                          width: 20.w,
+                          height: 22.h,
+                        )
+                      ],
                     ),
                     CustomText(
-                      text: 'Dhaka',
-                      fontsize: 14.h,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    SvgPicture.asset(
-                      AppIcons.downArrowIcon,
-                      width: 20.w,
-                      height: 22.h,
+                      text: 'Banasree, Rampura',
+                      //"${_profileController.profileModel.value.data?.attributes?.name}" ?? '',
                     )
                   ],
                 ),
-                CustomText(
-                  text: 'Banasree, Rampura',
-                  //"${_profileController.profileModel.value.data?.attributes?.name}" ?? '',
-                )
               ],
             ),
+          ),
+        ),
+        SizedBox(width: 10.w),
+        //=======================> Heart Button <=======================
+        GestureDetector(
+          onTap: () {
+            //Get.toNamed(AppRoutes.notificationsScreen);
+          },
+          child: SvgPicture.asset(
+            AppIcons.heart,
+            color: AppColors.primaryColor,
+            height: 28.h,
+            width: 32.w,
           ),
         ),
         SizedBox(width: 10.w),
