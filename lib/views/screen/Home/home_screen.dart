@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:table_calendar/table_calendar.dart';
 import '../../../utils/app_icons.dart';
 import '../../base/bottom_menu..dart';
 import '../../base/custom_text_field.dart';
@@ -30,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Map<String, String>> events = [
     {
       "date": "20 Feb",
-      "title": "Snowboard Festival",
+      "title": "Basketball Game",
       "location": "Dhaka, Bangladesh",
       "time": "10:30 PM",
       "image": "assets/images/upcoming.png"
@@ -50,6 +51,18 @@ class _HomeScreenState extends State<HomeScreen> {
       "image": "assets/images/upcoming.png"
     }
   ];
+  DateTime _focusedDay = DateTime(2024, 1, 1);
+  DateTime? _selectedDay;
+  CalendarFormat _calendarFormat =
+      CalendarFormat.week; // Default format is week
+  String? selectedGender;
+  List<String> genderList = [
+    'Self',
+    'Spouse',
+    'Child Stephanie',
+    'Child Sophia',
+  ];
+
 
   @override
   Widget build(BuildContext context) {
@@ -66,15 +79,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 HomeAppBar(),
                 SizedBox(height: 20.h),
                 _searchBar(context),
+                //===============================> My Appointments Section <======================
+                _tableCalendar(),
                 SizedBox(height: 16.h),
-                _greetingSection(),
-                //===========================> Categories Section <======================
-                SizedBox(height: 28.h),
-                _sectionHeader(
-                  title: AppStrings.categories,
-                  onSeeAllPressed: () {},
-                ),
-                SizedBox(height: 139.h, child: _categoryList()),
                 //=========================> Upcoming Event Section <=====================
                 _sectionHeader(
                   title: AppStrings.upcomingEvent,
@@ -93,22 +100,48 @@ class _HomeScreenState extends State<HomeScreen> {
 
 //===============================> Search Bar Section <=========================================
   _searchBar(BuildContext context) {
-    return CustomTextField(
-      onTab: () => searchDate(context),
-      readOnly: true,
-      controller: _searchController,
-      contenpaddingHorizontal: 12.w,
-      contenpaddingVertical: 12.h,
-      hintText: "Search",
-      sufixicons: IconButton(
-        onPressed: () => searchDate(context),
-        icon: SvgPicture.asset(
-          AppIcons.calendarIcon,
-          width: 24.w,
-          height: 24.h,
-          color: AppColors.primaryColor,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        SizedBox(
+          width: 271.w,
+          child: CustomTextField(
+            controller: _searchController,
+            contenpaddingHorizontal: 12.w,
+            contenpaddingVertical: 12.h,
+            hintText: "Search",
+            sufixicons: IconButton(
+              onPressed: () => searchDate(context),
+              icon: SvgPicture.asset(
+                AppIcons.search,
+                width: 24.w,
+                height: 24.h,
+                color: AppColors.primaryColor,
+              ),
+            ),
+          ),
         ),
-      ),
+        //=========================> Filter Icon Section <==========================
+        GestureDetector(
+          onTap: () {
+            Get.toNamed(AppRoutes.filterScreen);
+          },
+          child: Container(
+            decoration: BoxDecoration(
+                color: AppColors.fillColor,
+                borderRadius: BorderRadius.circular(10.r),
+                border: Border.all(width: 1.w, color: AppColors.primaryColor)),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
+              child: SvgPicture.asset(
+                AppIcons.filterIcon,
+                width: 24.w,
+                height: 24.h,
+              ),
+            ),
+          ),
+        )
+      ],
     );
   }
 
@@ -157,7 +190,7 @@ class _HomeScreenState extends State<HomeScreen> {
         TextButton(
           onPressed: onSeeAllPressed,
           child: CustomText(
-            text: AppStrings.seeAll,
+            text: 'More',
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -245,7 +278,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
                 Padding(
-                  padding: EdgeInsets.all(8.w),
+                  padding: EdgeInsets.all(5.w),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -261,15 +294,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             Row(
                               children: [
                                 SvgPicture.asset(
-                                  AppIcons.timeIcon,
+                                  AppIcons.share,
                                   color: AppColors.primaryColor,
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 5.w),
-                                  child: CustomText(
-                                    text: event["time"]!,
-                                    color: Colors.grey,
-                                  ),
                                 ),
                               ],
                             ),
@@ -278,20 +304,75 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       SizedBox(height: 4.h),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SvgPicture.asset(
-                            AppIcons.locationIcon,
-                            width: 14.w,
-                            height: 17.h,
-                            color: AppColors.primaryColor,
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(Icons.circle, color:AppColors.primaryColor, size: 8.w),
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 5.w),
+                                    child: CustomText(
+                                      text: event["location"]!,
+                                      fontsize: 10.sp,
+                                      color: Colors.grey,
+                                      textOverflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 8.h),
+                              Row(
+                                children: [
+                                  Icon(Icons.circle, color:AppColors.primaryColor, size: 8.w),
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 5.w),
+                                    child: CustomText(
+                                      text: event["location"]!,
+                                      fontsize: 10.sp,
+                                      color: Colors.grey,
+                                      textOverflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 5.w),
-                            child: CustomText(
-                              text: event["location"]!,
-                              color: Colors.grey,
-                              textOverflow: TextOverflow.ellipsis,
-                            ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(Icons.circle, color:AppColors.primaryColor, size: 8.w),
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 5.w),
+                                    child: CustomText(
+                                      text: event["location"]!,
+                                      fontsize: 10.sp,
+                                      color: Colors.grey,
+                                      textOverflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 8.h),
+                              Row(
+                                children: [
+                                  Icon(Icons.circle, color:AppColors.primaryColor, size: 8.w),
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 5.w),
+                                    child: CustomText(
+                                      text: event["location"]!,
+                                      fontsize: 10.sp,
+                                      color: Colors.grey,
+                                      textOverflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -305,7 +386,123 @@ class _HomeScreenState extends State<HomeScreen> {
       },
     );
   }
-
+  //========================================> Table Calendar Method <=============================
+  _tableCalendar() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: TableCalendar(
+                firstDay: DateTime.utc(2020, 10, 16),
+                lastDay: DateTime.utc(2030, 3, 14),
+                focusedDay: _focusedDay,
+                calendarFormat: _calendarFormat,
+                startingDayOfWeek: StartingDayOfWeek.monday,
+                selectedDayPredicate: (day) {
+                  return isSameDay(_selectedDay, day);
+                },
+                onDaySelected: (selectedDay, focusedDay) {
+                  setState(() {
+                    _selectedDay = selectedDay;
+                    _focusedDay = focusedDay;
+                  });
+                },
+                headerStyle: HeaderStyle(
+                  rightChevronIcon: Row(
+                    children: [
+                     /* Container(
+                        //padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 4.h),
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryColor,
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 4.h),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                              value: selectedGender,
+                              dropdownColor: AppColors.fillColor,
+                              menuWidth: 245.w,
+                              borderRadius: BorderRadius.circular(8.r),
+                              hint: Text(
+                                "All",
+                                style: TextStyle(
+                                    fontSize: 18.sp, fontWeight: FontWeight.w500),
+                              ),
+                              icon: SvgPicture.asset(
+                                AppIcons.downArrowIcon,
+                                width: 12.w,
+                                color: AppColors.primaryColor,
+                              ),
+                              isExpanded: true,
+                              items: genderList.map((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style: const TextStyle(color: Colors.black),
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: (newValue) {
+                                setState(() {
+                                  selectedGender = newValue;
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                      ),*/
+                      IconButton(
+                        icon: const Icon(Icons.calendar_month),
+                        onPressed: () {
+                          setState(() {
+                            _calendarFormat = _calendarFormat == CalendarFormat.week
+                                ? CalendarFormat.month
+                                : CalendarFormat.week;
+                          });
+                        },
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.add),
+                        onPressed: () {},
+                      ),
+                    ],
+                  ),
+                  leftChevronIcon: SizedBox(),
+                  formatButtonVisible: false,
+                  titleCentered: true,
+                ),
+                calendarStyle: CalendarStyle(
+                  todayDecoration: BoxDecoration(
+                    color: AppColors.primaryColor,
+                    shape: BoxShape.circle,
+                  ),
+                  selectedDecoration: BoxDecoration(
+                    color: AppColors.bottomBarColor,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ),
+            ),
+           /* IconButton(
+              icon: const Icon(Icons.calendar_view_month),
+              onPressed: () {
+                setState(() {
+                  _calendarFormat = _calendarFormat == CalendarFormat.week
+                      ? CalendarFormat.month
+                      : CalendarFormat.week;
+                });
+             },
+            ),*/
+          ],
+        ),
+      ],
+    );
+  }
 //========================================> Search Date Method <=============================
   Future<void> searchDate(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(

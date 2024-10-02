@@ -40,6 +40,9 @@ class AppIcons{
   static String helloIcon="$baseUrl/helloIcon.svg";
   static String filterIcon="$baseUrl/filter.svg";
   static String delete="$baseUrl/delete.svg";
+  static String heart="$baseUrl/heart.svg";
+  static String search="$baseUrl/search.svg";
+  static String share="$baseUrl/share.svg";
 
 
 
