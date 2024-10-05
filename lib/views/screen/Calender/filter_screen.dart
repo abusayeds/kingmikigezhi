@@ -18,8 +18,12 @@ class FilterScreen extends StatefulWidget {
 class _FilterScreenState extends State<FilterScreen> {
   final TextEditingController _categoriesCTRL = TextEditingController();
   final TextEditingController _locationCTRL = TextEditingController();
-  final List<String> _categories = ['Concert', 'Sports', 'Show', 'Olympic game'];
+  final List<String> _program = ['Concert', 'Sports', 'Show', 'Olympic game'];
+  final List<String> _type = ['Onsite', 'Online', 'Hybrid'];
+  final List<String> _category = ['6 Year - 10 Year', '11 Year - 16 Year', '17 Year+'];
   RangeValues _currentRangeValues = RangeValues(20, 80);
+  String? _selectedProgram;
+  String? _selectedType;
   String? _selectedCategory;
 
   @override
@@ -40,9 +44,9 @@ class _FilterScreenState extends State<FilterScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              //==============================> Categories Section <=======================
+              //==============================> Program Section <=======================
               CustomText(
-                text: AppStrings.categories,
+                text: 'Program',
                 fontWeight: FontWeight.w500,
                 fontsize: 16.sp,
                 bottom: 8.h,
@@ -50,17 +54,20 @@ class _FilterScreenState extends State<FilterScreen> {
               InputDecorator(
                 decoration: InputDecoration(
                   fillColor: AppColors.fillColor,
-                 // labelText: 'Select',
+                  // labelText: 'Select',
                   border: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
+                    borderSide:
+                        BorderSide(color: AppColors.primaryColor, width: 1.w),
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
+                    borderSide:
+                        BorderSide(color: AppColors.primaryColor, width: 1.w),
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
+                    borderSide:
+                        BorderSide(color: AppColors.primaryColor, width: 1.w),
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                   contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
@@ -71,9 +78,9 @@ class _FilterScreenState extends State<FilterScreen> {
                     iconDisabledColor: AppColors.primaryColor,
                     iconEnabledColor: AppColors.primaryColor,
                     isExpanded: true,
-                    value: _selectedCategory,
-                    hint: CustomText(text: 'Select',fontsize: 14.sp),
-                    items: _categories.map((String value) {
+                    value: _selectedProgram,
+                    hint: CustomText(text: 'Select Program', fontsize: 14.sp),
+                    items: _program.map((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
                         child: Text(value),
@@ -81,7 +88,58 @@ class _FilterScreenState extends State<FilterScreen> {
                     }).toList(),
                     onChanged: (String? newValue) {
                       setState(() {
-                        _selectedCategory = newValue;
+                        _selectedProgram = newValue;
+                      });
+                    },
+                  ),
+                ),
+              ),
+              SizedBox(height: 16.h),
+              //==============================> Type Section <=======================
+              CustomText(
+                text: 'Type',
+                fontWeight: FontWeight.w500,
+                fontsize: 16.sp,
+                bottom: 8.h,
+              ),
+              InputDecorator(
+                decoration: InputDecoration(
+                  fillColor: AppColors.fillColor,
+                  // labelText: 'Select',
+                  border: OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: AppColors.primaryColor, width: 1.w),
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: AppColors.primaryColor, width: 1.w),
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: AppColors.primaryColor, width: 1.w),
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
+                ),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                    //focusColor:  AppColors.primaryColor,
+                    iconDisabledColor: AppColors.primaryColor,
+                    iconEnabledColor: AppColors.primaryColor,
+                    isExpanded: true,
+                    value: _selectedType,
+                    hint: CustomText(text: 'Select Type', fontsize: 14.sp),
+                    items: _type.map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        _selectedType = newValue;
                       });
                     },
                   ),
@@ -102,6 +160,57 @@ class _FilterScreenState extends State<FilterScreen> {
                   padding: EdgeInsets.all(16.w),
                   child: SvgPicture.asset(AppIcons.locationIcon,
                       color: AppColors.primaryColor),
+                ),
+              ),
+              SizedBox(height: 16.h),
+              //==============================> Category/Group Section <=======================
+              CustomText(
+                text: 'Category/Group',
+                fontWeight: FontWeight.w500,
+                fontsize: 16.sp,
+                bottom: 8.h,
+              ),
+              InputDecorator(
+                decoration: InputDecoration(
+                  fillColor: AppColors.fillColor,
+                  // labelText: 'Select',
+                  border: OutlineInputBorder(
+                    borderSide:
+                    BorderSide(color: AppColors.primaryColor, width: 1.w),
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide:
+                    BorderSide(color: AppColors.primaryColor, width: 1.w),
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide:
+                    BorderSide(color: AppColors.primaryColor, width: 1.w),
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
+                ),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                    //focusColor:  AppColors.primaryColor,
+                    iconDisabledColor: AppColors.primaryColor,
+                    iconEnabledColor: AppColors.primaryColor,
+                    isExpanded: true,
+                    value: _selectedCategory,
+                    hint: CustomText(text: 'Select Category/Group', fontsize: 14.sp),
+                    items: _category.map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        _selectedCategory = newValue;
+                      });
+                    },
+                  ),
                 ),
               ),
               SizedBox(height: 16.h),
@@ -150,8 +259,8 @@ class _FilterScreenState extends State<FilterScreen> {
                   ],
                 ),
               ),
-             SizedBox(height: 285.h),
-             // const Spacer(),
+              SizedBox(height: 131.h),
+              // const Spacer(),
               //===========================> Button Section <===============================
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -168,8 +277,9 @@ class _FilterScreenState extends State<FilterScreen> {
                       width: 166.w,
                       child: CustomButton(
                         onTap: () {},
-                        text: "Apply Filters",
+                        text: "Apply",
                         textColor: Colors.white,
+                        color: AppColors.buttonColor,
                       )),
                 ],
               ),
