@@ -9,6 +9,7 @@ class CustomButton extends StatelessWidget {
   const CustomButton(
       {super.key,
       this.color,
+      this.borderColor,
       this.textStyle,
       this.padding = EdgeInsets.zero,
       required this.onTap,
@@ -23,6 +24,7 @@ class CustomButton extends StatelessWidget {
   final double? height;
   final double? width;
   final Color? color;
+  final Color? borderColor;
   final Color? textColor;
   final EdgeInsetsGeometry padding;
   final TextStyle? textStyle;
@@ -35,8 +37,9 @@ class CustomButton extends StatelessWidget {
           onPressed: loading ? () {} : onTap,
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
+                side: BorderSide(width: 1.w, color: borderColor ?? AppColors.bottomBarColor),
                 borderRadius: BorderRadius.circular(8.r)),
-            backgroundColor: color ?? AppColors.primaryColor,
+            backgroundColor: color ?? AppColors.bottomBarColor,
             minimumSize: Size(width ?? Get.width, height ?? 53.h),
           ),
           child: loading
