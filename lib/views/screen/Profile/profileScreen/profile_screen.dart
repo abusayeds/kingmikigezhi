@@ -1,4 +1,5 @@
 import 'package:event_sharing/utils/app_strings.dart';
+import 'package:event_sharing/views/base/profile_ListTile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -27,6 +28,53 @@ class ProfileScreen extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
               child: Column(
                 children: [
+
+                  //============================> Account List Tile <=================
+                  ProfileListTile(title:AppStrings.account,
+                    prefixIcon: SvgPicture.asset(AppIcons.ownershipIcon, color: AppColors.primaryColor),
+                    suffixIcon: SvgPicture.asset(AppIcons.rightArrow,color: AppColors.primaryColor),),
+                  //============================> My Family List Tile <=================
+                  ProfileListTile(title:AppStrings.myFamily,
+                    prefixIcon: SvgPicture.asset(AppIcons.ownershipIcon, color: AppColors.primaryColor),
+                    suffixIcon: SvgPicture.asset(AppIcons.rightArrow,color: AppColors.primaryColor),),
+                  //============================> My Event List Tile <=================
+                  ProfileListTile(title:AppStrings.myEvent,
+                    prefixIcon: SvgPicture.asset(AppIcons.ownershipIcon, color: AppColors.primaryColor),
+                    suffixIcon: SvgPicture.asset(AppIcons.rightArrow,color: AppColors.primaryColor),),
+                  //============================> Connection List Tile <=================
+                  ProfileListTile(title:AppStrings.connection,
+                    prefixIcon: SvgPicture.asset(AppIcons.ownershipIcon, color: AppColors.primaryColor),
+                    suffixIcon: SvgPicture.asset(AppIcons.rightArrow,color: AppColors.primaryColor),),
+                  //============================> Contribution List Tile <=================
+                  ProfileListTile(title:AppStrings.contribution,
+                    prefixIcon: SvgPicture.asset(AppIcons.ownershipIcon, color: AppColors.primaryColor),
+                    suffixIcon: SvgPicture.asset(AppIcons.rightArrow,color: AppColors.primaryColor),),
+                  //============================> Invitation List Tile <=================
+                  ProfileListTile(title:AppStrings.invitation,
+                    prefixIcon: SvgPicture.asset(AppIcons.ownershipIcon, color: AppColors.primaryColor),
+                    suffixIcon: SvgPicture.asset(AppIcons.rightArrow,color: AppColors.primaryColor),),
+                  //============================> Settings List Tile <=================
+                  ProfileListTile(title:AppStrings.settings,
+                    prefixIcon: SvgPicture.asset(AppIcons.ownershipIcon, color: AppColors.primaryColor),
+                    suffixIcon: SvgPicture.asset(AppIcons.rightArrow,color: AppColors.primaryColor),),
+                  //============================> About Us List Tile <=================
+                  ProfileListTile(title:AppStrings.aboutUs,
+                    prefixIcon: SvgPicture.asset(AppIcons.ownershipIcon, color: AppColors.primaryColor),
+                    suffixIcon: SvgPicture.asset(AppIcons.rightArrow,color: AppColors.primaryColor),),
+                  //============================> Terms and Conditions List Tile <=================
+                  ProfileListTile(title:AppStrings.termsAndConditions,
+                    prefixIcon: SvgPicture.asset(AppIcons.ownershipIcon, color: AppColors.primaryColor),
+                    suffixIcon: SvgPicture.asset(AppIcons.rightArrow,color: AppColors.primaryColor),),
+                  //============================> Privacy Policy List Tile <=================
+                  ProfileListTile(title:AppStrings.privacyPolicy,
+                    prefixIcon: SvgPicture.asset(AppIcons.ownershipIcon, color: AppColors.primaryColor),
+                    suffixIcon: SvgPicture.asset(AppIcons.rightArrow,color: AppColors.primaryColor),),
+                  //============================> Log Out List Tile <=================
+                  ProfileListTile(title:AppStrings.logout,
+                    prefixIcon: SvgPicture.asset(AppIcons.ownershipIcon, color: AppColors.primaryColor),
+                    suffixIcon: SvgPicture.asset(AppIcons.rightArrow,color: AppColors.primaryColor),),
+
+                  ///=====================================
                   //============================> Personal Information List Tile <=================
                   CustomListTile(
                     onTap: () {
@@ -38,6 +86,7 @@ class ProfileScreen extends StatelessWidget {
                     suffixIcon: SvgPicture.asset(AppIcons.rightArrow,
                         color: AppColors.primaryColor),
                   ),
+
 
                   //============================> OwnerShip List Tile <=================
                   CustomListTile(

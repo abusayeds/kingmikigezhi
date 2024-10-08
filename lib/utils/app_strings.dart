@@ -31,7 +31,6 @@ class AppStrings{
   static String confirmPassword = "Confirm Password";
   static String byCreatingAccount = "By creating an account, I accept the";
   static String termsAndConditions = "Terms & Conditions";
-  static String privacyPolicy = "Privacy Policy";
   static String alreadyHaveAccount = "Already have an account?";
 
 //================> Forgot Password Screen <====================
@@ -58,19 +57,32 @@ class AppStrings{
   static String ownership = "Ownership";
   static String memberProfile  = "Member Profile";
   static String myDonate  = "My Donate";
-  static String myEvent  = "My Event";
-  static String settings  = "Settings";
-  static String logout  = "Logout";
+
+
+
   static String editProfile  = "Edit Profile";
   static String updateProfile  = "Update Profile";
   static String areYouSure  = "Are you sure you want to log out ?";
   static String on  = "No";
   static String yes  = "Yes";
 
+  static String account  = "Account";
+  static String myFamily  = "My Family";
+  static String myEvent  = "My Event";
+  static String connection  = "Connection";
+  static String contribution  = "Contribution";
+  static String invitation  = "Invitation";
+  static String settings  = "Settings";
+  static String aboutUs  = "About Us";
+  static String termsConditions  = "Terms & Conditions";
+  static String privacyPolicy = "Privacy Policy";
+  static String logout  = "Logout";
+
+
+
 
 //================> Settings Screen <====================
   static String changePassword = "Change Password";
-  static String aboutUs = "About Us";
   static String oldPassword = "Old password";
   static String reNewPassword = "Re-enter new password";
 
