@@ -50,19 +50,19 @@ class TopProfileCard extends StatelessWidget {
                       decoration: const BoxDecoration(
                           image: DecorationImage(
                               image: NetworkImage(
-                                  'https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg'),
+                                  'https://www.whitehouse.gov/wp-content/uploads/2021/01/44_barack_obama.jpg'),
                               fit: BoxFit.cover)),
                     )
                   : Container(
                       decoration: const BoxDecoration(
                           image: DecorationImage(
                               image: NetworkImage(
-                                  'https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg'),
+                                  'https://www.whitehouse.gov/wp-content/uploads/2021/01/44_barack_obama.jpg'),
                               fit: BoxFit.cover)),
                     )),
           Expanded(
             child: CustomText(
-              text: "Mr. Swapon" ?? "",
+              text: "Mr. Mahafujer" ?? "",
               fontsize: 20.h,
               color: Colors.white,
               fontWeight: FontWeight.w500,
