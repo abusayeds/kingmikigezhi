@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../../utils/app_icons.dart';
 import '../../base/bottom_menu..dart';
@@ -54,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   ];
 
-  DateTime _focusedDay = DateTime(2024, 1, 1);
+  DateTime _focusedDay = DateTime(2025, 1, 1);
   DateTime? _selectedDay;
   CalendarFormat _calendarFormat = CalendarFormat.week;
 
@@ -435,126 +436,89 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+
+
   //========================================> Table Calendar Method <=============================
   _tableCalendar() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // Custom Title Row with Formatted Date and Icons
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(
-              child: TableCalendar(
-                firstDay: DateTime.utc(2020, 10, 16),
-                lastDay: DateTime.utc(2030, 3, 14),
-                focusedDay: _focusedDay,
-                calendarFormat: _calendarFormat,
-                startingDayOfWeek: StartingDayOfWeek.monday,
-                selectedDayPredicate: (day) {
-                  return isSameDay(_selectedDay, day);
-                },
-                onDaySelected: (selectedDay, focusedDay) {
-                  setState(() {
-                    _selectedDay = selectedDay;
-                    _focusedDay = focusedDay;
-                  });
-                },
-                headerStyle: HeaderStyle(
-                  rightChevronIcon: Row(
-                    children: [
-                      /* Container(
-                        //padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 4.h),
-                        decoration: BoxDecoration(
-                          color: AppColors.primaryColor,
-                          borderRadius: BorderRadius.circular(8.r),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 4.h),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton<String>(
-                              value: selectedGender,
-                              dropdownColor: AppColors.fillColor,
-                              menuWidth: 245.w,
-                              borderRadius: BorderRadius.circular(8.r),
-                              hint: Text(
-                                "All",
-                                style: TextStyle(
-                                    fontSize: 18.sp, fontWeight: FontWeight.w500),
-                              ),
-                              icon: SvgPicture.asset(
-                                AppIcons.downArrowIcon,
-                                width: 12.w,
-                                color: AppColors.primaryColor,
-                              ),
-                              isExpanded: true,
-                              items: genderList.map((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(
-                                    value,
-                                    style: const TextStyle(color: Colors.black),
-                                  ),
-                                );
-                              }).toList(),
-                              onChanged: (newValue) {
-                                setState(() {
-                                  selectedGender = newValue;
-                                });
-                              },
-                            ),
-                          ),
-                        ),
-                      ),*/
-                      IconButton(
-                        icon: const Icon(Icons.calendar_month),
-                        onPressed: () {
-                          setState(() {
-                            _calendarFormat =
-                                _calendarFormat == CalendarFormat.week
-                                    ? CalendarFormat.month
-                                    : CalendarFormat.week;
-                          });
-                        },
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.add),
-                        onPressed: () {
-                          _showCustomBottomSheet(context);
-                        },
-                      ),
-                    ],
-                  ),
-                  leftChevronIcon: SizedBox(),
-                  formatButtonVisible: false,
-                  titleCentered: true,
-                ),
-                calendarStyle: CalendarStyle(
-                  todayDecoration: BoxDecoration(
-                    color: AppColors.primaryColor,
-                    shape: BoxShape.circle,
-                  ),
-                  selectedDecoration: BoxDecoration(
-                    color: AppColors.bottomBarColor,
-                    shape: BoxShape.circle,
-                  ),
+            Padding(
+              padding: const EdgeInsets.only(left: 16.0),
+              child: Text(
+                DateFormat('MMMM yyyy').format(_focusedDay),
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
-            /* IconButton(
-              icon: const Icon(Icons.calendar_view_month),
-              onPressed: () {
-                setState(() {
-                  _calendarFormat = _calendarFormat == CalendarFormat.week
-                      ? CalendarFormat.month
-                      : CalendarFormat.week;
-                });
-             },
-            ),*/
+            Row(
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.calendar_month),
+                  onPressed: () {
+                    setState(() {
+                      _calendarFormat = _calendarFormat == CalendarFormat.week
+                          ? CalendarFormat.month
+                          : CalendarFormat.week;
+                    });
+                  },
+                ),
+                IconButton(
+                  icon: const Icon(Icons.add),
+                  onPressed: () {
+                    _showCustomBottomSheet(context);
+                  },
+                ),
+              ],
+            ),
           ],
+        ),
+        // TableCalendar Widget
+        TableCalendar(
+          firstDay: DateTime.utc(2020, 10, 16),
+          lastDay: DateTime.utc(2030, 3, 14),
+          focusedDay: _focusedDay,  // Keep it internally for table behavior
+          calendarFormat: _calendarFormat,
+          startingDayOfWeek: StartingDayOfWeek.monday,
+          selectedDayPredicate: (day) {
+            return isSameDay(_selectedDay, day);
+          },
+          onDaySelected: (selectedDay, focusedDay) {
+            setState(() {
+              _selectedDay = selectedDay;
+              _focusedDay = focusedDay;
+            });
+          },
+          headerStyle: HeaderStyle(
+            rightChevronIcon: const SizedBox(),  // Hide chevrons
+            leftChevronIcon: const SizedBox(),
+            formatButtonVisible: false,  // Hide format button
+            titleCentered: false,  // Disable title centering as custom title is rendered above
+          ),
+          calendarStyle: CalendarStyle(
+            todayDecoration: BoxDecoration(
+              color: AppColors.primaryColor,
+              shape: BoxShape.circle,
+            ),
+            selectedDecoration: BoxDecoration(
+              color: AppColors.bottomBarColor,
+              shape: BoxShape.circle,
+            ),
+            outsideDaysVisible: false,  // Hide outside days if needed
+          ),
         ),
       ],
     );
   }
+
+
+
 
   //========================================> SearchDate Method <============================
   Future<void> searchDate() async {

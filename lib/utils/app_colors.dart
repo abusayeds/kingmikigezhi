@@ -19,6 +19,8 @@ class AppColors{
   static Color dividerColor = const Color(0xFF555555);
   static Color shadowColor = const Color(0xFF2B2A2A);
   static Color bottomBarColor = const Color(0xFF343434);
+  static Color redColor = const Color(0xFFFF6161);
+  static Color notificationBGcolor = const Color(0xFFF4F4F4);
 
   static BoxShadow shadow=BoxShadow(
     blurRadius: 4,

@@ -9,15 +9,17 @@ import '../../utils/app_icons.dart';
 class BottomMenu extends StatelessWidget {
   final int menuIndex;
   const BottomMenu(this.menuIndex, {super.key});
+
   Color colorByIndex(ThemeData theme, int index) {
     return index == menuIndex ? AppColors.white : AppColors.white;
   }
+
   BottomNavigationBarItem getItem(
       String image, String title, ThemeData theme, int index) {
     return BottomNavigationBarItem(
         label: title,
         icon: Padding(
-          padding: const EdgeInsets.only(top: 8),
+          padding: const EdgeInsets.only(top: 4),
           child: SvgPicture.asset(
             image,
             height: 24.0.h,
@@ -26,12 +28,27 @@ class BottomMenu extends StatelessWidget {
         ));
   }
 
+  Widget getAddItem() {
+    return Container(
+      width: 60.w,
+      height: 60.h,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: Colors.white, //
+      ),
+      child: Center(
+        child:Icon(Icons.add,color: AppColors.primaryColor,size: 35,)
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     List<BottomNavigationBarItem> menuItems = [
       getItem(menuIndex == 0 ? AppIcons.selHome : AppIcons.homeIcon, 'Home', theme, 0),
       getItem(menuIndex == 1 ? AppIcons.selCategories : AppIcons.categories, 'Categories', theme, 1),
+      BottomNavigationBarItem(label: '', icon: getAddItem(),),
       getItem(menuIndex == 2 ? AppIcons.selCalendar : AppIcons.calendarOutline, 'Calender', theme, 2),
       getItem(menuIndex == 3 ? AppIcons.selNavProfile : AppIcons.navProfile, 'Profile', theme, 3),
     ];
@@ -39,7 +56,7 @@ class BottomMenu extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
-              topRight: Radius.circular(20.r), topLeft: Radius.circular(20.r)),
+              topRight: Radius.circular(10.r), topLeft: Radius.circular(10.r)),
           color: AppColors.primaryColor,
           boxShadow: const [
             BoxShadow(color: Colors.black38, spreadRadius: 0, blurRadius: 10)
@@ -51,17 +68,23 @@ class BottomMenu extends StatelessWidget {
           backgroundColor: AppColors.primaryColor,
           type: BottomNavigationBarType.fixed,
           selectedItemColor: AppColors.white,
-          unselectedItemColor: AppColors.white,
+          unselectedItemColor: AppColors.bottomBarColor,
           currentIndex: menuIndex,
           onTap: (value) {
             switch (value) {
-              case 0:Get.offAndToNamed(AppRoutes.homeScreen);
+              case 0:
+                Get.offAndToNamed(AppRoutes.homeScreen);
                 break;
-                case 1:Get.offAndToNamed(AppRoutes.categoriesScreen);
+              case 1:
+                Get.offAndToNamed(AppRoutes.categoriesScreen);
                 break;
-                case 2:Get.offAndToNamed(AppRoutes.calenderScreen);
+              case 2:
+                Get.toNamed(AppRoutes.createEventOne);
                 break;
               case 3:
+                Get.offAndToNamed(AppRoutes.calenderScreen);
+                break;
+              case 4:
                 Get.offAndToNamed(AppRoutes.profileScreen);
                 break;
             }
