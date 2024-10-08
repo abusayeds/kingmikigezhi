@@ -96,7 +96,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   SizedBox(height: 24.h),
                   CustomButton(
                     onTap: () {
-                      Get.toNamed(AppRoutes.homeScreen);
+                      Get.toNamed(AppRoutes.createAccountScreen);
                     },
                     text: 'Continue',
                     color: AppColors.buttonColor,

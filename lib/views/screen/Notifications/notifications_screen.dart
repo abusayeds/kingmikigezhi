@@ -35,12 +35,18 @@ class NotificationsScreen extends StatelessWidget {
                 itemCount: 20,
                 itemBuilder: (context, index) {
                   return Padding(
-                    padding: EdgeInsets.only(
-                        bottom: 12.h, top: index == 0 ? 20.h : 0),
-                    child: _Notification(
-                        'Account Setup Successful!',
-                        DateTime.now(),
-                        'Your account creation is successful, you can now experience our services.'),
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: AppColors.notificationBGcolor,
+                      ),
+
+                      child: _notification(
+                          'Account Setup Successful!',
+                          DateTime.now(),
+                          'Your account creation is successful, you can now experience our services.'),
+                    ),
                   );
                 },
               ),
@@ -51,7 +57,7 @@ class NotificationsScreen extends StatelessWidget {
     );
   }
 
-  _Notification(
+  _notification(
     String title,
     DateTime time,
     String shorDescription,
