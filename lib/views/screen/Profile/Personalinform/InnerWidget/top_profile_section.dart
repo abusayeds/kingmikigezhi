@@ -53,7 +53,7 @@ class TopProfileSection extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           CustomText(
-                            text: 'Mr Swapon',
+                            text: 'Mr.Mahafujer',
                             textAlign: TextAlign.start,
                             fontsize: 24.sp,
                             color: Colors.white,

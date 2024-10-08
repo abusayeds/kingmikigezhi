@@ -32,21 +32,21 @@ class PersonalInformationScreen extends StatelessWidget {
               SizedBox(height: 24.h),
               //=================================> Profile Name <==========================
               CustomListTile(
-                  title: 'Mr Swapon'??'',
+                  title: 'Mr Mahafujer'??'',
                   prefixIcon: _prefixIcon(AppIcons.singlePerson)),
               //=================================> Email Name <==========================
               CustomListTile(
-                  title: 'mrswapon15@gmail.com'??'',
+                  title: 'mahafujer@gmail.com'??'',
                   prefixIcon: _prefixIcon(AppIcons.mailIcon)),
               //=================================> Phone Number <========================
               CustomListTile(
-                  title: '+8801610663268'??'',
+                  title: '+8801755460087'??'',
                   prefixIcon: _prefixIcon(
                     AppIcons.phoneIcon,
                   )),
               //=================================> Address Number <========================
               CustomListTile(
-                  title: '05 Banasree Rd. Santa Tower, Rampura 1212 '??'',
+                  title: '05 Banasree Rd. Ulon, Rampura 1212 '??'',
                   prefixIcon: _prefixIcon(
                     AppIcons.locationIcon,
                   )),
