@@ -39,8 +39,13 @@ import '../views/screen/Wallet/wallet_screen.dart';
 class AppRoutes{
 
   static String splashScreen ="/splash_screen";
+
   static String homeScreen ="/home_screen";
+  static String categoriesScreen ="/categories_screen";
+  static String calenderScreen ="/calender_screen";
   static String profileScreen ="/profile_screen";
+
+
   static String walletScreen ="/wallet_screen";
   static String onboardScreen ="/onboarding_screen";
   static String onboardSecondScreen ="/onboard_second_screen";
@@ -50,8 +55,8 @@ class AppRoutes{
   static String forgotPasswordScreen ="/forgot_password_screen";
   static String verificationCodeScreen ="/verification_code_screen";
   static String resetPasswordScreen ="/reset_password_screen";
-  static String categoriesScreen ="/categories_screen";
-  static String calenderScreen ="/calender_screen";
+
+
   static String personalInformationScreen ="/personal_information_screen";
   static String editProfileScreen ="/edit_profile_screen";
   static String memberProfileScreen ="/member_profile_screen";
@@ -74,20 +79,27 @@ class AppRoutes{
   //static String bottomMenu ="/bottom_menu";
 
  static List<GetPage> page=[
-    GetPage(name:splashScreen, page: ()=>const SplashScreen()),
-    GetPage(name:homeScreen, page: ()=>const HomeScreen()),
+   GetPage(name:splashScreen, page: ()=>const SplashScreen()),
+   GetPage(name:homeScreen, page: ()=> HomeScreen(),transition: Transition.noTransition),
+   GetPage(name:categoriesScreen, page: ()=> CategoriesScreen(),transition: Transition.noTransition),
+
+   GetPage(name:createAccountScreen, page: ()=> CreateAccountScreen(),transition: Transition.noTransition ),
+
+   GetPage(name:calenderScreen, page: ()=>const CalenderScreen(),transition: Transition.noTransition ),
+   GetPage(name:profileScreen, page: ()=> ProfileScreen(),transition: Transition.noTransition),
+
+
     GetPage(name:walletScreen, page: ()=>const WalletScreen()),
-    GetPage(name:profileScreen, page: ()=>const ProfileScreen()),
+
     GetPage(name:onboardScreen, page: ()=>const OnboardScreen()),
     GetPage(name:onboardSecondScreen, page: ()=>const OnboardSecondScreen()),
     GetPage(name:signInScreen, page: ()=>const SignInScreen()),
     GetPage(name:signUpScreen, page: ()=>const SignUpScreen()),
-    GetPage(name:createAccountScreen, page: ()=>const CreateAccountScreen()),
+
     GetPage(name:forgotPasswordScreen, page: ()=>const ForgotPasswordScreen()),
     GetPage(name:verificationCodeScreen, page: ()=>const VerificationCodeScreen()),
     GetPage(name:resetPasswordScreen, page: ()=>const ResetPasswordScreen()),
-    GetPage(name:categoriesScreen, page: ()=> CategoriesScreen()),
-    GetPage(name:calenderScreen, page: ()=>const CalenderScreen()),
+
     GetPage(name:personalInformationScreen, page: ()=>const PersonalInformationScreen()),
     GetPage(name:editProfileScreen, page: ()=>const EditProfileScreen()),
     GetPage(name:memberProfileScreen, page: ()=>const MemberProfileScreen()),
@@ -101,7 +113,7 @@ class AppRoutes{
     GetPage(name:searchEventScreen, page: ()=> SearchEventScreen()),
     GetPage(name:notificationsScreen, page: ()=> NotificationsScreen()),
     GetPage(name:filterScreen, page: ()=> FilterScreen()),
-    GetPage(name:myEventScreen, page: ()=> MyEventScreen()),
+    GetPage(name:myEventScreen, page: ()=> MyEventScreen(),transition: Transition.noTransition),
     GetPage(name:createEventOne, page: ()=> CreateEventOne()),
     GetPage(name:createEventTwo, page: ()=> CreateEventTwo()),
     GetPage(name:inviteEventScreen, page: ()=> InviteEventScreen()),
