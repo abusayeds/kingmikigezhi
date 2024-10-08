@@ -16,7 +16,7 @@ import '../../base/custom_text_field.dart';
 import '../../base/event_card.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
