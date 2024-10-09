@@ -60,7 +60,8 @@ class AppStrings{
 
 
 
-  static String editProfile  = "Edit Profile";
+  static String editProfile  = "Edit Account";
+  static String createProfile  = "Create Member Account";
   static String updateProfile  = "Update Profile";
   static String areYouSure  = "Are you sure you want to log out ?";
   static String on  = "No";
@@ -132,6 +133,10 @@ class AppStrings{
   //================>  Ownership list Screen <====================
   static String  ownershipList   = " Ownership List";
   static String  addOwnership   = " Add Ownership";
+
+
+  //================>  Account Screen <====================
+  static String  phoneNumberHintText   = "Enter  phone number";
 
 
 }
