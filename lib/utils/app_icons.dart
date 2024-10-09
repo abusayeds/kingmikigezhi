@@ -7,7 +7,7 @@ class AppIcons{
   static String notificationIcon="$baseUrl/bell.svg";
   static String calendarIcon="$baseUrl/calendar.svg";
   static String downArrowIcon="$baseUrl/chevron-down.svg";
-  static String myEventIcon="$baseUrl/clipboard-list.svg";
+
   static String timeIcon="$baseUrl/clock.svg";
   static String settingsIcon="$baseUrl/settings.svg";
   static String termsIcon="$baseUrl/exclamation.svg";
@@ -24,7 +24,7 @@ class AppIcons{
   static String personIcon="$baseUrl/profile_icon.svg";
   static String privacyIcon="$baseUrl/shield-check.svg";
   static String singlePerson="$baseUrl/user.svg";
-  static String memberProfileIcon="$baseUrl/user-group.svg";
+
   static String ownershipIcon="$baseUrl/users.svg";
   static String eyeOffIcon="$baseUrl/eye-off.svg";
   static String categories="$baseUrl/categories.svg";
@@ -42,8 +42,20 @@ class AppIcons{
   static String delete="$baseUrl/delete.svg";
   static String heart="$baseUrl/heart.svg";
   static String search="$baseUrl/search.svg";
-  static String share="$baseUrl/share.svg";
 
+
+
+  static String accountIcon = "$baseUrl/user.svg";
+  static String myEventIcon = "$baseUrl/clipboard-list.svg";
+  static String connectionIcon ="$baseUrl/user-group.svg";
+  static String contribution ="$baseUrl/contribution.svg";
+  static String share = "$baseUrl/share.svg";
+  static String documentIcon ="$baseUrl/document.svg";
+  static String shieldIcon ="$baseUrl/shield-check.svg";
+  static String editIcon ="$baseUrl/editIcon.svg";
+  static String keyIcon ="$baseUrl/key.svg";
+  static String trashIcon ="$baseUrl/trash.svg";
+  static String dotIconForFamily ="$baseUrl/doticonforfamily.svg";
 
 
 }

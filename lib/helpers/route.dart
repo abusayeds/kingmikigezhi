@@ -1,5 +1,7 @@
+import 'package:event_sharing/views/screen/Profile/Account/personal_information_screen.dart';
+import 'package:event_sharing/views/screen/Profile/MyFamily/createMember_profile.dart';
+import 'package:event_sharing/views/screen/Profile/MyFamily/my_family.dart';
 import 'package:get/get.dart';
-import '../views/base/bottom_menu..dart';
 import '../views/screen/Auth/CreateAccount/create_account_screen.dart';
 import '../views/screen/Auth/ForgotPass/forgot_password_screen.dart';
 import '../views/screen/Auth/ResetPass/reset_password_screen.dart';
@@ -22,12 +24,9 @@ import '../views/screen/Onboard/onboard_second_screen.dart';
 import '../views/screen/OwnerShip/ownership_screen.dart';
 import '../views/screen/Profile/EditProfile/edit_profile_screen.dart';
 import '../views/screen/Profile/MemberProfile/member_profile_screen.dart';
-import '../views/screen/Profile/Personalinform/personal_information_screen.dart';
-import '../views/screen/Profile/profileScreen/profile_screen.dart';
+import '../views/screen/Profile/profile_screen.dart';
 import '../views/screen/SearchEvent/search_event_screen.dart';
 import '../views/screen/Settings/AboutUs/aboutus_screen.dart';
-import '../views/screen/Settings/ChangePass/change_password.dart';
-import '../views/screen/Settings/ChangePass/change_password.dart';
 import '../views/screen/Settings/ChangePass/change_password.dart';
 import '../views/screen/Settings/PrivacyPolicy/privacy_policy_screen.dart';
 import '../views/screen/Settings/TermsConditions/terms_condition_screen.dart';
@@ -78,6 +77,10 @@ class AppRoutes{
   static String mapScreen ="/map_screen";
   //static String bottomMenu ="/bottom_menu";
 
+  static String myFamilyScreen ="/my_family_screen";
+  static String createMemberProfileScreen ="/CreateMemberProfileScreen";
+
+
  static List<GetPage> page=[
    GetPage(name:splashScreen, page: ()=>const SplashScreen()),
    GetPage(name:homeScreen, page: ()=> HomeScreen(),transition: Transition.noTransition),
@@ -100,7 +103,7 @@ class AppRoutes{
     GetPage(name:verificationCodeScreen, page: ()=>const VerificationCodeScreen()),
     GetPage(name:resetPasswordScreen, page: ()=>const ResetPasswordScreen()),
 
-    GetPage(name:personalInformationScreen, page: ()=>const PersonalInformationScreen()),
+    GetPage(name:personalInformationScreen, page: ()=> PersonalInformationScreen()),
     GetPage(name:editProfileScreen, page: ()=>const EditProfileScreen()),
     GetPage(name:memberProfileScreen, page: ()=>const MemberProfileScreen()),
     GetPage(name:settingsScreen, page: ()=>const SettingsScreen()),
@@ -120,6 +123,10 @@ class AppRoutes{
     GetPage(name:ownershipScreen, page: ()=> OwnershipScreen()),
     GetPage(name:mapScreen, page: ()=> MapScreen()),
     //GetPage(name:bottomMenu, page: ()=> BottomMenu()),
+
+   //==============================>>>> Profile section <<<<< ============
+   GetPage(name:myFamilyScreen, page: ()=> MyFamilyScreen()),
+   GetPage(name:createMemberProfileScreen, page: ()=> CreateMemberProfileScreen()),
 
   ];
 }

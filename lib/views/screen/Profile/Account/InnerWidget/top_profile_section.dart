@@ -1,10 +1,10 @@
 import 'package:event_sharing/helpers/route.dart';
+import 'package:event_sharing/utils/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import '../../../../../utils/app_colors.dart';
-import '../../../../../utils/app_icons.dart';
 import '../../../../base/custom_text.dart';
 
 class TopProfileSection extends StatelessWidget {
@@ -39,44 +39,39 @@ class TopProfileSection extends StatelessWidget {
                             Radius.circular(5.r),
                           ),
                           shape: BoxShape.rectangle,
-                          border: Border.all(width: 2.w, color: AppColors.white)),
+                          border: Border.all(width: 2.w, color: AppColors.primaryColor)),
                       child: Image.network(
                         'https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg',
                         fit: BoxFit.cover,
                       ),
                     ),
-                    SizedBox(width: 8.w),
-
+                    SizedBox(width: 8),
                     //=================================> Profile Name <==========================
                     Expanded(
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           CustomText(
                             text: 'Mr.Mahafujer',
                             textAlign: TextAlign.start,
-                            fontsize: 24.sp,
+                            fontsize: 20.sp,
                             color: Colors.white,
                           ),
-                          SizedBox(height: 16.h),
                           //==========================> Edit Profile Button <==============================
-                          GestureDetector(
-                            onTap: (){
-                              Get.toNamed(AppRoutes.editProfileScreen);
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(10.w)),
-                                border: Border.all(width: 2.w, color: Colors.white),
-                              ),
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-                                child: CustomText(
-                                  text: 'Edit Profile',
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
+                          Row(
+                            children: [
+                              InkWell(
+                                  onTap:(){
+                                    Get.toNamed(AppRoutes.editProfileScreen);
+                                    },
+                                  child: SvgPicture.asset(AppIcons.editIcon,color: Colors.white)),
+                              SizedBox(width: 8),
+                              InkWell(
+                                  onTap:(){
+                                    Get.toNamed(AppRoutes.changePasswordScreen);
+                                    },
+                                  child: SvgPicture.asset(AppIcons.keyIcon,color: Colors.white)),
+                            ],
                           )
                         ],
                       ),

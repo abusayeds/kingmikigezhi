@@ -1,10 +1,10 @@
+import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import '../../../../../utils/app_colors.dart';
 import '../../../../../utils/app_images.dart';
 import '../../../../../utils/app_strings.dart';
-import '../../../../base/custom_text.dart';
+
 
 class TopProfileCard extends StatelessWidget {
   final String? profileName;

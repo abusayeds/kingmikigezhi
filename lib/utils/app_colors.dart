@@ -21,6 +21,9 @@ class AppColors{
   static Color bottomBarColor = const Color(0xFF343434);
   static Color redColor = const Color(0xFFFF6161);
   static Color notificationBGcolor = const Color(0xFFF4F4F4);
+  static Color colorEDF2F4 = const Color(0xFFEDF2F4);
+
+  static Color colorD9A951 = const Color(0xFFD9A951);
 
   static BoxShadow shadow=BoxShadow(
     blurRadius: 4,

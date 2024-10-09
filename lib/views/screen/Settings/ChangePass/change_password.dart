@@ -125,6 +125,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     SizedBox(height: 367.h),
                     //===============================> Change Password Button <===============================
                     CustomButton(
+                      color: AppColors.buttonColor,
                       textColor: Colors.white ,
                         text: AppStrings.changePassword,
                         onTap: () {
