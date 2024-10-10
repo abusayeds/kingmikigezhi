@@ -1,3 +1,9 @@
+import 'package:event_sharing/helpers/route.dart';
+import 'package:event_sharing/utils/app_colors.dart';
+import 'package:event_sharing/utils/app_icons.dart';
+import 'package:event_sharing/utils/app_strings.dart';
+import 'package:event_sharing/utils/style.dart';
+import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:event_sharing/views/base/custom_text_field.dart';
 
 import 'package:flutter/material.dart';
@@ -5,21 +11,29 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
-import '../../../../helpers/route.dart';
-import '../../../../utils/app_colors.dart';
-import '../../../../utils/app_icons.dart';
-import '../../../base/custom_text.dart';
 
-class MyHistoryEventScreen extends StatefulWidget {
-  MyHistoryEventScreen({super.key});
+class AppliedSearchScreen extends StatefulWidget {
+  AppliedSearchScreen({super.key});
 
   @override
-  State<MyHistoryEventScreen> createState() => _MyHistoryEventScreenState();
+  State<AppliedSearchScreen> createState() => _AppliedSearchScreenState();
 }
 
-class _MyHistoryEventScreenState extends State<MyHistoryEventScreen> {
+class _AppliedSearchScreenState extends State<AppliedSearchScreen> {
   final List<Map<String, String>> events = [
 
+    {
+      "imageUrl": "assets/images/music.png",
+      "title": "Bangla Music",
+      "location": "Dhaka, Bangladesh",
+      "time": "10:00 AM",
+    },
+    {
+      "imageUrl": "assets/images/music.png",
+      "title": "Bangla Music",
+      "location": "Dhaka, Bangladesh",
+      "time": "10:00 AM",
+    },
     {
       "imageUrl": "assets/images/music.png",
       "title": "Bangla Music",
@@ -38,6 +52,13 @@ class _MyHistoryEventScreenState extends State<MyHistoryEventScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+          title: CustomText(
+            text: AppStrings.appliedEvent,
+            fontsize: 18.sp,
+            fontWeight: FontWeight.w500,
+          ),
+          centerTitle: true),
       body: Padding(
         padding:  EdgeInsets.symmetric(horizontal: 24.w,vertical: 10),
         child: Column(
@@ -45,6 +66,32 @@ class _MyHistoryEventScreenState extends State<MyHistoryEventScreen> {
             //==============================> Create Event Button <=======================
             _searchBar(),
             SizedBox(height: 16.h),
+            Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Total Event :',style: AppStyles.h4(fontWeight: FontWeight.w600)),
+                        Text('500'),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Total Cost :',style: AppStyles.h4(fontWeight: FontWeight.w600)),
+                        Text('200'),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
             //=================================> Event List view <========================
             Expanded(
               child: ListView.builder(
@@ -190,7 +237,7 @@ class _MyHistoryEventScreenState extends State<MyHistoryEventScreen> {
             controller: _searchController,
             contenpaddingHorizontal: 12.w,
             contenpaddingVertical: 12.h,
-            hintText: "Search",
+            hintText: "Search Event",
             sufixicons: Padding(
               padding: EdgeInsets.symmetric(horizontal: 8.w),
               child: SvgPicture.asset(

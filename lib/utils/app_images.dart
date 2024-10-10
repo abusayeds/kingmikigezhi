@@ -10,4 +10,6 @@ class AppImages{
   static String logoCard="$baseUrl/logoCard.png";
   static String upcoming="$baseUrl/upcoming.png";
 
+  static String errorPageImage = "$baseUrl/errorpage.png";
+
 }
