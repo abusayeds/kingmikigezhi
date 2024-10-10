@@ -21,10 +21,7 @@ class CreateMemberProfileScreen extends StatefulWidget {
 }
 
 class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
-  final _nameController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _phoneNumberController = TextEditingController();
-  final _addressController = TextEditingController();
+
   var parameter = Get.parameters;
   Uint8List? _image;
   File? selectedIMage;
@@ -37,6 +34,19 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
   final TextEditingController locationStateController = TextEditingController();
   final TextEditingController locationCityController = TextEditingController();
   final TextEditingController phoneNumberController = TextEditingController();
+
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confrimPasswordController = TextEditingController();
+
+
+  final TextEditingController accountIdController = TextEditingController();
+  final TextEditingController fullNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
+
+  final TextEditingController relationShipController = TextEditingController();
+  final TextEditingController addressController = TextEditingController();
+
 
   String selectedCountryCodes = '+880';
 
@@ -105,7 +115,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                         style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   ),
                   CustomTextField(
-                    controller: _nameController,
+                    controller: relationShipController,
                     hintText: 'Child',
                   ),
                   Padding(
@@ -114,7 +124,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                         style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   ),
                   CustomTextField(
-                    controller: _nameController,
+                    controller: accountIdController,
                     hintText: '20103200',
                   ),
                   Padding(
@@ -123,7 +133,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                         style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   ),
                   CustomTextField(
-                    controller: _nameController,
+                    controller: fullNameController,
                     hintText: 'Mahafujer',
                   ),
                   Padding(
@@ -132,7 +142,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                         style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   ),
                   CustomTextField(
-                    controller: _emailController,
+                    controller: lastNameController,
                     hintText: 'Rahman',
                   ),
                   Padding(
@@ -141,7 +151,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                         style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   ),
                   CustomTextField(
-                    controller: _addressController,
+                    controller: addressController,
                     hintText: 'Public',
                   ),
                   Padding(
@@ -150,7 +160,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                         style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   ),
                   CustomTextField(
-                    controller: _addressController,
+                    controller: addressController,
                     hintText: 'Male',
                   ),
                   Padding(
@@ -215,7 +225,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                   ),
                   CustomTextField(
                     keyboardType: TextInputType.text,
-                    controller: _emailController,
+                    controller: emailController,
                     hintText: 'Rahman@gmail.com',
                     prifixicon: _prefixIcon(AppIcons.mailIcon),
                   ),
@@ -597,7 +607,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                           ),
                           CustomTextField(
                             keyboardType: TextInputType.text,
-                            controller: _emailController,
+                            controller: emailController,
                             hintText: 'Type User Name',
                             prifixicon: _prefixIcon(AppIcons.mailIcon),
                           ),
@@ -607,7 +617,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                           ),
                           CustomTextField(
-                            controller: _emailController,
+                            controller: passwordController,
                             hintText: AppStrings.setNewPassword,
                             isPassword: true,
                             prifixicon: Padding(
@@ -630,7 +640,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                           ),
                           CustomTextField(
-                            controller: _emailController,
+                            controller: confrimPasswordController,
                             hintText: AppStrings.confirmpasswords,
                             isPassword: true,
                             prifixicon: Padding(
