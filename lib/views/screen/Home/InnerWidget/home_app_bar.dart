@@ -75,11 +75,11 @@ class HomeAppBar extends StatelessWidget {
         //=======================> Heart Button <=======================
         GestureDetector(
           onTap: () {
-            //Get.toNamed(AppRoutes.notificationsScreen);
+            Get.toNamed(AppRoutes.suggestionDonationPage);
           },
           child: SvgPicture.asset(
             AppIcons.heart,
-            color: AppColors.primaryColor,
+            color: AppColors.colorD9A951,
             height: 28.h,
             width: 32.w,
           ),

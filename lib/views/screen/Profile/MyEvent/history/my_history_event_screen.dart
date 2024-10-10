@@ -5,33 +5,21 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
-import '../../../../helpers/route.dart';
-import '../../../../utils/app_colors.dart';
-import '../../../../utils/app_icons.dart';
-import '../../../base/custom_text.dart';
+import '../../../../../helpers/route.dart';
+import '../../../../../utils/app_colors.dart';
+import '../../../../../utils/app_icons.dart';
+import '../../../../base/custom_text.dart';
 
-class MyUpcomingEventScreen extends StatefulWidget {
-  MyUpcomingEventScreen({super.key});
+class MyHistoryEventScreen extends StatefulWidget {
+  MyHistoryEventScreen({super.key});
 
   @override
-  State<MyUpcomingEventScreen> createState() => _MyUpcomingEventScreenState();
+  State<MyHistoryEventScreen> createState() => _MyHistoryEventScreenState();
 }
 
-class _MyUpcomingEventScreenState extends State<MyUpcomingEventScreen> {
+class _MyHistoryEventScreenState extends State<MyHistoryEventScreen> {
   final List<Map<String, String>> events = [
 
-    {
-      "imageUrl": "assets/images/music.png",
-      "title": "Bangla Music",
-      "location": "Dhaka, Bangladesh",
-      "time": "10:00 AM",
-    },
-    {
-      "imageUrl": "assets/images/music.png",
-      "title": "Bangla Music",
-      "location": "Dhaka, Bangladesh",
-      "time": "10:00 AM",
-    },
     {
       "imageUrl": "assets/images/music.png",
       "title": "Bangla Music",

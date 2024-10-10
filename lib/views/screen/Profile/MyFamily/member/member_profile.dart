@@ -126,7 +126,7 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                         ),
                         trailing: InkWell(
                           onTap: () {
-                         // Get.toNamed(AppRoutes.createMemberProfileScreen);
+                            _showViewModeBottomSheet(context);
                           },
                           child: Icon(Icons.more_horiz, color: AppColors.greyColor),
                         ),
@@ -223,4 +223,91 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
   }
 
 
+  //profile view
+  void _showViewModeBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(20.r),
+        ),
+      ),
+      builder: (BuildContext context) {
+        return Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20.r),
+              topRight: Radius.circular(20.r),
+            ),
+            color: AppColors.backgroundColor,
+          ),
+          height: 265,
+          padding: EdgeInsets.all(16),
+          child: Column(
+            children: [
+              SizedBox(height: 20.h),
+              Divider(thickness: 1, color: AppColors.greyColor),
+              SizedBox(height: 20.h),
+              Text(
+                "What you want?",
+                style: AppStyles.h3(color: AppColors.borderColor),
+              ),
+              SizedBox(height: 20.h),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Get.toNamed(AppRoutes.memberProfileDetailsScreen);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(double.infinity, 58),
+                        backgroundColor: AppColors.primaryColor,
+                        side: BorderSide(width: 1, color: AppColors.greyColor),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          SvgPicture.asset(AppIcons.eyeIcon, width: 24.w,height:24.h,color: AppColors.backgroundColor),
+                          SizedBox(width: 4.w),
+                          Text(
+                            'View Profile',
+                            style: AppStyles.h4(color: AppColors.backgroundColor),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 16.w),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(double.infinity, 62),
+                        backgroundColor: AppColors.primaryColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(100.r),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          SvgPicture.asset(AppIcons.delete, width: 24.w,height:24.h),
+                          Text(
+                            'Delete Profile',
+                            style: AppStyles.h4(color: AppColors.backgroundColor),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 }

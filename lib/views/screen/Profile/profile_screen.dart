@@ -122,7 +122,16 @@ class ProfileScreen extends StatelessWidget {
                     },
                     title:AppStrings.logout,
                     prefixIcon: SvgPicture.asset(AppIcons.logOutIcon, color: AppColors.primaryColor),
-                    suffixIcon: SvgPicture.asset(AppIcons.rightArrow,color: AppColors.primaryColor),),
+                    suffixIcon: SvgPicture.asset(AppIcons.rightArrow,color: AppColors.primaryColor),
+                  ),
+                  ProfileListTile(
+                    onTap: () {
+                      Get.toNamed(AppRoutes.errorScreen);
+                    },
+                    title: 'Error Page',
+                    prefixIcon: Icon(Icons.error_rounded,color: AppColors.primaryColor),
+                    suffixIcon: SvgPicture.asset(AppIcons.rightArrow,color: AppColors.primaryColor),
+                  ),
                 ],
               ),
             ),
