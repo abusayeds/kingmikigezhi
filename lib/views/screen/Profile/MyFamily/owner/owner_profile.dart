@@ -98,11 +98,10 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
                     ),
                     direction: DismissDirection.endToStart,
                     confirmDismiss: (direction) async {
-                      // Show the bottom sheet for confirmation
+
                       final bool? result = await _showCustomBottomSheet(context, member['name']!);
-                      // Set the flag based on user confirmation
                       shouldRemove = result ?? false;
-                      return shouldRemove; // Return the value to allow or prevent dismissal
+                      return shouldRemove;
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -117,16 +116,27 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
                         ),
                         title: Text(member['name']!,
                             style: TextStyle(fontWeight: FontWeight.bold)),
-                        subtitle: Row(
+                        subtitle: Column(
                           children: [
-                            SvgPicture.asset(AppIcons.dotIconForFamily),
-                            SizedBox(width: 4),
-                            Text(member['relation']!),
+                            Row(
+                              children: [
+                                SvgPicture.asset(AppIcons.dotIconForFamily),
+                                SizedBox(width: 4),
+                                Text(member['relation']!,style: TextStyle(fontSize: 10),),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                SvgPicture.asset(AppIcons.dotIconForFamily),
+                                SizedBox(width: 4),
+                                Text('Email: Abc@gmail.com',style: TextStyle(fontSize: 10),),
+                              ],
+                            ),
                           ],
                         ),
                         trailing: InkWell(
                           onTap: () {
-                            // _showCustomBottomSheet(context, member['name']!, () {});
+                            _showViewModeBottomSheet(context);
                           },
                           child: Icon(Icons.more_horiz, color: AppColors.greyColor),
                         ),
@@ -211,6 +221,95 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
                       ),
                       child: Text('Yes',
                         style: AppStyles.h4(color: AppColors.backgroundColor),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  //profile view
+  void _showViewModeBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(20.r),
+        ),
+      ),
+      builder: (BuildContext context) {
+        return Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20.r),
+              topRight: Radius.circular(20.r),
+            ),
+            color: AppColors.backgroundColor,
+          ),
+          height: 265,
+          padding: EdgeInsets.all(16),
+          child: Column(
+            children: [
+              SizedBox(height: 20.h),
+              Divider(thickness: 1, color: AppColors.greyColor),
+              SizedBox(height: 20.h),
+              Text(
+                "What you want?",
+                style: AppStyles.h3(color: AppColors.borderColor),
+              ),
+              SizedBox(height: 20.h),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Get.toNamed(AppRoutes.ownerProfileDetailsScreen);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(double.infinity, 58),
+                        backgroundColor: AppColors.primaryColor,
+                        side: BorderSide(width: 1, color: AppColors.greyColor),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          SvgPicture.asset(AppIcons.eyeIcon, width: 24.w,height:24.h,color: AppColors.backgroundColor),
+                          SizedBox(width: 4.w),
+                          Text(
+                            'View Profile',
+                            style: AppStyles.h4(color: AppColors.backgroundColor),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 10.w),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                      },
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(double.infinity, 58),
+                        backgroundColor: AppColors.primaryColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(100.r),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          SvgPicture.asset(AppIcons.delete, width: 24.w,height:24.h),
+                          Text(
+                            'Delete Profile',
+                            style: AppStyles.h4(color: AppColors.backgroundColor),
+                          ),
+                        ],
                       ),
                     ),
                   ),

@@ -56,6 +56,7 @@ class AppStrings{
   static String personalInformation = "Personal Information";
   static String ownership = "Ownership";
   static String memberProfile  = "Member Profile";
+  static String ownerProfile  = "Owner Profile";
   static String myDonate  = "My Donate";
 
 
@@ -100,6 +101,7 @@ class AppStrings{
   static String startTime = "Start Time";
   static String endTime = "End Time";
   static String filter = "Filter";
+  static String appliedEvent = "Applied Event";
 
   //================> Create New Event Screen <====================
   static String createNewEvent = "Create New Event";

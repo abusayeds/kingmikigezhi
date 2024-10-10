@@ -1,5 +1,7 @@
 import 'package:event_sharing/views/screen/Event/create_event_one.dart';
 import 'package:event_sharing/views/screen/Event/create_event_two.dart';
+import 'package:event_sharing/views/screen/Home/Donet/suggest_donation_screen.dart';
+import 'package:event_sharing/views/screen/Home/Donet/suggestion_screen.dart';
 import 'package:event_sharing/views/screen/Profile/AboutUs/aboutus_screen.dart';
 import 'package:event_sharing/views/screen/Profile/Account/personal_information_screen.dart';
 import 'package:event_sharing/views/screen/Profile/Connection/my_connection_screen.dart';
@@ -7,12 +9,17 @@ import 'package:event_sharing/views/screen/Profile/Contribution/contribution_fil
 import 'package:event_sharing/views/screen/Profile/Contribution/contribution_screen.dart';
 import 'package:event_sharing/views/screen/Profile/Invitation/my_invitation_screen.dart';
 import 'package:event_sharing/views/screen/Profile/Invitation/share_invitation_screen.dart';
+import 'package:event_sharing/views/screen/Profile/MyEvent/applied_search_screen.dart';
 import 'package:event_sharing/views/screen/Profile/MyEvent/my_event_filter_screen.dart';
 import 'package:event_sharing/views/screen/Profile/MyEvent/myevent_screen.dart';
 import 'package:event_sharing/views/screen/Profile/MyFamily/createMember_profile.dart';
+import 'package:event_sharing/views/screen/Profile/MyFamily/member/member_profile_details_screen.dart';
+import 'package:event_sharing/views/screen/Profile/MyFamily/owner/owner_profile_details_screen.dart';
 import 'package:event_sharing/views/screen/Profile/MyFamily/my_family_screen.dart';
 import 'package:event_sharing/views/screen/Profile/PrivacyPolicy/privacy_policy_screen.dart';
+import 'package:event_sharing/views/screen/Profile/Settings/SettingsScreen/settings_screen.dart';
 import 'package:event_sharing/views/screen/Profile/TermsConditions/terms_condition_screen.dart';
+import 'package:event_sharing/views/screen/Profile/error_screen.dart';
 import 'package:get/get.dart';
 import '../views/screen/Auth/CreateAccount/create_account_screen.dart';
 import '../views/screen/Auth/ForgotPass/forgot_password_screen.dart';
@@ -27,7 +34,7 @@ import '../views/screen/DetailsEvent/details_event_screen.dart';
 import '../views/screen/Home/home_screen.dart';
 import '../views/screen/InviteEvent/invite_event_screen.dart';
 import '../views/screen/MapScreen/map_screen.dart';
-import '../views/screen/Profile/MyEvent/my_today_event_screen.dart';
+import '../views/screen/Profile/MyEvent/today/my_today_event_screen.dart';
 import '../views/screen/Notifications/notifications_screen.dart';
 import '../views/screen/Onboard/onboard_screen.dart';
 import '../views/screen/Onboard/onboard_second_screen.dart';
@@ -36,8 +43,7 @@ import '../views/screen/Profile/EditProfile/edit_profile_screen.dart';
 import '../views/screen/Profile/MemberProfile/member_profile_screen.dart';
 import '../views/screen/Profile/profile_screen.dart';
 import '../views/screen/SearchEvent/search_event_screen.dart';
-import '../views/screen/Settings/ChangePass/change_password.dart';
-import '../views/screen/Settings/settingsScreen/settings_screen.dart';
+import '../views/screen/Profile/ChangePass/change_password.dart';
 import '../views/screen/Splash/splash_screen.dart';
 import '../views/screen/UpComingEvent/upcoming_event_screen.dart';
 import '../views/screen/Wallet/wallet_screen.dart';
@@ -94,6 +100,12 @@ class AppRoutes{
   static String contributionFilterScreen = "/contributionFilterScreen";
   static String myInvitationPage = "/MyInvitationPage";
   static String shareInvitationPage = "/share_Invitation_Page";
+  static String errorScreen = "/errorScreen";
+  static String memberProfileDetailsScreen = "/memberProfileDetailsScreen";
+  static String ownerProfileDetailsScreen = "/OwnerProfileDetailsScreen";
+  static String appliedSearchScreen = "/appliedSearch_Screen";
+  static String suggestionDonationPage = "/suggestion_donation_page";
+  static String suggestionScreen = "/SuggestionScreen";
 
 //======================>>>> List PAge
  static List<GetPage> page=[
@@ -121,7 +133,7 @@ class AppRoutes{
     GetPage(name:personalInformationScreen, page: ()=> PersonalInformationScreen()),
     GetPage(name:editProfileScreen, page: ()=>const EditProfileScreen()),
     GetPage(name:memberProfileScreen, page: ()=>const MemberProfileScreen()),
-    GetPage(name:settingsScreen, page: ()=>const SettingsScreen()),
+    GetPage(name:settingsScreen, page: ()=> SettingsScreen()),
     GetPage(name:changePasswordScreen, page: ()=>const ChangePasswordScreen()),
     GetPage(name:privacyPolicyScreen, page: ()=> PrivacyPolicyScreen()),
     GetPage(name:termsConditionScreen, page: ()=> TermsConditionScreen()),
@@ -151,6 +163,16 @@ class AppRoutes{
    GetPage(name:contributionFilterScreen, page: ()=> ContributionFilterScreen()),
    GetPage(name: myInvitationPage, page: ()=> MyInvitationPage()),
    GetPage(name: shareInvitationPage, page: ()=> ShareInvitationPage()),
+   GetPage(name: errorScreen, page: ()=> ErrorScreen()),
+
+   GetPage(name: memberProfileDetailsScreen, page: ()=> MemberProfileDetailsScreen()),
+   GetPage(name: ownerProfileDetailsScreen, page: ()=> OwnerProfileDetailsScreen()),
+   GetPage(name: appliedSearchScreen, page: ()=> AppliedSearchScreen()),
+
+
+   //home
+   GetPage(name: suggestionDonationPage, page: ()=> SuggestionDonationPage()),
+   GetPage(name: suggestionScreen, page: ()=> SuggestionScreen()),
 
   ];
 }
