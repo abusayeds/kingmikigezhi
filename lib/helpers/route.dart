@@ -1,6 +1,18 @@
+import 'package:event_sharing/views/screen/Event/create_event_one.dart';
+import 'package:event_sharing/views/screen/Event/create_event_two.dart';
+import 'package:event_sharing/views/screen/Profile/AboutUs/aboutus_screen.dart';
 import 'package:event_sharing/views/screen/Profile/Account/personal_information_screen.dart';
+import 'package:event_sharing/views/screen/Profile/Connection/my_connection_screen.dart';
+import 'package:event_sharing/views/screen/Profile/Contribution/contribution_filter_screen.dart';
+import 'package:event_sharing/views/screen/Profile/Contribution/contribution_screen.dart';
+import 'package:event_sharing/views/screen/Profile/Invitation/my_invitation_screen.dart';
+import 'package:event_sharing/views/screen/Profile/Invitation/share_invitation_screen.dart';
+import 'package:event_sharing/views/screen/Profile/MyEvent/my_event_filter_screen.dart';
+import 'package:event_sharing/views/screen/Profile/MyEvent/myevent_screen.dart';
 import 'package:event_sharing/views/screen/Profile/MyFamily/createMember_profile.dart';
-import 'package:event_sharing/views/screen/Profile/MyFamily/my_family.dart';
+import 'package:event_sharing/views/screen/Profile/MyFamily/my_family_screen.dart';
+import 'package:event_sharing/views/screen/Profile/PrivacyPolicy/privacy_policy_screen.dart';
+import 'package:event_sharing/views/screen/Profile/TermsConditions/terms_condition_screen.dart';
 import 'package:get/get.dart';
 import '../views/screen/Auth/CreateAccount/create_account_screen.dart';
 import '../views/screen/Auth/ForgotPass/forgot_password_screen.dart';
@@ -15,9 +27,7 @@ import '../views/screen/DetailsEvent/details_event_screen.dart';
 import '../views/screen/Home/home_screen.dart';
 import '../views/screen/InviteEvent/invite_event_screen.dart';
 import '../views/screen/MapScreen/map_screen.dart';
-import '../views/screen/MyEvent/create_event_one.dart';
-import '../views/screen/MyEvent/create_event_two.dart';
-import '../views/screen/MyEvent/my_event_screen.dart';
+import '../views/screen/Profile/MyEvent/my_today_event_screen.dart';
 import '../views/screen/Notifications/notifications_screen.dart';
 import '../views/screen/Onboard/onboard_screen.dart';
 import '../views/screen/Onboard/onboard_second_screen.dart';
@@ -26,10 +36,7 @@ import '../views/screen/Profile/EditProfile/edit_profile_screen.dart';
 import '../views/screen/Profile/MemberProfile/member_profile_screen.dart';
 import '../views/screen/Profile/profile_screen.dart';
 import '../views/screen/SearchEvent/search_event_screen.dart';
-import '../views/screen/Settings/AboutUs/aboutus_screen.dart';
 import '../views/screen/Settings/ChangePass/change_password.dart';
-import '../views/screen/Settings/PrivacyPolicy/privacy_policy_screen.dart';
-import '../views/screen/Settings/TermsConditions/terms_condition_screen.dart';
 import '../views/screen/Settings/settingsScreen/settings_screen.dart';
 import '../views/screen/Splash/splash_screen.dart';
 import '../views/screen/UpComingEvent/upcoming_event_screen.dart';
@@ -69,7 +76,7 @@ class AppRoutes{
   static String searchEventScreen ="/search_event_screen";
   static String notificationsScreen ="/notifications_screen";
   static String filterScreen ="/filter_screen";
-  static String myEventScreen ="/my_event_screen";
+
   static String createEventOne ="/create_event_one";
   static String createEventTwo ="/create_event_two";
   static String inviteEventScreen ="/invite_event_screen";
@@ -79,8 +86,16 @@ class AppRoutes{
 
   static String myFamilyScreen ="/my_family_screen";
   static String createMemberProfileScreen ="/CreateMemberProfileScreen";
+  static String myEventScreen ="/myEventScreen";
+  static String myTodayEventScreen ="/MyTodayEventScreen";
+  static String myEventFilterScreen ="/myEventFilterScreen";
+  static String myConnectionScreen = "/myConnectionScreen";
+  static String myContributionScreen = "/myContributionScreen";
+  static String contributionFilterScreen = "/contributionFilterScreen";
+  static String myInvitationPage = "/MyInvitationPage";
+  static String shareInvitationPage = "/share_Invitation_Page";
 
-
+//======================>>>> List PAge
  static List<GetPage> page=[
    GetPage(name:splashScreen, page: ()=>const SplashScreen()),
    GetPage(name:homeScreen, page: ()=> HomeScreen(),transition: Transition.noTransition),
@@ -116,7 +131,7 @@ class AppRoutes{
     GetPage(name:searchEventScreen, page: ()=> SearchEventScreen()),
     GetPage(name:notificationsScreen, page: ()=> NotificationsScreen()),
     GetPage(name:filterScreen, page: ()=> FilterScreen()),
-    GetPage(name:myEventScreen, page: ()=> MyEventScreen(),transition: Transition.noTransition),
+
     GetPage(name:createEventOne, page: ()=> CreateEventOne()),
     GetPage(name:createEventTwo, page: ()=> CreateEventTwo()),
     GetPage(name:inviteEventScreen, page: ()=> InviteEventScreen()),
@@ -127,6 +142,15 @@ class AppRoutes{
    //==============================>>>> Profile section <<<<< ============
    GetPage(name:myFamilyScreen, page: ()=> MyFamilyScreen()),
    GetPage(name:createMemberProfileScreen, page: ()=> CreateMemberProfileScreen()),
+   GetPage(name:myEventScreen, page: ()=> MyEventScreen()),
+   GetPage(name:myTodayEventScreen, page: ()=> MyTodayEventScreen(),transition: Transition.noTransition),
+   GetPage(name:myEventFilterScreen, page: ()=> MyEventFilterScreen()),
+   GetPage(name:myConnectionScreen, page: ()=> MyConnectionScreen()),
+
+   GetPage(name:myContributionScreen, page: ()=> MyContributionScreen()),
+   GetPage(name:contributionFilterScreen, page: ()=> ContributionFilterScreen()),
+   GetPage(name: myInvitationPage, page: ()=> MyInvitationPage()),
+   GetPage(name: shareInvitationPage, page: ()=> ShareInvitationPage()),
 
   ];
 }
