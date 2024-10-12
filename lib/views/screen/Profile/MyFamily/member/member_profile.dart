@@ -98,11 +98,9 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                     ),
                     direction: DismissDirection.endToStart,
                     confirmDismiss: (direction) async {
-                      // Show the bottom sheet for confirmation
                       final bool? result = await _showCustomBottomSheet(context, member['name']!);
-                      // Set the flag based on user confirmation
                       shouldRemove = result ?? false;
-                      return shouldRemove; // Return the value to allow or prevent dismissal
+                      return shouldRemove;
                     },
                     child: Container(
                       decoration: BoxDecoration(

@@ -1,5 +1,5 @@
+
 import 'package:event_sharing/views/base/custom_text_field.dart';
-import 'package:event_sharing/views/screen/Event/InnerWidget/delete_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -67,7 +67,7 @@ class _MyContributionScreenState extends State<MyContributionScreen> {
 
                   return GestureDetector(
                     onTap: () {
-                      Get.toNamed(AppRoutes.detailsEventScreen);
+                      Get.toNamed(AppRoutes.eventDetailsScreen);
                     },
                     child: Card(
                       margin: EdgeInsets.symmetric(vertical: 8.h),

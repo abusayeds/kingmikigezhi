@@ -1,5 +1,10 @@
-import 'package:event_sharing/views/screen/Event/create_event_one.dart';
-import 'package:event_sharing/views/screen/Event/create_event_two.dart';
+import 'package:event_sharing/views/screen/AddEvent/create_event_one.dart';
+import 'package:event_sharing/views/screen/AddEvent/create_event_two.dart';
+import 'package:event_sharing/views/screen/Categories/categories_filtering.dart';
+import 'package:event_sharing/views/screen/Categories/search_applied_screen.dart';
+import 'package:event_sharing/views/screen/Home/Donet/donation_screen.dart';
+import 'package:event_sharing/views/screen/Home/Donet/make_payment_screen.dart';
+import 'package:event_sharing/views/screen/Home/Donet/paySuccess_screen.dart';
 import 'package:event_sharing/views/screen/Home/Donet/suggest_donation_screen.dart';
 import 'package:event_sharing/views/screen/Home/Donet/suggestion_screen.dart';
 import 'package:event_sharing/views/screen/Profile/AboutUs/aboutus_screen.dart';
@@ -9,6 +14,7 @@ import 'package:event_sharing/views/screen/Profile/Contribution/contribution_fil
 import 'package:event_sharing/views/screen/Profile/Contribution/contribution_screen.dart';
 import 'package:event_sharing/views/screen/Profile/Invitation/my_invitation_screen.dart';
 import 'package:event_sharing/views/screen/Profile/Invitation/share_invitation_screen.dart';
+import 'package:event_sharing/views/screen/Profile/MyEvent/EventDetailsScreen/event_details_screen.dart';
 import 'package:event_sharing/views/screen/Profile/MyEvent/applied_search_screen.dart';
 import 'package:event_sharing/views/screen/Profile/MyEvent/my_event_filter_screen.dart';
 import 'package:event_sharing/views/screen/Profile/MyEvent/myevent_screen.dart';
@@ -30,7 +36,6 @@ import '../views/screen/Auth/Verification/verification_code_screen.dart';
 import '../views/screen/Calender/filter_screen.dart';
 import '../views/screen/Calender/calender_screen.dart';
 import '../views/screen/Categories/categories_screen.dart';
-import '../views/screen/DetailsEvent/details_event_screen.dart';
 import '../views/screen/Home/home_screen.dart';
 import '../views/screen/InviteEvent/invite_event_screen.dart';
 import '../views/screen/MapScreen/map_screen.dart';
@@ -78,7 +83,7 @@ class AppRoutes{
   static String termsConditionScreen ="/terms_condition_screen";
   static String aboutusScreen ="/aboutus_screen";
   static String upcomingEventScreen ="/upcoming_event_screen";
-  static String detailsEventScreen ="/details_event_screen";
+  static String eventDetailsScreen ="/details_event_screen";
   static String searchEventScreen ="/search_event_screen";
   static String notificationsScreen ="/notifications_screen";
   static String filterScreen ="/filter_screen";
@@ -105,7 +110,13 @@ class AppRoutes{
   static String ownerProfileDetailsScreen = "/OwnerProfileDetailsScreen";
   static String appliedSearchScreen = "/appliedSearch_Screen";
   static String suggestionDonationPage = "/suggestion_donation_page";
-  static String suggestionScreen = "/SuggestionScreen";
+  static String suggestionScreen = "/suggestion_screen";
+  static String donationScreen = "/donation_screen";
+  static String makePaymentScreen = "/makePayment_screen";
+  static String paymentSuccessScreen = "/paymentSuccessScreen";
+
+  static String categoriesFilterScreen = "/categoriesFilterScreen";
+  static String categoriesSearchAppliedScreen = "/categories_search_applied_screen";
 
 //======================>>>> List PAge
  static List<GetPage> page=[
@@ -139,7 +150,7 @@ class AppRoutes{
     GetPage(name:termsConditionScreen, page: ()=> TermsConditionScreen()),
     GetPage(name:aboutusScreen, page: ()=> AboutusScreen()),
     GetPage(name:upcomingEventScreen, page: ()=> UpcomingEventScreen()),
-    GetPage(name:detailsEventScreen, page: ()=> DetailsEventScreen()),
+    GetPage(name:eventDetailsScreen, page: ()=> EventDetailsScreen()),
     GetPage(name:searchEventScreen, page: ()=> SearchEventScreen()),
     GetPage(name:notificationsScreen, page: ()=> NotificationsScreen()),
     GetPage(name:filterScreen, page: ()=> FilterScreen()),
@@ -154,7 +165,7 @@ class AppRoutes{
    //==============================>>>> Profile section <<<<< ============
    GetPage(name:myFamilyScreen, page: ()=> MyFamilyScreen()),
    GetPage(name:createMemberProfileScreen, page: ()=> CreateMemberProfileScreen()),
-   GetPage(name:myEventScreen, page: ()=> MyEventScreen()),
+   GetPage(name:myEventScreen, page: ()=> MyEventScreen(),transition: Transition.noTransition),
    GetPage(name:myTodayEventScreen, page: ()=> MyTodayEventScreen(),transition: Transition.noTransition),
    GetPage(name:myEventFilterScreen, page: ()=> MyEventFilterScreen()),
    GetPage(name:myConnectionScreen, page: ()=> MyConnectionScreen()),
@@ -173,6 +184,14 @@ class AppRoutes{
    //home
    GetPage(name: suggestionDonationPage, page: ()=> SuggestionDonationPage()),
    GetPage(name: suggestionScreen, page: ()=> SuggestionScreen()),
+   GetPage(name: donationScreen, page: ()=> DonationScreen()),
 
+   GetPage(name: makePaymentScreen, page: ()=> MakePaymentScreen()),
+   GetPage(name: paymentSuccessScreen, page: ()=> PaymentSuccessScreen()),
+
+
+   //category
+   GetPage(name: categoriesFilterScreen, page: ()=> CategoriesFilterScreen()),
+   GetPage(name: categoriesSearchAppliedScreen, page: ()=> CategoriesSearchAppliedScreen()),
   ];
 }

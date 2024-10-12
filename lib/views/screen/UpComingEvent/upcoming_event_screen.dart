@@ -45,7 +45,7 @@ class _UpcomingEventScreenState extends State<UpcomingEventScreen> {
                 itemBuilder: (context, index) {
                   return GestureDetector(
                       onTap: () {
-                        Get.toNamed(AppRoutes.detailsEventScreen);
+                        Get.toNamed(AppRoutes.eventDetailsScreen);
                       },
                       child: EventCard());
                 },

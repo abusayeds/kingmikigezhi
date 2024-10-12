@@ -111,7 +111,7 @@ class _SearchEventScreenState extends State<SearchEventScreen> {
                   final event = events[index];
                   return GestureDetector(
                     onTap: (){
-                      Get.toNamed(AppRoutes.detailsEventScreen);
+                      Get.toNamed(AppRoutes.eventDetailsScreen);
                     },
                     child: Card(
                       color: const Color(0xffedf2f4),
