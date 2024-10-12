@@ -62,6 +62,7 @@ dependencies:
   geocoding:
   table_calendar:
   country_code_picker: ^3.0.0
+  easy_stepper: ^0.8.5+1
 
 
 

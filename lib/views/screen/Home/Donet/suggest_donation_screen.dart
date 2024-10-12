@@ -13,7 +13,7 @@ class SuggestionDonationPage extends StatelessWidget {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context);
+            Get.back();
           },
         ),
         backgroundColor: Colors.white,
@@ -25,7 +25,9 @@ class SuggestionDonationPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: CustomButton(
-                onTap: (){},
+                onTap: (){
+                  Get.toNamed(AppRoutes.suggestionScreen);
+                },
                 text: 'Suggestion',
               textStyle:TextStyle(color: Colors.black),
               color: AppColors.fillColor,
@@ -40,7 +42,7 @@ class SuggestionDonationPage extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: CustomButton(
               onTap: (){
-                Get.toNamed(AppRoutes.suggestionScreen);
+                Get.toNamed(AppRoutes.donationScreen);
               },
               text: 'Donation',
               textStyle:TextStyle(color: Colors.black),

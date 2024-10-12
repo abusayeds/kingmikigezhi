@@ -49,7 +49,7 @@ class BottomMenu extends StatelessWidget {
       getItem(menuIndex == 0 ? AppIcons.selHome : AppIcons.homeIcon, 'Home', theme, 0),
       getItem(menuIndex == 1 ? AppIcons.selCategories : AppIcons.categories, 'Categories', theme, 1),
       BottomNavigationBarItem(label: '', icon: getAddItem(),),
-      getItem(menuIndex == 2 ? AppIcons.selCalendar : AppIcons.calendarOutline, 'Calender', theme, 2),
+      getItem(menuIndex == 2 ? AppIcons.selCalendar : AppIcons.calendarOutline, 'Event', theme, 2),
       getItem(menuIndex == 3 ? AppIcons.selNavProfile : AppIcons.navProfile, 'Profile', theme, 3),
     ];
 
@@ -82,7 +82,7 @@ class BottomMenu extends StatelessWidget {
                 Get.toNamed(AppRoutes.createEventOne);
                 break;
               case 3:
-                Get.offAndToNamed(AppRoutes.calenderScreen);
+                Get.offAndToNamed(AppRoutes.myEventScreen);
                 break;
               case 4:
                 Get.offAndToNamed(AppRoutes.profileScreen);

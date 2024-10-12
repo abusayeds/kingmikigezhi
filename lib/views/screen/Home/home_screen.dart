@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../../utils/app_icons.dart';
 import '../../base/bottom_menu..dart';
@@ -55,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   ];
 
-  DateTime _focusedDay = DateTime(2025, 1, 1);
+  DateTime _focusedDay = DateTime(2024, 10, 1);
   DateTime? _selectedDay;
   CalendarFormat _calendarFormat = CalendarFormat.week;
 
@@ -93,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     itemBuilder: (context, index) {
                       return GestureDetector(
                           onTap: () {
-                            Get.toNamed(AppRoutes.detailsEventScreen);
+                            Get.toNamed(AppRoutes.eventDetailsScreen);
                           },
                           child: EventCard());
                     },
@@ -441,49 +440,13 @@ class _HomeScreenState extends State<HomeScreen> {
   //========================================> Table Calendar Method <=============================
   _tableCalendar() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        // Custom Title Row with Formatted Date and Icons
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 16.0),
-              child: Text(
-                DateFormat('MMMM yyyy').format(_focusedDay),
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            Row(
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.calendar_month),
-                  onPressed: () {
-                    setState(() {
-                      _calendarFormat = _calendarFormat == CalendarFormat.week
-                          ? CalendarFormat.month
-                          : CalendarFormat.week;
-                    });
-                  },
-                ),
-                IconButton(
-                  icon: const Icon(Icons.add),
-                  onPressed: () {
-                    _showCustomBottomSheet(context);
-                  },
-                ),
-              ],
-            ),
-          ],
-        ),
         // TableCalendar Widget
         TableCalendar(
           firstDay: DateTime.utc(2020, 10, 16),
           lastDay: DateTime.utc(2030, 3, 14),
-          focusedDay: _focusedDay,  // Keep it internally for table behavior
+          focusedDay: _focusedDay,
           calendarFormat: _calendarFormat,
           startingDayOfWeek: StartingDayOfWeek.monday,
           selectedDayPredicate: (day) {
@@ -496,10 +459,26 @@ class _HomeScreenState extends State<HomeScreen> {
             });
           },
           headerStyle: HeaderStyle(
-            rightChevronIcon: const SizedBox(),  // Hide chevrons
+            rightChevronIcon: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      _calendarFormat = _calendarFormat == CalendarFormat.week
+                          ? CalendarFormat.month
+                          : CalendarFormat.week;
+                    });
+                  },
+                  child: const Icon(Icons.calendar_view_month),
+                ),
+                const SizedBox(width: 8),
+                const Icon(Icons.add),
+              ],
+            ),
             leftChevronIcon: const SizedBox(),
-            formatButtonVisible: false,  // Hide format button
-            titleCentered: false,  // Disable title centering as custom title is rendered above
+            formatButtonVisible: false,
+            titleCentered: true,
           ),
           calendarStyle: CalendarStyle(
             todayDecoration: BoxDecoration(
@@ -510,14 +489,11 @@ class _HomeScreenState extends State<HomeScreen> {
               color: AppColors.bottomBarColor,
               shape: BoxShape.circle,
             ),
-            outsideDaysVisible: false,  // Hide outside days if needed
           ),
         ),
       ],
     );
   }
-
-
 
 
   //========================================> SearchDate Method <============================
