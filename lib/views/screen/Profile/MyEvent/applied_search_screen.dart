@@ -101,7 +101,7 @@ class _AppliedSearchScreenState extends State<AppliedSearchScreen> {
 
                   return GestureDetector(
                     onTap: () {
-                      Get.toNamed(AppRoutes.detailsEventScreen);
+                      Get.toNamed(AppRoutes.eventDetailsScreen);
                     },
                     child: Card(
                       margin: EdgeInsets.symmetric(vertical: 8.h),

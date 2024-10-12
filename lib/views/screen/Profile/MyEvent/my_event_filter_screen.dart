@@ -274,7 +274,7 @@ class _MyEventFilterScreenState extends State<MyEventFilterScreen> {
                       child: CustomButton(
                         onTap: () {},
                         text: "Reset",
-                        color: Colors.white,
+                        color: AppColors.fillColor,
                         textColor: Colors.black,
                       )),
                   SizedBox(

@@ -42,13 +42,7 @@ class _CreateEventTwoState extends State<CreateEventTwo> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               //==============================> Event Status Text Field <=============================
-              CustomText(
-                text: AppStrings.eventStatus,
-                fontWeight: FontWeight.bold,
-                fontsize: 16.sp,
-                bottom: 8.h,
-                top: 13.h,
-              ),
+              _sectionTitle(AppStrings.eventStatus),
               CustomTextField(
                 controller: eventStatusCTRL,
                 hintText: AppStrings.typeYourEventStatus,
@@ -56,26 +50,16 @@ class _CreateEventTwoState extends State<CreateEventTwo> {
               SizedBox(height: 16.h),
 
               //==============================> Registration Cost Text Field <=============================
-              CustomText(
-                text: AppStrings.registrationCost,
-                fontWeight: FontWeight.bold,
-                fontsize: 16.sp,
-                bottom: 8.h,
-                top: 13.h,
-              ),
+              _sectionTitle(AppStrings.registrationCost),
               CustomTextField(
                 controller: eventCostCTRL,
                 hintText: AppStrings.typeYourEventCost,
+                keyboardType: TextInputType.number, // Ensure numeric input for cost
               ),
               SizedBox(height: 16.h),
+
               //==============================> Select Date Text <=============================
-              CustomText(
-                text: AppStrings.selectDate,
-                fontWeight: FontWeight.bold,
-                fontsize: 16.sp,
-                bottom: 8.h,
-                top: 13.h,
-              ),
+              _sectionTitle(AppStrings.selectDate),
               //==============================> Select Date Row Text Field <=============================
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -119,14 +103,9 @@ class _CreateEventTwoState extends State<CreateEventTwo> {
                 ],
               ),
               SizedBox(height: 16.h),
+
               //==============================> Select Time Text <=============================
-              CustomText(
-                text: AppStrings.selectTime,
-                fontWeight: FontWeight.bold,
-                fontsize: 16.sp,
-                bottom: 8.h,
-                top: 13.h,
-              ),
+              _sectionTitle(AppStrings.selectTime),
               //==============================> Select Time Row Text Field <=============================
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -172,22 +151,25 @@ class _CreateEventTwoState extends State<CreateEventTwo> {
               SizedBox(height: 16.h),
 
               //==============================> Event Description Text Field <=============================
-              CustomText(
-                text: AppStrings.eventDescription,
-                fontWeight: FontWeight.bold,
-                fontsize: 16.sp,
-                bottom: 8.h,
-                top: 13.h,
-              ),
+              _sectionTitle(AppStrings.eventDescription),
               CustomTextField(
                 controller: eventDescriptionCTRL,
                 hintText: AppStrings.typeYourEventDescription,
                 maxLines: 5,
               ),
               SizedBox(height: 32.h),
+
               //==============================> Create Event Button <=============================
               CustomButton(
-                onTap: () {},
+                onTap: () {
+                  if (_validateInputs()) {
+                    // Handle event creation or move to the next screen
+                    print("Event created successfully!");
+                  } else {
+                    // Show error or feedback to the user
+                    _showErrorDialog(context);
+                  }
+                },
                 text: AppStrings.createEvent,
                 textColor: Colors.white,
               ),
@@ -198,8 +180,19 @@ class _CreateEventTwoState extends State<CreateEventTwo> {
       ),
     );
   }
-  //===============================> Show Calender Function <=======================
 
+  //==============================> Section Title Widget <=============================
+  Widget _sectionTitle(String text) {
+    return CustomText(
+      text: text,
+      fontWeight: FontWeight.bold,
+      fontsize: 16.sp,
+      bottom: 8.h,
+      top: 13.h,
+    );
+  }
+
+  //==============================> Show Calendar Function <=============================
   Future<void> selectDate(BuildContext context, String type) async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
@@ -208,19 +201,17 @@ class _CreateEventTwoState extends State<CreateEventTwo> {
       lastDate: DateTime(3050),
     );
     if (pickedDate != null) {
-       setState(() {
-         if(type == 'Start') {
-           startDateCTRL.text = "${pickedDate.month}-${pickedDate.day}-${pickedDate.year}";
-         }else if(type == 'End'){
-           endDateCTRL.text = "${pickedDate.month}-${pickedDate.day}-${pickedDate.year}";
-         }
+      setState(() {
+        if (type == 'Start') {
+          startDateCTRL.text = "${pickedDate.month}-${pickedDate.day}-${pickedDate.year}";
+        } else if (type == 'End') {
+          endDateCTRL.text = "${pickedDate.month}-${pickedDate.day}-${pickedDate.year}";
+        }
       });
-      print('Selected date: ${startDateCTRL.text}');
     }
   }
 
-
-  //===============================> Show Clock Function <=======================
+  //==============================> Show Clock Function <=============================
   Future<void> selectTime(BuildContext context, String type) async {
     final TimeOfDay? pickedTime = await showTimePicker(
       context: context,
@@ -236,7 +227,41 @@ class _CreateEventTwoState extends State<CreateEventTwo> {
           endTimeCTRL.text = "$hours:$minutes";
         }
       });
-      print('Selected time: ${startDateCTRL.text}');
     }
+  }
+
+  //==============================> Input Validation <=============================
+  bool _validateInputs() {
+    if (eventStatusCTRL.text.isEmpty ||
+        eventCostCTRL.text.isEmpty ||
+        eventDescriptionCTRL.text.isEmpty ||
+        startDateCTRL.text.isEmpty ||
+        endDateCTRL.text.isEmpty ||
+        startTimeCTRL.text.isEmpty ||
+        endTimeCTRL.text.isEmpty) {
+      return false; // Input validation fails
+    }
+    return true; // All inputs are valid
+  }
+
+  //==============================> Show Error Dialog <=============================
+  void _showErrorDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Input Error'),
+          content: Text('Please fill in all the required fields.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

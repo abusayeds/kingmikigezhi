@@ -94,8 +94,9 @@ class AppStrings{
   static String seeAll = "See all";
   static String upcomingEvent = "Upcoming Event";
   static String notifications = "Notifications";
-  static String detailsEvent = "Details Event";
-  static String aboutEvent = "About Event";
+  static String detailsEvent = "Event Details";
+  static String description = "Description";
+  static String note = "Note";
   static String eventMap = "Event Map";
   static String search = "Search";
   static String startTime = "Start Time";
