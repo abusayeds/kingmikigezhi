@@ -64,15 +64,12 @@ class SuggestionScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-
-                SizedBox(width: 16), // Space between buttons
-
-                // Commit Button (Filled)
+                SizedBox(width: 16),
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF815B48), // Brown background color
+                      backgroundColor: Color(0xFF815B48),
                       padding: EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
