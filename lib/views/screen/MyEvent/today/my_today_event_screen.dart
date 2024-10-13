@@ -1,3 +1,4 @@
+import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:event_sharing/views/base/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,7 +8,7 @@ import 'package:get/get.dart';
 import '../../../../../helpers/route.dart';
 import '../../../../../utils/app_colors.dart';
 import '../../../../../utils/app_icons.dart';
-import '../../../../base/custom_text.dart';
+
 
 class MyTodayEventScreen extends StatefulWidget {
    MyTodayEventScreen({super.key});

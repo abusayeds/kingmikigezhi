@@ -102,10 +102,15 @@ class HomeAppBar extends StatelessWidget {
         ),
         SizedBox(width: 13.w),
         //=======================> Profile Icon <=======================
-        CircleAvatar(
-            radius: 20.r,
-            backgroundImage: const NetworkImage(
-                "https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg")),
+        InkWell(
+          onTap: (){
+            Get.toNamed(AppRoutes.personalInformationScreen);
+          },
+          child: CircleAvatar(
+              radius: 20.r,
+              backgroundImage: const NetworkImage(
+                  "https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg")),
+        ),
       ],
     );
   }

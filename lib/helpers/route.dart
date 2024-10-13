@@ -1,5 +1,5 @@
 import 'package:event_sharing/views/screen/AddEvent/create_event_one.dart';
-import 'package:event_sharing/views/screen/AddEvent/create_event_two.dart';
+import 'package:event_sharing/views/screen/AddEvent/stepTwoForm.dart';
 import 'package:event_sharing/views/screen/Categories/categories_filtering.dart';
 import 'package:event_sharing/views/screen/Categories/search_applied_screen.dart';
 import 'package:event_sharing/views/screen/Home/Donet/donation_screen.dart';
@@ -7,6 +7,11 @@ import 'package:event_sharing/views/screen/Home/Donet/make_payment_screen.dart';
 import 'package:event_sharing/views/screen/Home/Donet/paySuccess_screen.dart';
 import 'package:event_sharing/views/screen/Home/Donet/suggest_donation_screen.dart';
 import 'package:event_sharing/views/screen/Home/Donet/suggestion_screen.dart';
+import 'package:event_sharing/views/screen/MyEvent/EventDetailsScreen/event_details_screen.dart';
+import 'package:event_sharing/views/screen/MyEvent/applied_search_screen.dart';
+import 'package:event_sharing/views/screen/MyEvent/my_event_filter_screen.dart';
+import 'package:event_sharing/views/screen/MyEvent/myevent_screen.dart';
+import 'package:event_sharing/views/screen/MyEvent/today/my_today_event_screen.dart';
 import 'package:event_sharing/views/screen/Profile/AboutUs/aboutus_screen.dart';
 import 'package:event_sharing/views/screen/Profile/Account/personal_information_screen.dart';
 import 'package:event_sharing/views/screen/Profile/Connection/my_connection_screen.dart';
@@ -14,10 +19,6 @@ import 'package:event_sharing/views/screen/Profile/Contribution/contribution_fil
 import 'package:event_sharing/views/screen/Profile/Contribution/contribution_screen.dart';
 import 'package:event_sharing/views/screen/Profile/Invitation/my_invitation_screen.dart';
 import 'package:event_sharing/views/screen/Profile/Invitation/share_invitation_screen.dart';
-import 'package:event_sharing/views/screen/Profile/MyEvent/EventDetailsScreen/event_details_screen.dart';
-import 'package:event_sharing/views/screen/Profile/MyEvent/applied_search_screen.dart';
-import 'package:event_sharing/views/screen/Profile/MyEvent/my_event_filter_screen.dart';
-import 'package:event_sharing/views/screen/Profile/MyEvent/myevent_screen.dart';
 import 'package:event_sharing/views/screen/Profile/MyFamily/createMember_profile.dart';
 import 'package:event_sharing/views/screen/Profile/MyFamily/member/member_profile_details_screen.dart';
 import 'package:event_sharing/views/screen/Profile/MyFamily/owner/owner_profile_details_screen.dart';
@@ -39,7 +40,6 @@ import '../views/screen/Categories/categories_screen.dart';
 import '../views/screen/Home/home_screen.dart';
 import '../views/screen/InviteEvent/invite_event_screen.dart';
 import '../views/screen/MapScreen/map_screen.dart';
-import '../views/screen/Profile/MyEvent/today/my_today_event_screen.dart';
 import '../views/screen/Notifications/notifications_screen.dart';
 import '../views/screen/Onboard/onboard_screen.dart';
 import '../views/screen/Onboard/onboard_second_screen.dart';
@@ -88,8 +88,8 @@ class AppRoutes{
   static String notificationsScreen ="/notifications_screen";
   static String filterScreen ="/filter_screen";
 
-  static String createEventOne ="/create_event_one";
-  static String createEventTwo ="/create_event_two";
+
+
   static String inviteEventScreen ="/invite_event_screen";
   static String ownershipScreen ="/ownership_screen";
   static String mapScreen ="/map_screen";
@@ -117,6 +117,11 @@ class AppRoutes{
 
   static String categoriesFilterScreen = "/categoriesFilterScreen";
   static String categoriesSearchAppliedScreen = "/categories_search_applied_screen";
+
+
+  //create event
+  static String createEventOne ="/create_event_one";
+  static String stepTwoContent ="/stepTwoContent";
 
 //======================>>>> List PAge
  static List<GetPage> page=[
@@ -156,7 +161,7 @@ class AppRoutes{
     GetPage(name:filterScreen, page: ()=> FilterScreen()),
 
     GetPage(name:createEventOne, page: ()=> CreateEventOne()),
-    GetPage(name:createEventTwo, page: ()=> CreateEventTwo()),
+    GetPage(name:stepTwoContent, page: ()=> StepTwoForm()),
     GetPage(name:inviteEventScreen, page: ()=> InviteEventScreen()),
     GetPage(name:ownershipScreen, page: ()=> OwnershipScreen()),
     GetPage(name:mapScreen, page: ()=> MapScreen()),
