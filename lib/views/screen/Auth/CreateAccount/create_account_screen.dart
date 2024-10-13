@@ -41,10 +41,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   final TextEditingController confirmPasswordController = TextEditingController();
   bool isChecked = false;
   String? selectedGender;
-  List<String> genderList = [
-    'Male',
-    'Female',
-  ];
+  List<String> genderList = ['Male', 'Female'];
 
   @override
   Widget build(BuildContext context) {

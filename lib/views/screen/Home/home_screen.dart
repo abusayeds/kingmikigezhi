@@ -1,9 +1,9 @@
 import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_images.dart';
-import 'package:event_sharing/utils/app_strings.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:event_sharing/views/screen/Home/InnerWidget/home_app_bar.dart';
+import 'package:event_sharing/views/screen/Home/addBottomSheet/addBottomSheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -11,9 +11,8 @@ import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../../utils/app_icons.dart';
 import '../../base/bottom_menu..dart';
-import '../../base/custom_button.dart';
 import '../../base/custom_text_field.dart';
-import '../../base/event_card.dart';
+import 'upcoming_event_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -57,6 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
   DateTime _focusedDay = DateTime(2024, 10, 1);
   DateTime? _selectedDay;
   CalendarFormat _calendarFormat = CalendarFormat.week;
+  String dropdownValue = 'All';
 
   @override
   Widget build(BuildContext context) {
@@ -73,31 +73,90 @@ class _HomeScreenState extends State<HomeScreen> {
                 HomeAppBar(),
                 SizedBox(height: 20.h),
                 _searchBar(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+
+                    Container(
+                      height: 25.h,width: 120.w,
+                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: Colors.blueGrey, // Background color
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: DropdownButton<String>(
+                        value: dropdownValue,
+                        underline: SizedBox(),
+                        icon: Icon(Icons.arrow_drop_down, color: Colors.white,size: 15),
+                        dropdownColor: Colors.black,
+                        style: TextStyle(color: Colors.white,fontSize: 12),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            dropdownValue = newValue!;
+                          });
+                        },
+                        items:<String>['All', 'Self', 'Spous', 'Child Stephanie', 'Child Sophia']
+                            .map<DropdownMenuItem<String>>((String value)  {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Row(
+                              children: [
+                                Text(value),
+                                SizedBox(width: 10.w),
+                              ],
+                            ),
+
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.add),
+                      onPressed: () {
+                        HomePageAddBottomSheetWidget.addBottomSheet(context);
+                      },
+                    ),
+                  ],
+                ),
                 _tableCalendar(),
                 SizedBox(height: 16.h),
                 _grayEventCard(),
                 SizedBox(height: 16.h),
                 _pianoList(),
                 SizedBox(height: 16.h),
-                _sectionHeader(
-                  title: AppStrings.upcomingEvent,
-                  onSeeAllPressed: () {
-                    Get.toNamed(AppRoutes.upcomingEventScreen);
-                  },
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Upcoming Event',style: TextStyle(fontSize: 20.sp)),
+                      InkWell(
+                        onTap: (){
+                          Get.toNamed(AppRoutes.upcomingEventScreen);
+                        },
+                          child: Text('More',style: TextStyle(fontSize: 12.sp))),
+                    ],
+                  ),
                 ),
                 SizedBox(
                   height: 320.h,
                   child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
                     itemCount: 3,
                     itemBuilder: (context, index) {
                       return GestureDetector(
-                          onTap: () {
-                            Get.toNamed(AppRoutes.eventDetailsScreen);
-                          },
-                          child: EventCard());
+                        onTap: () {
+                          Get.toNamed(AppRoutes.eventDetailsScreen);
+                        },
+                        child: SizedBox(
+                          width: 350.w,
+                          child: EventCard(),
+                        ),
+                      );
                     },
                   ),
-                ),
+                )
+
               ],
             ),
           ),
@@ -172,8 +231,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     borderRadius: BorderRadius.circular(16.r),
                   ),
                   child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+                    padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
                     child: Image.asset(AppImages.logoCard,
                         color: AppColors.primaryColor,
                         width: 85.w,
@@ -191,8 +249,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     SizedBox(height: 12.h),
                     Row(
                       children: [
-                        Icon(Icons.circle,
-                            color: AppColors.primaryColor, size: 8.w),
+                        SvgPicture.asset(AppIcons.dotIconForFamily),
                         Padding(
                           padding: EdgeInsets.only(left: 5.w),
                           child: CustomText(
@@ -205,8 +262,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     SizedBox(height: 8.h),
                     Row(
                       children: [
-                        Icon(Icons.circle,
-                            color: AppColors.primaryColor, size: 8.w),
+                        SvgPicture.asset(AppIcons.dotIconForFamily),
                         Padding(
                           padding: EdgeInsets.only(left: 5.w),
                           child: CustomText(
@@ -219,8 +275,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     SizedBox(height: 8.h),
                     Row(
                       children: [
-                        Icon(Icons.circle,
-                            color: AppColors.primaryColor, size: 8.w),
+                        SvgPicture.asset(AppIcons.dotIconForFamily),
                         Padding(
                           padding: EdgeInsets.only(left: 5.w),
                           child: CustomText(
@@ -233,8 +288,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     SizedBox(height: 8.h),
                     Row(
                       children: [
-                        Icon(Icons.circle,
-                            color: AppColors.primaryColor, size: 8.w),
+                        SvgPicture.asset(AppIcons.dotIconForFamily),
                         Padding(
                           padding: EdgeInsets.only(left: 5.w),
                           child: CustomText(
@@ -247,8 +301,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     SizedBox(height: 8.h),
                     Row(
                       children: [
-                        Icon(Icons.circle,
-                            color: AppColors.primaryColor, size: 8.w),
+                        SvgPicture.asset(AppIcons.dotIconForFamily),
                         Padding(
                           padding: EdgeInsets.only(left: 5.w),
                           child: CustomText(
@@ -274,28 +327,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ))
         ],
       ),
-    );
-  }
-
-  //=======================> Upcoming Event Text and More Button Section <===========================
-  _sectionHeader(
-      {required String title, required VoidCallback onSeeAllPressed}) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        CustomText(
-          text: title,
-          fontsize: 20.sp,
-          fontWeight: FontWeight.w500,
-        ),
-        TextButton(
-          onPressed: onSeeAllPressed,
-          child: CustomText(
-            text: 'More',
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-      ],
     );
   }
 
@@ -345,8 +376,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             SizedBox(height: 12.h),
                             Row(
                               children: [
-                                Icon(Icons.circle,
-                                    color: AppColors.primaryColor, size: 8.w),
+                             SvgPicture.asset(AppIcons.dotIconForFamily),
                                 Padding(
                                   padding: EdgeInsets.only(left: 5.w),
                                   child: CustomText(
@@ -359,8 +389,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             SizedBox(height: 8.h),
                             Row(
                               children: [
-                                Icon(Icons.circle,
-                                    color: AppColors.primaryColor, size: 8.w),
+                             SvgPicture.asset(AppIcons.dotIconForFamily),
                                 Padding(
                                   padding: EdgeInsets.only(left: 5.w),
                                   child: CustomText(
@@ -373,8 +402,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             SizedBox(height: 8.h),
                             Row(
                               children: [
-                                Icon(Icons.circle,
-                                    color: AppColors.primaryColor, size: 8.w),
+                             SvgPicture.asset(AppIcons.dotIconForFamily),
                                 Padding(
                                   padding: EdgeInsets.only(left: 5.w),
                                   child: CustomText(
@@ -387,8 +415,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             SizedBox(height: 8.h),
                             Row(
                               children: [
-                                Icon(Icons.circle,
-                                    color: AppColors.primaryColor, size: 8.w),
+                             SvgPicture.asset(AppIcons.dotIconForFamily),
                                 Padding(
                                   padding: EdgeInsets.only(left: 5.w),
                                   child: CustomText(
@@ -401,8 +428,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             SizedBox(height: 8.h),
                             Row(
                               children: [
-                                Icon(Icons.circle,
-                                    color: AppColors.primaryColor, size: 8.w),
+                               SvgPicture.asset(AppIcons.dotIconForFamily),
                                 Padding(
                                   padding: EdgeInsets.only(left: 5.w),
                                   child: CustomText(
@@ -470,10 +496,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           : CalendarFormat.week;
                     });
                   },
-                  child: const Icon(Icons.calendar_view_month),
+                  child: Icon(Icons.calendar_today_rounded,color: AppColors.primaryColor,),
                 ),
-                const SizedBox(width: 8),
-                const Icon(Icons.add),
               ],
             ),
             leftChevronIcon: const SizedBox(),
@@ -511,72 +535,4 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  //===============================> Pup Up Bottom Sheet <===============================
-  _showCustomBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(20.r),
-        ),
-      ),
-      builder: (BuildContext context) {
-        return Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(40.r),
-              topRight: Radius.circular(40.r),
-            ),
-            border: Border(
-                top: BorderSide(width: 2.w, color: AppColors.primaryColor)),
-            color: AppColors.cardColor,
-          ),
-          height: 265,
-          padding: EdgeInsets.all(16.w),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CustomText(
-                text: 'Logout',
-                fontWeight: FontWeight.w500,
-                fontsize: 24.sp,
-              ),
-              SizedBox(
-                  width: 115.w, child: Divider(color: AppColors.primaryColor)),
-              SizedBox(height: 20.h),
-              CustomText(
-                text: 'Are you sure you want to log out?',
-                fontsize: 16.sp,
-              ),
-              SizedBox(height: 20.h),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                      width: 115.w,
-                      child: CustomButton(
-                        onTap: () {
-                          Get.back();
-                        },
-                        text: "No",
-                        color: Colors.white,
-                        textColor: AppColors.primaryColor,
-                      )),
-                  SizedBox(width: 16.w),
-                  SizedBox(
-                      width: 115.w,
-                      child: CustomButton(
-                          onTap: () {
-                            // Get.offAllNamed(AppRoutes.signInScreen);
-                          },
-                          text: "Yes")),
-                ],
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
 }

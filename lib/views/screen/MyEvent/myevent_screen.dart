@@ -1,13 +1,13 @@
-import 'package:event_sharing/helpers/route.dart';
+
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/views/base/bottom_menu..dart';
 import 'package:event_sharing/views/base/custom_text.dart';
-import 'package:event_sharing/views/screen/Profile/MyEvent/history/my_history_event_screen.dart';
-import 'package:event_sharing/views/screen/Profile/MyEvent/today/my_today_event_screen.dart';
-import 'package:event_sharing/views/screen/Profile/MyEvent/upcoming/my_upcoming_event.dart';
+import 'package:event_sharing/views/screen/MyEvent/history/my_history_event_screen.dart';
+import 'package:event_sharing/views/screen/MyEvent/today/my_today_event_screen.dart';
+import 'package:event_sharing/views/screen/MyEvent/upcoming/my_upcoming_event.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 
 
 

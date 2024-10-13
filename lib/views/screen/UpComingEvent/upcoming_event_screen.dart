@@ -1,6 +1,7 @@
 import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_strings.dart';
+import 'package:event_sharing/views/screen/Home/upcoming_event_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -8,7 +9,6 @@ import 'package:get/get.dart';
 import '../../../utils/app_icons.dart';
 import '../../base/custom_text.dart';
 import '../../base/custom_text_field.dart';
-import '../../base/event_card.dart';
 
 class UpcomingEventScreen extends StatefulWidget {
   @override
