@@ -32,7 +32,7 @@ class NotificationsScreen extends StatelessWidget {
             //================================> Notification section <=======================
             Expanded(
               child: ListView.builder(
-                itemCount: 20,
+                itemCount: 5,
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -62,68 +62,85 @@ class NotificationsScreen extends StatelessWidget {
     DateTime time,
     String shorDescription,
   ) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(4.r)),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  //==============================> Notification Icon <=========================
-                  Container(
-                    margin: EdgeInsets.only(left: 8.w, right: 7.w),
-                    padding: EdgeInsets.all(7.r),
-                    decoration: const BoxDecoration(
-                        shape: BoxShape.circle, color: Color(0xffffffff)),
-                    child: SvgPicture.asset(
-                      AppIcons.notificationIcon,
-                      color: AppColors.primaryColor,
-                    ),
-                  )
-                ],
-              ),
-              Expanded(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    //==============================> Notification Icon <=========================
+    return Dismissible(
+      key: Key(title),
+      direction: DismissDirection.endToStart,
+      background: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12.r),
+          color: AppColors.colorD9A951,
+        ),
 
-                    CustomText(
-                      text: title,
-                      fontsize: 14.h,
-                      color: Colors.black,
-                    ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: CustomText(
-                        top: 2.h,
-                        text: TimeAgo.format(time),
-                        fontsize: 8.h,
-                        fontWeight: FontWeight.w400,
-                        color: const Color(
-                          0xFF8C8C8C,
-                        ),
+        alignment: Alignment.centerRight,
+        padding: EdgeInsets.only(right: 16.w),
+        child: Icon(Icons.delete, color: Colors.white),
+      ),
+      onDismissed: (direction) {
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12.r),
+          color: AppColors.colorEDF2F4,
+        ),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    // Notification Icon
+                    Container(
+                      margin: EdgeInsets.only(left: 8.w, right: 7.w),
+                      padding: EdgeInsets.all(7.r),
+                      decoration: const BoxDecoration(
+                          shape: BoxShape.circle, color: Color(0xffffffff)),
+                      child: SvgPicture.asset(
+                        AppIcons.notificationIcon,
+                        color: AppColors.primaryColor,
                       ),
-                    ),
+                    )
                   ],
                 ),
-              ),
-            ],
-          ),
-          //==============================> Short Description <======================
-          CustomText(
-            top: 8.h,
-            text: shorDescription,
-            color: Colors.black,
-            textAlign: TextAlign.start,
-            maxline: 5,
-          ),
-        ],
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Title
+                      CustomText(
+                        text: title,
+                        fontsize: 14.h,
+                        color: Colors.black,
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: CustomText(
+                          top: 2.h,
+                          text: TimeAgo.format(time),
+                          fontsize: 8.h,
+                          fontWeight: FontWeight.w400,
+                          color: const Color(0xFF8C8C8C),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            // Short Description
+            CustomText(
+              top: 8.h,
+              text: shorDescription,
+              color: Colors.black,
+              textAlign: TextAlign.start,
+              maxline: 5,
+            ),
+          ],
+        ),
       ),
     );
+
   }
 }

@@ -30,6 +30,7 @@ class _MyEventFilterScreenState extends State<MyEventFilterScreen> {
   String? _selectedType;
   String? _selectedCategory;
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
