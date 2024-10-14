@@ -68,7 +68,7 @@ class BottomMenu extends StatelessWidget {
           backgroundColor: AppColors.primaryColor,
           type: BottomNavigationBarType.fixed,
           selectedItemColor: AppColors.white,
-          unselectedItemColor: AppColors.bottomBarColor,
+          unselectedItemColor: AppColors.white,
           currentIndex: menuIndex,
           onTap: (value) {
             switch (value) {

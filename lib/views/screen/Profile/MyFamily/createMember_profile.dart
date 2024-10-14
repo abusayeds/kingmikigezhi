@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:event_sharing/views/screen/AddEvent/InnerWidget/dotted_border_container.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -331,15 +332,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                     ],
                   ),
                   SizedBox(height: 10),
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('assets/images/RectangleBorder.png'),
-                        fit: BoxFit.contain,
-                      ),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
+                  DottedBorderContainer(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -579,15 +572,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                   ),
                   SizedBox(height: 10),
                   //======================>>User Name / Password Section
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('assets/images/RectangleBorder.png'),
-                        fit: BoxFit.contain,
-                      ),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
+                  DottedBorderContainer(
                     child: Padding(
                       padding: const EdgeInsets.all(4.0),
                       child: Column(
