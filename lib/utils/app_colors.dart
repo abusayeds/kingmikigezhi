@@ -5,10 +5,12 @@ import 'package:flutter/cupertino.dart';
 class AppColors{
   
   static Color primaryColor=const Color(0xFF4C7E95);
+  static Color blackColor=const Color(0xFF111111);
   static Color backgroundColor=const Color(0xFFFFFFFF);
   static Color cardColor = const Color(0xFF2F2F2F);
   static Color cardLightColor = const Color(0xFF555555);
   static Color buttonColor = const Color(0xFF85594B);
+  static Color buttonA47059 = const Color(0xFFA47059);
   static Color borderColor = const Color(0xFF4C7E95);
   static Color textColor = const Color(0xFFFFFFFF);
   static Color white = const Color(0xFFFFFFFF);
@@ -19,6 +21,11 @@ class AppColors{
   static Color dividerColor = const Color(0xFF555555);
   static Color shadowColor = const Color(0xFF2B2A2A);
   static Color bottomBarColor = const Color(0xFF343434);
+  static Color redColor = const Color(0xFFFF6161);
+  static Color notificationBGcolor = const Color(0xFFF4F4F4);
+  static Color colorEDF2F4 = const Color(0xFFEDF2F4);
+
+  static Color colorD9A951 = const Color(0xFFD9A951);
 
   static BoxShadow shadow=BoxShadow(
     blurRadius: 4,

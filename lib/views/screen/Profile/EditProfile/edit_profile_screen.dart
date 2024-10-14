@@ -1,11 +1,11 @@
 import 'dart:io';
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_icons.dart';
 import '../../../../utils/app_strings.dart';
@@ -41,13 +41,23 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       parameter['phone']! == 'null' ? "" : parameter['phone']!;
     });
   }*/
+  final TextEditingController birthDayYearController = TextEditingController();
+  final TextEditingController birthDayMonthController = TextEditingController();
+  final TextEditingController birthDayDayController = TextEditingController();
+
+  final TextEditingController locationCountryController = TextEditingController();
+  final TextEditingController locationStateController = TextEditingController();
+  final TextEditingController locationCityController = TextEditingController();
+  final TextEditingController phoneNumberController = TextEditingController();
+
+  String selectedCountryCodes = '+880';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: CustomText(
-          text: AppStrings.updateProfile.tr,
+          text: AppStrings.editProfile.tr,
           fontWeight: FontWeight.w500,
           fontsize: 18.sp,
         ),
@@ -56,108 +66,526 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       body: LayoutBuilder(
         builder: (context, constraints) {
           return SingleChildScrollView(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                maxHeight: 750.h,
-              ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(height: 22.h),
-                    Center(
-                      child: Stack(
-                        clipBehavior: Clip.none,
-                        children: [
-                          _image != null
-                              ? Container(
-                                  width: 120.w,
-                                  height: 120.h,
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.rectangle,
-                                      border: Border.all(
-                                          width: 2.w, color: AppColors.white),
-                                      image: DecorationImage(
-                                          image: MemoryImage(_image!),
-                                          fit: BoxFit.cover)),
-                                )
-                              : Container(
-                                  width: 120.w,
-                                  height: 120.h,
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.rectangle,
-                                      border: Border.all(
-                                          width: 2.w, color: AppColors.white),
-                                      image: const DecorationImage(
-                                          image: NetworkImage(
-                                              'https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg'),
-                                          fit: BoxFit.cover)),
-                                ),
-                          Positioned(
-                              bottom: -5.h,
-                              right: -5.w,
-                              child: GestureDetector(
-                                  onTap: () {
-                                    showImagePickerOption(context);
-                                  },
-                                  child: SvgPicture.asset(AppIcons.editFram)))
-                        ],
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 22.h),
+                  Center(
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        _image != null
+                            ? Container(
+                          width: 120.w,
+                          height: 120.h,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.rectangle,
+                              border: Border.all(
+                                  width: 2.w, color: AppColors.white),
+                              image: DecorationImage(
+                                  image: MemoryImage(_image!),
+                                  fit: BoxFit.cover)),
+                        )
+                            : Container(
+                          width: 120.w,
+                          height: 120.h,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.rectangle,
+                              border: Border.all(
+                                  width: 2.w, color: AppColors.white),
+                              image: const DecorationImage(
+                                  image: NetworkImage(
+                                      'https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg'),
+                                  fit: BoxFit.cover)),
+                        ),
+                        Positioned(
+                            bottom: -5.h,
+                            right: -5.w,
+                            child: GestureDetector(
+                                onTap: () {
+                                  showImagePickerOption(context);
+                                },
+                                child: SvgPicture.asset(AppIcons.editFram)))
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(4),
+                    child: Text('Account ID',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  ),
+                  CustomTextField(
+                    controller: _nameController,
+                    hintText: '20103200',
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(4),
+                    child: Text('Full Name',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  ),
+                  CustomTextField(
+                    controller: _nameController,
+                    hintText: 'Mahafujer',
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(4),
+                    child: Text('Last Name',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  ),
+                  CustomTextField(
+                    controller: _emailController,
+                    hintText: 'Rahman',
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(4),
+                    child: Text('Public display name',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  ),
+                  CustomTextField(
+                    controller: _addressController,
+                    hintText: 'Public',
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(4),
+                    child: Text('Gender',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  ),
+                  CustomTextField(
+                    controller: _addressController,
+                    hintText: 'Male',
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(4),
+                    child: Text('Birthday',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        width: 108.w,
+                        child: CustomTextField(
+                          controller: birthDayDayController,
+                          hintText: 'Day',
+                          sufixicons: Padding(
+                            padding: EdgeInsets.only(right: 12.w),
+                            child: SvgPicture.asset(
+                              AppIcons.downArrowIcon,
+                              width: 16.w,
+                              color: AppColors.primaryColor,
+                            ),
+                          ),
+                        ),
                       ),
+                      SizedBox(
+                        width: 108.w,
+                        child: CustomTextField(
+                          controller: birthDayMonthController,
+                          hintText: 'Month',
+                          sufixicons: Padding(
+                            padding: EdgeInsets.only(right: 12.w),
+                            child: SvgPicture.asset(
+                              AppIcons.downArrowIcon,
+                              width: 16.w,
+                              color: AppColors.primaryColor,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 108.w,
+                        child: CustomTextField(
+                          controller: birthDayYearController,
+                          hintText: 'Year',
+                          sufixicons: Padding(
+                            padding: EdgeInsets.only(right: 12.w),
+                            child: SvgPicture.asset(
+                              AppIcons.downArrowIcon,
+                              width: 16.w,
+                              color: AppColors.primaryColor,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(4),
+                    child: Text('Email',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  ),
+                  CustomTextField(
+                    keyboardType: TextInputType.text,
+                    controller: _emailController,
+                    hintText: 'Rahman@gmail.com',
+                    prifixicon: _prefixIcon(AppIcons.mailIcon),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(4),
+                    child: Text('Phone Number',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                            color: AppColors.fillColor,
+                            border: Border.all(
+                                width: 1.w, color: AppColors.primaryColor),
+                            borderRadius: BorderRadius.circular(8.r)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            CountryCodePicker(
+                              showFlag: false,
+                              showFlagDialog: true,
+                              onChanged: (countryCode) {
+                                setState(() {
+                                  selectedCountryCodes = countryCode.dialCode!;
+                                });
+                              },
+                              initialSelection: 'BD',
+                              favorite: ['+880', 'BD'],
+                              showCountryOnly: false,
+                              showOnlyCountryWhenClosed: false,
+                              alignLeft: false,
+                            ),
+                            Padding(
+                                padding: EdgeInsets.only(right: 5.w),
+                                child: Icon(Icons.arrow_drop_down_sharp))
+                          ],
+                        ),
+                      ),
+                      SizedBox(width: 10.w),
+                      Expanded(
+                        child: CustomTextField(
+                          controller: phoneNumberController,
+                          keyboardType: TextInputType.phone,
+                          hintText: AppStrings.phoneNumberHintText,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(4),
+                    child: Text('Location',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        width: 108.w,
+                        child: CustomTextField(
+                          controller: locationCountryController,
+                          hintText: 'Country',
+                          sufixicons: Padding(
+                            padding: EdgeInsets.only(right: 12.w),
+                            child: SvgPicture.asset(
+                              AppIcons.downArrowIcon,
+                              width: 16.w,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 108.w,
+                        child: CustomTextField(
+                          controller: locationStateController,
+                          hintText: 'State',
+                          sufixicons: Padding(
+                            padding: EdgeInsets.only(right: 12.w),
+                            child: SvgPicture.asset(
+                              AppIcons.downArrowIcon,
+                              width: 16.w,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 108.w,
+                        child: CustomTextField(
+                          controller: locationCityController,
+                          hintText: 'City',
+                          sufixicons: Padding(
+                            padding: EdgeInsets.only(right: 12.w),
+                            child: SvgPicture.asset(
+                              AppIcons.downArrowIcon,
+                              width: 16.w,
+                            ),
+                          ),
+                        ),
+                      ),
+
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('assets/images/RectangleBorder.png'),
+                          fit: BoxFit.contain,
+                      ),
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                    //======================================> Text From Field Section <===============================================
-                    SizedBox(height: 26.h),
-                    CustomTextField(
-                        controller: _nameController,
-                        hintText: 'Enter your name',
-                        prifixicon: _prefixIcon(AppIcons.singlePerson)),
-                    SizedBox(height: 16.h),
-                    //=================================> Email <=========================
-                    CustomTextField(
-                        controller: _emailController,
-                        hintText: 'Enter your e-mail',
-                        prifixicon: _prefixIcon(AppIcons.mailIcon)),
-                    SizedBox(height: 16.h),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(4),
+                          child: Text(
+                            'Skill',
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(4),
+                              child: Text(
+                                'Start Year',
+                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                          SizedBox(width: 80.w),
+                            Padding(
+                              padding: const EdgeInsets.all(4),
+                              child: Text(
+                                'Program',
+                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.all(4),
+                                child: DropdownButtonFormField<String>(
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                                    labelText: 'Select Year',
+                                  ),
+                                  value: null,
+                                  items: ['2020', '2021', '2022', '2023']
+                                      .map((year) => DropdownMenuItem(
+                                    value: year,
+                                    child: Text(year),
+                                  ))
+                                      .toList(),
+                                  onChanged: (value) {
+                                    // Handle year selection
+                                  },
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 8), // Spacing between the dropdown fields
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.all(4),
+                                child: DropdownButtonFormField<String>(
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    contentPadding: EdgeInsets.symmetric(horizontal: 2),
+                                    labelText: 'Select Program',
+                                  ),
+                                  value: null,
+                                  items: ['Chess', 'Math', 'Piano']
+                                      .map((program) => DropdownMenuItem(
+                                    value: program,
+                                    child: Text(
+                                      program,
+                                      style: TextStyle(fontSize: 12),
+                                    ),
+                                  ))
+                                      .toList(),
+                                  onChanged: (value) {
+                                    // Handle program selection
+                                  },
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10),
+                        CustomButton(
+                            color: AppColors.buttonColor,
+                            borderColor: Colors.white,
+                            onTap: (){},
+                            text: "Add",
+                          textColor:Colors.white,
+                        ),
+                        SizedBox(height: 16),
+                        Text(
+                          'Added Skill',
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                        ),
+                        SizedBox(height: 8),
+                        Padding(
+                          padding: const EdgeInsets.all(4),
+                          child: Text('Skill',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600)),
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            color:AppColors.colorEDF2F4,
+                            borderRadius: BorderRadius.all(Radius.circular(8)),
+                            border: Border.all(color: AppColors.primaryColor, width: 1),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding:  EdgeInsets.symmetric(horizontal: 8.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text.rich(
+                                        TextSpan(
+                                          children: [
+                                            TextSpan(
+                                              text: '\u2022 ',
+                                              style: TextStyle(color: AppColors.primaryColor),
+                                            ),
+                                            TextSpan(
+                                              text: 'Chess since 2020',
+                                              style: TextStyle(color: Colors.black),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Row(
+                                        children: [
+                                          InkWell(
+                                              onTap: (){
+                                                Get.back();
+                                              },
+                                              child: SvgPicture.asset(AppIcons.editIcon)
+                                          ),
+                                          SizedBox(width: 4),
+                                          InkWell(
+                                              onTap: (){
+                                                Get.back();
+                                              },
+                                              child: SvgPicture.asset(AppIcons.trashIcon)
+                                          )
+                                        ],
+                                      ),
 
-                    //=================================> Phone Number <=========================
-                    CustomTextField(
-                      keyboardType: TextInputType.number,
-                      controller: _phoneNumberController,
-                      hintText: '(000) 000-0000',
-                      prifixicon: _prefixIcon(AppIcons.phoneIcon),
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding:  EdgeInsets.symmetric(horizontal: 8.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text.rich(
+                                        TextSpan(
+                                          children: [
+                                            TextSpan(
+                                              text: '\u2022 ',
+                                              style: TextStyle(color: AppColors.primaryColor),
+                                            ),
+                                            TextSpan(
+                                              text: 'Math since 2021',
+                                              style: TextStyle(color: Colors.black),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Row(
+                                        children: [
+                                          InkWell(
+                                              onTap: (){
+                                                Get.back();
+                                              },
+                                              child: SvgPicture.asset(AppIcons.editIcon)
+                                          ),
+                                          SizedBox(width: 4),
+                                          InkWell(
+                                              onTap: (){
+                                                Get.back();
+                                              },
+                                              child: SvgPicture.asset(AppIcons.trashIcon)
+                                          )
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding:  EdgeInsets.symmetric(horizontal: 8.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text.rich(
+                                        TextSpan(
+                                          children: [
+                                            TextSpan(
+                                              text: '\u2022 ',
+                                              style: TextStyle(color: AppColors.primaryColor),
+                                            ),
+                                            TextSpan(
+                                              text: 'Piano since 2023',
+                                              style: TextStyle(color: Colors.black),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Row(
+                                        children: [
+                                          InkWell(
+                                              onTap: (){
+                                                Get.back();
+                                              },
+                                              child: SvgPicture.asset(AppIcons.editIcon)
+                                          ),
+                                          SizedBox(width: 4),
+                                          InkWell(
+                                              onTap: (){
+                                                Get.back();
+                                              },
+                                              child: SvgPicture.asset(AppIcons.trashIcon)
+                                          )
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+
+                      ],
                     ),
-                    SizedBox(height: 16.h),
+                  ),
+                  SizedBox(height: 10),
+                  CustomButton(
+                    color: AppColors.buttonColor,
+                    borderColor: Colors.white,
+                    onTap: (){},
+                    text: "Update Profile",
+                    textColor:Colors.white,
+                  ),
 
-                    //=================================> Address <=========================
-                    CustomTextField(
-                      keyboardType: TextInputType.text,
-                      controller: _addressController,
-                      hintText: 'Enter your address',
-                      prifixicon: _prefixIcon(AppIcons.locationIcon),
-                    ),
-                    SizedBox(height: 16.h),
-
-                    const Spacer(),
-
-                    //===========================> Update profile button <===================
-                    CustomButton(
-                        text: AppStrings.updateProfile,
-                        textColor: Colors.white,
-                        onTap: () {
-                          /*_profileController.editProfile(
-                              _nameController.text,
-                              _phoneNumberController.text,
-                              selectedIMage,
-                              _emailController.text);*/
-                        }),
-                    SizedBox(height: 24.h),
-                  ],
-                ),
+                ],
               ),
             ),
           );
         },
       ),
+
     );
   }
 
