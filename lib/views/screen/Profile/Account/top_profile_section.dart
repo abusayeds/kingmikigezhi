@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import '../../../../../utils/app_colors.dart';
-import '../../../../base/custom_text.dart';
+import '../../../../utils/app_colors.dart';
+import '../../../base/custom_text.dart';
 
 class TopProfileSection extends StatelessWidget {
   final String? name;
@@ -40,10 +40,9 @@ class TopProfileSection extends StatelessWidget {
                           ),
                           shape: BoxShape.rectangle,
                           border: Border.all(width: 2.w, color: AppColors.primaryColor)),
-                      child: Image.network(
-                        'https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg',
-                        fit: BoxFit.cover,
-                      ),
+                      child: Image.asset('assets/images/song.png',fit: BoxFit.cover)
+
+                     // Image.network('https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg', fit: BoxFit.cover,),
                     ),
                     SizedBox(width: 8),
                     //=================================> Profile Name <==========================

@@ -57,6 +57,7 @@ class AppIcons{
   static String trashIcon ="$baseUrl/trash.svg";
   static String dotIconForFamily ="$baseUrl/doticonforfamily.svg";
   static String medalStar ="$baseUrl/medal-star.svg";
+  static String calenderIcon ="$baseUrl/calenderIcon.svg";
 
 
 }
