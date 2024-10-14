@@ -150,7 +150,8 @@ class _SignInScreenState extends State<SignInScreen> {
                           child: CustomText(
                             text: AppStrings.signUp,
                             color: AppColors.primaryColor,
-                            fontWeight: FontWeight.w700,
+                            fontWeight: FontWeight.w600,
+                            decoration:TextDecoration.underline,
                           ))
                     ],
                   )

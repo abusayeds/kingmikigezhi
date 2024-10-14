@@ -68,7 +68,6 @@ class OnboardSecondScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-
                 //========================> Sign Up Button <====================
                 SizedBox(height: 16.h),
                 CustomButton(
@@ -89,7 +88,7 @@ class OnboardSecondScreen extends StatelessWidget {
                       color: Colors.white,
                       fontsize: 16.sp,
                       fontWeight: FontWeight.w500,
-                    ))
+                  ))
               ],
             ),
           ),

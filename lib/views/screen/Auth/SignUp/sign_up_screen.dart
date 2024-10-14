@@ -56,7 +56,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return "Please enter your email";
+                        return "Please enter your email33333333";
                       }
                       return null;
                     },
@@ -96,7 +96,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   SizedBox(height: 24.h),
                   CustomButton(
                     onTap: () {
-                      Get.toNamed(AppRoutes.homeScreen);
+                      Get.toNamed(AppRoutes.createAccountScreen);
                     },
                     text: 'Continue',
                     color: AppColors.buttonColor,

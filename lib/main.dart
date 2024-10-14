@@ -6,7 +6,6 @@ import 'controllers/localization_controller.dart';
 import 'controllers/theme_controller.dart';
 import 'helpers/di.dart' as di;
 import 'helpers/route.dart';
-import 'themes/dark_theme.dart';
 import 'themes/light_theme.dart';
 import 'utils/app_constants.dart';
 import 'utils/message.dart';
@@ -14,9 +13,9 @@ import 'utils/message.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  Map<String, Map<String, String>> _languages = await di.init();
+  Map<String, Map<String, String>> languages = await di.init();
   runApp(MyApp(
-    languages: _languages,
+    languages: languages,
   ));
 }
 
@@ -45,7 +44,7 @@ class MyApp extends StatelessWidget {
                     AppConstants.languages[0].countryCode),
                 transitionDuration: const Duration(milliseconds: 500),
                 getPages: AppRoutes.page,
-                initialRoute: AppRoutes.homeScreen,
+                initialRoute: AppRoutes.onboardScreen,
               );
             });
       });

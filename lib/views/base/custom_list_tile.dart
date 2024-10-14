@@ -11,6 +11,7 @@ class CustomListTile extends StatelessWidget {
   final Widget? suffixIcon;
   final Color? borderColor;
   final VoidCallback? onTap;
+  final Color? backgroundColor;
   CustomListTile({
     super.key,
     required this.title,
@@ -18,6 +19,7 @@ class CustomListTile extends StatelessWidget {
     this.prefixIcon,
     this.suffixIcon,
     this.borderColor,
+    this.backgroundColor,
   });
 
   @override
@@ -30,7 +32,7 @@ class CustomListTile extends StatelessWidget {
           clipBehavior: Clip.antiAlias,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8.r),
-              color: Colors.white,
+              color:backgroundColor,
               border: Border.all(
                   width: 1.w, color: borderColor ?? AppColors.borderColor)),
           child: ListTile(

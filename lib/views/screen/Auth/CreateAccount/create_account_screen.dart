@@ -26,16 +26,22 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController genderController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
-  final TextEditingController birthDayController = TextEditingController();
-  final TextEditingController locationController = TextEditingController();
+
+  final TextEditingController birthDayYearController = TextEditingController();
+  final TextEditingController birthDayMonthController = TextEditingController();
+  final TextEditingController birthDayDayController = TextEditingController();
+
+  final TextEditingController locationCountryController = TextEditingController();
+  final TextEditingController locationStateController = TextEditingController();
+  final TextEditingController locationCityController = TextEditingController();
+
+
+
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
   bool isChecked = false;
   String? selectedGender;
-  List<String> genderList = [
-    'Male',
-    'Female',
-  ];
+  List<String> genderList = ['Male', 'Female'];
 
   @override
   Widget build(BuildContext context) {
@@ -123,7 +129,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     SizedBox(
                       width: 108.w,
                       child: CustomTextField(
-                        controller: birthDayController,
+                        controller: birthDayYearController,
                         hintText: 'Year',
                         sufixicons: Padding(
                           padding: EdgeInsets.only(right: 12.w),
@@ -139,7 +145,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     SizedBox(
                       width: 108.w,
                       child: CustomTextField(
-                        controller: birthDayController,
+                        controller: birthDayMonthController,
                         hintText: 'Month',
                         sufixicons: Padding(
                           padding: EdgeInsets.only(right: 12.w),
@@ -155,7 +161,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     SizedBox(
                       width: 108.w,
                       child: CustomTextField(
-                        controller: birthDayController,
+                        controller: birthDayDayController,
                         hintText: 'Day',
                         sufixicons: Padding(
                           padding: EdgeInsets.only(right: 12.w),
@@ -183,7 +189,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                    SizedBox(
                      width: 108.w,
                      child: CustomTextField(
-                         controller: locationController,
+                         controller: locationCountryController,
                        hintText: 'Country',
                        sufixicons: Padding(
                          padding: EdgeInsets.only(right: 12.w),
@@ -199,17 +205,15 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                    SizedBox(
                      width: 108.w,
                      child: CustomTextField(
-                       controller: locationController,
+                       controller: locationStateController,
                        hintText: 'State',
-
                      ),
                    ),
                    SizedBox(
                      width: 108.w,
                      child: CustomTextField(
-                       controller: locationController,
+                       controller: locationCityController,
                        hintText: 'City',
-
                      ),
                    ),
                  ],
@@ -324,7 +328,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               _pickBirthDate(context);
             },
             readOnly: true,
-            controller: birthDayController,
+            controller: birthDayYearController,
             hintText: 'Month-Day-year',
             sufixicons: Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -400,6 +404,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
       onTap: () {
         if (_formKey.currentState!.validate()) {
           // Perform sign up action
+          Get.toNamed(AppRoutes.homeScreen);
         }
       },
       color: AppColors.buttonColor,
@@ -441,7 +446,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
     );
     if (pickedDate != null) {
       setState(() {
-        birthDayController.text =
+        birthDayYearController.text =
             "${pickedDate.month}-${pickedDate.day}-${pickedDate.year}";
       });
     }
