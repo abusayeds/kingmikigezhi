@@ -62,45 +62,50 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 itemCount: categories.length,
                 itemBuilder: (context, index) {
                   final category = categories[index];
-                  return Card(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16.r)),
-                    child: Stack(
-                      children: [
-                        Positioned.fill(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(16.r),
-                            child: Image.asset(
-                              category["imageUrl"]!,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.grey.withOpacity(0.8),
-                              borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(16.r),
-                                bottomRight: Radius.circular(16.r),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 12.w,
-                                vertical: 8.h,
-                              ),
-                              child: CustomText(
-                                text: category["name"]!,
-                                fontWeight: FontWeight.w500,
+                  return GestureDetector(
+                    onTap: (){
+                      Get.toNamed(AppRoutes.eventDetailsScreen);
+                    },
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16.r)),
+                      child: Stack(
+                        children: [
+                          Positioned.fill(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(16.r),
+                              child: Image.asset(
+                                category["imageUrl"]!,
+                                fit: BoxFit.cover,
                               ),
                             ),
                           ),
-                        )
-                      ],
+                          Positioned(
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.grey.withOpacity(0.8),
+                                borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(16.r),
+                                  bottomRight: Radius.circular(16.r),
+                                ),
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 12.w,
+                                  vertical: 8.h,
+                                ),
+                                child: CustomText(
+                                  text: category["name"]!,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   );
                   },
@@ -110,7 +115,6 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       ),
     );
   }
-
   //============================> Search Bar Section <=================================
   _searchBar() {
     return Row(
