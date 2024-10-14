@@ -37,8 +37,8 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
-                    height: 30.h,
-                    width: 30.w,
+                    height: 36.h,
+                    width: 36.w,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(30)),
                       color: AppColors.buttonColor,
@@ -267,42 +267,39 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                         ),
                       ),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SvgPicture.asset(AppIcons.eyeIcon, width: 24.w,height:24.h,color: AppColors.backgroundColor),
+                          SvgPicture.asset(AppIcons.eyeIcon, width: 24.w,height:24.h,color: Colors.white,),
                           SizedBox(width: 4.w),
-                          Text(
-                            'View Profile',
-                            style: AppStyles.h4(color: AppColors.backgroundColor),
-                          ),
+                          Text('View Profile', style: AppStyles.h5(color: AppColors.backgroundColor),),
                         ],
                       ),
                     ),
                   ),
-                  SizedBox(width: 16.w),
+                  SizedBox(width: MediaQuery.of(context).size.width * 0.02),
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {},
                       style: ElevatedButton.styleFrom(
-                        minimumSize: Size(double.infinity, 62),
+                        minimumSize: Size(double.infinity, 58),
                         backgroundColor: AppColors.primaryColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(100.r),
                         ),
                       ),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SvgPicture.asset(AppIcons.delete, width: 24.w,height:24.h),
-                          Text(
-                            'Delete Profile',
-                            style: AppStyles.h4(color: AppColors.backgroundColor),
-                          ),
+                          SizedBox(width: 4.w),
+                          Text('Delete Profile', style: AppStyles.h5(color: AppColors.backgroundColor)),
                         ],
                       ),
                     ),
                   ),
                 ],
-              ),
-            ],
+              )
+          ],
           ),
         );
       },

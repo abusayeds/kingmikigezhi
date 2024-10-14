@@ -80,6 +80,7 @@ class _MyInvitationPageState extends State<MyInvitationPage> {
                   ),
                   subtitle: Text(invitee['location']),
                   trailing: Checkbox(
+                    activeColor: AppColors.primaryColor,
                     value: invitee['checked'],
                     onChanged: (bool? value) {
                       _toggleCheckbox(index, value);

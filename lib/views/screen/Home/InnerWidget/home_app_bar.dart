@@ -10,9 +10,7 @@ import '../../../../utils/app_images.dart';
 import '../../../base/custom_text.dart';
 
 class HomeAppBar extends StatelessWidget {
-  HomeAppBar({
-    super.key,
-  });
+  HomeAppBar({super.key});
 
   //final HomeController _homeController = Get.put(HomeController());
   //final ProfileController _profileController = Get.put(ProfileController());
@@ -108,8 +106,9 @@ class HomeAppBar extends StatelessWidget {
           },
           child: CircleAvatar(
               radius: 20.r,
-              backgroundImage: const NetworkImage(
-                  "https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg")),
+              backgroundImage: AssetImage('assets/images/song.png'),
+            //  NetworkImage("https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg")
+          ),
         ),
       ],
     );

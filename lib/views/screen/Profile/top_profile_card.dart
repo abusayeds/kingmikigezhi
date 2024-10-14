@@ -49,15 +49,15 @@ class TopProfileCard extends StatelessWidget {
                   ? Container(
                       decoration: const BoxDecoration(
                           image: DecorationImage(
-                              image: NetworkImage(
-                                  'https://www.whitehouse.gov/wp-content/uploads/2021/01/44_barack_obama.jpg'),
+                              image: AssetImage('assets/images/song.png'),
+                             // image: NetworkImage('https://www.whitehouse.gov/wp-content/uploads/2021/01/44_barack_obama.jpg'),
                               fit: BoxFit.cover)),
                     )
                   : Container(
                       decoration: const BoxDecoration(
                           image: DecorationImage(
-                              image: NetworkImage(
-                                  'https://www.whitehouse.gov/wp-content/uploads/2021/01/44_barack_obama.jpg'),
+                             // image: NetworkImage('https://www.whitehouse.gov/wp-content/uploads/2021/01/44_barack_obama.jpg'),
+                              image: AssetImage('assets/images/song.png'),
                               fit: BoxFit.cover)),
                     )),
           Expanded(

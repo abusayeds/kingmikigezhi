@@ -12,7 +12,7 @@ class EventCard extends StatelessWidget {
     return Card(
       color: const Color(0xffedf2f4),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(20.r),
       ),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 10.h),
@@ -22,7 +22,7 @@ class EventCard extends StatelessWidget {
             Stack(
               children: [
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(20.r),
                   child: Image.asset(
                     'assets/images/shoot.png',
                     height: 160.h,
@@ -66,6 +66,7 @@ class EventCard extends StatelessWidget {
                       children: [
                         CustomText(
                           text: 'Snowboard Festival',
+                          fontsize: 16.sp,
                           fontWeight: FontWeight.w500,
                         ),
                         SvgPicture.asset(
@@ -86,16 +87,16 @@ class EventCard extends StatelessWidget {
                             children: [
                               Icon(Icons.circle,
                                   color: AppColors.primaryColor, size: 12.w),
-                              SizedBox(width: 8.w),
-                              CustomText(text: 'Onsite Event'),
+                              SizedBox(width: 4.w),
+                              CustomText(text: 'Onsite Event', fontsize: 12.sp,),
                             ],
                           ),
                           Row(
                             children: [
                               Icon(Icons.circle,
                                   color: AppColors.primaryColor, size: 12.w),
-                              SizedBox(width: 8.w),
-                              CustomText(text: 'Dhaka Bangladesh'),
+                              SizedBox(width: 4.w),
+                              CustomText(text: 'Dhaka Bangladesh', fontsize: 12.sp,),
                             ],
                           ),
                         ],
@@ -107,16 +108,18 @@ class EventCard extends StatelessWidget {
                             children: [
                               Icon(Icons.circle,
                                   color: AppColors.primaryColor, size: 12.w),
-                              SizedBox(width: 8.w),
-                              CustomText(text: ' Cost-100'),
+                              SizedBox(width: 4.w),
+                              CustomText(text: ' Cost-100', fontsize: 12.sp,),
                             ],
                           ),
                           Row(
                             children: [
                               Icon(Icons.circle,
                                   color: AppColors.primaryColor, size: 12.w),
-                              SizedBox(width: 8.w),
-                              CustomText(text: 'Deadline: 1-6-2025'),
+                              SizedBox(width: 4.w),
+                              CustomText(text: 'Deadline: 1-6-2025',
+                                fontsize: 12.sp,
+                              ),
                             ],
                           ),
                         ],

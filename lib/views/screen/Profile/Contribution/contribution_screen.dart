@@ -113,21 +113,21 @@ class _MyContributionScreenState extends State<MyContributionScreen> {
                                             children: [
                                               SvgPicture.asset(AppIcons.dotIconForFamily),
                                               SizedBox(width: 4),
-                                              Text('Onsite Event',style: TextStyle(fontSize: 8),),
+                                              Text('Onsite Event',style: TextStyle(fontSize: 8.sp),),
                                             ],
                                           ),
                                           Row(
                                             children: [
                                               SvgPicture.asset(AppIcons.dotIconForFamily),
                                               SizedBox(width: 4),
-                                              Text('Dhaka Bangladesh',style: TextStyle(fontSize: 8),),
+                                              Text('Dhaka Bangladesh',style: TextStyle(fontSize: 8.sp),),
                                             ],
                                           ),
                                           Row(
                                             children: [
                                               SvgPicture.asset(AppIcons.dotIconForFamily),
                                               SizedBox(width: 4),
-                                              Text('History: 2023-1st winner',style: TextStyle(fontSize: 8),),
+                                              Text('History: 2023-1st winner',style: TextStyle(fontSize: 8.sp),),
                                             ],
                                           ),
                                         ],
@@ -139,14 +139,14 @@ class _MyContributionScreenState extends State<MyContributionScreen> {
                                             children: [
                                               SvgPicture.asset(AppIcons.dotIconForFamily),
                                               SizedBox(width: 4),
-                                              Text('Cost : \$100',style: TextStyle(fontSize: 8),),
+                                              Text('Cost : \$100',style: TextStyle(fontSize: 8.sp),),
                                             ],
                                           ),
                                           Row(
                                             children: [
                                               SvgPicture.asset(AppIcons.dotIconForFamily),
                                               SizedBox(width: 4),
-                                              Text('Deadline: 1-6-2025',style: TextStyle(fontSize: 8),),
+                                              Text('Deadline: 1-6-2025',style: TextStyle(fontSize: 8.sp),),
                                             ],
                                           ),
                                         ],
