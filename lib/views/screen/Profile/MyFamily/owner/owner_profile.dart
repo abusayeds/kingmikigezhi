@@ -37,8 +37,8 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
-                    height: 30.h,
-                    width: 30.w,
+                    height: 36.h,
+                    width: 36.w,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(30)),
                       color: AppColors.buttonColor,
@@ -284,7 +284,7 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
                           SizedBox(width: 4.w),
                           Text(
                             'View Profile',
-                            style: AppStyles.h4(color: AppColors.backgroundColor),
+                            style: AppStyles.h5(color: AppColors.backgroundColor),
                           ),
                         ],
                       ),
@@ -293,8 +293,7 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
                   SizedBox(width: 10.w),
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () {
-                      },
+                      onPressed: () {},
                       style: ElevatedButton.styleFrom(
                         minimumSize: Size(double.infinity, 58),
                         backgroundColor: AppColors.primaryColor,
@@ -307,7 +306,7 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
                           SvgPicture.asset(AppIcons.delete, width: 24.w,height:24.h),
                           Text(
                             'Delete Profile',
-                            style: AppStyles.h4(color: AppColors.backgroundColor),
+                            style: AppStyles.h5(color: AppColors.backgroundColor),
                           ),
                         ],
                       ),

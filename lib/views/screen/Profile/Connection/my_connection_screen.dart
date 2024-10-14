@@ -67,7 +67,7 @@ class _MyConnectionScreenState extends State<MyConnectionScreen>
                   child: Align(
                     alignment: Alignment.center,
                     child: CustomText(
-                      text: 'New Invitations(300)',
+                      text: 'New Invitations(30)',
                       color: _tabController.index == 0
                           ? Colors.white
                           : Colors.black,
@@ -90,7 +90,7 @@ class _MyConnectionScreenState extends State<MyConnectionScreen>
                   child: Align(
                     alignment: Alignment.center,
                     child: CustomText(
-                      text:  'Connections(300)',
+                      text:  'Connections(30)',
                       color: _tabController.index == 1
                           ? Colors.white
                           : Colors.black,

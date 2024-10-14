@@ -1,7 +1,7 @@
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:event_sharing/utils/app_strings.dart';
 import 'package:event_sharing/views/base/custom_text_field.dart';
-import 'package:event_sharing/views/screen/Profile/Account/InnerWidget/top_profile_section.dart';
+import 'package:event_sharing/views/screen/Profile/Account/top_profile_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';

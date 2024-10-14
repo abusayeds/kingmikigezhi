@@ -64,7 +64,6 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: const BottomMenu(0),
       body: SafeArea(
         child: SingleChildScrollView(
-          // Wrap everything in a scroll view
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 10.h),
             child: Column(
@@ -76,20 +75,19 @@ class _HomeScreenState extends State<HomeScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-
                     Container(
                       height: 25.h,width: 120.w,
-                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: EdgeInsets.symmetric(horizontal: 8.h, vertical: 4.w),
                       decoration: BoxDecoration(
                         color: Colors.blueGrey, // Background color
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(8.r),
                       ),
                       child: DropdownButton<String>(
                         value: dropdownValue,
                         underline: SizedBox(),
-                        icon: Icon(Icons.arrow_drop_down, color: Colors.white,size: 15),
+                        icon: Icon(Icons.arrow_drop_down, color: Colors.white,size: 12.sp),
                         dropdownColor: Colors.black,
-                        style: TextStyle(color: Colors.white,fontSize: 12),
+                        style: TextStyle(color: Colors.white,fontSize: 10.sp),
                         onChanged: (String? newValue) {
                           setState(() {
                             dropdownValue = newValue!;
@@ -125,7 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 _pianoList(),
                 SizedBox(height: 16.h),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  padding:  EdgeInsets.symmetric(vertical: 8.w),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -164,9 +162,8 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
 //============================> Search Bar Section <=================================
-  _searchBar() {
+  _searchBar()  {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -211,7 +208,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ],
     );
   }
-
 //============================> Gray Event Card Section <=================================
   _grayEventCard() {
     return Container(
@@ -485,24 +481,21 @@ class _HomeScreenState extends State<HomeScreen> {
             });
           },
           headerStyle: HeaderStyle(
-            rightChevronIcon: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                InkWell(
-                  onTap: () {
-                    setState(() {
-                      _calendarFormat = _calendarFormat == CalendarFormat.week
-                          ? CalendarFormat.month
-                          : CalendarFormat.week;
-                    });
-                  },
-                  child: Icon(Icons.calendar_today_rounded,color: AppColors.primaryColor,),
-                ),
-              ],
+            rightChevronIcon: InkWell(
+              onTap: () {
+                setState(() {
+                  _calendarFormat = _calendarFormat == CalendarFormat.week
+                      ? CalendarFormat.month
+                      : CalendarFormat.week;
+                });
+              },
+            //  child: Icon(Icons.calendar_today_rounded, color: AppColors.primaryColor),
+              child: SvgPicture.asset(AppIcons.calendarIcon)
             ),
             leftChevronIcon: const SizedBox(),
             formatButtonVisible: false,
-            titleCentered: true,
+            titleCentered: false,
+            titleTextStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           calendarStyle: CalendarStyle(
             todayDecoration: BoxDecoration(
@@ -518,21 +511,4 @@ class _HomeScreenState extends State<HomeScreen> {
       ],
     );
   }
-
-
-  //========================================> SearchDate Method <============================
-  Future<void> searchDate() async {
-    final DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1900),
-      lastDate: DateTime(3050),
-    );
-    if (pickedDate != null) {
-      _searchController.text =
-          "${pickedDate.month}-${pickedDate.day}-${pickedDate.year}";
-      print('Selected date: ${_searchController.text}');
-    }
-  }
-
 }
