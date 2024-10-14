@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -11,9 +10,7 @@ import '../../../../utils/app_images.dart';
 import '../../../base/custom_text.dart';
 
 class HomeAppBar extends StatelessWidget {
-  HomeAppBar({
-    super.key,
-  });
+  HomeAppBar({super.key});
 
   //final HomeController _homeController = Get.put(HomeController());
   //final ProfileController _profileController = Get.put(ProfileController());
@@ -76,11 +73,11 @@ class HomeAppBar extends StatelessWidget {
         //=======================> Heart Button <=======================
         GestureDetector(
           onTap: () {
-            //Get.toNamed(AppRoutes.notificationsScreen);
+            Get.toNamed(AppRoutes.suggestionDonationPage);
           },
           child: SvgPicture.asset(
             AppIcons.heart,
-            color: AppColors.primaryColor,
+            color: AppColors.colorD9A951,
             height: 28.h,
             width: 32.w,
           ),
@@ -103,10 +100,16 @@ class HomeAppBar extends StatelessWidget {
         ),
         SizedBox(width: 13.w),
         //=======================> Profile Icon <=======================
-        CircleAvatar(
-            radius: 20.r,
-            backgroundImage: const NetworkImage(
-                "https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg")),
+        InkWell(
+          onTap: (){
+            Get.toNamed(AppRoutes.personalInformationScreen);
+          },
+          child: CircleAvatar(
+              radius: 20.r,
+              backgroundImage: AssetImage('assets/images/song.png'),
+            //  NetworkImage("https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg")
+          ),
+        ),
       ],
     );
   }

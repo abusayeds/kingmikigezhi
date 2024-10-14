@@ -124,7 +124,7 @@ class OnboardScreen extends StatelessWidget {
                 //========================> Get Start Button <====================
                 CustomButton(
                   onTap: () {
-                    Get.toNamed(AppRoutes.onboardSecondScreen);
+                    Get.toNamed(AppRoutes.signInScreen);
                   },
                   text: AppStrings.getStart,
                   color: Colors.white,

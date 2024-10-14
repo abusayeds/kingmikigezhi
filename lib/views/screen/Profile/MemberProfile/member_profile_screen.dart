@@ -59,7 +59,7 @@ class MemberProfileScreen extends StatelessWidget {
                   )),
               //=================================> Address Number <========================
               CustomListTile(
-                  title: 'Partner'??'',
+                  title: 'Partner'?? '',
                   prefixIcon: _prefixIcon(
                     AppIcons.ownershipIcon,
                   )),

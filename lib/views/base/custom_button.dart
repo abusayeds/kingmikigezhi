@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../utils/app_colors.dart';
-import '../../utils/style.dart';
+
 
 class CustomButton extends StatelessWidget {
   const CustomButton(
@@ -39,7 +39,7 @@ class CustomButton extends StatelessWidget {
             shape: RoundedRectangleBorder(
                 side: BorderSide(width: 1.w, color: borderColor ?? AppColors.bottomBarColor),
                 borderRadius: BorderRadius.circular(8.r)),
-            backgroundColor: color ?? AppColors.bottomBarColor,
+            backgroundColor: color ?? AppColors.buttonA47059,
             minimumSize: Size(width ?? Get.width, height ?? 53.h),
           ),
           child: loading

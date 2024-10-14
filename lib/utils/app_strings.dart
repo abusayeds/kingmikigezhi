@@ -31,7 +31,6 @@ class AppStrings{
   static String confirmPassword = "Confirm Password";
   static String byCreatingAccount = "By creating an account, I accept the";
   static String termsAndConditions = "Terms & Conditions";
-  static String privacyPolicy = "Privacy Policy";
   static String alreadyHaveAccount = "Already have an account?";
 
 //================> Forgot Password Screen <====================
@@ -57,20 +56,35 @@ class AppStrings{
   static String personalInformation = "Personal Information";
   static String ownership = "Ownership";
   static String memberProfile  = "Member Profile";
+  static String ownerProfile  = "Owner Profile";
   static String myDonate  = "My Donate";
-  static String myEvent  = "My Event";
-  static String settings  = "Settings";
-  static String logout  = "Logout";
-  static String editProfile  = "Edit Profile";
+
+
+
+  static String editProfile  = "Edit Account";
+  static String createProfile  = "Create Member Account";
   static String updateProfile  = "Update Profile";
   static String areYouSure  = "Are you sure you want to log out ?";
   static String on  = "No";
   static String yes  = "Yes";
 
+  static String account  = "Account";
+  static String myFamily  = "My Family";
+  static String myEvent  = "My Event";
+  static String connection  = "Connection";
+  static String contribution  = "Contribution";
+  static String invitation  = "Invitation";
+  static String settings  = "Settings";
+  static String aboutUs  = "About Us";
+  static String termsConditions  = "Terms & Conditions";
+  static String privacyPolicy = "Privacy Policy";
+  static String logout  = "Logout";
+
+
+
 
 //================> Settings Screen <====================
   static String changePassword = "Change Password";
-  static String aboutUs = "About Us";
   static String oldPassword = "Old password";
   static String reNewPassword = "Re-enter new password";
 
@@ -80,13 +94,15 @@ class AppStrings{
   static String seeAll = "See all";
   static String upcomingEvent = "Upcoming Event";
   static String notifications = "Notifications";
-  static String detailsEvent = "Details Event";
-  static String aboutEvent = "About Event";
+  static String detailsEvent = "Event Details";
+  static String description = "Description";
+  static String note = "Note";
   static String eventMap = "Event Map";
   static String search = "Search";
   static String startTime = "Start Time";
   static String endTime = "End Time";
   static String filter = "Filter";
+  static String appliedEvent = "Applied Event";
 
   //================> Create New Event Screen <====================
   static String createNewEvent = "Create New Event";
@@ -120,6 +136,10 @@ class AppStrings{
   //================>  Ownership list Screen <====================
   static String  ownershipList   = " Ownership List";
   static String  addOwnership   = " Add Ownership";
+
+
+  //================>  Account Screen <====================
+  static String  phoneNumberHintText   = "Enter  phone number";
 
 
 }

@@ -1,5 +1,33 @@
+import 'package:event_sharing/views/screen/AddEvent/create_event_one.dart';
+import 'package:event_sharing/views/screen/AddEvent/stepTwoForm.dart';
+import 'package:event_sharing/views/screen/Categories/categories_filtering.dart';
+import 'package:event_sharing/views/screen/Categories/search_applied_screen.dart';
+import 'package:event_sharing/views/screen/Home/Donet/donation_screen.dart';
+import 'package:event_sharing/views/screen/Home/Donet/make_payment_screen.dart';
+import 'package:event_sharing/views/screen/Home/Donet/paySuccess_screen.dart';
+import 'package:event_sharing/views/screen/Home/Donet/suggest_donation_screen.dart';
+import 'package:event_sharing/views/screen/Home/Donet/suggestion_screen.dart';
+import 'package:event_sharing/views/screen/MyEvent/EventDetailsScreen/event_details_screen.dart';
+import 'package:event_sharing/views/screen/MyEvent/applied_search_screen.dart';
+import 'package:event_sharing/views/screen/MyEvent/my_event_filter_screen.dart';
+import 'package:event_sharing/views/screen/MyEvent/myevent_screen.dart';
+import 'package:event_sharing/views/screen/MyEvent/today/my_today_event_screen.dart';
+import 'package:event_sharing/views/screen/Profile/AboutUs/aboutus_screen.dart';
+import 'package:event_sharing/views/screen/Profile/Account/personal_information_screen.dart';
+import 'package:event_sharing/views/screen/Profile/Connection/my_connection_screen.dart';
+import 'package:event_sharing/views/screen/Profile/Contribution/contribution_filter_screen.dart';
+import 'package:event_sharing/views/screen/Profile/Contribution/contribution_screen.dart';
+import 'package:event_sharing/views/screen/Profile/Invitation/my_invitation_screen.dart';
+import 'package:event_sharing/views/screen/Profile/Invitation/share_invitation_screen.dart';
+import 'package:event_sharing/views/screen/Profile/MyFamily/createMember_profile.dart';
+import 'package:event_sharing/views/screen/Profile/MyFamily/member/member_profile_details_screen.dart';
+import 'package:event_sharing/views/screen/Profile/MyFamily/owner/owner_profile_details_screen.dart';
+import 'package:event_sharing/views/screen/Profile/MyFamily/my_family_screen.dart';
+import 'package:event_sharing/views/screen/Profile/PrivacyPolicy/privacy_policy_screen.dart';
+import 'package:event_sharing/views/screen/Profile/Settings/SettingsScreen/settings_screen.dart';
+import 'package:event_sharing/views/screen/Profile/TermsConditions/terms_condition_screen.dart';
+import 'package:event_sharing/views/screen/Profile/error_screen.dart';
 import 'package:get/get.dart';
-import '../views/base/bottom_menu..dart';
 import '../views/screen/Auth/CreateAccount/create_account_screen.dart';
 import '../views/screen/Auth/ForgotPass/forgot_password_screen.dart';
 import '../views/screen/Auth/ResetPass/reset_password_screen.dart';
@@ -9,29 +37,18 @@ import '../views/screen/Auth/Verification/verification_code_screen.dart';
 import '../views/screen/Calender/filter_screen.dart';
 import '../views/screen/Calender/calender_screen.dart';
 import '../views/screen/Categories/categories_screen.dart';
-import '../views/screen/DetailsEvent/details_event_screen.dart';
 import '../views/screen/Home/home_screen.dart';
 import '../views/screen/InviteEvent/invite_event_screen.dart';
 import '../views/screen/MapScreen/map_screen.dart';
-import '../views/screen/MyEvent/create_event_one.dart';
-import '../views/screen/MyEvent/create_event_two.dart';
-import '../views/screen/MyEvent/my_event_screen.dart';
 import '../views/screen/Notifications/notifications_screen.dart';
 import '../views/screen/Onboard/onboard_screen.dart';
 import '../views/screen/Onboard/onboard_second_screen.dart';
 import '../views/screen/OwnerShip/ownership_screen.dart';
 import '../views/screen/Profile/EditProfile/edit_profile_screen.dart';
 import '../views/screen/Profile/MemberProfile/member_profile_screen.dart';
-import '../views/screen/Profile/Personalinform/personal_information_screen.dart';
-import '../views/screen/Profile/profileScreen/profile_screen.dart';
+import '../views/screen/Profile/profile_screen.dart';
 import '../views/screen/SearchEvent/search_event_screen.dart';
-import '../views/screen/Settings/AboutUs/aboutus_screen.dart';
-import '../views/screen/Settings/ChangePass/change_password.dart';
-import '../views/screen/Settings/ChangePass/change_password.dart';
-import '../views/screen/Settings/ChangePass/change_password.dart';
-import '../views/screen/Settings/PrivacyPolicy/privacy_policy_screen.dart';
-import '../views/screen/Settings/TermsConditions/terms_condition_screen.dart';
-import '../views/screen/Settings/settingsScreen/settings_screen.dart';
+import '../views/screen/Profile/ChangePass/change_password.dart';
 import '../views/screen/Splash/splash_screen.dart';
 import '../views/screen/UpComingEvent/upcoming_event_screen.dart';
 import '../views/screen/Wallet/wallet_screen.dart';
@@ -39,8 +56,13 @@ import '../views/screen/Wallet/wallet_screen.dart';
 class AppRoutes{
 
   static String splashScreen ="/splash_screen";
+
   static String homeScreen ="/home_screen";
+  static String categoriesScreen ="/categories_screen";
+  static String calenderScreen ="/calender_screen";
   static String profileScreen ="/profile_screen";
+
+
   static String walletScreen ="/wallet_screen";
   static String onboardScreen ="/onboarding_screen";
   static String onboardSecondScreen ="/onboard_second_screen";
@@ -50,8 +72,8 @@ class AppRoutes{
   static String forgotPasswordScreen ="/forgot_password_screen";
   static String verificationCodeScreen ="/verification_code_screen";
   static String resetPasswordScreen ="/reset_password_screen";
-  static String categoriesScreen ="/categories_screen";
-  static String calenderScreen ="/calender_screen";
+
+
   static String personalInformationScreen ="/personal_information_screen";
   static String editProfileScreen ="/edit_profile_screen";
   static String memberProfileScreen ="/member_profile_screen";
@@ -61,53 +83,120 @@ class AppRoutes{
   static String termsConditionScreen ="/terms_condition_screen";
   static String aboutusScreen ="/aboutus_screen";
   static String upcomingEventScreen ="/upcoming_event_screen";
-  static String detailsEventScreen ="/details_event_screen";
+  static String eventDetailsScreen ="/details_event_screen";
   static String searchEventScreen ="/search_event_screen";
   static String notificationsScreen ="/notifications_screen";
   static String filterScreen ="/filter_screen";
-  static String myEventScreen ="/my_event_screen";
-  static String createEventOne ="/create_event_one";
-  static String createEventTwo ="/create_event_two";
+
+
+
   static String inviteEventScreen ="/invite_event_screen";
   static String ownershipScreen ="/ownership_screen";
   static String mapScreen ="/map_screen";
   //static String bottomMenu ="/bottom_menu";
 
+  static String myFamilyScreen ="/my_family_screen";
+  static String createMemberProfileScreen ="/CreateMemberProfileScreen";
+  static String myEventScreen ="/myEventScreen";
+  static String myTodayEventScreen ="/MyTodayEventScreen";
+  static String myEventFilterScreen ="/myEventFilterScreen";
+  static String myConnectionScreen = "/myConnectionScreen";
+  static String myContributionScreen = "/myContributionScreen";
+  static String contributionFilterScreen = "/contributionFilterScreen";
+  static String myInvitationPage = "/MyInvitationPage";
+  static String shareInvitationPage = "/share_Invitation_Page";
+  static String errorScreen = "/errorScreen";
+  static String memberProfileDetailsScreen = "/memberProfileDetailsScreen";
+  static String ownerProfileDetailsScreen = "/OwnerProfileDetailsScreen";
+  static String appliedSearchScreen = "/appliedSearch_Screen";
+  static String suggestionDonationPage = "/suggestion_donation_page";
+  static String suggestionScreen = "/suggestion_screen";
+  static String donationScreen = "/donation_screen";
+  static String makePaymentScreen = "/makePayment_screen";
+  static String paymentSuccessScreen = "/paymentSuccessScreen";
+
+  static String categoriesFilterScreen = "/categoriesFilterScreen";
+  static String categoriesSearchAppliedScreen = "/categories_search_applied_screen";
+
+
+  //create event
+  static String createEventOne ="/create_event_one";
+  static String stepTwoContent ="/stepTwoContent";
+
+//======================>>>> List PAge
  static List<GetPage> page=[
-    GetPage(name:splashScreen, page: ()=>const SplashScreen()),
-    GetPage(name:homeScreen, page: ()=>const HomeScreen()),
+   GetPage(name:splashScreen, page: ()=>const SplashScreen()),
+   GetPage(name:homeScreen, page: ()=> HomeScreen(),transition: Transition.noTransition),
+   GetPage(name:categoriesScreen, page: ()=> CategoriesScreen(),transition: Transition.noTransition),
+
+   GetPage(name:createAccountScreen, page: ()=> CreateAccountScreen(),transition: Transition.noTransition ),
+
+   GetPage(name:calenderScreen, page: ()=>const CalenderScreen(),transition: Transition.noTransition ),
+   GetPage(name:profileScreen, page: ()=> ProfileScreen(),transition: Transition.noTransition),
+
+
     GetPage(name:walletScreen, page: ()=>const WalletScreen()),
-    GetPage(name:profileScreen, page: ()=>const ProfileScreen()),
+
     GetPage(name:onboardScreen, page: ()=>const OnboardScreen()),
     GetPage(name:onboardSecondScreen, page: ()=>const OnboardSecondScreen()),
     GetPage(name:signInScreen, page: ()=>const SignInScreen()),
     GetPage(name:signUpScreen, page: ()=>const SignUpScreen()),
-    GetPage(name:createAccountScreen, page: ()=>const CreateAccountScreen()),
+
     GetPage(name:forgotPasswordScreen, page: ()=>const ForgotPasswordScreen()),
     GetPage(name:verificationCodeScreen, page: ()=>const VerificationCodeScreen()),
     GetPage(name:resetPasswordScreen, page: ()=>const ResetPasswordScreen()),
-    GetPage(name:categoriesScreen, page: ()=> CategoriesScreen()),
-    GetPage(name:calenderScreen, page: ()=>const CalenderScreen()),
-    GetPage(name:personalInformationScreen, page: ()=>const PersonalInformationScreen()),
+
+    GetPage(name:personalInformationScreen, page: ()=> PersonalInformationScreen()),
     GetPage(name:editProfileScreen, page: ()=>const EditProfileScreen()),
     GetPage(name:memberProfileScreen, page: ()=>const MemberProfileScreen()),
-    GetPage(name:settingsScreen, page: ()=>const SettingsScreen()),
+    GetPage(name:settingsScreen, page: ()=> SettingsScreen()),
     GetPage(name:changePasswordScreen, page: ()=>const ChangePasswordScreen()),
     GetPage(name:privacyPolicyScreen, page: ()=> PrivacyPolicyScreen()),
     GetPage(name:termsConditionScreen, page: ()=> TermsConditionScreen()),
     GetPage(name:aboutusScreen, page: ()=> AboutusScreen()),
     GetPage(name:upcomingEventScreen, page: ()=> UpcomingEventScreen()),
-    GetPage(name:detailsEventScreen, page: ()=> DetailsEventScreen()),
+    GetPage(name:eventDetailsScreen, page: ()=> EventDetailsScreen()),
     GetPage(name:searchEventScreen, page: ()=> SearchEventScreen()),
     GetPage(name:notificationsScreen, page: ()=> NotificationsScreen()),
     GetPage(name:filterScreen, page: ()=> FilterScreen()),
-    GetPage(name:myEventScreen, page: ()=> MyEventScreen()),
+
     GetPage(name:createEventOne, page: ()=> CreateEventOne()),
-    GetPage(name:createEventTwo, page: ()=> CreateEventTwo()),
+    GetPage(name:stepTwoContent, page: ()=> StepTwoForm()),
     GetPage(name:inviteEventScreen, page: ()=> InviteEventScreen()),
     GetPage(name:ownershipScreen, page: ()=> OwnershipScreen()),
     GetPage(name:mapScreen, page: ()=> MapScreen()),
     //GetPage(name:bottomMenu, page: ()=> BottomMenu()),
 
+   //==============================>>>> Profile section <<<<< ============
+   GetPage(name:myFamilyScreen, page: ()=> MyFamilyScreen()),
+   GetPage(name:createMemberProfileScreen, page: ()=> CreateMemberProfileScreen()),
+   GetPage(name:myEventScreen, page: ()=> MyEventScreen(),transition: Transition.noTransition),
+   GetPage(name:myTodayEventScreen, page: ()=> MyTodayEventScreen(),transition: Transition.noTransition),
+   GetPage(name:myEventFilterScreen, page: ()=> MyEventFilterScreen()),
+   GetPage(name:myConnectionScreen, page: ()=> MyConnectionScreen()),
+
+   GetPage(name:myContributionScreen, page: ()=> MyContributionScreen()),
+   GetPage(name:contributionFilterScreen, page: ()=> ContributionFilterScreen()),
+   GetPage(name: myInvitationPage, page: ()=> MyInvitationPage()),
+   GetPage(name: shareInvitationPage, page: ()=> ShareInvitationPage()),
+   GetPage(name: errorScreen, page: ()=> ErrorScreen()),
+
+   GetPage(name: memberProfileDetailsScreen, page: ()=> MemberProfileDetailsScreen()),
+   GetPage(name: ownerProfileDetailsScreen, page: ()=> OwnerProfileDetailsScreen()),
+   GetPage(name: appliedSearchScreen, page: ()=> AppliedSearchScreen()),
+
+
+   //home
+   GetPage(name: suggestionDonationPage, page: ()=> SuggestionDonationPage()),
+   GetPage(name: suggestionScreen, page: ()=> SuggestionScreen()),
+   GetPage(name: donationScreen, page: ()=> DonationScreen()),
+
+   GetPage(name: makePaymentScreen, page: ()=> MakePaymentScreen()),
+   GetPage(name: paymentSuccessScreen, page: ()=> PaymentSuccessScreen()),
+
+
+   //category
+   GetPage(name: categoriesFilterScreen, page: ()=> CategoriesFilterScreen()),
+   GetPage(name: categoriesSearchAppliedScreen, page: ()=> CategoriesSearchAppliedScreen()),
   ];
 }

@@ -1,14 +1,12 @@
 import 'package:event_sharing/helpers/route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
+
 import 'package:get/get.dart';
 import '../../../../utils/app_colors.dart';
-import '../../../../utils/app_icons.dart';
 import '../../../../utils/app_strings.dart';
 import '../../../base/custom_button.dart';
 import '../../../base/custom_text.dart';
-import '../../../base/custom_text_field.dart';
 import '../../../base/pin_code_text_field.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
@@ -69,6 +67,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     },
                     text: 'Resend code',
                     textColor: Colors.white,
+                    color: AppColors.primaryColor,
                   ),
                   //================================> Verify Button <======================================
                   SizedBox(height: 32.h),
@@ -108,6 +107,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             text: "Sign In",
             fontWeight: FontWeight.w700,
             color: AppColors.primaryColor,
+            decoration: TextDecoration.underline,
           ),
         ),
       ],
