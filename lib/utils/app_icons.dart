@@ -41,6 +41,7 @@ class AppIcons{
   static String delete="$baseUrl/delete.svg";
   static String heart="$baseUrl/heart.svg";
   static String search="$baseUrl/search.svg";
+  static String homeIcons="$baseUrl/home_icons.svg";
 
 
 
@@ -58,7 +59,7 @@ class AppIcons{
   static String medalStar ="$baseUrl/medal-star.svg";
   static String calenderIcon ="$baseUrl/calenderIcon.svg";
   static String userIcon ="$baseUrl/user.svg";
-  static String homeIcon="$baseUrl/home_icon.svg";
+  static String homeIcon="$baseUrl/homeIcon.svg";
 
 
 }

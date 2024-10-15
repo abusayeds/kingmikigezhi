@@ -62,7 +62,7 @@ class TopProfileCard extends StatelessWidget {
                     )),
           Expanded(
             child: CustomText(
-              text: "Mrr.Mahafujer" ?? "",
+              text: "Mr.Mahafujer" ?? "",
               fontsize: 20.h,
               color: Colors.white,
               fontWeight: FontWeight.w500,

@@ -47,8 +47,9 @@ class _MyEventScreenState extends State<MyEventScreen>
         backgroundColor: Colors.white,
          bottomNavigationBar: const BottomMenu(2),
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: Colors.white,
-          title: const Text('My Event',style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600)),
+          title: const Text('Event',style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600)),
           
           centerTitle: true,
           bottom: TabBar(
