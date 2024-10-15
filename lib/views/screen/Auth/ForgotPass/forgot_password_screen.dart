@@ -22,7 +22,21 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+          automaticallyImplyLeading: false,
+          elevation: 0,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              IconButton(
+                icon: Icon(Icons.arrow_back_ios,
+                    color: Colors.black,size: 20.sp,),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          )),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -48,9 +62,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     text: 'Basharxxxxxx@gmail.com',
                     fontWeight: FontWeight.w600,
                     fontsize: 16.sp,
-                    color: AppColors.primaryColor,
                   ),
-                  SizedBox(height: 122.h),
+                  SizedBox(height: 80.h),
                   //==============================> Pin Code Text Field <=====================
                   CustomPinCodeTextField(),
                   CustomText(
@@ -70,7 +83,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     color: AppColors.primaryColor,
                   ),
                   //================================> Verify Button <======================================
-                  SizedBox(height: 32.h),
+                  SizedBox(height: 128.h),
                   CustomButton(
                     onTap: () {
                       Get.toNamed(AppRoutes.verificationCodeScreen);
@@ -89,6 +102,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       ),
     );
   }
+
   //==========================> Already Have Account Text <=======================
   _alreadyHaveAccountText() {
     return Row(
@@ -96,8 +110,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       children: [
         CustomText(
           text: AppStrings.alreadyHaveAccount,
-          fontWeight: FontWeight.w700,
-
+          fontWeight: FontWeight.w600,
         ),
         TextButton(
           onPressed: () {

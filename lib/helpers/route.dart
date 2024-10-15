@@ -1,5 +1,6 @@
 import 'package:event_sharing/views/screen/AddEvent/create_event_one.dart';
 import 'package:event_sharing/views/screen/AddEvent/stepTwoForm.dart';
+import 'package:event_sharing/views/screen/Auth/SignIn/sign_in_screen.dart';
 import 'package:event_sharing/views/screen/Categories/categories_filtering.dart';
 import 'package:event_sharing/views/screen/Categories/search_applied_screen.dart';
 import 'package:event_sharing/views/screen/Home/Donet/donation_screen.dart';
@@ -31,7 +32,6 @@ import 'package:get/get.dart';
 import '../views/screen/Auth/CreateAccount/create_account_screen.dart';
 import '../views/screen/Auth/ForgotPass/forgot_password_screen.dart';
 import '../views/screen/Auth/ResetPass/reset_password_screen.dart';
-import '../views/screen/Auth/SignIn/sign_in_screen.dart';
 import '../views/screen/Auth/SignUp/sign_up_screen.dart';
 import '../views/screen/Auth/Verification/verification_code_screen.dart';
 import '../views/screen/Calender/filter_screen.dart';
@@ -42,7 +42,6 @@ import '../views/screen/InviteEvent/invite_event_screen.dart';
 import '../views/screen/MapScreen/map_screen.dart';
 import '../views/screen/Notifications/notifications_screen.dart';
 import '../views/screen/Onboard/onboard_screen.dart';
-import '../views/screen/Onboard/onboard_second_screen.dart';
 import '../views/screen/OwnerShip/ownership_screen.dart';
 import '../views/screen/Profile/EditProfile/edit_profile_screen.dart';
 import '../views/screen/Profile/MemberProfile/member_profile_screen.dart';
@@ -138,7 +137,6 @@ class AppRoutes{
     GetPage(name:walletScreen, page: ()=>const WalletScreen()),
 
     GetPage(name:onboardScreen, page: ()=>const OnboardScreen()),
-    GetPage(name:onboardSecondScreen, page: ()=>const OnboardSecondScreen()),
     GetPage(name:signInScreen, page: ()=>const SignInScreen()),
     GetPage(name:signUpScreen, page: ()=>const SignUpScreen()),
 
