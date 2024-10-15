@@ -1,4 +1,5 @@
 import 'package:event_sharing/helpers/route.dart';
+import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_icons.dart';
 import 'package:event_sharing/utils/app_strings.dart';
 import 'package:event_sharing/views/base/custom_button.dart';
@@ -9,7 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
-import '../../../../utils/app_colors.dart';
+
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -26,17 +27,16 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.w),
+          padding: EdgeInsets.symmetric(horizontal: 24.w,vertical: 24.h),
           child: Form(
             key: _formKey,
             child: Center(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+
                 children: [
-                  SizedBox(height: 108.h),
+                  SizedBox(height: 150.h),
                   //================================> Log In Text Section <========================
                   CustomText(
                     text: 'Sign In',
@@ -48,11 +48,11 @@ class _SignInScreenState extends State<SignInScreen> {
                   //=================================> Email Text Field <=========================
                   CustomTextField(
                     controller: emailCTRl,
-                    hintText: AppStrings.email,
+                    hintText: AppStrings.userName,
                     prifixicon: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 12.w),
                       child: SvgPicture.asset(
-                        AppIcons.mailIcon,
+                        AppIcons.userIcon,
                         color: AppColors.primaryColor,
                       ),
                     ),
@@ -96,11 +96,13 @@ class _SignInScreenState extends State<SignInScreen> {
                   SizedBox(height: 16.h),
                   //=======================================> CheckBox Section <==============================
                   Row(
+                    mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
                         children: [
                           Checkbox(
+
                             checkColor: Colors.white,
                             activeColor: AppColors.primaryColor,
                             focusColor: AppColors.greyColor,
@@ -111,29 +113,31 @@ class _SignInScreenState extends State<SignInScreen> {
                               });
                             },
                             side: BorderSide(
-                              color: isChecked
-                                  ? AppColors.primaryColor
-                                  : AppColors.primaryColor,
+                              color: isChecked ? AppColors.primaryColor : AppColors.primaryColor,
                               width: 1.w,
                             ),
                           ),
                           CustomText(
                             text: AppStrings.rememberMe,
+                            fontsize: 12.sp,
                           ),
                         ],
                       ),
                       //=================================> Forgot Password Button <================================
                       TextButton(
-                          onPressed: () {
-                            Get.toNamed(AppRoutes.forgotPasswordScreen);
-                          },
-                          child: CustomText(
-                            fontWeight: FontWeight.bold,
-                            text: AppStrings.forgotPassword,
-                            color: AppColors.primaryColor,
-                          ))
+                        onPressed: () {
+                          Get.toNamed(AppRoutes.forgotPasswordScreen);
+                        },
+                        child: CustomText(
+                          fontWeight: FontWeight.bold,
+                          text: AppStrings.forgotPassword,
+                          color: AppColors.primaryColor,
+                          fontsize: 12.sp,
+                        ),
+                      ),
                     ],
                   ),
+
                   SizedBox(height: 2.h),
                   //========================================> Don't have an account text <============================
                   Row(
@@ -141,7 +145,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     children: [
                       CustomText(
                         text: AppStrings.doNotHaveAccount,
-                        fontWeight: FontWeight.w700,
+                        fontWeight: FontWeight.w400,
                       ),
                       TextButton(
                           onPressed: () {

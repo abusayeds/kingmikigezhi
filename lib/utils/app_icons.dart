@@ -1,6 +1,5 @@
 class AppIcons{
   static String baseUrl="assets/icons";
-  static String homeIcon="$baseUrl/home_icon.svg";
   static String walletIcon="$baseUrl/wallet_icon.svg";
   static String profileIcon="$baseUrl/profile_icon.svg";
   static String googleIcon="$baseUrl/googleIcon.svg";
@@ -58,6 +57,8 @@ class AppIcons{
   static String dotIconForFamily ="$baseUrl/doticonforfamily.svg";
   static String medalStar ="$baseUrl/medal-star.svg";
   static String calenderIcon ="$baseUrl/calenderIcon.svg";
+  static String userIcon ="$baseUrl/user.svg";
+  static String homeIcon="$baseUrl/home_icon.svg";
 
 
 }

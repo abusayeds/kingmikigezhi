@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
 import 'package:timeago/timeago.dart' as TimeAgo;
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_icons.dart';
-import '../../../utils/app_strings.dart';
 import '../../base/custom_text.dart';
 
 class NotificationsScreen extends StatelessWidget {
@@ -16,10 +14,30 @@ class NotificationsScreen extends StatelessWidget {
     return Scaffold(
       //================================> App bar section <=======================
       appBar: AppBar(
-        title: CustomText(
-          text: AppStrings.notifications,
-          fontsize: 18.sp,
-          fontWeight: FontWeight.w500,
+        automaticallyImplyLeading: false,
+        title: Row(
+          children: [
+            IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.black,
+                size: 20.sp,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            Expanded(
+              child: Align(
+                alignment: Alignment.center, // Center the text
+                child: CustomText(
+                  text: 'Notification(20)',
+                  fontsize: 18.sp,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
         ),
         centerTitle: true,
       ),
@@ -30,9 +48,15 @@ class NotificationsScreen extends StatelessWidget {
         child: Column(
           children: [
             //================================> Notification section <=======================
-            Expanded(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Text('Ignore All',style: TextStyle(color: AppColors.primaryColor,decoration: TextDecoration.underline,fontWeight: FontWeight.w600),)
+            ],
+          ),
+           Expanded(
               child: ListView.builder(
-                itemCount: 5,
+                itemCount: 2,
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
