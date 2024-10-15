@@ -17,8 +17,16 @@ class OnboardScreen extends StatelessWidget {
       backgroundColor: Colors.transparent,
       body: Container(
         decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage(AppImages.onboardingBg), fit: BoxFit.cover)),
+          image: DecorationImage(
+            image: AssetImage(AppImages.onboardingBg),
+            fit: BoxFit.cover,
+            colorFilter: ColorFilter.mode(
+              Colors.black.withOpacity(0.5),
+              BlendMode.darken,
+            ),
+          ),
+        ),
+
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 24.w),
           child: Center(
@@ -26,6 +34,7 @@ class OnboardScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                SizedBox(height: 60.h),
                 //=========================> Text Section <=======================
                 // SizedBox(height: 150.h),
                 CustomText(
@@ -40,8 +49,9 @@ class OnboardScreen extends StatelessWidget {
                       'This is a first platform for parents to manage and share activities and events for their families:',
                   maxline: 15,
                   fontWeight: FontWeight.w500,
-                  textAlign: TextAlign.start,
+                  textAlign: TextAlign.center,
                   color: Colors.white,
+                  fontsize: 12.sp,
                 ),
                 SizedBox(height: 24.h),
 
@@ -53,15 +63,16 @@ class OnboardScreen extends StatelessWidget {
                       text: 'Event Calendars:',
                       textAlign: TextAlign.start,
                       color: Colors.white,
+                      fontsize: 12.sp,
                     ),
                   ],
                 ),
                 CustomText(
-                  text:
-                      'Shared calendars for tracking family activities and appointments.',
+                  text: 'Shared calendars for tracking family activities and appointments.',
                   maxline: 5,
                   textAlign: TextAlign.start,
                   color: Colors.white,
+                  fontsize: 12.sp,
                 ),
                 SizedBox(height: 16.h),
                 Row(
@@ -72,15 +83,16 @@ class OnboardScreen extends StatelessWidget {
                       text: 'Activity Suggestions: ',
                       textAlign: TextAlign.start,
                       color: Colors.white,
+                      fontsize: 12.sp,
                     ),
                   ],
                 ),
                 CustomText(
-                  text:
-                      'Recommendations for local events and activities based on interests.',
+                  text: 'Recommendations for local events and activities based on interests.',
                   maxline: 5,
                   textAlign: TextAlign.start,
                   color: Colors.white,
+                  fontsize: 12.sp,
                 ),
                 SizedBox(height: 16.h),
                 Row(
@@ -91,15 +103,16 @@ class OnboardScreen extends StatelessWidget {
                       text: 'Resource Sharing: ',
                       textAlign: TextAlign.start,
                       color: Colors.white,
+                      fontsize: 12.sp,
                     ),
                   ],
                 ),
                 CustomText(
-                  text:
-                      'Sections for sharing parenting tips, local services, and educational materials.',
+                  text: 'Sections for sharing parenting tips, local services, and educational materials.',
                   maxline: 5,
                   textAlign: TextAlign.start,
                   color: Colors.white,
+                  fontsize: 12.sp,
                 ),
                 SizedBox(height: 16.h),
                 Row(
@@ -110,17 +123,18 @@ class OnboardScreen extends StatelessWidget {
                       text: 'Customizable Profiles: ',
                       textAlign: TextAlign.start,
                       color: Colors.white,
+                      fontsize: 12.sp,
                     ),
                   ],
                 ),
                 CustomText(
-                  text:
-                      'Individual profiles for tracking personal schedules and preferences.',
+                  text: 'Individual profiles for tracking personal schedules and preferences.',
                   maxline: 5,
                   textAlign: TextAlign.start,
                   color: Colors.white,
+                  fontsize: 12.sp,
                 ),
-                SizedBox(height: 89.h),
+                SizedBox(height: 80.h),
                 //========================> Get Start Button <====================
                 CustomButton(
                   onTap: () {
@@ -128,6 +142,7 @@ class OnboardScreen extends StatelessWidget {
                   },
                   text: AppStrings.getStart,
                   color: Colors.white,
+                  textStyle: TextStyle(fontWeight: FontWeight.w500),
                 )
               ],
             ),
