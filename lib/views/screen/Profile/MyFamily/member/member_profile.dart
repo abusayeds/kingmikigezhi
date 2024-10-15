@@ -57,7 +57,7 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
-                height: 50,
+                height: 50.h,
                 decoration: BoxDecoration(
                   color: AppColors.colorEDF2F4,
                   borderRadius: BorderRadius.all(Radius.circular(8)),
@@ -111,14 +111,14 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                       child: ListTile(
                         leading: CircleAvatar(
                           backgroundImage: AssetImage(member['image']!),
-                          radius: 25,
+                          radius: 35.r,
                         ),
                         title: Text(member['name']!,
                             style: TextStyle(fontWeight: FontWeight.bold)),
                         subtitle: Row(
                           children: [
                             SvgPicture.asset(AppIcons.dotIconForFamily),
-                            SizedBox(width: 4),
+                            SizedBox(width: 4.w),
                             Text(member['relation']!),
                           ],
                         ),

@@ -31,12 +31,33 @@ class _FilterScreenState extends State<FilterScreen> {
     return Scaffold(
       //=======================> App Bar Section <============================
       appBar: AppBar(
-          title: CustomText(
-            text: AppStrings.filter,
-            fontsize: 18.sp,
-            fontWeight: FontWeight.w500,
-          ),
-          centerTitle: true),
+        automaticallyImplyLeading: false,
+        title: Row(
+          children: [
+            IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.black,
+                size: 20.sp,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            Expanded(
+              child: Align(
+                alignment: Alignment.center, // Center the text
+                child: CustomText(
+                  text: AppStrings.filter,
+                  fontsize: 18.sp,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        ),
+        centerTitle: true,
+      ),
       //=======================> Body Section <============================
       body: SingleChildScrollView(
         child: Padding(
@@ -56,18 +77,15 @@ class _FilterScreenState extends State<FilterScreen> {
                   fillColor: AppColors.fillColor,
                   // labelText: 'Select',
                   border: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: AppColors.primaryColor, width: 1.w),
+                    borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: AppColors.primaryColor, width: 1.w),
+                    borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: AppColors.primaryColor, width: 1.w),
+                    borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                   contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
@@ -270,7 +288,7 @@ class _FilterScreenState extends State<FilterScreen> {
                       child: CustomButton(
                         onTap: () {},
                         text: "Reset",
-                        color: Colors.white,
+                        color: AppColors.colorEDF2F4,
                         textColor: Colors.black,
                       )),
                   SizedBox(

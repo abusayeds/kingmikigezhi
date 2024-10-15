@@ -112,7 +112,7 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
                       child: ListTile(
                         leading: CircleAvatar(
                           backgroundImage: AssetImage(member['image']!),
-                          radius: 25,
+                          radius: 35.r,
                         ),
                         title: Text(member['name']!,
                             style: TextStyle(fontWeight: FontWeight.bold)),
@@ -121,14 +121,14 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
                             Row(
                               children: [
                                 SvgPicture.asset(AppIcons.dotIconForFamily),
-                                SizedBox(width: 4),
+                                SizedBox(width: 4.w),
                                 Text(member['relation']!,style: TextStyle(fontSize: 10),),
                               ],
                             ),
                             Row(
                               children: [
                                 SvgPicture.asset(AppIcons.dotIconForFamily),
-                                SizedBox(width: 4),
+                                SizedBox(width: 4.w),
                                 Text('Email: Abc@gmail.com',style: TextStyle(fontSize: 10),),
                               ],
                             ),
