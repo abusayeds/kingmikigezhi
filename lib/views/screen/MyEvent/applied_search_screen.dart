@@ -110,7 +110,7 @@ class _AppliedSearchScreenState extends State<AppliedSearchScreen> {
                         borderRadius: BorderRadius.circular(15.r),
                       ),
                       child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 12.h),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -146,21 +146,21 @@ class _AppliedSearchScreenState extends State<AppliedSearchScreen> {
                                           Row(
                                             children: [
                                               SvgPicture.asset(AppIcons.dotIconForFamily),
-                                              SizedBox(width: 4),
+                                              SizedBox(width: 4.w),
                                               Text('Onsite Event',style: TextStyle(fontSize: 8.sp),),
                                             ],
                                           ),
                                           Row(
                                             children: [
                                               SvgPicture.asset(AppIcons.dotIconForFamily),
-                                              SizedBox(width: 4),
+                                              SizedBox(width: 4.w),
                                               Text('Dhaka Bangladesh',style: TextStyle(fontSize: 8.sp),),
                                             ],
                                           ),
                                           Row(
                                             children: [
                                               SvgPicture.asset(AppIcons.dotIconForFamily),
-                                              SizedBox(width: 4),
+                                              SizedBox(width: 4.w),
                                               Text('History: 2023-1st winner',style: TextStyle(fontSize: 8.sp),),
                                             ],
                                           ),
@@ -172,14 +172,14 @@ class _AppliedSearchScreenState extends State<AppliedSearchScreen> {
                                           Row(
                                             children: [
                                               SvgPicture.asset(AppIcons.dotIconForFamily),
-                                              SizedBox(width: 4),
+                                              SizedBox(width: 4.w),
                                               Text('Cost : \$100',style: TextStyle(fontSize: 8.sp),),
                                             ],
                                           ),
                                           Row(
                                             children: [
                                               SvgPicture.asset(AppIcons.dotIconForFamily),
-                                              SizedBox(width: 4),
+                                              SizedBox(width: 4.w),
                                               Text('Deadline: 1-6-2025',style: TextStyle(fontSize: 8.sp),),
                                             ],
                                           ),
@@ -218,11 +218,9 @@ class _AppliedSearchScreenState extends State<AppliedSearchScreen> {
                 },
               ),
             )
-
           ],
         ),
       ),
-
     );
   }
 

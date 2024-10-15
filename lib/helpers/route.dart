@@ -34,7 +34,7 @@ import '../views/screen/Auth/ForgotPass/forgot_password_screen.dart';
 import '../views/screen/Auth/ResetPass/reset_password_screen.dart';
 import '../views/screen/Auth/SignUp/sign_up_screen.dart';
 import '../views/screen/Auth/Verification/verification_code_screen.dart';
-import '../views/screen/Calender/filter_screen.dart';
+import '../views/screen/Home/home_screen_filter_screen.dart';
 import '../views/screen/Calender/calender_screen.dart';
 import '../views/screen/Categories/categories_screen.dart';
 import '../views/screen/Home/home_screen.dart';

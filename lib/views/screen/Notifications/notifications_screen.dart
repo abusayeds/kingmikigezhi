@@ -48,13 +48,145 @@ class NotificationsScreen extends StatelessWidget {
         child: Column(
           children: [
             //================================> Notification section <=======================
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Text('Ignore All',style: TextStyle(color: AppColors.primaryColor,decoration: TextDecoration.underline,fontWeight: FontWeight.w600),)
-            ],
-          ),
-           Expanded(
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  'Ignore All',
+                  style: TextStyle(
+                    color: AppColors.primaryColor,
+                    decoration: TextDecoration.underline,
+                    fontWeight: FontWeight.w600,
+                  ),
+                )
+              ],
+            ),
+            Card(
+              margin: EdgeInsets.symmetric(vertical: 8.h),
+              color: const Color(0xffedf2f4),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.r),
+              ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 12.h),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    //=====================> Event Image Section <=========================
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10.r),
+                      child: Image.asset(
+                        'assets/images/shoot.png',
+                        height: 75.0.h,
+                        width: 75.0.w,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    SizedBox(width: 12.w),
+                    //=====================> Event Details Section <=========================
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CustomText(
+                            text: 'Event Name',
+                            fontsize: 18.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          SizedBox(height: 8.h),
+                          //=====================> Event Info Section <=========================
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      SvgPicture.asset(AppIcons.dotIconForFamily),
+                                      SizedBox(width: 4.w),
+                                      Text(
+                                        'Onsite Event',
+                                        style: TextStyle(fontSize: 8.sp),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      SvgPicture.asset(AppIcons.dotIconForFamily),
+                                      SizedBox(width: 4.w),
+                                      Text(
+                                        'Dhaka Bangladesh',
+                                        style: TextStyle(fontSize: 8.sp),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      SvgPicture.asset(AppIcons.dotIconForFamily),
+                                      SizedBox(width: 4.w),
+                                      Text(
+                                        'History: 2023-1st winner',
+                                        style: TextStyle(fontSize: 8.sp),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      SvgPicture.asset(AppIcons.dotIconForFamily),
+                                      SizedBox(width: 4.w),
+                                      Text(
+                                        'Cost : \$100',
+                                        style: TextStyle(fontSize: 8.sp),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      SvgPicture.asset(AppIcons.dotIconForFamily),
+                                      SizedBox(width: 4.w),
+                                      Text(
+                                        'Deadline: 1-6-2025',
+                                        style: TextStyle(fontSize: 8.sp),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Icon(Icons.more_horiz, color: Colors.grey)
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+
+                    //=====================> Share Icon <=========================
+                    Padding(
+                      padding: EdgeInsets.only(top: 8.h),
+                      child: SvgPicture.asset(
+                        AppIcons.share, // Share icon
+                        width: 16.w,
+                        height: 16.h,
+                        color: Colors.blueGrey,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Expanded(
               child: ListView.builder(
                 itemCount: 2,
                 itemBuilder: (context, index) {
@@ -65,11 +197,11 @@ class NotificationsScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(20),
                         color: AppColors.notificationBGcolor,
                       ),
-
                       child: _notification(
-                          'Account Setup Successful!',
-                          DateTime.now(),
-                          'Your account creation is successful, you can now experience our services.'),
+                        'Account Setup Successful!',
+                        DateTime.now(),
+                        'Your account creation is successful, you can now experience our services.',
+                      ),
                     ),
                   );
                 },
@@ -82,10 +214,10 @@ class NotificationsScreen extends StatelessWidget {
   }
 
   _notification(
-    String title,
-    DateTime time,
-    String shorDescription,
-  ) {
+      String title,
+      DateTime time,
+      String shorDescription,
+      ) {
     return Dismissible(
       key: Key(title),
       direction: DismissDirection.endToStart,
@@ -94,13 +226,11 @@ class NotificationsScreen extends StatelessWidget {
           borderRadius: BorderRadius.circular(12.r),
           color: AppColors.colorD9A951,
         ),
-
         alignment: Alignment.centerRight,
         padding: EdgeInsets.only(right: 16.w),
         child: Icon(Icons.delete, color: Colors.white),
       ),
-      onDismissed: (direction) {
-      },
+      onDismissed: (direction) {},
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
         decoration: BoxDecoration(
@@ -109,62 +239,42 @@ class NotificationsScreen extends StatelessWidget {
         ),
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    // Notification Icon
-                    Container(
-                      margin: EdgeInsets.only(left: 8.w, right: 7.w),
-                      padding: EdgeInsets.all(7.r),
-                      decoration: const BoxDecoration(
-                          shape: BoxShape.circle, color: Color(0xffffffff)),
-                      child: SvgPicture.asset(
-                        AppIcons.notificationIcon,
-                        color: AppColors.primaryColor,
-                      ),
-                    )
-                  ],
-                ),
-                Expanded(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Title
-                      CustomText(
-                        text: title,
-                        fontsize: 14.h,
-                        color: Colors.black,
-                      ),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: CustomText(
-                          top: 2.h,
-                          text: TimeAgo.format(time),
-                          fontsize: 8.h,
-                          fontWeight: FontWeight.w400,
-                          color: const Color(0xFF8C8C8C),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Title
+                        CustomText(
+                          text: title,
+                          fontsize: 14.h,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w600,
                         ),
-                      ),
-                    ],
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: CustomText(
+                            top: 2.h,
+                            text: TimeAgo.format(time),
+                            fontsize: 12.h,
+                            fontWeight: FontWeight.w400,
+                            color: const Color(0xFF8C8C8C),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-            // Short Description
-            CustomText(
-              top: 8.h,
-              text: shorDescription,
-              color: Colors.black,
-              textAlign: TextAlign.start,
-              maxline: 5,
+                ],
+              ),
             ),
           ],
         ),
       ),
     );
-
   }
 }

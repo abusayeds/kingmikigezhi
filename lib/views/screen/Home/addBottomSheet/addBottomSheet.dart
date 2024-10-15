@@ -62,13 +62,13 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Type Section
-              CustomText(text: 'Type',
+              CustomText(text: 'Title',
                   fontWeight: FontWeight.w600,
                   fontsize: 16,
                   bottom: 8),
               CustomTextField(
                 controller: _typeCTRL,
-                hintText: 'Type here',
+                hintText: 'Type Title',
               ),
               SizedBox(height: 8.h),
               // Location
@@ -146,11 +146,6 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
                       hintText: 'Date',
                       sufixicons: Padding(
                         padding: EdgeInsets.only(right: 12.w),
-                        child: SvgPicture.asset(
-                          AppIcons.downArrowIcon,
-                          width: 16.w,
-                          color: AppColors.primaryColor,
-                        ),
                       ),
                     ),
                   ),
@@ -163,11 +158,6 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
                       hintText: 'Time',
                       sufixicons: Padding(
                         padding: EdgeInsets.only(right: 12.w),
-                        child: SvgPicture.asset(
-                          AppIcons.downArrowIcon,
-                          width: 16.w,
-                          color: AppColors.primaryColor,
-                        ),
                       ),
                     ),
                   ),
@@ -188,11 +178,6 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
                       hintText: 'Date',
                       sufixicons: Padding(
                         padding: EdgeInsets.only(right: 12.w),
-                        child: SvgPicture.asset(
-                          AppIcons.downArrowIcon,
-                          width: 16.w,
-                          color: AppColors.primaryColor,
-                        ),
                       ),
                     ),
                   ),
@@ -205,11 +190,6 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
                       hintText: 'Time',
                       sufixicons: Padding(
                         padding: EdgeInsets.only(right: 12.w),
-                        child: SvgPicture.asset(
-                          AppIcons.downArrowIcon,
-                          width: 16.w,
-                          color: AppColors.primaryColor,
-                        ),
                       ),
                     ),
                   ),

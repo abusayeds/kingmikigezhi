@@ -1,7 +1,9 @@
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/views/base/custom_button.dart';
+import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ShareInvitationPage extends StatefulWidget {
   @override
@@ -17,11 +19,32 @@ class _ShareInvitationPageState extends State<ShareInvitationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Invitation'),
-        backgroundColor: Colors.white,
-        elevation: 0,
-        iconTheme: IconThemeData(color: Colors.black),
-        titleTextStyle: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
+        automaticallyImplyLeading: false,
+        title: Row(
+          children: [
+            IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.black,
+                size: 20.sp,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            Expanded(
+              child: Align(
+                alignment: Alignment.center, // Center the text
+                child: CustomText(
+                  text: 'Invitation',
+                  fontsize: 18.sp,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        ),
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -52,7 +75,6 @@ class _ShareInvitationPageState extends State<ShareInvitationPage> {
               controller: urlController,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.link),
                 hintText: 'https://www.event.org',
                 hintStyle: TextStyle(color: Colors.grey),
               ),
@@ -68,6 +90,7 @@ class _ShareInvitationPageState extends State<ShareInvitationPage> {
               );
             },
               text:  'Copy',
+              textColor: AppColors.white,
               color: AppColors.buttonA47059,
               borderColor: AppColors.buttonA47059,
             )

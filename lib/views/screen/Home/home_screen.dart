@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../../utils/app_icons.dart';
 import '../../base/bottom_menu..dart';
@@ -72,12 +73,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 HomeAppBar(),
                 SizedBox(height: 20.h),
                 _searchBar(),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Container(
-                      height: 25.h,width: 120.w,
-                      padding: EdgeInsets.symmetric(horizontal: 8.h, vertical: 4.w),
+                      height: 30.h,
+                      width: 120.w,
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 8.h, vertical: 2.w),
                       decoration: BoxDecoration(
                         color: Colors.blueGrey, // Background color
                         borderRadius: BorderRadius.circular(8.r),
@@ -85,16 +89,24 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: DropdownButton<String>(
                         value: dropdownValue,
                         underline: SizedBox(),
-                        icon: Icon(Icons.arrow_drop_down, color: Colors.white,size: 12.sp),
-                        dropdownColor: Colors.black,
-                        style: TextStyle(color: Colors.white,fontSize: 10.sp),
+                        icon: Icon(Icons.arrow_drop_down, color: Colors.white,
+                            size: 12.sp),
+                        dropdownColor: AppColors.primaryColor,
+                        style: TextStyle(
+                            color: Colors.white70, fontSize: 10.sp),
                         onChanged: (String? newValue) {
                           setState(() {
                             dropdownValue = newValue!;
                           });
                         },
-                        items:<String>['All', 'Self', 'Spous', 'Child Stephanie', 'Child Sophia']
-                            .map<DropdownMenuItem<String>>((String value)  {
+                        items: <String>[
+                          'All',
+                          'Self',
+                          'Spous',
+                          'Child Stephanie',
+                          'Child Sophia'
+                        ]
+                            .map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
                             child: Row(
@@ -103,7 +115,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                 SizedBox(width: 10.w),
                               ],
                             ),
-
                           );
                         }).toList(),
                       ),
@@ -116,6 +127,24 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
+                SfCalendar(
+                  view: CalendarView.month,
+                  dataSource: MeetingDataSource(_getDataSource()),
+                  monthViewSettings: MonthViewSettings(
+                    appointmentDisplayMode: MonthAppointmentDisplayMode.indicator,
+                    dayFormat: 'EEE', // Show abbreviated day names (Mon, Tue, Wed)
+                    monthCellStyle: MonthCellStyle(
+                      textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  headerStyle: CalendarHeaderStyle(
+                    textAlign: TextAlign.center,
+                    textStyle: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
                 _tableCalendar(),
                 SizedBox(height: 16.h),
                 _grayEventCard(),
@@ -123,16 +152,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 _pianoList(),
                 SizedBox(height: 16.h),
                 Padding(
-                  padding:  EdgeInsets.symmetric(vertical: 8.w),
+                  padding: EdgeInsets.symmetric(vertical: 8.w),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Upcoming Event',style: TextStyle(fontSize: 20.sp)),
+                      Text('Upcoming Event', style: TextStyle(fontSize: 20.sp)),
                       InkWell(
-                        onTap: (){
-                          Get.toNamed(AppRoutes.upcomingEventScreen);
-                        },
-                          child: Text('More',style: TextStyle(fontSize: 12.sp))),
+                          onTap: () {
+                            Get.toNamed(AppRoutes.upcomingEventScreen);
+                          },
+                          child: Text('More', style: TextStyle(fontSize: 12
+                              .sp))),
                     ],
                   ),
                 ),
@@ -162,8 +192,9 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
 //============================> Search Bar Section <=================================
-  _searchBar()  {
+  _searchBar() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -208,6 +239,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ],
     );
   }
+
 //============================> Gray Event Card Section <=================================
   _grayEventCard() {
     return Container(
@@ -227,7 +259,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     borderRadius: BorderRadius.circular(16.r),
                   ),
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 20.w, vertical: 10.h),
                     child: Image.asset(AppImages.logoCard,
                         color: AppColors.primaryColor,
                         width: 85.w,
@@ -329,7 +362,7 @@ class _HomeScreenState extends State<HomeScreen> {
   //============================> Piano Event List View <=================================
   _pianoList() {
     return SizedBox(
-      height: 180.h,
+      height: 190.h,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: 3,
@@ -349,7 +382,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         Container(
                           decoration: BoxDecoration(
-                            color: const Color(0xffd5d7d7),
+                            color: Colors.white.withOpacity(0.5),
                             borderRadius: BorderRadius.circular(16.r),
                           ),
                           child: Padding(
@@ -372,7 +405,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             SizedBox(height: 12.h),
                             Row(
                               children: [
-                             SvgPicture.asset(AppIcons.dotIconForFamily),
+                                SvgPicture.asset(AppIcons.dotIconForFamily),
                                 Padding(
                                   padding: EdgeInsets.only(left: 5.w),
                                   child: CustomText(
@@ -385,7 +418,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             SizedBox(height: 8.h),
                             Row(
                               children: [
-                             SvgPicture.asset(AppIcons.dotIconForFamily),
+                                SvgPicture.asset(AppIcons.dotIconForFamily),
                                 Padding(
                                   padding: EdgeInsets.only(left: 5.w),
                                   child: CustomText(
@@ -398,7 +431,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             SizedBox(height: 8.h),
                             Row(
                               children: [
-                             SvgPicture.asset(AppIcons.dotIconForFamily),
+                                SvgPicture.asset(AppIcons.dotIconForFamily),
                                 Padding(
                                   padding: EdgeInsets.only(left: 5.w),
                                   child: CustomText(
@@ -411,7 +444,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             SizedBox(height: 8.h),
                             Row(
                               children: [
-                             SvgPicture.asset(AppIcons.dotIconForFamily),
+                                SvgPicture.asset(AppIcons.dotIconForFamily),
                                 Padding(
                                   padding: EdgeInsets.only(left: 5.w),
                                   child: CustomText(
@@ -424,7 +457,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             SizedBox(height: 8.h),
                             Row(
                               children: [
-                               SvgPicture.asset(AppIcons.dotIconForFamily),
+                                SvgPicture.asset(AppIcons.dotIconForFamily),
                                 Padding(
                                   padding: EdgeInsets.only(left: 5.w),
                                   child: CustomText(
@@ -458,7 +491,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
 
-
   //========================================> Table Calendar Method <=============================
   _tableCalendar() {
     return Column(
@@ -482,33 +514,103 @@ class _HomeScreenState extends State<HomeScreen> {
           },
           headerStyle: HeaderStyle(
             rightChevronIcon: InkWell(
-              onTap: () {
-                setState(() {
-                  _calendarFormat = _calendarFormat == CalendarFormat.week
-                      ? CalendarFormat.month
-                      : CalendarFormat.week;
-                });
-              },
-            //  child: Icon(Icons.calendar_today_rounded, color: AppColors.primaryColor),
-              child: SvgPicture.asset(AppIcons.calendarIcon)
+                onTap: () {
+                  setState(() {
+                    _calendarFormat = _calendarFormat == CalendarFormat.week
+                        ? CalendarFormat.month
+                        : CalendarFormat.week;
+                  });
+                },
+                //  child: Icon(Icons.calendar_today_rounded, color: AppColors.primaryColor),
+                child: SvgPicture.asset(AppIcons.calendarIcon)
             ),
             leftChevronIcon: const SizedBox(),
             formatButtonVisible: false,
             titleCentered: false,
-            titleTextStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            titleTextStyle: TextStyle(
+                fontSize: 18, fontWeight: FontWeight.bold),
           ),
           calendarStyle: CalendarStyle(
             todayDecoration: BoxDecoration(
-              color: AppColors.primaryColor,
-              shape: BoxShape.circle,
+              color: AppColors.colorCDBDB6,
+              shape: BoxShape.rectangle,
             ),
             selectedDecoration: BoxDecoration(
-              color: AppColors.bottomBarColor,
-              shape: BoxShape.circle,
+              color: AppColors.colorCDBDB6,
+              shape: BoxShape.rectangle,
             ),
           ),
         ),
       ],
     );
   }
+
+}
+// Function to generate a list of meetings
+// Function to generate a list of meetings
+List<Meeting> _getDataSource() {
+  final List<Meeting> meetings = <Meeting>[];
+  final DateTime today = DateTime.now();
+
+  // Example appointment details
+  final DateTime startTime =
+  DateTime(today.year, today.month, today.day, 9, 0, 0);
+  final DateTime endTime = startTime.add(const Duration(hours: 2));
+
+  // Add a recurring appointment (example: weekly)
+  for (int i = 0; i < 6; i++) { // 6 occurrences
+    DateTime recurrenceDate = startTime.add(Duration(days: 7 * i));
+    meetings.add(Meeting(
+      'Conference',
+      recurrenceDate,
+      recurrenceDate.add(const Duration(hours: 2)),
+      const Color(0xFF0F8644),
+      false,
+    ));
+  }
+
+  return meetings;
+}
+
+// Meeting Data Source Class
+class MeetingDataSource extends CalendarDataSource {
+  MeetingDataSource(List<Meeting> source) {
+    appointments = source;
+  }
+
+  @override
+  DateTime getStartTime(int index) {
+    return appointments![index].from;
+  }
+
+  @override
+  DateTime getEndTime(int index) {
+    return appointments![index].to;
+  }
+
+  @override
+  String getSubject(int index) {
+    return appointments![index].eventName;
+  }
+
+  @override
+  Color getColor(int index) {
+    return appointments![index].background;
+  }
+
+  @override
+  bool isAllDay(int index) {
+    return appointments![index].isAllDay;
+  }
+}
+
+// Meeting Class
+class Meeting {
+  Meeting(this.eventName, this.from, this.to, this.background, this.isAllDay);
+
+  String eventName;
+  DateTime from;
+  DateTime to;
+  Color background;
+  bool isAllDay;
 }
