@@ -54,7 +54,7 @@ class EventCard extends StatelessWidget {
               ],
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 10.h),
+              padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 10.h),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -114,8 +114,7 @@ class EventCard extends StatelessWidget {
                           ),
                           Row(
                             children: [
-                              Icon(Icons.circle,
-                                  color: AppColors.primaryColor, size: 12.w),
+                              Icon(Icons.circle, color: AppColors.primaryColor, size: 12.w),
                               SizedBox(width: 4.w),
                               CustomText(text: 'Deadline: 1-6-2025',
                                 fontsize: 12.sp,

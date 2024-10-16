@@ -69,7 +69,7 @@ class _MyTodayEventScreenState extends State<MyTodayEventScreen> {
                     borderRadius: BorderRadius.circular(15.r),
                   ),
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                    padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 12.h),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -83,7 +83,7 @@ class _MyTodayEventScreenState extends State<MyTodayEventScreen> {
                             fit: BoxFit.cover,
                           ),
                         ),
-                        SizedBox(width: 16.w),
+                        SizedBox(width: 12.w),
                         //=====================> Event Details Section <=========================
                         Expanded(
                           child: Column(
@@ -131,14 +131,14 @@ class _MyTodayEventScreenState extends State<MyTodayEventScreen> {
                                       Row(
                                         children: [
                                           SvgPicture.asset(AppIcons.dotIconForFamily),
-                                          SizedBox(width: 4),
+                                          SizedBox(width: 4.w),
                                           Text('Cost : \$100',style: TextStyle(fontSize: 8.sp),),
                                         ],
                                       ),
                                       Row(
                                         children: [
                                           SvgPicture.asset(AppIcons.dotIconForFamily),
-                                          SizedBox(width: 4),
+                                          SizedBox(width: 4.w),
                                           Text('Deadline: 1-6-2025',style: TextStyle(fontSize: 8.sp),),
                                         ],
                                       ),
@@ -150,7 +150,7 @@ class _MyTodayEventScreenState extends State<MyTodayEventScreen> {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
-                                  Icon(Icons.more_horiz,color: Colors.grey,)
+                                  Icon(Icons.more_horiz,color: Colors.grey)
                                 ],
                               )
                             ],
@@ -177,7 +177,6 @@ class _MyTodayEventScreenState extends State<MyTodayEventScreen> {
             },
           ),
         )
-
           ],
         ),
       ),

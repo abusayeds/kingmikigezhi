@@ -105,38 +105,14 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                         return null;*/
                       },
                     ),
-                    SizedBox(height: 16.h),
-                    GestureDetector(
-                      onTap: () {
-                        Get.toNamed(AppRoutes.forgotPasswordScreen,
-                            parameters: {
-                              // "email": _authController.emailCtrl.text
-                            });
-                        // Get.toNamed(AppRoutes.forgotPasswordScreen);
-                      },
-                      child: CustomText(
-                        text: AppStrings.forgotPassword.tr,
-                        fontWeight: FontWeight.w600,
-                        fontsize: 16.h,
-                        fontName: 'Lato',
-                        color: AppColors.primaryColor,
-                      ),
-                    ),
-                    SizedBox(height: 367.h),
+                    SizedBox(height: 60.h),
                     //===============================> Change Password Button <===============================
                     CustomButton(
                       color: AppColors.buttonColor,
                       textColor: Colors.white ,
                         text: AppStrings.changePassword,
-                        onTap: () {
-                          // if (_formKey.currentState!.validate()) {
-                          //   _authController.handleChangePassword(
-                          //       _authController.oldPasswordCtrl.text,
-                          //       _authController.newPasswordCtrl.text);
-                          // Get.toNamed(AppRoutes.verifyOtpScreen);
-                          //}
-                        }),
-                    SizedBox(height: 74.h),
+                        onTap: () {}),
+
                   ],
                 ),
               )

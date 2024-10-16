@@ -75,7 +75,7 @@ class _MyUpcomingEventScreenState extends State<MyUpcomingEventScreen> {
                         borderRadius: BorderRadius.circular(15.r),
                       ),
                       child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 12.h),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [

@@ -24,7 +24,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -34,7 +33,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(height: 108.h),
+                  SizedBox(height: 150.h),
                   //================================> Sign Up  Text Section <========================
                   CustomText(
                     text: 'Sign Up ',
@@ -56,7 +55,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return "Please enter your email33333333";
+                        return "Please enter your email";
                       }
                       return null;
                     },
@@ -64,32 +63,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   SizedBox(height: 16.h),
                   //=======================================> CheckBox Section <==============================
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.max,
                     children: [
-                      Row(
-                        children: [
-                          Checkbox(
-                            checkColor: Colors.white,
-                            activeColor: AppColors.primaryColor,
-                            focusColor: AppColors.greyColor,
-                            value: isChecked,
-                            onChanged: (bool? value) {
-                              setState(() {
-                                isChecked = value ?? false;
-                              });
-                            },
-                            side: BorderSide(
-                              color: isChecked
-                                  ? AppColors.primaryColor
-                                  : AppColors.primaryColor,
-                              width: 1.w,
-                            ),
-                          ),
-                          CustomText(
-                            text: "User agreement ",
-                          ),
-                        ],
+                      Checkbox(
+                        checkColor: Colors.white,
+                        activeColor: AppColors.primaryColor,
+                        focusColor: AppColors.greyColor,
+                        value: isChecked,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            isChecked = value ?? false;
+                          });
+                        },
+                        side: BorderSide(
+                          color: isChecked
+                              ? AppColors.primaryColor
+                              : AppColors.primaryColor,
+                          width: 1.w,
+                        ),
                       ),
+                      Text('User agreement',style: TextStyle(fontSize: 14.sp),)
                     ],
                   ),
                   //================================> Continue Button <======================================
@@ -101,6 +95,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     text: 'Continue',
                     color: AppColors.buttonColor,
                     textColor: Colors.white,
+                    textStyle: TextStyle(fontSize: 12.sp),
                   ),
                   SizedBox(height: 2.h),
                   //========================================> Already has an account text <============================
@@ -119,6 +114,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             text: 'Sign In',
                             color: AppColors.primaryColor,
                             fontWeight: FontWeight.w700,
+                            decoration:TextDecoration.underline,
                           ))
                     ],
                   )

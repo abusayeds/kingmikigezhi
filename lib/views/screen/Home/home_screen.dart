@@ -20,6 +20,13 @@ class HomeScreen extends StatefulWidget {
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
+// Dummy data for appointments
+final Map<DateTime, List<String>> appointmentDates = {
+  DateTime.utc(2024, 10, 16): ['Meeting with team', 'Doctor appointment'],
+  DateTime.utc(2024, 10, 18): ['Project deadline'],
+  DateTime.utc(2024, 10, 20): ['Lunch with client', 'Gym session'],
+  DateTime.utc(2024, 10, 22): ['Webinar'],
+};
 
 class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _searchController = TextEditingController();
@@ -76,8 +83,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Container(
-                      height: 25.h,width: 120.w,
-                      padding: EdgeInsets.symmetric(horizontal: 8.h, vertical: 4.w),
+                      height: 30.h,
+                      width: 120.w,
+                      padding: EdgeInsets.symmetric(horizontal: 8.h, vertical: 2.w),
                       decoration: BoxDecoration(
                         color: Colors.blueGrey, // Background color
                         borderRadius: BorderRadius.circular(8.r),
@@ -85,16 +93,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: DropdownButton<String>(
                         value: dropdownValue,
                         underline: SizedBox(),
-                        icon: Icon(Icons.arrow_drop_down, color: Colors.white,size: 12.sp),
-                        dropdownColor: Colors.black,
-                        style: TextStyle(color: Colors.white,fontSize: 10.sp),
+                        icon: Icon(Icons.arrow_drop_down, color: Colors.white, size: 12.sp),
+                        dropdownColor: AppColors.primaryColor,
+                        style: TextStyle(color: Colors.white70, fontSize: 10.sp),
                         onChanged: (String? newValue) {
                           setState(() {
                             dropdownValue = newValue!;
                           });
                         },
-                        items:<String>['All', 'Self', 'Spous', 'Child Stephanie', 'Child Sophia']
-                            .map<DropdownMenuItem<String>>((String value)  {
+                        items: <String>['All', 'Self', 'Spous', 'Child Stephanie', 'Child Sophia'].map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
                             child: Row(
@@ -103,7 +110,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                 SizedBox(width: 10.w),
                               ],
                             ),
-
                           );
                         }).toList(),
                       ),
@@ -116,6 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
+               // CalendarWidget(),
                 _tableCalendar(),
                 SizedBox(height: 16.h),
                 _grayEventCard(),
@@ -123,16 +130,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 _pianoList(),
                 SizedBox(height: 16.h),
                 Padding(
-                  padding:  EdgeInsets.symmetric(vertical: 8.w),
+                  padding: EdgeInsets.symmetric(vertical: 8.w),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Upcoming Event',style: TextStyle(fontSize: 20.sp)),
+                      Text('Upcoming Event', style: TextStyle(fontSize: 20.sp)),
                       InkWell(
-                        onTap: (){
-                          Get.toNamed(AppRoutes.upcomingEventScreen);
-                        },
-                          child: Text('More',style: TextStyle(fontSize: 12.sp))),
+                          onTap: () {
+                            Get.toNamed(AppRoutes.upcomingEventScreen);
+                          },
+                          child: Text('More', style: TextStyle(fontSize: 12.sp))),
                     ],
                   ),
                 ),
@@ -162,8 +169,9 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
 //============================> Search Bar Section <=================================
-  _searchBar()  {
+  _searchBar() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -180,7 +188,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 AppIcons.search,
                 width: 24.w,
                 height: 24.h,
-                color: AppColors.primaryColor,
               ),
             ),
           ),
@@ -208,6 +215,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ],
     );
   }
+
 //============================> Gray Event Card Section <=================================
   _grayEventCard() {
     return Container(
@@ -227,7 +235,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     borderRadius: BorderRadius.circular(16.r),
                   ),
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 20.w, vertical: 10.h),
                     child: Image.asset(AppImages.logoCard,
                         color: AppColors.primaryColor,
                         width: 85.w,
@@ -329,7 +338,7 @@ class _HomeScreenState extends State<HomeScreen> {
   //============================> Piano Event List View <=================================
   _pianoList() {
     return SizedBox(
-      height: 180.h,
+      height: 190.h,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: 3,
@@ -349,7 +358,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         Container(
                           decoration: BoxDecoration(
-                            color: const Color(0xffd5d7d7),
+                            color: Colors.white.withOpacity(0.5),
                             borderRadius: BorderRadius.circular(16.r),
                           ),
                           child: Padding(
@@ -372,7 +381,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             SizedBox(height: 12.h),
                             Row(
                               children: [
-                             SvgPicture.asset(AppIcons.dotIconForFamily),
+                                SvgPicture.asset(AppIcons.dotIconForFamily),
                                 Padding(
                                   padding: EdgeInsets.only(left: 5.w),
                                   child: CustomText(
@@ -385,7 +394,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             SizedBox(height: 8.h),
                             Row(
                               children: [
-                             SvgPicture.asset(AppIcons.dotIconForFamily),
+                                SvgPicture.asset(AppIcons.dotIconForFamily),
                                 Padding(
                                   padding: EdgeInsets.only(left: 5.w),
                                   child: CustomText(
@@ -398,7 +407,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             SizedBox(height: 8.h),
                             Row(
                               children: [
-                             SvgPicture.asset(AppIcons.dotIconForFamily),
+                                SvgPicture.asset(AppIcons.dotIconForFamily),
                                 Padding(
                                   padding: EdgeInsets.only(left: 5.w),
                                   child: CustomText(
@@ -411,7 +420,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             SizedBox(height: 8.h),
                             Row(
                               children: [
-                             SvgPicture.asset(AppIcons.dotIconForFamily),
+                                SvgPicture.asset(AppIcons.dotIconForFamily),
                                 Padding(
                                   padding: EdgeInsets.only(left: 5.w),
                                   child: CustomText(
@@ -424,7 +433,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             SizedBox(height: 8.h),
                             Row(
                               children: [
-                               SvgPicture.asset(AppIcons.dotIconForFamily),
+                                SvgPicture.asset(AppIcons.dotIconForFamily),
                                 Padding(
                                   padding: EdgeInsets.only(left: 5.w),
                                   child: CustomText(
@@ -458,8 +467,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
 
-
   //========================================> Table Calendar Method <=============================
+
   _tableCalendar() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
@@ -482,33 +491,133 @@ class _HomeScreenState extends State<HomeScreen> {
           },
           headerStyle: HeaderStyle(
             rightChevronIcon: InkWell(
-              onTap: () {
-                setState(() {
-                  _calendarFormat = _calendarFormat == CalendarFormat.week
-                      ? CalendarFormat.month
-                      : CalendarFormat.week;
-                });
-              },
-            //  child: Icon(Icons.calendar_today_rounded, color: AppColors.primaryColor),
-              child: SvgPicture.asset(AppIcons.calendarIcon)
+                onTap: () {
+                  setState(() {
+                    _calendarFormat = _calendarFormat == CalendarFormat.week
+                        ? CalendarFormat.month
+                        : CalendarFormat.week;
+                  });
+                },
+                child: SvgPicture.asset(AppIcons.calendarIcon) // Update this path
             ),
+            leftChevronVisible: false,
             leftChevronIcon: const SizedBox(),
             formatButtonVisible: false,
             titleCentered: false,
-            titleTextStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            titleTextStyle: TextStyle(
+                fontSize: 18, fontWeight: FontWeight.bold),
           ),
           calendarStyle: CalendarStyle(
             todayDecoration: BoxDecoration(
-              color: AppColors.primaryColor,
-              shape: BoxShape.circle,
+              color:  AppColors.colorCDBDB6,
+              shape: BoxShape.rectangle,
             ),
             selectedDecoration: BoxDecoration(
-              color: AppColors.bottomBarColor,
-              shape: BoxShape.circle,
+              color: AppColors.colorCDBDB6,
+              shape: BoxShape.rectangle,
             ),
+          ),
+          calendarBuilders: CalendarBuilders(
+            defaultBuilder: (context, day, focusedDay) {
+              // Check if today has appointments
+              bool hasAppointments = _checkForAppointments(day);
+              return Container(
+                margin: EdgeInsets.only(bottom: 5),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Using Row for horizontal alignment
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center, // Center the content
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 4.0), // Add vertical padding
+                          child: Text(
+                            '${day.day}',
+                            style: TextStyle(
+                              color: isSameDay(day, _selectedDay) ? Colors.white : Colors.black,
+                              fontWeight: isSameDay(day, _selectedDay) ? FontWeight.bold : FontWeight.normal,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    if (hasAppointments)
+                      Container(
+                        height: 8, // Height of the circular indicator
+                        width: 8, // Width of the circular indicator
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.amber, // Change this to your desired color
+                        ),
+                      ),
+                  ],
+                ),
+              );
+            },
           ),
         ),
       ],
     );
   }
+/*  _tableCalendar2() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        // TableCalendar Widget
+        TableCalendar(
+          firstDay: DateTime.utc(2020, 10, 16),
+          lastDay: DateTime.utc(2030, 3, 14),
+          focusedDay: _focusedDay,
+          calendarFormat: _calendarFormat,
+          startingDayOfWeek: StartingDayOfWeek.monday,
+          selectedDayPredicate: (day) {
+            return isSameDay(_selectedDay, day);
+          },
+          onDaySelected: (selectedDay, focusedDay) {
+            setState(() {
+              _selectedDay = selectedDay;
+              _focusedDay = focusedDay;
+            });
+          },
+          headerStyle: HeaderStyle(
+            rightChevronIcon: InkWell(
+                onTap: () {
+                  setState(() {
+                    _calendarFormat = _calendarFormat == CalendarFormat.week
+                        ? CalendarFormat.month
+                        : CalendarFormat.week;
+                  });
+                },
+                //  child: Icon(Icons.calendar_today_rounded, color: AppColors.primaryColor),
+                child: SvgPicture.asset(AppIcons.calendarIcon)
+            ),
+            leftChevronIcon: const SizedBox(),
+            formatButtonVisible: false,
+            titleCentered: false,
+            titleTextStyle: TextStyle(
+                fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          calendarStyle: CalendarStyle(
+            todayDecoration: BoxDecoration(
+              color: AppColors.colorCDBDB6,
+              shape: BoxShape.rectangle,
+            ),
+            selectedDecoration: BoxDecoration(
+              color: AppColors.colorCDBDB6,
+              shape: BoxShape.rectangle,
+            ),
+          ),
+        ),
+      ],
+    );
+  }*/
+  // Function to check for appointments for a specific day
+  bool _checkForAppointments(DateTime day) {
+    // Check if the day exists in the appointment map
+    return appointmentDates.containsKey(day);
+  }
 }
+
+
+
