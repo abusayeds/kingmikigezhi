@@ -277,7 +277,7 @@ class _ContributionFilterScreenState extends State<ContributionFilterScreen> {
                       child: CustomButton(
                         onTap: () {},
                         text: "Reset",
-                        color: Colors.white,
+                        color: AppColors.fillColor,
                         textColor: Colors.black,
                       )),
                   SizedBox(
