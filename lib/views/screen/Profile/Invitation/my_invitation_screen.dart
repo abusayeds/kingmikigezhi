@@ -2,7 +2,9 @@
 import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/views/base/custom_button.dart';
+import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class MyInvitationPage extends StatefulWidget {
@@ -55,12 +57,32 @@ class _MyInvitationPageState extends State<MyInvitationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Invitation'),
+        automaticallyImplyLeading: false,
+        title: Row(
+          children: [
+            IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.black,
+                size: 20.sp,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            Expanded(
+              child: Align(
+                alignment: Alignment.center, // Center the text
+                child: CustomText(
+                  text: 'Invitation',
+                  fontsize: 18.sp,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        ),
         centerTitle: true,
-        backgroundColor: Colors.white,
-        elevation: 0,
-        iconTheme: IconThemeData(color: Colors.black),
-        titleTextStyle: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
       ),
       body: Column(
         children: [

@@ -14,7 +14,7 @@ class AppStrings{
   static String password = "Password";
   static String rememberMe  = "Remember me";
   static String forgotPassword  = "Forgot Password?";
-  static String doNotHaveAccount  = "Don’t have an account ?";
+  static String doNotHaveAccount  = "Don’t Have An Account ?";
 
 //================> Sign Up Screen <====================
   static String signUpAn = "Sign up an account";

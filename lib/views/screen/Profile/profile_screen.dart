@@ -140,8 +140,6 @@ class ProfileScreen extends StatelessWidget {
       ),
     );
   }
-
-
   //=========================>>>>>  Log out Custom BottomSheet    <<<================================
   void _showCustomBottomSheet(BuildContext context) {
     showModalBottomSheet(

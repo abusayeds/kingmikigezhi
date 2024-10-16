@@ -34,7 +34,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
       //=======================> Body Section <============================
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
+          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -844,7 +844,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 15),
+                  SizedBox(height: 15.h),
 
                   // Created By Section
                   Row(
@@ -855,7 +855,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                           Text('Created By'),
                           SizedBox(width: 8.w),
                           CircleAvatar(
-                            radius: 30,
+                            radius: 30.r,
                             backgroundImage: NetworkImage('https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg'), // Placeholder image
                           ),
                         ],
@@ -865,22 +865,22 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                         textAlign: TextAlign.right,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 14,
+                          fontSize: 14.sp,
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 15),
+                  SizedBox(height: 15.h),
 
                   // User Contribution Section
                   Text(
                     'Has already contribute or verification by (10) Users',
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 12.sp,
                       color: Colors.grey.shade600,
                     ),
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 10.h),
                   Row(
                     children: [
                       Transform.translate(
@@ -948,7 +948,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                           )),
                     ],
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 20.h),
 
                   // Delete Button
                 CustomButton(

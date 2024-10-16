@@ -46,7 +46,24 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Row(
+          children: [
+            IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.black,
+                size: 20.sp,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+        centerTitle: true,
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -85,17 +102,16 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     child: DropdownButton<String>(
                       value: selectedGender,
                       dropdownColor: AppColors.fillColor,
-                      menuWidth: 245.w,
+                      menuWidth: 240.w,
                       borderRadius: BorderRadius.circular(8.r),
-                      hint: Text(
-                        "Select your Gender",
-                        style: TextStyle(
-                            fontSize: 18.sp, fontWeight: FontWeight.w500),
+                      hint: Row(
+                        children: [
+                          SvgPicture.asset(AppIcons.singlePerson,color: AppColors.primaryColor),
+                          SizedBox(width: 8.w),
+                          Text("Select your Gender", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500),),
+                        ],
                       ),
-                      icon: SvgPicture.asset(
-                        AppIcons.downArrowIcon,
-                        width: 16.w,
-                        color: AppColors.primaryColor,
+                      icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
                       ),
                       isExpanded: true,
                       items: genderList.map((String value) {
@@ -292,10 +308,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
             prifixicon: icon != null
                 ? Padding(
                     padding: EdgeInsets.symmetric(horizontal: 12.w),
-                    child: SvgPicture.asset(
-                      icon,
-                      color: AppColors.primaryColor,
-                    ),
+                    child: SvgPicture.asset(icon, color: AppColors.primaryColor,),
                   )
                 : null,
             validator: (value) {
