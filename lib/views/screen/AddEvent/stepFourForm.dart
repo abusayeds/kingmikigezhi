@@ -1,8 +1,10 @@
+import 'package:event_sharing/utils/app_icons.dart';
 import 'package:event_sharing/views/base/custom_button.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:event_sharing/views/base/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../../../../utils/app_colors.dart';
@@ -16,8 +18,6 @@ class StepFourForm extends StatefulWidget {
 
 class _StepFourFormState extends State<StepFourForm> {
   TextEditingController relationShipController = TextEditingController();
-  String? _selectedType;
-  final List<String> _type = ['Onsite', 'Online', 'Hybrid'];
 
   @override
   Widget build(BuildContext context) {
@@ -43,42 +43,32 @@ class _StepFourFormState extends State<StepFourForm> {
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                 ),
               ),
-              InputDecorator(
-                decoration: InputDecoration(
-                  fillColor: AppColors.colorEDF2F4,
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
+              Container(
+                height: 60.h,
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                decoration: BoxDecoration(
+                  color: AppColors.fillColor,
+                  borderRadius: BorderRadius.circular(8.r),
+                  border: Border.all(color: AppColors.primaryColor, width: 1),
                 ),
                 child: GestureDetector(
                   onTap: () {
-                    // Open the popup when the widget is tapped
                     showRepeatPopup(context);
                   },
                   child: InputDecorator(
                     decoration: InputDecoration.collapsed(hintText: null), // Hide underline and make it look like a button
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CustomText(
-                          text: 'Function Type',
-                          fontsize: 14.sp,
-                        ),
-                        Icon(
-                          Icons.arrow_drop_down,
-                          color: AppColors.primaryColor,
-                        ),
-                      ],
+                    child: Center( // Center the content
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CustomText(
+                            text: 'Function Type',
+                            fontsize: 16.sp,
+                          ),
+                          SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

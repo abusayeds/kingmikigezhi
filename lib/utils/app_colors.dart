@@ -26,6 +26,8 @@ class AppColors{
   static Color colorEDF2F4 = const Color(0xFFEDF2F4);
 
   static Color colorD9A951 = const Color(0xFFD9A951);
+  static Color colorCDBDB6 = const Color(0xFFCDBDB6);
+
 
   static BoxShadow shadow=BoxShadow(
     blurRadius: 4,

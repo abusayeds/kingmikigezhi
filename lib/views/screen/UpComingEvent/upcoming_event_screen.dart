@@ -22,12 +22,31 @@ class _UpcomingEventScreenState extends State<UpcomingEventScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: CustomText(
-          text: AppStrings.upcomingEvent,
-          fontWeight: FontWeight.w500,
-          fontsize: 18.sp,
+        automaticallyImplyLeading: false,
+        title: Row(
+          children: [
+            IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.black,
+                size: 20.sp,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            Expanded(
+              child: Align(
+                alignment: Alignment.center,
+                child: CustomText(
+                  text: AppStrings.upcomingEvent,
+                  fontsize: 18.sp,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
         ),
-        backgroundColor: Colors.white,
         centerTitle: true,
       ),
       body: Padding(
@@ -63,7 +82,7 @@ class _UpcomingEventScreenState extends State<UpcomingEventScreen> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         SizedBox(
-          width: 271.w,
+          width: 290.w,
           child: CustomTextField(
             controller: _searchController,
             contenpaddingHorizontal: 12.w,

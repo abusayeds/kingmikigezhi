@@ -62,13 +62,13 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Type Section
-              CustomText(text: 'Type',
+              CustomText(text: 'Title',
                   fontWeight: FontWeight.w600,
                   fontsize: 16,
                   bottom: 8),
               CustomTextField(
                 controller: _typeCTRL,
-                hintText: 'Type here',
+                hintText: 'Type Title',
               ),
               SizedBox(height: 8.h),
               // Location
@@ -82,47 +82,34 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
               ),
               SizedBox(height: 8.h),
               // Member
-              CustomText(text: 'Member',
-                  fontWeight: FontWeight.w600,
-                  fontsize: 16,
-                  bottom: 8),
-              InputDecorator(
-                decoration: InputDecoration(
-                  fillColor: AppColors.fillColor,
-                  // labelText: 'Select',
-                  border: OutlineInputBorder(
-                    borderSide:
-                    BorderSide(color: AppColors.primaryColor, width: 1.w),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide:
-                    BorderSide(color: AppColors.primaryColor, width: 1.w),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide:
-                    BorderSide(color: AppColors.primaryColor, width: 1.w),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
+              CustomText(text: 'Member', fontWeight: FontWeight.w600, fontsize: 16, bottom: 8),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                decoration: BoxDecoration(
+                  color: AppColors.fillColor,
+                  borderRadius: BorderRadius.circular(8.r),
+                  border: Border.all(color: AppColors.primaryColor, width: 1),
                 ),
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
-                    //focusColor:  AppColors.primaryColor,
-                    iconDisabledColor: AppColors.primaryColor,
-                    iconEnabledColor: AppColors.primaryColor,
-                    isExpanded: true,
                     value: _selectedMember,
-                    hint: CustomText(
-                        text: 'Select Member', fontsize: 14.sp),
+                    dropdownColor: AppColors.fillColor,
+                    menuWidth: 240.w,
+                    borderRadius: BorderRadius.circular(8.r),
+                    hint: Text("Select Member", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500),),
+                    icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
+                    ),
+                    isExpanded: true,
                     items: _member.map((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
-                        child: Text(value),
+                        child: Text(
+                          value,
+                          style: const TextStyle(color: Colors.black),
+                        ),
                       );
                     }).toList(),
-                    onChanged: (String? newValue) {
+                    onChanged: (newValue) {
                       setState(() {
                         _selectedMember = newValue;
                       });
@@ -146,11 +133,6 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
                       hintText: 'Date',
                       sufixicons: Padding(
                         padding: EdgeInsets.only(right: 12.w),
-                        child: SvgPicture.asset(
-                          AppIcons.downArrowIcon,
-                          width: 16.w,
-                          color: AppColors.primaryColor,
-                        ),
                       ),
                     ),
                   ),
@@ -163,11 +145,6 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
                       hintText: 'Time',
                       sufixicons: Padding(
                         padding: EdgeInsets.only(right: 12.w),
-                        child: SvgPicture.asset(
-                          AppIcons.downArrowIcon,
-                          width: 16.w,
-                          color: AppColors.primaryColor,
-                        ),
                       ),
                     ),
                   ),
@@ -188,11 +165,6 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
                       hintText: 'Date',
                       sufixicons: Padding(
                         padding: EdgeInsets.only(right: 12.w),
-                        child: SvgPicture.asset(
-                          AppIcons.downArrowIcon,
-                          width: 16.w,
-                          color: AppColors.primaryColor,
-                        ),
                       ),
                     ),
                   ),
@@ -205,11 +177,6 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
                       hintText: 'Time',
                       sufixicons: Padding(
                         padding: EdgeInsets.only(right: 12.w),
-                        child: SvgPicture.asset(
-                          AppIcons.downArrowIcon,
-                          width: 16.w,
-                          color: AppColors.primaryColor,
-                        ),
                       ),
                     ),
                   ),
@@ -217,47 +184,34 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
               ),
               SizedBox(height: 8.h),
               // Repeat Function
-              CustomText(text: 'Repeat Function',
-                  fontWeight: FontWeight.w600,
-                  fontsize: 16,
-                  bottom: 8),
-              InputDecorator(
-                decoration: InputDecoration(
-                  fillColor: AppColors.fillColor,
-                  // labelText: 'Select',
-                  border: OutlineInputBorder(
-                    borderSide:
-                    BorderSide(color: AppColors.primaryColor, width: 1.w),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide:
-                    BorderSide(color: AppColors.primaryColor, width: 1.w),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide:
-                    BorderSide(color: AppColors.primaryColor, width: 1.w),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
+              CustomText(text: 'Repeat Function', fontWeight: FontWeight.w600, fontsize: 16, bottom: 8),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                decoration: BoxDecoration(
+                  color: AppColors.fillColor,
+                  borderRadius: BorderRadius.circular(8.r),
+                  border: Border.all(color: AppColors.primaryColor, width: 1),
                 ),
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
-                    //focusColor:  AppColors.primaryColor,
-                    iconDisabledColor: AppColors.primaryColor,
-                    iconEnabledColor: AppColors.primaryColor,
-                    isExpanded: true,
                     value: _selectedRepeat,
-                    hint: CustomText(
-                        text: 'Select Repeat', fontsize: 14.sp),
+                    dropdownColor: AppColors.fillColor,
+                    menuWidth: 240.w,
+                    borderRadius: BorderRadius.circular(8.r),
+                    hint: Text("Select Repeat", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500),),
+                    icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
+                    ),
+                    isExpanded: true,
                     items: _repeat.map((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
-                        child: Text(value),
+                        child: Text(
+                          value,
+                          style: const TextStyle(color: Colors.black),
+                        ),
                       );
                     }).toList(),
-                    onChanged: (String? newValue) {
+                    onChanged: (newValue) {
                       setState(() {
                         _selectedRepeat = newValue;
                       });
@@ -291,19 +245,16 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SizedBox(
-                    width: 166,
+                  Expanded(
                     child: CustomButton(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
+                      onTap: () {},
                       text: "Cancel",
-                      color: AppColors.fillColor,
+                      color: AppColors.colorEDF2F4,
                       textColor: Colors.black,
                     ),
                   ),
-                  SizedBox(
-                    width: 166,
+                  SizedBox(width: 16.w),
+                  Expanded(
                     child: CustomButton(
                       onTap: () {},
                       text: "Add",
@@ -313,6 +264,7 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
                   ),
                 ],
               ),
+
             ],
           ),
         ),

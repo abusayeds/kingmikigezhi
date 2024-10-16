@@ -46,7 +46,7 @@ class BottomMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     List<BottomNavigationBarItem> menuItems = [
-      getItem(menuIndex == 0 ? AppIcons.selHome : AppIcons.homeIcon, 'Home', theme, 0),
+      getItem(menuIndex == 0 ? AppIcons.selHome : AppIcons.homeIcons, 'Home', theme, 0),
       getItem(menuIndex == 1 ? AppIcons.selCategories : AppIcons.categories, 'Categories', theme, 1),
       BottomNavigationBarItem(label: '', icon: getAddItem(),),
       getItem(menuIndex == 2 ? AppIcons.selCalendar : AppIcons.calendarOutline, 'Event', theme, 2),
