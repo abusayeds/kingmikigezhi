@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:event_sharing/utils/app_colors.dart';
+import 'package:event_sharing/utils/app_icons.dart';
 import 'package:event_sharing/views/base/custom_button.dart';
 import 'package:event_sharing/views/base/custom_text_field.dart';
 import 'package:event_sharing/views/screen/AddEvent/stepFiveForm.dart';
@@ -10,6 +11,7 @@ import 'package:event_sharing/views/screen/AddEvent/stepTwoForm.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../utils/app_strings.dart';
@@ -38,9 +40,17 @@ class _CreateEventOneState extends State<CreateEventOne> {
   Uint8List? coverImage;
   List<Uint8List?> eventImages = [null, null, null, null];
   File? selectedImage;
-  final List<String> categories = ['Concert', 'Sports', 'Show', 'Olympic game'];
-  String? selectedCategory;
-  String? _selectedType;
+
+  final List<String> numberList = ['Concert', 'Sports', 'Show', 'Olympic game'];
+  final List<String> programList = ['Program One', 'Program Two', 'Program Three'];
+  final List<String> yearList = ['2020', '2021', '2024'];
+  final List<String> sessionList = ['One', 'Two', 'Three'];
+
+  String? _selectedProgram;
+  String? _selectedNumber;
+  String? _selectedSession;
+  String? _selectedYear;
+
   int _activeStepIndex = 0;
 
 
@@ -187,51 +197,42 @@ class _CreateEventOneState extends State<CreateEventOne> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CustomText(
-                  text: 'Session Number',
-                  fontWeight: FontWeight.w500,
-                  fontsize: 16.sp,
-                  bottom: 8.h,
+                CustomText(text: 'Session Number', fontWeight: FontWeight.w700, fontsize: 16.sp, bottom: 8.h,
                 ),
-                InputDecorator(
-                  decoration: InputDecoration(
-                    fillColor: AppColors.fillColor,
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                    contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  decoration: BoxDecoration(
+                    color: AppColors.fillColor,
+                    borderRadius: BorderRadius.circular(8.r),
+                    border: Border.all(color: AppColors.primaryColor, width: 1),
                   ),
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
-                      iconDisabledColor: AppColors.primaryColor,
-                      iconEnabledColor: AppColors.primaryColor,
+                      value: _selectedNumber,
+                      dropdownColor: AppColors.fillColor,
+                      menuWidth: 240.w,
+                      borderRadius: BorderRadius.circular(8.r),
+                      hint: Text("Select Number", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500),),
+                      icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
+                      ),
                       isExpanded: true,
-                      value: _selectedType,
-                      hint: CustomText(text: 'Select Type', fontsize: 14.sp),
-                      items: categories.map((String value) {
+                      items: numberList.map((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
-                          child: Text(value),
+                          child: Text(
+                            value,
+                            style: const TextStyle(color: Colors.black),
+                          ),
                         );
                       }).toList(),
-                      onChanged: (String? newValue) {
+                      onChanged: (newValue) {
                         setState(() {
-                          _selectedType = newValue;
+                          _selectedNumber = newValue;
                         });
                       },
                     ),
                   ),
                 ),
-
                 Row(
                   children: [
                     Padding(
@@ -255,50 +256,75 @@ class _CreateEventOneState extends State<CreateEventOne> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(4),
-                        child: DropdownButtonFormField<String>(
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                            labelText: 'Year',
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 20.w),
+                        decoration: BoxDecoration(
+                          color: AppColors.fillColor,
+                          borderRadius: BorderRadius.circular(8.r),
+                          border: Border.all(color: AppColors.primaryColor, width: 1),
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            value: _selectedYear,
+                            dropdownColor: AppColors.fillColor,
+                            menuWidth: 240.w,
+                            borderRadius: BorderRadius.circular(8.r),
+                            hint: Text("Year", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500),),
+                            icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
+                            ),
+                            isExpanded: true,
+                            items: yearList.map((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(
+                                  value,
+                                  style: const TextStyle(color: Colors.black),
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (newValue) {
+                              setState(() {
+                                _selectedYear = newValue;
+                              });
+                            },
                           ),
-                          value: null,
-                          items: ['2020', '2021', '2022', '2023']
-                              .map((year) => DropdownMenuItem(
-                            value: year,
-                            child: Text(year),
-                          ))
-                              .toList(),
-                          onChanged: (value) {
-                            // Handle year selection
-                          },
                         ),
                       ),
                     ),
                     SizedBox(width: 8), // Spacing between the dropdown fields
                     Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(4),
-                        child: DropdownButtonFormField<String>(
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            contentPadding: EdgeInsets.symmetric(horizontal: 2),
-                            labelText: 'Session',
-                          ),
-                          value: null,
-                          items: ['Chess', 'Math', 'Piano']
-                              .map((program) => DropdownMenuItem(
-                            value: program,
-                            child: Text(
-                              program,
-                              style: TextStyle(fontSize: 12),
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 20.w),
+                        decoration: BoxDecoration(
+                          color: AppColors.fillColor,
+                          borderRadius: BorderRadius.circular(8.r),
+                          border: Border.all(color: AppColors.primaryColor, width: 1),
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            value: _selectedSession,
+                            dropdownColor: AppColors.fillColor,
+                            menuWidth: 240.w,
+                            borderRadius: BorderRadius.circular(8.r),
+                            hint: Text("Session", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500),),
+                            icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
                             ),
-                          ))
-                              .toList(),
-                          onChanged: (value) {
-                            // Handle program selection
-                          },
+                            isExpanded: true,
+                            items: sessionList.map((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(
+                                  value,
+                                  style: const TextStyle(color: Colors.black),
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (newValue) {
+                              setState(() {
+                                _selectedSession = newValue;
+                              });
+                            },
+                          ),
                         ),
                       ),
                     ),
@@ -311,39 +337,35 @@ class _CreateEventOneState extends State<CreateEventOne> {
         SizedBox(height: 16.h),
         CustomText(text: 'Program',fontsize: 16,fontWeight: FontWeight.w600,),
         SizedBox(height: 12.h),
-        InputDecorator(
-          decoration: InputDecoration(
-            fillColor: AppColors.colorEDF2F4,
-            border: OutlineInputBorder(
-              borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
-              borderRadius: BorderRadius.circular(8.r),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
-              borderRadius: BorderRadius.circular(8.r),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
-              borderRadius: BorderRadius.circular(8.r),
-            ),
-            contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          decoration: BoxDecoration(
+            color: AppColors.fillColor,
+            borderRadius: BorderRadius.circular(8.r),
+            border: Border.all(color: AppColors.primaryColor, width: 1),
           ),
           child: DropdownButtonHideUnderline(
             child: DropdownButton<String>(
-              iconDisabledColor: AppColors.primaryColor,
-              iconEnabledColor: AppColors.primaryColor,
+              value: _selectedProgram,
+              dropdownColor: AppColors.fillColor,
+              menuWidth: 240.w,
+              borderRadius: BorderRadius.circular(8.r),
+              hint: Text("Select Program", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500)),
+              icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
+              ),
               isExpanded: true,
-              value: _selectedType,
-              hint: CustomText(text: 'Select Type', fontsize: 14.sp),
-              items: categories.map((String value) {
+              items:programList.map((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
-                  child: Text(value),
+                  child: Text(
+                    value,
+                    style: const TextStyle(color: Colors.black),
+                  ),
                 );
               }).toList(),
-              onChanged: (String? newValue) {
+              onChanged: (newValue) {
                 setState(() {
-                  _selectedType = newValue;
+                  _selectedProgram = newValue;
                 });
               },
             ),
@@ -399,6 +421,7 @@ class _CreateEventOneState extends State<CreateEventOne> {
         CustomText(text: 'Description',fontsize: 16,fontWeight: FontWeight.w600,),
         SizedBox(height: 12.h),
         CustomTextField(
+          maxLines: 3,
           controller: descriptionCRTL,
           hintText: 'Type your Description',
           sufixicons: Padding(
@@ -408,9 +431,10 @@ class _CreateEventOneState extends State<CreateEventOne> {
 
         //note portal Name
         SizedBox(height: 16.h),
-        CustomText(text: 'Description',fontsize: 16,fontWeight: FontWeight.w600,),
+        CustomText(text: 'Note',fontsize: 16,fontWeight: FontWeight.w600,),
         SizedBox(height: 12.h),
         CustomTextField(
+          maxLines: 3,
           controller: noteCRTL,
           hintText: 'Type your event note',
           sufixicons: Padding(

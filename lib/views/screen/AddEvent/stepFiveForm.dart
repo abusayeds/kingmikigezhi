@@ -1,10 +1,5 @@
-import 'dart:io';
-import 'package:country_code_picker/country_code_picker.dart';
 import 'package:event_sharing/views/base/custom_button.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
-
-import 'package:event_sharing/views/base/custom_text_field.dart';
-import 'package:event_sharing/views/screen/AddEvent/InnerWidget/dotted_border_container.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,7 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_icons.dart';
-import '../../../../utils/app_strings.dart';
+
 
 
 class StepFiveForm extends StatefulWidget {
@@ -23,7 +18,7 @@ class StepFiveForm extends StatefulWidget {
 }
 
 class _StepFiveFormState extends State<StepFiveForm> {
-  final List<String> round = ['1st', '2nd','Silver','Gold'];
+  final List<String> roundList = ['1st', '2nd','Silver','Gold'];
   final List<String> typeSession = ['Online', 'Offline','Hybrid'];
 
 
@@ -65,40 +60,33 @@ class _StepFiveFormState extends State<StepFiveForm> {
               fontWeight: FontWeight.w600,
             ),
             SizedBox(height: 12.h),
-            InputDecorator(
-              decoration: InputDecoration(
-                fillColor: AppColors.colorEDF2F4,
-                border: OutlineInputBorder(
-                  borderSide:
-                  BorderSide(color: AppColors.primaryColor, width: 1.w),
-                  borderRadius: BorderRadius.circular(8.r),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide:
-                  BorderSide(color: AppColors.primaryColor, width: 1.w),
-                  borderRadius: BorderRadius.circular(8.r),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide:
-                  BorderSide(color: AppColors.primaryColor, width: 1.w),
-                  borderRadius: BorderRadius.circular(8.r),
-                ),
-                contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              decoration: BoxDecoration(
+                color: AppColors.fillColor,
+                borderRadius: BorderRadius.circular(8.r),
+                border: Border.all(color: AppColors.primaryColor, width: 1),
               ),
               child: DropdownButtonHideUnderline(
                 child: DropdownButton<String>(
-                  iconDisabledColor: AppColors.primaryColor,
-                  iconEnabledColor: AppColors.primaryColor,
-                  isExpanded: true,
                   value: _selectedType,
-                  hint: CustomText(text: 'Type Session', fontsize: 14.sp),
-                  items: typeSession.map((String value) {
+                  dropdownColor: AppColors.fillColor,
+                  menuWidth: 240.w,
+                  borderRadius: BorderRadius.circular(8.r),
+                  hint: Text("Type Session", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500)),
+                  icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
+                  ),
+                  isExpanded: true,
+                  items:typeSession.map((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
-                      child: Text(value),
+                      child: Text(
+                        value,
+                        style: const TextStyle(color: Colors.black),
+                      ),
                     );
                   }).toList(),
-                  onChanged: (String? newValue) {
+                  onChanged: (newValue) {
                     setState(() {
                       _selectedType = newValue;
                     });
@@ -116,40 +104,33 @@ class _StepFiveFormState extends State<StepFiveForm> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
-                  child:InputDecorator(
-                    decoration: InputDecoration(
-                      fillColor: AppColors.colorEDF2F4,
-                      border: OutlineInputBorder(
-                        borderSide:
-                        BorderSide(color: AppColors.primaryColor, width: 1.w),
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide:
-                        BorderSide(color: AppColors.primaryColor, width: 1.w),
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide:
-                        BorderSide(color: AppColors.primaryColor, width: 1.w),
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                      contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20.w),
+                    decoration: BoxDecoration(
+                      color: AppColors.fillColor,
+                      borderRadius: BorderRadius.circular(8.r),
+                      border: Border.all(color: AppColors.primaryColor, width: 1),
                     ),
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton<String>(
-                        iconDisabledColor: AppColors.primaryColor,
-                        iconEnabledColor: AppColors.primaryColor,
-                        isExpanded: true,
                         value: _selectedRound,
-                        hint: CustomText(text: 'Type Round', fontsize: 14.sp),
-                        items: round.map((String value) {
+                        dropdownColor: AppColors.fillColor,
+                        menuWidth: 240.w,
+                        borderRadius: BorderRadius.circular(8.r),
+                        hint: Text("Type Score", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500)),
+                        icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
+                        ),
+                        isExpanded: true,
+                        items: roundList.map((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
-                            child: Text(value),
+                            child: Text(
+                              value,
+                              style: const TextStyle(color: Colors.black),
+                            ),
                           );
                         }).toList(),
-                        onChanged: (String? newValue) {
+                        onChanged: (newValue) {
                           setState(() {
                             _selectedRound = newValue;
                           });
@@ -331,7 +312,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
                 Expanded(
                   child: CustomButton(
                     onTap: () {},
-                    text: "Next",
+                    text: "Add & Share",
                     textColor: Colors.white,
                     color: AppColors.buttonColor,
                   ),
