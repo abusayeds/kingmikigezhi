@@ -2,13 +2,13 @@ import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_images.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
+import 'package:event_sharing/views/screen/Home/InnerWidget/calender_widget.dart';
 import 'package:event_sharing/views/screen/Home/InnerWidget/home_app_bar.dart';
 import 'package:event_sharing/views/screen/Home/addBottomSheet/addBottomSheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../../utils/app_icons.dart';
 import '../../base/bottom_menu..dart';
@@ -21,6 +21,13 @@ class HomeScreen extends StatefulWidget {
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
+// Dummy data for appointments
+final Map<DateTime, List<String>> appointmentDates = {
+  DateTime.utc(2024, 10, 16): ['Meeting with team', 'Doctor appointment'],
+  DateTime.utc(2024, 10, 18): ['Project deadline'],
+  DateTime.utc(2024, 10, 20): ['Lunch with client', 'Gym session'],
+  DateTime.utc(2024, 10, 22): ['Webinar'],
+};
 
 class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _searchController = TextEditingController();
@@ -73,15 +80,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 HomeAppBar(),
                 SizedBox(height: 20.h),
                 _searchBar(),
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Container(
                       height: 30.h,
                       width: 120.w,
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 8.h, vertical: 2.w),
+                      padding: EdgeInsets.symmetric(horizontal: 8.h, vertical: 2.w),
                       decoration: BoxDecoration(
                         color: Colors.blueGrey, // Background color
                         borderRadius: BorderRadius.circular(8.r),
@@ -89,24 +94,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: DropdownButton<String>(
                         value: dropdownValue,
                         underline: SizedBox(),
-                        icon: Icon(Icons.arrow_drop_down, color: Colors.white,
-                            size: 12.sp),
+                        icon: Icon(Icons.arrow_drop_down, color: Colors.white, size: 12.sp),
                         dropdownColor: AppColors.primaryColor,
-                        style: TextStyle(
-                            color: Colors.white70, fontSize: 10.sp),
+                        style: TextStyle(color: Colors.white70, fontSize: 10.sp),
                         onChanged: (String? newValue) {
                           setState(() {
                             dropdownValue = newValue!;
                           });
                         },
-                        items: <String>[
-                          'All',
-                          'Self',
-                          'Spous',
-                          'Child Stephanie',
-                          'Child Sophia'
-                        ]
-                            .map<DropdownMenuItem<String>>((String value) {
+                        items: <String>['All', 'Self', 'Spous', 'Child Stephanie', 'Child Sophia'].map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
                             child: Row(
@@ -127,24 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
-                SfCalendar(
-                  view: CalendarView.month,
-                  dataSource: MeetingDataSource(_getDataSource()),
-                  monthViewSettings: MonthViewSettings(
-                    appointmentDisplayMode: MonthAppointmentDisplayMode.indicator,
-                    dayFormat: 'EEE', // Show abbreviated day names (Mon, Tue, Wed)
-                    monthCellStyle: MonthCellStyle(
-                      textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  headerStyle: CalendarHeaderStyle(
-                    textAlign: TextAlign.center,
-                    textStyle: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
+               // CalendarWidget(),
                 _tableCalendar(),
                 SizedBox(height: 16.h),
                 _grayEventCard(),
@@ -161,8 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           onTap: () {
                             Get.toNamed(AppRoutes.upcomingEventScreen);
                           },
-                          child: Text('More', style: TextStyle(fontSize: 12
-                              .sp))),
+                          child: Text('More', style: TextStyle(fontSize: 12.sp))),
                     ],
                   ),
                 ),
@@ -492,7 +470,99 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
   //========================================> Table Calendar Method <=============================
+
   _tableCalendar() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        // TableCalendar Widget
+        TableCalendar(
+          firstDay: DateTime.utc(2020, 10, 16),
+          lastDay: DateTime.utc(2030, 3, 14),
+          focusedDay: _focusedDay,
+          calendarFormat: _calendarFormat,
+          startingDayOfWeek: StartingDayOfWeek.monday,
+          selectedDayPredicate: (day) {
+            return isSameDay(_selectedDay, day);
+          },
+          onDaySelected: (selectedDay, focusedDay) {
+            setState(() {
+              _selectedDay = selectedDay;
+              _focusedDay = focusedDay;
+            });
+          },
+          headerStyle: HeaderStyle(
+            rightChevronIcon: InkWell(
+                onTap: () {
+                  setState(() {
+                    _calendarFormat = _calendarFormat == CalendarFormat.week
+                        ? CalendarFormat.month
+                        : CalendarFormat.week;
+                  });
+                },
+                child: SvgPicture.asset(AppIcons.calendarIcon) // Update this path
+            ),
+            leftChevronVisible: false,
+            leftChevronIcon: const SizedBox(),
+            formatButtonVisible: false,
+            titleCentered: false,
+            titleTextStyle: TextStyle(
+                fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          calendarStyle: CalendarStyle(
+            todayDecoration: BoxDecoration(
+              color:  AppColors.colorCDBDB6,
+              shape: BoxShape.rectangle,
+            ),
+            selectedDecoration: BoxDecoration(
+              color: AppColors.colorCDBDB6,
+              shape: BoxShape.rectangle,
+            ),
+          ),
+          calendarBuilders: CalendarBuilders(
+            defaultBuilder: (context, day, focusedDay) {
+              // Check if today has appointments
+              bool hasAppointments = _checkForAppointments(day);
+              return Container(
+                margin: EdgeInsets.only(bottom: 5),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Using Row for horizontal alignment
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center, // Center the content
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 4.0), // Add vertical padding
+                          child: Text(
+                            '${day.day}',
+                            style: TextStyle(
+                              color: isSameDay(day, _selectedDay) ? Colors.white : Colors.black,
+                              fontWeight: isSameDay(day, _selectedDay) ? FontWeight.bold : FontWeight.normal,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    if (hasAppointments)
+                      Container(
+                        height: 8, // Height of the circular indicator
+                        width: 8, // Width of the circular indicator
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.amber, // Change this to your desired color
+                        ),
+                      ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+/*  _tableCalendar2() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
@@ -543,74 +613,13 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ],
     );
-  }
-
-}
-// Function to generate a list of meetings
-// Function to generate a list of meetings
-List<Meeting> _getDataSource() {
-  final List<Meeting> meetings = <Meeting>[];
-  final DateTime today = DateTime.now();
-
-  // Example appointment details
-  final DateTime startTime =
-  DateTime(today.year, today.month, today.day, 9, 0, 0);
-  final DateTime endTime = startTime.add(const Duration(hours: 2));
-
-  // Add a recurring appointment (example: weekly)
-  for (int i = 0; i < 6; i++) { // 6 occurrences
-    DateTime recurrenceDate = startTime.add(Duration(days: 7 * i));
-    meetings.add(Meeting(
-      'Conference',
-      recurrenceDate,
-      recurrenceDate.add(const Duration(hours: 2)),
-      const Color(0xFF0F8644),
-      false,
-    ));
-  }
-
-  return meetings;
-}
-
-// Meeting Data Source Class
-class MeetingDataSource extends CalendarDataSource {
-  MeetingDataSource(List<Meeting> source) {
-    appointments = source;
-  }
-
-  @override
-  DateTime getStartTime(int index) {
-    return appointments![index].from;
-  }
-
-  @override
-  DateTime getEndTime(int index) {
-    return appointments![index].to;
-  }
-
-  @override
-  String getSubject(int index) {
-    return appointments![index].eventName;
-  }
-
-  @override
-  Color getColor(int index) {
-    return appointments![index].background;
-  }
-
-  @override
-  bool isAllDay(int index) {
-    return appointments![index].isAllDay;
+  }*/
+  // Function to check for appointments for a specific day
+  bool _checkForAppointments(DateTime day) {
+    // Check if the day exists in the appointment map
+    return appointmentDates.containsKey(day);
   }
 }
 
-// Meeting Class
-class Meeting {
-  Meeting(this.eventName, this.from, this.to, this.background, this.isAllDay);
 
-  String eventName;
-  DateTime from;
-  DateTime to;
-  Color background;
-  bool isAllDay;
-}
+

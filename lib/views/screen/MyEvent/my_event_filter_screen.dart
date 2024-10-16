@@ -1,4 +1,3 @@
-import 'package:event_sharing/controllers/home_controller.dart';
 import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_icons.dart';
