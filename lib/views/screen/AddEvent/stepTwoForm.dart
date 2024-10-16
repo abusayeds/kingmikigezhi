@@ -52,37 +52,33 @@ class _StepTwoFormState extends State<StepTwoForm> {
         //organization Name
         CustomText(text: 'Competition Level',fontsize: 16,fontWeight: FontWeight.w600,),
         SizedBox(height: 12.h),
-        InputDecorator(
-          decoration: InputDecoration(
-            fillColor: AppColors.colorEDF2F4,
-            border: OutlineInputBorder(
-              borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
-              borderRadius: BorderRadius.circular(8.r),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
-              borderRadius: BorderRadius.circular(8.r),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
-              borderRadius: BorderRadius.circular(8.r),
-            ),
-            contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          decoration: BoxDecoration(
+            color: AppColors.fillColor,
+            borderRadius: BorderRadius.circular(8.r),
+            border: Border.all(color: AppColors.primaryColor, width: 1),
           ),
           child: DropdownButtonHideUnderline(
             child: DropdownButton<String>(
-              iconDisabledColor: AppColors.primaryColor,
-              iconEnabledColor: AppColors.primaryColor,
-              isExpanded: true,
               value: _selectedCompetitionLevel,
-              hint: CustomText(text: 'Select Competition Level', fontsize: 14.sp),
-              items: competitionLevel.map((String value) {
+              dropdownColor: AppColors.fillColor,
+              menuWidth: 240.w,
+              borderRadius: BorderRadius.circular(8.r),
+              hint: Text("Select Competition Level", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500)),
+              icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
+              ),
+              isExpanded: true,
+              items:competitionLevel.map((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
-                  child: Text(value),
+                  child: Text(
+                    value,
+                    style: const TextStyle(color: Colors.black),
+                  ),
                 );
               }).toList(),
-              onChanged: (String? newValue) {
+              onChanged: (newValue) {
                 setState(() {
                   _selectedCompetitionLevel = newValue;
                 });
@@ -90,43 +86,38 @@ class _StepTwoFormState extends State<StepTwoForm> {
             ),
           ),
         ),
-
         //type
         //organization Name
         SizedBox(height: 16.h),
         CustomText(text: 'Type',fontsize: 16,fontWeight: FontWeight.w600,),
         SizedBox(height: 12.h),
-        InputDecorator(
-          decoration: InputDecoration(
-            fillColor: AppColors.colorEDF2F4,
-            border: OutlineInputBorder(
-              borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
-              borderRadius: BorderRadius.circular(8.r),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
-              borderRadius: BorderRadius.circular(8.r),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
-              borderRadius: BorderRadius.circular(8.r),
-            ),
-            contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          decoration: BoxDecoration(
+            color: AppColors.fillColor,
+            borderRadius: BorderRadius.circular(8.r),
+            border: Border.all(color: AppColors.primaryColor, width: 1),
           ),
           child: DropdownButtonHideUnderline(
             child: DropdownButton<String>(
-              iconDisabledColor: AppColors.primaryColor,
-              iconEnabledColor: AppColors.primaryColor,
-              isExpanded: true,
               value: _selectedType,
-              hint: CustomText(text: 'Select Type', fontsize: 14.sp),
-              items: type.map((String value) {
+              dropdownColor: AppColors.fillColor,
+              menuWidth: 240.w,
+              borderRadius: BorderRadius.circular(8.r),
+              hint: Text("Select Type", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500)),
+              icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
+              ),
+              isExpanded: true,
+              items:type.map((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
-                  child: Text(value),
+                  child: Text(
+                    value,
+                    style: const TextStyle(color: Colors.black),
+                  ),
                 );
               }).toList(),
-              onChanged: (String? newValue) {
+              onChanged: (newValue) {
                 setState(() {
                   _selectedType = newValue;
                 });
@@ -226,37 +217,33 @@ class _StepTwoFormState extends State<StepTwoForm> {
           hintText: '\$',
         ),
         SizedBox(height: 12.h),
-        InputDecorator(
-          decoration: InputDecoration(
-            fillColor: AppColors.colorEDF2F4,
-            border: OutlineInputBorder(
-              borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
-              borderRadius: BorderRadius.circular(8.r),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
-              borderRadius: BorderRadius.circular(8.r),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
-              borderRadius: BorderRadius.circular(8.r),
-            ),
-            contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          decoration: BoxDecoration(
+            color: AppColors.fillColor,
+            borderRadius: BorderRadius.circular(8.r),
+            border: Border.all(color: AppColors.primaryColor, width: 1),
           ),
           child: DropdownButtonHideUnderline(
             child: DropdownButton<String>(
-              iconDisabledColor: AppColors.primaryColor,
-              iconEnabledColor: AppColors.primaryColor,
-              isExpanded: true,
               value: _selectedCost,
-              hint: CustomText(text: 'Select Cost', fontsize: 14.sp),
-              items: cost.map((String value) {
+              dropdownColor: AppColors.fillColor,
+              menuWidth: 240.w,
+              borderRadius: BorderRadius.circular(8.r),
+              hint: Text("Select Cost", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500)),
+              icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
+              ),
+              isExpanded: true,
+              items:cost.map((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
-                  child: Text(value),
+                  child: Text(
+                    value,
+                    style: const TextStyle(color: Colors.black),
+                  ),
                 );
               }).toList(),
-              onChanged: (String? newValue) {
+              onChanged: (newValue) {
                 setState(() {
                   _selectedCost = newValue;
                 });
@@ -332,8 +319,7 @@ class _StepTwoFormState extends State<StepTwoForm> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            SizedBox(
-              width: 166.w,
+            Expanded(
               child: CustomButton(
                 onTap: () {
                   setState(() {
@@ -343,12 +329,12 @@ class _StepTwoFormState extends State<StepTwoForm> {
                   });
                 },
                 text: "Back",
-                color: AppColors.fillColor,
+                color: AppColors.colorEDF2F4,
                 textColor: Colors.black,
               ),
             ),
-            SizedBox(
-              width: 166.w,
+            SizedBox(width: 16.w),
+            Expanded(
               child: CustomButton(
                 onTap: () {
                   setState(() {

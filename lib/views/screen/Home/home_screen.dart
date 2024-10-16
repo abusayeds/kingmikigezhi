@@ -2,7 +2,6 @@ import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_images.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
-import 'package:event_sharing/views/screen/Home/InnerWidget/calender_widget.dart';
 import 'package:event_sharing/views/screen/Home/InnerWidget/home_app_bar.dart';
 import 'package:event_sharing/views/screen/Home/addBottomSheet/addBottomSheet.dart';
 import 'package:flutter/material.dart';
@@ -189,7 +188,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 AppIcons.search,
                 width: 24.w,
                 height: 24.h,
-                color: AppColors.primaryColor,
               ),
             ),
           ),

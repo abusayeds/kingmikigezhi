@@ -269,24 +269,23 @@ class _MyEventFilterScreenState extends State<MyEventFilterScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SizedBox(
-                      width: 166.w,
-                      child: CustomButton(
-                        onTap: () {},
-                        text: "Reset",
-                        color: AppColors.fillColor,
-                        textColor: Colors.black,
-                      )),
-                  SizedBox(
-                      width: 166.w,
-                      child: CustomButton(
-                        onTap: () {
-                          Get.toNamed(AppRoutes.appliedSearchScreen);
-                        },
-                        text: "Apply",
-                        textColor: Colors.white,
-                        color: AppColors.buttonColor,
-                      )),
+                  Expanded(
+                    child: CustomButton(
+                      onTap: () {},
+                      text: "Reset",
+                      color: AppColors.colorEDF2F4,
+                      textColor: Colors.black,
+                    ),
+                  ),
+                  SizedBox(width: 16.w),
+                  Expanded(
+                    child: CustomButton(
+                      onTap: () {},
+                      text: "Apply",
+                      textColor: Colors.white,
+                      color: AppColors.buttonColor,
+                    ),
+                  ),
                 ],
               ),
               SizedBox(height: 75.h),

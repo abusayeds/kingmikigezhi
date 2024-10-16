@@ -17,8 +17,8 @@ class StepThreeForm extends StatefulWidget {
 }
 
 class _StepThreeFormState extends State<StepThreeForm> {
-  final List<String> cost = ['Has Final Deadline', 'Has Late Fee'];
-  final List<String> round = ['First', 'Second'];
+  final List<String> costList = ['Has Final Deadline', 'Has Late Fee'];
+  final List<String> typeList = ['First', 'Second'];
 
 
   final TextEditingController dateController = TextEditingController();
@@ -35,7 +35,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
 
   final TextEditingController payment = TextEditingController();
   String? _selectedCost;
-  String? _selectedRound;
+  String? _selectedType;
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +95,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
                 ),
               ],
             ),
-            SizedBox(height: 8),
+            SizedBox(height: 8.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -105,18 +105,18 @@ class _StepThreeFormState extends State<StepThreeForm> {
                     hintText: '\$',
                   ),
                 ),
-                SizedBox(width: 15.w),
+                SizedBox(width: 12.w),
                 SizedBox(
-                  width: 80.w,
+                  height: 60.h,
+                  width: 90.w,
                   child: CustomButton(
-                    onTap: (){},
+                    onTap: () {},
                     text: 'Add',
                     textColor: AppColors.textColor,
                   ),
                 ),
               ],
             ),
-
             SizedBox(height: 8),
             Padding(
               padding: const EdgeInsets.all(4),
@@ -229,42 +229,35 @@ class _StepThreeFormState extends State<StepThreeForm> {
                       fontsize: 16,
                       fontWeight: FontWeight.w600,
                     ),
-                    InputDecorator(
-                      decoration: InputDecoration(
-                        fillColor: AppColors.colorEDF2F4,
-                        border: OutlineInputBorder(
-                          borderSide:
-                          BorderSide(color: AppColors.primaryColor, width: 1.w),
-                          borderRadius: BorderRadius.circular(8.r),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide:
-                          BorderSide(color: AppColors.primaryColor, width: 1.w),
-                          borderRadius: BorderRadius.circular(8.r),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide:
-                          BorderSide(color: AppColors.primaryColor, width: 1.w),
-                          borderRadius: BorderRadius.circular(8.r),
-                        ),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 20.w),
+                      decoration: BoxDecoration(
+                        color: AppColors.fillColor,
+                        borderRadius: BorderRadius.circular(8.r),
+                        border: Border.all(color: AppColors.primaryColor, width: 1),
                       ),
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton<String>(
-                          iconDisabledColor: AppColors.primaryColor,
-                          iconEnabledColor: AppColors.primaryColor,
+                          value: _selectedType,
+                          dropdownColor: AppColors.fillColor,
+                          menuWidth: 240.w,
+                          borderRadius: BorderRadius.circular(8.r),
+                          hint: Text("Select Round", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500)),
+                          icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
+                          ),
                           isExpanded: true,
-                          value: _selectedRound,
-                          hint: CustomText(text: 'Select Cost', fontsize: 14.sp),
-                          items: round.map((String value) {
+                          items:typeList.map((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
-                              child: Text(value),
+                              child: Text(
+                                value,
+                                style: const TextStyle(color: Colors.black),
+                              ),
                             );
                           }).toList(),
-                          onChanged: (String? newValue) {
+                          onChanged: (newValue) {
                             setState(() {
-                              _selectedRound = newValue;
+                              _selectedType = newValue;
                             });
                           },
                         ),
@@ -331,40 +324,33 @@ class _StepThreeFormState extends State<StepThreeForm> {
                       hintText: '\$',
                     ),
                     SizedBox(height: 12.h),
-                    InputDecorator(
-                      decoration: InputDecoration(
-                        fillColor: AppColors.colorEDF2F4,
-                        border: OutlineInputBorder(
-                          borderSide:
-                          BorderSide(color: AppColors.primaryColor, width: 1.w),
-                          borderRadius: BorderRadius.circular(8.r),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide:
-                          BorderSide(color: AppColors.primaryColor, width: 1.w),
-                          borderRadius: BorderRadius.circular(8.r),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide:
-                          BorderSide(color: AppColors.primaryColor, width: 1.w),
-                          borderRadius: BorderRadius.circular(8.r),
-                        ),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 20.w),
+                      decoration: BoxDecoration(
+                        color: AppColors.fillColor,
+                        borderRadius: BorderRadius.circular(8.r),
+                        border: Border.all(color: AppColors.primaryColor, width: 1),
                       ),
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton<String>(
-                          iconDisabledColor: AppColors.primaryColor,
-                          iconEnabledColor: AppColors.primaryColor,
-                          isExpanded: true,
                           value: _selectedCost,
-                          hint: CustomText(text: 'Select Cost', fontsize: 14.sp),
-                          items: cost.map((String value) {
+                          dropdownColor: AppColors.fillColor,
+                          menuWidth: 240.w,
+                          borderRadius: BorderRadius.circular(8.r),
+                          hint: Text("Select Cost", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500)),
+                          icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
+                          ),
+                          isExpanded: true,
+                          items:costList.map((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
-                              child: Text(value),
+                              child: Text(
+                                value,
+                                style: const TextStyle(color: Colors.black),
+                              ),
                             );
                           }).toList(),
-                          onChanged: (String? newValue) {
+                          onChanged: (newValue) {
                             setState(() {
                               _selectedCost = newValue;
                             });
@@ -372,7 +358,6 @@ class _StepThreeFormState extends State<StepThreeForm> {
                         ),
                       ),
                     ),
-
                     //final date
                     SizedBox(height: 12.h),
                     CustomText(
@@ -449,42 +434,35 @@ class _StepThreeFormState extends State<StepThreeForm> {
                       fontWeight: FontWeight.w600,
                     ),
                     SizedBox(height: 12.h),
-                    InputDecorator(
-                      decoration: InputDecoration(
-                        fillColor: AppColors.colorEDF2F4,
-                        border: OutlineInputBorder(
-                          borderSide:
-                          BorderSide(color: AppColors.primaryColor, width: 1.w),
-                          borderRadius: BorderRadius.circular(8.r),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide:
-                          BorderSide(color: AppColors.primaryColor, width: 1.w),
-                          borderRadius: BorderRadius.circular(8.r),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide:
-                          BorderSide(color: AppColors.primaryColor, width: 1.w),
-                          borderRadius: BorderRadius.circular(8.r),
-                        ),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 20.w),
+                      decoration: BoxDecoration(
+                        color: AppColors.fillColor,
+                        borderRadius: BorderRadius.circular(8.r),
+                        border: Border.all(color: AppColors.primaryColor, width: 1),
                       ),
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton<String>(
-                          iconDisabledColor: AppColors.primaryColor,
-                          iconEnabledColor: AppColors.primaryColor,
+                          value: _selectedType,
+                          dropdownColor: AppColors.fillColor,
+                          menuWidth: 240.w,
+                          borderRadius: BorderRadius.circular(8.r),
+                          hint: Text("Select Type", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500)),
+                          icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
+                          ),
                           isExpanded: true,
-                          value: _selectedRound,
-                          hint: CustomText(text: 'Select Type', fontsize: 14.sp),
-                          items: round.map((String value) {
+                          items:typeList.map((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
-                              child: Text(value),
+                              child: Text(
+                                value,
+                                style: const TextStyle(color: Colors.black),
+                              ),
                             );
                           }).toList(),
-                          onChanged: (String? newValue) {
+                          onChanged: (newValue) {
                             setState(() {
-                              _selectedRound = newValue;
+                              _selectedType = newValue;
                             });
                           },
                         ),
