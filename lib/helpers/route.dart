@@ -127,23 +127,16 @@ class AppRoutes{
    GetPage(name:splashScreen, page: ()=>const SplashScreen()),
    GetPage(name:homeScreen, page: ()=> HomeScreen(),transition: Transition.noTransition),
    GetPage(name:categoriesScreen, page: ()=> CategoriesScreen(),transition: Transition.noTransition),
-
    GetPage(name:createAccountScreen, page: ()=> CreateAccountScreen(),transition: Transition.noTransition ),
-
    GetPage(name:calenderScreen, page: ()=>const CalenderScreen(),transition: Transition.noTransition ),
    GetPage(name:profileScreen, page: ()=> ProfileScreen(),transition: Transition.noTransition),
-
-
     GetPage(name:walletScreen, page: ()=>const WalletScreen()),
-
     GetPage(name:onboardScreen, page: ()=>const OnboardScreen()),
     GetPage(name:signInScreen, page: ()=>const SignInScreen()),
     GetPage(name:signUpScreen, page: ()=>const SignUpScreen()),
-
     GetPage(name:forgotPasswordScreen, page: ()=>const ForgotPasswordScreen()),
     GetPage(name:verificationCodeScreen, page: ()=>const VerificationCodeScreen()),
     GetPage(name:resetPasswordScreen, page: ()=>const ResetPasswordScreen()),
-
     GetPage(name:personalInformationScreen, page: ()=> PersonalInformationScreen()),
     GetPage(name:editProfileScreen, page: ()=>const EditProfileScreen()),
     GetPage(name:memberProfileScreen, page: ()=>const MemberProfileScreen()),

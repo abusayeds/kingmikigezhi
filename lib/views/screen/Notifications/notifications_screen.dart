@@ -161,7 +161,7 @@ class NotificationsScreen extends StatelessWidget {
                               ),
                             ],
                           ),
-                          Row(
+                          const Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             mainAxisSize: MainAxisSize.max,
                             children: [
@@ -227,8 +227,8 @@ class NotificationsScreen extends StatelessWidget {
           color: AppColors.colorD9A951,
         ),
         alignment: Alignment.centerRight,
-        padding: EdgeInsets.only(right: 16.w),
-        child: Icon(Icons.delete, color: Colors.white),
+        padding: EdgeInsets.only(right: 26.w),
+        child: SvgPicture.asset(AppIcons.remove),
       ),
       onDismissed: (direction) {},
       child: Container(
