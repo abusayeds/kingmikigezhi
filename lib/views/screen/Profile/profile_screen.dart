@@ -33,7 +33,7 @@ class ProfileScreen extends StatelessWidget {
                         Get.toNamed(AppRoutes.personalInformationScreen);
                     },
                     title:AppStrings.account,
-                    prefixIcon: SvgPicture.asset(AppIcons.accountIcon, color: AppColors.primaryColor),
+                    prefixIcon: SvgPicture.asset(AppIcons.accountIcon, color: AppColors.primaryColor, width: 24.w, height: 24.h),
                     suffixIcon: SvgPicture.asset(AppIcons.rightArrow,color: AppColors.primaryColor),),
 
                   //============================> My Family List Tile <=================
@@ -42,7 +42,7 @@ class ProfileScreen extends StatelessWidget {
                       Get.toNamed(AppRoutes.myFamilyScreen);
                     },
                     title:AppStrings.myFamily,
-                    prefixIcon: SvgPicture.asset(AppIcons.ownershipIcon, color: AppColors.primaryColor),
+                    prefixIcon: SvgPicture.asset(AppIcons.ownershipIcon, color: AppColors.primaryColor, width: 24.w, height: 24.h),
                     suffixIcon: SvgPicture.asset(AppIcons.rightArrow,color: AppColors.primaryColor),),
 
                   //============================> My Event List Tile <=================
@@ -60,7 +60,7 @@ class ProfileScreen extends StatelessWidget {
                       Get.toNamed(AppRoutes.myConnectionScreen);
                     },
                     title:AppStrings.connection,
-                    prefixIcon: SvgPicture.asset(AppIcons.myEventIcon, color: AppColors.primaryColor),
+                    prefixIcon: SvgPicture.asset(AppIcons.connection, color: AppColors.primaryColor),
                     suffixIcon: SvgPicture.asset(AppIcons.rightArrow,color: AppColors.primaryColor),),
                   //============================> Contribution List Tile <=================
                   ProfileListTile(
@@ -94,7 +94,7 @@ class ProfileScreen extends StatelessWidget {
                       Get.toNamed(AppRoutes.aboutusScreen);
                     },
                     title:AppStrings.aboutUs,
-                    prefixIcon: SvgPicture.asset(AppIcons.aboutIcon, color: AppColors.primaryColor),
+                    prefixIcon: SvgPicture.asset(AppIcons.aboutIcon, color: AppColors.primaryColor, width: 24.w, height: 24.h),
                     suffixIcon: SvgPicture.asset(AppIcons.rightArrow,color: AppColors.primaryColor),),
 
                   //============================> Terms and Conditions List Tile <=================
@@ -113,23 +113,14 @@ class ProfileScreen extends StatelessWidget {
                     },
                     title:AppStrings.privacyPolicy,
                     prefixIcon: SvgPicture.asset(AppIcons.shieldIcon, color: AppColors.primaryColor),
-                    suffixIcon: SvgPicture.asset(AppIcons.rightArrow,color: AppColors.primaryColor),),
-
-                    //============================> Log Out List Tile <=================
+                    suffixIcon: SvgPicture.asset(AppIcons.rightArrow,color: AppColors.primaryColor)),
+                  //============================> Log Out List Tile <=================
                   ProfileListTile(
                     onTap: () {
                       _showCustomBottomSheet(context);
                     },
                     title:AppStrings.logout,
                     prefixIcon: SvgPicture.asset(AppIcons.logOutIcon, color: AppColors.primaryColor),
-                    suffixIcon: SvgPicture.asset(AppIcons.rightArrow,color: AppColors.primaryColor),
-                  ),
-                  ProfileListTile(
-                    onTap: () {
-                      Get.toNamed(AppRoutes.errorScreen);
-                    },
-                    title: 'Error Page',
-                    prefixIcon: Icon(Icons.error_rounded,color: AppColors.primaryColor),
                     suffixIcon: SvgPicture.asset(AppIcons.rightArrow,color: AppColors.primaryColor),
                   ),
                 ],
@@ -196,11 +187,7 @@ class ProfileScreen extends StatelessWidget {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (context) {
-                              return const LogoutDialog();
-                            });
+                       Get.offAllNamed(AppRoutes.signInScreen);
                       },
                       style: ElevatedButton.styleFrom(
                         minimumSize: Size(double.infinity, 58),

@@ -56,9 +56,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading:  IconButton(
+          icon: Icon(Icons.arrow_back_ios,
+              color: Colors.black, size: 18.w),
+          onPressed: () {
+            Get.back();
+          },
+        ),
         title: CustomText(
-          text: AppStrings.editProfile.tr,
-          fontWeight: FontWeight.w500,
+          text:'Edit account',
+          fontWeight: FontWeight.bold,
           fontsize: 18.sp,
         ),
         centerTitle: true,

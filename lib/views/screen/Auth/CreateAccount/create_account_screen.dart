@@ -26,17 +26,12 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController genderController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
-
   final TextEditingController birthDayYearController = TextEditingController();
   final TextEditingController birthDayMonthController = TextEditingController();
   final TextEditingController birthDayDayController = TextEditingController();
-
   final TextEditingController locationCountryController = TextEditingController();
   final TextEditingController locationStateController = TextEditingController();
   final TextEditingController locationCityController = TextEditingController();
-
-
-
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
   bool isChecked = false;
@@ -54,7 +49,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               icon: Icon(
                 Icons.arrow_back_ios,
                 color: Colors.black,
-                size: 20.sp,
+                size: 18.w,
               ),
               onPressed: () {
                 Navigator.pop(context);
@@ -74,20 +69,20 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               children: [
                 //==========================> Sign Up Text Section <=======================
                 _signUpTextSection(),
-                SizedBox(height: 51.h),
+                SizedBox(height: 48.h),
                 //==========================> User Name Text Field <=======================
-                _textFieldSection(AppStrings.userName, userNameController,
+                _textFieldSection('User Name', userNameController,
                     AppIcons.singlePerson, 'Enter your user name'),
                 //==========================> First Name Text Field <=======================
-                _textFieldSection(AppStrings.firstName, firstNameController,
+                _textFieldSection('First Name', firstNameController,
                     AppIcons.singlePerson, 'Enter your first name'),
                 //==========================> Last Name Text Field <=======================
-                _textFieldSection(AppStrings.lastName, lastNameController,
+                _textFieldSection('Last Name', lastNameController,
                     AppIcons.singlePerson, 'Enter your last name'),
                 //==========================> Gender DropdownButton <=======================
                 CustomText(
                   text: 'Gender',
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.bold,
                   fontsize: 16.sp,
                   bottom: 8.h,
                 ),
@@ -135,7 +130,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 //==========================> Birth Date Text Field Row <=======================
                 CustomText(
                   text: 'Birthday',
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.bold,
                   fontsize: 16.sp,
                   bottom: 8.h,
                 ),
@@ -195,7 +190,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 //==========================> Location Text Field Row <=======================
                 CustomText(
                   text: 'Location',
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.bold,
                   fontsize: 16.sp,
                   bottom: 8.h,
                 ),
@@ -274,12 +269,6 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
             text: AppStrings.signUpAn,
             fontWeight: FontWeight.w600,
             fontsize: 22.sp,
-            bottom: 8.h,
-          ),
-          CustomText(
-            text: AppStrings.chooseYourDream,
-            bottom: 8.h,
-            maxline: 3,
           ),
         ],
       ),
@@ -297,7 +286,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
         children: [
           CustomText(
             text: label,
-            fontWeight: FontWeight.w500,
+            fontWeight: FontWeight.bold,
             fontsize: 16.sp,
             bottom: 8.h,
           ),
@@ -378,7 +367,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
         Text.rich(
           maxLines: 2,
           TextSpan(
-            text: 'By creating an account, I accept \nthe ',
+            text: 'By creating an account, I accept the\n',
             style: TextStyle(fontSize: 14.w, fontWeight: FontWeight.w500),
             children: [
               TextSpan(
@@ -440,7 +429,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
             Get.toNamed(AppRoutes.signInScreen);
           },
           child: CustomText(
-            text: AppStrings.logIn,
+            text: 'Sign In',
             fontWeight: FontWeight.w700,
             color: AppColors.primaryColor,
           ),
