@@ -4,6 +4,7 @@ import 'package:event_sharing/utils/app_strings.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 
 class SettingsScreen extends StatefulWidget {
@@ -33,10 +34,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
       resizeToAvoidBottomInset: false,
       extendBody: true,
       appBar: AppBar(
+        leading:  IconButton(
+          icon: Icon(Icons.arrow_back_ios,
+              color: Colors.black, size: 18.w),
+          onPressed: () {
+            Get.back();
+          },
+        ),
         title: CustomText(
-          text: AppStrings.settings,
-          fontsize: 18.h,
-          fontWeight: FontWeight.w500,
+          text: 'Settings',
+          fontWeight: FontWeight.bold,
+          fontsize: 18.sp,
         ),
         centerTitle: true,
       ),

@@ -53,12 +53,20 @@ class _AppliedSearchScreenState extends State<AppliedSearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: CustomText(
-            text: AppStrings.appliedEvent,
-            fontsize: 18.sp,
-            fontWeight: FontWeight.w500,
-          ),
-          centerTitle: true),
+        leading:  IconButton(
+          icon: Icon(Icons.arrow_back_ios,
+              color: Colors.black, size: 18.w),
+          onPressed: () {
+            Get.back();
+          },
+        ),
+        title: CustomText(
+          text: 'Applied Event',
+          fontWeight: FontWeight.bold,
+          fontsize: 18.sp,
+        ),
+        centerTitle: true,
+      ),
       body: Padding(
         padding:  EdgeInsets.symmetric(horizontal: 24.w,vertical: 10),
         child: Column(

@@ -19,10 +19,17 @@ class TermsConditionScreen extends StatelessWidget {
       extendBody: true,
       //===========================================> AppBar Section <=============================================
       appBar: AppBar(
+        leading:  IconButton(
+          icon: Icon(Icons.arrow_back_ios,
+              color: Colors.black, size: 18.w),
+          onPressed: () {
+            Get.back();
+          },
+        ),
         title: CustomText(
-          text: AppStrings.termsAndConditions,
-          fontsize: 18.h,
-          fontWeight: FontWeight.w500,
+          text: 'Terms & Conditions',
+          fontWeight: FontWeight.bold,
+          fontsize: 18.sp,
         ),
         centerTitle: true,
       ),
