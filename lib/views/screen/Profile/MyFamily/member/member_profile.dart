@@ -30,48 +30,42 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Top action button
+            //========================> Top action button <=====================
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    height: 36.h,
-                    width: 36.w,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(30)),
-                      color: AppColors.buttonColor,
-                    ),
-                    child: InkWell(
-                      onTap: (){
-                        Get.toNamed(AppRoutes.createMemberProfileScreen);
-                      },
-                        child: Icon(Icons.add, color: Colors.white)),
+                Container(
+                  height: 36.h,
+                  width: 36.w,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(30.r)),
+                    color: AppColors.buttonColor,
                   ),
+                  child: InkWell(
+                    onTap: (){
+                      Get.toNamed(AppRoutes.createMemberProfileScreen);
+                    },
+                      child: const Icon(Icons.add, color: Colors.white)),
                 ),
               ],
             ),
-
-            // Search bar
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                height: 50.h,
-                decoration: BoxDecoration(
-                  color: AppColors.colorEDF2F4,
-                  borderRadius: BorderRadius.all(Radius.circular(8)),
-                  border: Border.all(color:AppColors.primaryColor, width: 1.0),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Search...',
-                      hintStyle: TextStyle(color: AppColors.greyColor),
-                      border: InputBorder.none,
-                      suffixIcon: Icon(Icons.search,color: AppColors.primaryColor),
-                    ),
+            SizedBox(height: 16.h),
+            //========================> Search bar <=========================
+            Container(
+              height: 50.h,
+              decoration: BoxDecoration(
+                color: AppColors.colorEDF2F4,
+                borderRadius: BorderRadius.all(Radius.circular(8.r)),
+                border: Border.all(color:AppColors.primaryColor, width: 1.0),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  decoration: InputDecoration(
+                    hintText: 'Search...',
+                    hintStyle: TextStyle(color: AppColors.greyColor),
+                    border: InputBorder.none,
+                    suffixIcon: Icon(Icons.search,color: AppColors.primaryColor),
                   ),
                 ),
               ),
@@ -79,7 +73,7 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
             // Family members list
             ListView.builder(
               shrinkWrap: true, // Important to fit inside SingleChildScrollView
-              physics: NeverScrollableScrollPhysics(), // Disable inner scroll
+             // physics: NeverScrollableScrollPhysics(), // Disable inner scroll
               itemCount: familyMembers.length,
               itemBuilder: (context, index) {
                 final member = familyMembers[index];

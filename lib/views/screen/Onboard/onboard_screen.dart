@@ -54,7 +54,6 @@ class OnboardScreen extends StatelessWidget {
                   fontsize: 12.sp,
                 ),
                 SizedBox(height: 24.h),
-
                 Row(
                   children: [
                     Icon(Icons.circle, color: Colors.white, size: 8.w),
@@ -68,6 +67,7 @@ class OnboardScreen extends StatelessWidget {
                   ],
                 ),
                 CustomText(
+                  left: 16.w,
                   text: 'Shared calendars for tracking family activities and appointments.',
                   maxline: 5,
                   textAlign: TextAlign.start,
@@ -88,6 +88,7 @@ class OnboardScreen extends StatelessWidget {
                   ],
                 ),
                 CustomText(
+                  left: 16.w,
                   text: 'Recommendations for local events and activities based on interests.',
                   maxline: 5,
                   textAlign: TextAlign.start,
@@ -108,6 +109,7 @@ class OnboardScreen extends StatelessWidget {
                   ],
                 ),
                 CustomText(
+                  left: 16.w,
                   text: 'Sections for sharing parenting tips, local services, and educational materials.',
                   maxline: 5,
                   textAlign: TextAlign.start,
@@ -128,13 +130,14 @@ class OnboardScreen extends StatelessWidget {
                   ],
                 ),
                 CustomText(
+                  left: 16.w,
                   text: 'Individual profiles for tracking personal schedules and preferences.',
                   maxline: 5,
                   textAlign: TextAlign.start,
                   color: Colors.white,
                   fontsize: 12.sp,
                 ),
-                SizedBox(height: 80.h),
+                SizedBox(height: 89.h),
                 //========================> Get Start Button <====================
                 CustomButton(
                   onTap: () {
@@ -142,7 +145,6 @@ class OnboardScreen extends StatelessWidget {
                   },
                   text: AppStrings.getStart,
                   color: Colors.white,
-                  textStyle: TextStyle(fontWeight: FontWeight.w500),
                 )
               ],
             ),
