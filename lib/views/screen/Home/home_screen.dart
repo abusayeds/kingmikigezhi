@@ -101,7 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             dropdownValue = newValue!;
                           });
                         },
-                        items: <String>['All', 'Self', 'Spous', 'Child Stephanie', 'Child Sophia'].map<DropdownMenuItem<String>>((String value) {
+                        items: <String>['All', 'Self', 'Spouse', 'Child Stephanie', 'Child Sophia'].map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
                             child: Row(
@@ -115,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     IconButton(
-                      icon: Icon(Icons.add),
+                      icon: const Icon(Icons.add),
                       onPressed: () {
                         HomePageAddBottomSheetWidget.addBottomSheet(context);
                       },

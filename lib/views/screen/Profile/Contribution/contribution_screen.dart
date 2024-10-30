@@ -45,7 +45,14 @@ class _MyContributionScreenState extends State<MyContributionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        //title: Text('Total 1000 Contribution'),
+        title:  Text('Total 1000 Contribution',style: TextStyle(fontSize: 18.sp,fontWeight: FontWeight.bold),),
+       leading: IconButton(
+         icon: Icon(Icons.arrow_back_ios,
+             color: Colors.black, size: 18.w),
+         onPressed: () {
+           Get.back();
+         },
+       ),
         centerTitle: true,
       ),
       body: Padding(
@@ -53,8 +60,7 @@ class _MyContributionScreenState extends State<MyContributionScreen> {
         child: Column(
           children: [
             //==============================> Create Event Button <=======================
-            Text('Total 1000 Contribution',style: TextStyle(fontSize: 18,fontWeight: FontWeight.w700),),
-            Text('Year 2024 25 Contribution'),
+            const Text('Year 2024 25 Contribution'),
             SizedBox(height: 16.h),
             _searchBar(),
             SizedBox(height: 16.h),
@@ -73,10 +79,10 @@ class _MyContributionScreenState extends State<MyContributionScreen> {
                       margin: EdgeInsets.symmetric(vertical: 8.h),
                       color: const Color(0xffedf2f4),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.r),
+                        borderRadius: BorderRadius.circular(16.r),
                       ),
                       child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -112,21 +118,21 @@ class _MyContributionScreenState extends State<MyContributionScreen> {
                                           Row(
                                             children: [
                                               SvgPicture.asset(AppIcons.dotIconForFamily),
-                                              SizedBox(width: 4),
+                                              SizedBox(width: 4.w),
                                               Text('Onsite Event',style: TextStyle(fontSize: 8.sp),),
                                             ],
                                           ),
                                           Row(
                                             children: [
                                               SvgPicture.asset(AppIcons.dotIconForFamily),
-                                              SizedBox(width: 4),
+                                              SizedBox(width: 4.w),
                                               Text('Dhaka Bangladesh',style: TextStyle(fontSize: 8.sp),),
                                             ],
                                           ),
                                           Row(
                                             children: [
                                               SvgPicture.asset(AppIcons.dotIconForFamily),
-                                              SizedBox(width: 4),
+                                              SizedBox(width: 4.w),
                                               Text('History: 2023-1st winner',style: TextStyle(fontSize: 8.sp),),
                                             ],
                                           ),
@@ -138,14 +144,14 @@ class _MyContributionScreenState extends State<MyContributionScreen> {
                                           Row(
                                             children: [
                                               SvgPicture.asset(AppIcons.dotIconForFamily),
-                                              SizedBox(width: 4),
+                                              SizedBox(width: 4.w),
                                               Text('Cost : \$100',style: TextStyle(fontSize: 8.sp),),
                                             ],
                                           ),
                                           Row(
                                             children: [
                                               SvgPicture.asset(AppIcons.dotIconForFamily),
-                                              SizedBox(width: 4),
+                                              SizedBox(width: 4.w),
                                               Text('Deadline: 1-6-2025',style: TextStyle(fontSize: 8.sp),),
                                             ],
                                           ),
@@ -153,7 +159,7 @@ class _MyContributionScreenState extends State<MyContributionScreen> {
                                       ),
                                     ],
                                   ),
-                                  Row(
+                                  const Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     mainAxisSize: MainAxisSize.max,
                                     children: [

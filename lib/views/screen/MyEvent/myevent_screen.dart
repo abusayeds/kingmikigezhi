@@ -1,4 +1,3 @@
-
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/views/base/bottom_menu..dart';
 import 'package:event_sharing/views/base/custom_text.dart';
@@ -8,12 +7,10 @@ import 'package:event_sharing/views/screen/MyEvent/upcoming/my_upcoming_event.da
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-
-
+import 'package:get/get.dart';
 
 class MyEventScreen extends StatefulWidget {
-   MyEventScreen({super.key});
+  MyEventScreen({super.key});
 
   @override
   State<MyEventScreen> createState() => _MyEventScreenState();
@@ -45,12 +42,18 @@ class _MyEventScreenState extends State<MyEventScreen>
       length: 3,
       child: Scaffold(
         backgroundColor: Colors.white,
-         bottomNavigationBar: const BottomMenu(2),
+        bottomNavigationBar: const BottomMenu(2),
         appBar: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: Colors.white,
-          title: const Text('Event',style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600)),
-          
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios, color: Colors.black, size: 18.w),
+            onPressed: () {
+              Get.back();
+            },
+          ),
+          title: Text('Event',
+              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
           centerTitle: true,
           bottom: TabBar(
             controller: _tabController,
@@ -63,7 +66,7 @@ class _MyEventScreenState extends State<MyEventScreen>
                 child: Container(
                   decoration: BoxDecoration(
                     color: _tabController.index == 0
-                        ?  AppColors.primaryColor
+                        ? AppColors.primaryColor
                         : Colors.transparent,
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(10.r),
@@ -96,7 +99,7 @@ class _MyEventScreenState extends State<MyEventScreen>
                   child: Align(
                     alignment: Alignment.center,
                     child: CustomText(
-                      text:  'Upcoming',
+                      text: 'Upcoming',
                       color: _tabController.index == 1
                           ? Colors.white
                           : Colors.black,
@@ -119,7 +122,7 @@ class _MyEventScreenState extends State<MyEventScreen>
                   child: Align(
                     alignment: Alignment.center,
                     child: CustomText(
-                      text:  'History',
+                      text: 'History',
                       color: _tabController.index == 2
                           ? Colors.white
                           : Colors.black,
@@ -127,10 +130,8 @@ class _MyEventScreenState extends State<MyEventScreen>
                   ),
                 ),
               ),
-
             ],
           ),
-
         ),
         body: TabBarView(
           controller: _tabController,

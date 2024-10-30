@@ -25,18 +25,14 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       appBar: AppBar(
           automaticallyImplyLeading: false,
           elevation: 0,
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              IconButton(
-                icon: Icon(Icons.arrow_back_ios,
-                    color: Colors.black,size: 20.sp,),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ],
-          )),
+          leading:  IconButton(
+            icon: Icon(Icons.arrow_back_ios,
+                color: Colors.black, size: 18.w),
+            onPressed: () {
+              Get.back();
+            },
+          ),
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -49,7 +45,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   SizedBox(height: 64.h),
                   //================================> Forgot Password Text Section <========================
                   CustomText(
-                    text: AppStrings.forgotPassword,
+                    text: 'Forget Password?',
                     fontWeight: FontWeight.w600,
                     fontsize: 22.sp,
                     bottom: 8.h,
@@ -60,12 +56,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   ),
                   CustomText(
                     text: 'Basharxxxxxx@gmail.com',
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.bold,
                     fontsize: 16.sp,
+                    color: const Color(0xff20353F),
                   ),
                   SizedBox(height: 80.h),
                   //==============================> Pin Code Text Field <=====================
-                  CustomPinCodeTextField(),
+                  const CustomPinCodeTextField(),
                   CustomText(
                     text: 'Code Time',
                   ),
@@ -76,7 +73,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   SizedBox(height: 32.h),
                   CustomButton(
                     onTap: () {
-                      Get.toNamed(AppRoutes.verificationCodeScreen);
+                     // Get.toNamed(AppRoutes.verificationCodeScreen);
                     },
                     text: 'Resend code',
                     textColor: Colors.white,
@@ -86,7 +83,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   SizedBox(height: 128.h),
                   CustomButton(
                     onTap: () {
-                      Get.toNamed(AppRoutes.verificationCodeScreen);
+                      Get.toNamed(AppRoutes.createAccountScreen);
                     },
                     text: 'Verify',
                     textColor: Colors.white,
