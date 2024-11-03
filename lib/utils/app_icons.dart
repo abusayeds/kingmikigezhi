@@ -65,6 +65,8 @@ class AppIcons{
   static String calenderIcon ="$baseUrl/calenderIcon.svg";
   static String userIcon ="$baseUrl/user.svg";
   static String homeIcon="$baseUrl/homeIcon.svg";
+  static String down_ArrowIcon="$baseUrl/down_arrow_icon.svg";
+
 
 
 }
