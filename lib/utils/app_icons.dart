@@ -10,7 +10,6 @@ class AppIcons{
   static String check="$baseUrl/check.svg";
   static String remove="$baseUrl/remove.svg";
   static String connection="$baseUrl/connection.svg";
-
   static String timeIcon="$baseUrl/clock.svg";
   static String settingsIcon="$baseUrl/settings.svg";
   static String termsIcon="$baseUrl/exclamation.svg";
@@ -47,6 +46,7 @@ class AppIcons{
   static String search="$baseUrl/search.svg";
   static String homeIcons="$baseUrl/home_icons.svg";
   static String circle="$baseUrl/circle.svg";
+  static String cardIcon="$baseUrl/card_icon.svg";
 
 
 
