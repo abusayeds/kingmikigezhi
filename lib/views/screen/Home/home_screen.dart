@@ -78,24 +78,27 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 HomeAppBar(),
                 SizedBox(height: 20.h),
-                _searchBar(),
-                Row(
+                 _searchBar(),
+                  Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Container(
-                      height: 30.h,
-                      width: 120.w,
-                      padding: EdgeInsets.symmetric(horizontal: 8.h, vertical: 2.w),
+                      height: 35.h,
+                     // width: 120.w,
+                      padding: EdgeInsets.symmetric(horizontal: 8.h,),
                       decoration: BoxDecoration(
                         color: Colors.blueGrey, // Background color
                         borderRadius: BorderRadius.circular(8.r),
                       ),
                       child: DropdownButton<String>(
                         value: dropdownValue,
+                        padding: EdgeInsets.zero,
                         underline: SizedBox(),
-                        icon: Icon(Icons.arrow_drop_down, color: Colors.white, size: 12.sp),
+                       icon: SvgPicture.asset(AppIcons.down_ArrowIcon),
+
+                       // icon: Icon(Icons.arrow_drop_down, color: Colors.white, size: 12.sp),
                         dropdownColor: AppColors.primaryColor,
-                        style: TextStyle(color: Colors.white70, fontSize: 10.sp),
+                        style: TextStyle(color: Colors.white70, fontSize: 10.sp,fontWeight: FontWeight.w400),
                         onChanged: (String? newValue) {
                           setState(() {
                             dropdownValue = newValue!;
@@ -107,7 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Row(
                               children: [
                                 Text(value),
-                                SizedBox(width: 10.w),
+                                //SizedBox(width: 10.w),
                               ],
                             ),
                           );
@@ -116,12 +119,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     IconButton(
                       icon: const Icon(Icons.add),
+                      padding: EdgeInsets.zero,
                       onPressed: () {
                         HomePageAddBottomSheetWidget.addBottomSheet(context);
                       },
                     ),
                   ],
-                ),
+                                  ),
                // CalendarWidget(),
                 _tableCalendar(),
                 SizedBox(height: 16.h),
