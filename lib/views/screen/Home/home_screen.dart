@@ -1,4 +1,4 @@
-import 'package:event_sharing/helpers/route.dart';
+ import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_images.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
