@@ -21,7 +21,7 @@ class _FilterScreenState extends State<FilterScreen> {
   final List<String> _program = ['Concert', 'Sports', 'Show', 'Olympic game'];
   final List<String> _type = ['Onsite', 'Online', 'Hybrid'];
   final List<String> _category = ['6 Year - 10 Year', '11 Year - 16 Year', '17 Year+'];
-  RangeValues _currentRangeValues = RangeValues(20, 80);
+  RangeValues _currentRangeValues = RangeValues(50, 80);
   String? _selectedProgram;
   String? _selectedType;
   String? _selectedCategory;
@@ -74,8 +74,8 @@ class _FilterScreenState extends State<FilterScreen> {
               ),
               InputDecorator(
                 decoration: InputDecoration(
-                  fillColor: AppColors.fillColor,
-                  // labelText: 'Select',
+                  fillColor: AppColors.fillColor, // Replace with your desired color
+                  filled: true,
                   border: OutlineInputBorder(
                     borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
                     borderRadius: BorderRadius.circular(8.r),
@@ -94,6 +94,7 @@ class _FilterScreenState extends State<FilterScreen> {
                   child: DropdownButton<String>(
                     //focusColor:  AppColors.primaryColor,
                     iconDisabledColor: AppColors.primaryColor,
+                    icon: SvgPicture.asset(AppIcons.down_ArrowIcon,color: AppColors.primaryColor,height:8.h,),
                     iconEnabledColor: AppColors.primaryColor,
                     isExpanded: true,
                     value: _selectedProgram,
@@ -122,8 +123,8 @@ class _FilterScreenState extends State<FilterScreen> {
               ),
               InputDecorator(
                 decoration: InputDecoration(
-                  fillColor: AppColors.fillColor,
-                  // labelText: 'Select',
+                  fillColor: AppColors.fillColor, // Replace with your desired color
+                  filled: true,
                   border: OutlineInputBorder(
                     borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
                     borderRadius: BorderRadius.circular(8.r),
@@ -143,6 +144,7 @@ class _FilterScreenState extends State<FilterScreen> {
                     //focusColor:  AppColors.primaryColor,
                     iconDisabledColor: AppColors.primaryColor,
                     iconEnabledColor: AppColors.primaryColor,
+                    icon: SvgPicture.asset(AppIcons.down_ArrowIcon,color: AppColors.primaryColor,height:8.h,),
                     isExpanded: true,
                     value: _selectedType,
                     hint: CustomText(text: 'Select Type', fontsize: 14.sp),
@@ -187,7 +189,8 @@ class _FilterScreenState extends State<FilterScreen> {
               ),
               InputDecorator(
                 decoration: InputDecoration(
-                  fillColor: AppColors.fillColor,
+                  fillColor: AppColors.fillColor, // Replace with your desired color
+                  filled: true,
                   // labelText: 'Select',
                   border: OutlineInputBorder(
                     borderSide:
@@ -209,10 +212,12 @@ class _FilterScreenState extends State<FilterScreen> {
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
                     //focusColor:  AppColors.primaryColor,
+
                     iconDisabledColor: AppColors.primaryColor,
                     iconEnabledColor: AppColors.primaryColor,
                     isExpanded: true,
                     value: _selectedCategory,
+                    icon: SvgPicture.asset(AppIcons.down_ArrowIcon,color: AppColors.primaryColor,height:8.h,),
                     hint: CustomText(text: 'Select Category/Group', fontsize: 14.sp),
                     items: _category.map((String value) {
                       return DropdownMenuItem<String>(
@@ -249,7 +254,7 @@ class _FilterScreenState extends State<FilterScreen> {
               //================================> Range Slider Section <================================
               RangeSlider(
                 values: _currentRangeValues,
-                min: 20,
+                min: 50,
                 max: 4000,
                 divisions: 80,
                 labels: RangeLabels(
