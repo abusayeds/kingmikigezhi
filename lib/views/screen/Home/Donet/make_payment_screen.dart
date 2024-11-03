@@ -91,8 +91,9 @@ class _MakePaymentScreenState extends State<MakePaymentScreen> {
                 prifixicon: Padding(
                   padding:
                   EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
-                  child: SvgPicture.asset(AppIcons.card),
+                  child: SvgPicture.asset(AppIcons.cardIcon),
                 ),
+
                 hintText: 'Card number',
               ),
               SizedBox(height: 16.h),
