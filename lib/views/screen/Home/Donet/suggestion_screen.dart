@@ -33,7 +33,7 @@ class SuggestionScreen extends StatelessWidget {
           children: [
            CustomTextField(
                controller: _describtionCTRL,
-             hintText: 'Type your Text Line',
+             hintText: 'Share your suggestion',
              maxLines: 15,
 
            ),
