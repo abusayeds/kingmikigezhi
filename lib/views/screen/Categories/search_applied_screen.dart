@@ -46,6 +46,13 @@ class _CategoriesSearchAppliedScreenState
           fontsize: 18.sp,
           fontWeight: FontWeight.w500,
         ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios,
+              color: Colors.black, size: 18.w),
+          onPressed: () {
+            Get.back();
+          },
+        ),
         centerTitle: true,
       ),
       //=======================> Body Section <============================
