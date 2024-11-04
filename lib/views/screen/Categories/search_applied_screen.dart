@@ -46,6 +46,13 @@ class _CategoriesSearchAppliedScreenState
           fontsize: 18.sp,
           fontWeight: FontWeight.w500,
         ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios,
+              color: Colors.black, size: 18.w),
+          onPressed: () {
+            Get.back();
+          },
+        ),
         centerTitle: true,
       ),
       //=======================> Body Section <============================
@@ -209,7 +216,7 @@ class _CategoriesSearchAppliedScreenState
                             Padding(
                               padding: EdgeInsets.only(top: 8.h),
                               child: SvgPicture.asset(
-                                AppIcons.share, // Share icon
+                                AppIcons.share,
                                 width: 16.w,
                                 height: 16.h,
                                 color: Colors.blueGrey,

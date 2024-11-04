@@ -14,9 +14,9 @@ class AppImages{
   static String visaImage = "$baseUrl/visa.png";
   static String masterCardImage = "$baseUrl/masterCard.png";
   static String poyPalImage = "$baseUrl/paypal.png";
-  static String massage = "$baseUrl/massage.png";
+  static String message = "$baseUrl/message.png";
   static String whatsapp = "$baseUrl/whatsapp.png";
-  static String gmail = "$baseUrl/gmail.png";
-  static String insta = "$baseUrl/insta.png";
+  static String email = "$baseUrl/email.png";
+  static String instagram = "$baseUrl/instagram.png";
 
 }
