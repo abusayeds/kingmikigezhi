@@ -58,20 +58,17 @@ class _CategoriesFilterScreenState extends State<CategoriesFilterScreen> {
               InputDecorator(
                 decoration: InputDecoration(
                   fillColor: AppColors.fillColor,
-                  // labelText: 'Select',
+                  filled: true,
                   border: OutlineInputBorder(
-                    borderSide:
-                    BorderSide(color: AppColors.primaryColor, width: 1.w),
+                    borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderSide:
-                    BorderSide(color: AppColors.primaryColor, width: 1.w),
+                    borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide:
-                    BorderSide(color: AppColors.primaryColor, width: 1.w),
+                    borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                   contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
@@ -80,6 +77,7 @@ class _CategoriesFilterScreenState extends State<CategoriesFilterScreen> {
                   child: DropdownButton<String>(
                     //focusColor:  AppColors.primaryColor,
                     iconDisabledColor: AppColors.primaryColor,
+                    icon: SvgPicture.asset(AppIcons.down_ArrowIcon,color: AppColors.primaryColor,height:8.h,),
                     iconEnabledColor: AppColors.primaryColor,
                     isExpanded: true,
                     value: _selectedProgram,
@@ -109,20 +107,18 @@ class _CategoriesFilterScreenState extends State<CategoriesFilterScreen> {
               InputDecorator(
                 decoration: InputDecoration(
                   fillColor: AppColors.fillColor,
+                  filled: true,
                   // labelText: 'Select',
                   border: OutlineInputBorder(
-                    borderSide:
-                    BorderSide(color: AppColors.primaryColor, width: 1.w),
+                    borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderSide:
-                    BorderSide(color: AppColors.primaryColor, width: 1.w),
+                    borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide:
-                    BorderSide(color: AppColors.primaryColor, width: 1.w),
+                    borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                   contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
@@ -132,6 +128,7 @@ class _CategoriesFilterScreenState extends State<CategoriesFilterScreen> {
                     //focusColor:  AppColors.primaryColor,
                     iconDisabledColor: AppColors.primaryColor,
                     iconEnabledColor: AppColors.primaryColor,
+                    icon: SvgPicture.asset(AppIcons.down_ArrowIcon,color: AppColors.primaryColor,height:8.h,),
                     isExpanded: true,
                     value: _selectedType,
                     hint: CustomText(text: 'Select Type', fontsize: 14.sp),
@@ -177,15 +174,14 @@ class _CategoriesFilterScreenState extends State<CategoriesFilterScreen> {
               InputDecorator(
                 decoration: InputDecoration(
                   fillColor: AppColors.fillColor,
+                  filled: true,
                   // labelText: 'Select',
                   border: OutlineInputBorder(
-                    borderSide:
-                    BorderSide(color: AppColors.primaryColor, width: 1.w),
+                    borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderSide:
-                    BorderSide(color: AppColors.primaryColor, width: 1.w),
+                    borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                   focusedBorder: OutlineInputBorder(
@@ -199,6 +195,7 @@ class _CategoriesFilterScreenState extends State<CategoriesFilterScreen> {
                     //focusColor:  AppColors.primaryColor,
                     iconDisabledColor: AppColors.primaryColor,
                     iconEnabledColor: AppColors.primaryColor,
+                    icon: SvgPicture.asset(AppIcons.down_ArrowIcon,color: AppColors.primaryColor,height:8.h,),
                     isExpanded: true,
                     value: _selectedCategory,
                     hint: CustomText(text: 'Select Category/Group', fontsize: 14.sp),
