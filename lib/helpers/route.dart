@@ -3,6 +3,7 @@ import 'package:event_sharing/views/screen/AddEvent/stepTwoForm.dart';
 import 'package:event_sharing/views/screen/Auth/SignIn/sign_in_screen.dart';
 import 'package:event_sharing/views/screen/Categories/categories_filtering.dart';
 import 'package:event_sharing/views/screen/Categories/search_applied_screen.dart';
+import 'package:event_sharing/views/screen/Home/Donet/donation_mood_screen.dart';
 import 'package:event_sharing/views/screen/Home/Donet/donation_screen.dart';
 import 'package:event_sharing/views/screen/Home/Donet/make_payment_screen.dart';
 import 'package:event_sharing/views/screen/Home/Donet/paySuccess_screen.dart';
@@ -113,6 +114,7 @@ class AppRoutes{
   static String donationScreen = "/donation_screen";
   static String makePaymentScreen = "/makePayment_screen";
   static String paymentSuccessScreen = "/paymentSuccessScreen";
+  static String donationMoodScreen = "/donationMoodScreen";
 
   static String categoriesFilterScreen = "/categoriesFilterScreen";
   static String categoriesSearchAppliedScreen = "/categories_search_applied_screen";
@@ -181,6 +183,7 @@ class AppRoutes{
    GetPage(name: suggestionDonationPage, page: ()=> SuggestionDonationPage()),
    GetPage(name: suggestionScreen, page: ()=> SuggestionScreen()),
    GetPage(name: donationScreen, page: ()=> DonationScreen()),
+   GetPage(name: donationMoodScreen, page: ()=> DonationMoodScreen()),
 
    GetPage(name: makePaymentScreen, page: ()=> MakePaymentScreen()),
    GetPage(name: paymentSuccessScreen, page: ()=> PaymentSuccessScreen()),
