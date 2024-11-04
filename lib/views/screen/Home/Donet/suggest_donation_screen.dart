@@ -48,7 +48,7 @@ class SuggestionDonationPage extends StatelessWidget {
 
             CustomButton(
               onTap: (){
-                Get.toNamed(AppRoutes.donationScreen);
+                Get.toNamed(AppRoutes.donationMoodScreen);
               },
               text: 'Donation',
               textStyle:const TextStyle(color: Colors.black),
