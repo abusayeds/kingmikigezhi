@@ -44,7 +44,9 @@ class SuggestionScreen extends StatelessWidget {
                 // Cancel Button (Outlined)
                 Expanded(
                   child: OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.back();
+                    },
                     style: OutlinedButton.styleFrom(
                       backgroundColor: AppColors.fillColor,
                       padding: EdgeInsets.symmetric(vertical: 16.h),
