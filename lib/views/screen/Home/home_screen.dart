@@ -348,7 +348,7 @@ class _HomeScreenState extends State<HomeScreen> {
         itemCount: 3,
         itemBuilder: (context, index) {
           return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8.w),
+            padding: EdgeInsets.only(right: 8),
             child: Container(
               decoration: BoxDecoration(
                 color: const Color(0xffE5CCFF),
