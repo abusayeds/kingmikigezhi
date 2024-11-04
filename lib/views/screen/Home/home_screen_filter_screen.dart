@@ -74,7 +74,7 @@ class _FilterScreenState extends State<FilterScreen> {
               ),
               InputDecorator(
                 decoration: InputDecoration(
-                  fillColor: AppColors.fillColor, // Replace with your desired color
+                  fillColor: AppColors.fillColor,
                   filled: true,
                   border: OutlineInputBorder(
                     borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
@@ -212,7 +212,6 @@ class _FilterScreenState extends State<FilterScreen> {
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
                     //focusColor:  AppColors.primaryColor,
-
                     iconDisabledColor: AppColors.primaryColor,
                     iconEnabledColor: AppColors.primaryColor,
                     isExpanded: true,
