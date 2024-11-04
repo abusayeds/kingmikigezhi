@@ -27,7 +27,7 @@ class HomeAppBar extends StatelessWidget {
         Expanded(
           child: GestureDetector(
             onTap: () {
-              Get.toNamed(AppRoutes.mapScreen);
+           //   Get.toNamed(AppRoutes.mapScreen);
             },
             child: Row(
               children: [
