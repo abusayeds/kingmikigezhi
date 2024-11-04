@@ -50,10 +50,10 @@ class _ShareInvitationPageState extends State<ShareInvitationPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _buildSocialMediaIcon( Image.asset(AppImages.massage, width: 60.w,height: 60.h), "iMessage",Colors.green),
+                _buildSocialMediaIcon( Image.asset(AppImages.message, width: 60.w,height: 60.h), "iMessage",Colors.green),
                 _buildSocialMediaIcon(Image.asset(AppImages.whatsapp, width: 60.w,height: 60.h), "WhatsApp",Colors.greenAccent),
-                _buildSocialMediaIcon(Image.asset(AppImages.gmail, width: 60.w,height: 60.h), "Gmail",Colors.redAccent),
-                _buildSocialMediaIcon(Image.asset(AppImages.insta, width: 60.w,height: 60.h), "Instagram",Colors.redAccent),
+                _buildSocialMediaIcon(Image.asset(AppImages.email, width: 60.w,height: 60.h), "Gmail",Colors.redAccent),
+                _buildSocialMediaIcon(Image.asset(AppImages.instagram, width: 60.w,height: 60.h), "Instagram",Colors.redAccent),
               ],
             ),
             SizedBox(height: 24.h),
