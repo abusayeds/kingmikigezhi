@@ -28,16 +28,16 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
   }
 
   void startTimer() {
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      setState(() {
-        if (_countdown > 0) {
-          _countdown--;
-        } else {
-          _timer.cancel();
-          Get.toNamed(AppRoutes.suggestionDonationPage);
-        }
-      });
-    });
+    // _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+    //   setState(() {
+    //     if (_countdown > 0) {
+    //       _countdown--;
+    //     } else {
+    //       _timer.cancel();
+    //       Get.toNamed(AppRoutes.suggestionDonationPage);
+    //     }
+    //   });
+    // });
   }
 
   @override
@@ -95,7 +95,7 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
             // Countdown
             Text(
               '$_countdown' + 's',
-              style: const TextStyle(fontSize: 18, color: Colors.black87),
+              style:  TextStyle(fontSize: 18, color: Colors.black87,fontWeight:FontWeight.bold),
             ),
           ],
         ),
