@@ -216,7 +216,7 @@ class _CategoriesSearchAppliedScreenState
                             Padding(
                               padding: EdgeInsets.only(top: 8.h),
                               child: SvgPicture.asset(
-                                AppIcons.share, // Share icon
+                                AppIcons.share,
                                 width: 16.w,
                                 height: 16.h,
                                 color: Colors.blueGrey,
