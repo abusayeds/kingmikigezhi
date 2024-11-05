@@ -502,14 +502,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         : CalendarFormat.week;
                   });
                 },
-                child: SvgPicture.asset(AppIcons.calendarIcon) // Update this path
+                child: SvgPicture.asset(AppIcons.calendarIcon)
             ),
             leftChevronVisible: false,
             leftChevronIcon: const SizedBox(),
             formatButtonVisible: false,
             titleCentered: false,
             titleTextStyle: TextStyle(
-                fontSize: 18, fontWeight: FontWeight.bold,
+                fontSize: 18.sp, fontWeight: FontWeight.bold,
             ),
           ),
           daysOfWeekStyle: DaysOfWeekStyle(
@@ -537,10 +537,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     // Using Row for horizontal alignment
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center, // Center the content
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 4.0), // Add vertical padding
+                          padding:  EdgeInsets.symmetric(vertical: 4.0.h),
                           child: Text(
                             '${day.day}',
                             style: TextStyle(
