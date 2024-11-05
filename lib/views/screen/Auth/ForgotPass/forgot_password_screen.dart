@@ -83,7 +83,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   SizedBox(height: 128.h),
                   CustomButton(
                     onTap: () {
-                      Get.toNamed(AppRoutes.createAccountScreen);
+                      Get.toNamed(AppRoutes.resetPasswordScreen);
                     },
                     text: 'Verify',
                     textColor: Colors.white,

@@ -40,7 +40,7 @@ class TopProfileSection extends StatelessWidget {
                           ),
                           shape: BoxShape.rectangle,
                           border: Border.all(width: 2.w, color: AppColors.primaryColor)),
-                      child: Image.asset('assets/images/song.png',fit: BoxFit.cover)
+                      child: Image.asset('assets/images/ownerImage.png',fit: BoxFit.cover)
 
                      // Image.network('https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg', fit: BoxFit.cover,),
                     ),
@@ -51,7 +51,7 @@ class TopProfileSection extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           CustomText(
-                            text: 'Mr.Mahafujer',
+                            text: 'Bashar Islam',
                             textAlign: TextAlign.start,
                             fontsize: 20.sp,
                             color: Colors.white,
