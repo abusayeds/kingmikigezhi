@@ -24,7 +24,7 @@ class ProfileScreen extends StatelessWidget {
           children: [
             const TopProfileCard(),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
+              padding: EdgeInsets.symmetric(vertical: 24.h),
               child: Column(
                 children: [
                   //============================> Account List Tile <=================

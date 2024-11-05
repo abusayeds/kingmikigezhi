@@ -71,7 +71,7 @@ class _MakePaymentScreenState extends State<MakePaymentScreen> {
                 children: [
                   _paymentOption('Visa', AppImages.visaImage),
                   _paymentOption('Mastercard', AppImages.masterCardImage),
-                  _paymentOption('Paypal', AppImages.poyPalImage),
+                  _paymentOption('Paypal', AppImages.payPalImage),
 
                 ],
               ),

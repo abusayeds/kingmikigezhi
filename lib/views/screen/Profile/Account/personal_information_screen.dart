@@ -66,12 +66,12 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
              ),
               CustomListTile(
                 backgroundColor: AppColors.colorEDF2F4,
-                title: '20103200'??'',),
+                title: '20103200'?? '',),
               //=================================> Email Name <==========================
               Padding( padding: const EdgeInsets.all(4),
                 child: Text('First Name',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600)),
               ),
-              CustomListTile(title: 'Mahafujer'??'',  backgroundColor: AppColors.colorEDF2F4,),
+              CustomListTile(title: 'Bashar Islam'?? '',  backgroundColor: AppColors.colorEDF2F4,),
               //=================================> Phone Number <========================
               Padding(
                 padding: const EdgeInsets.all(4),
@@ -362,7 +362,6 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                       ],
                     ),
                   ),
-
                 ],
               ),
             ),
@@ -371,8 +370,6 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
           ),
         ),
       ),
-
     );
   }
-
 }

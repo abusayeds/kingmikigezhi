@@ -13,7 +13,7 @@ class AppImages{
   static String errorPageImage = "$baseUrl/errorpage.png";
   static String visaImage = "$baseUrl/visa.png";
   static String masterCardImage = "$baseUrl/masterCard.png";
-  static String poyPalImage = "$baseUrl/paypal.png";
+  static String payPalImage = "$baseUrl/paypal.png";
   static String message = "$baseUrl/message.png";
   static String whatsapp = "$baseUrl/whatsapp.png";
   static String email = "$baseUrl/email.png";

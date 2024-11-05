@@ -509,7 +509,12 @@ class _HomeScreenState extends State<HomeScreen> {
             formatButtonVisible: false,
             titleCentered: false,
             titleTextStyle: TextStyle(
-                fontSize: 18, fontWeight: FontWeight.bold),
+                fontSize: 18, fontWeight: FontWeight.bold,
+            ),
+          ),
+          daysOfWeekStyle: DaysOfWeekStyle(
+            weekdayStyle: TextStyle(color: AppColors.colorA4B9DE),
+            weekendStyle: TextStyle(color: AppColors.colorA4B9DE),
           ),
           calendarStyle: CalendarStyle(
             todayDecoration: BoxDecoration(
@@ -548,11 +553,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     if (hasAppointments)
                       Container(
-                        height: 8, // Height of the circular indicator
-                        width: 8, // Width of the circular indicator
+                        height: 8.h,
+                        width: 8.w,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Colors.amber, // Change this to your desired color
+                          color: Colors.amber,
                         ),
                       ),
                   ],
