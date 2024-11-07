@@ -69,7 +69,7 @@ class _DonationScreenState extends State<DonationScreen> {
                         child: Text(
                           '\$$amount',
                           style: TextStyle(
-                            fontSize: 18.sp,
+                            fontSize: 32.sp,
                             fontWeight: FontWeight.bold,
                             color: isSelected ? Colors.white : AppColors.primaryColor,
                           ),

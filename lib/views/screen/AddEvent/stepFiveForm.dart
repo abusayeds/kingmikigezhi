@@ -1,3 +1,4 @@
+import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/custom_button.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
 
@@ -280,7 +281,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
                       isSharedCommunityChecked = value ?? false;
                     });
                   },
-                  title: Text("This is a shared community. All events are public"),
+                  title: Text("This is a shared community. All events are public",style: AppStyles.h5()),
                   activeColor: AppColors.primaryColor,
                   controlAffinity: ListTileControlAffinity.leading,
                 ),
@@ -291,7 +292,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
                       isUserAgreementChecked = value ?? false;
                     });
                   },
-                  title: Text("User agreement"),
+                  title: Text("User agreement",style: AppStyles.h5()),
                   activeColor: AppColors.primaryColor,
                   controlAffinity: ListTileControlAffinity.leading,
                 ),
