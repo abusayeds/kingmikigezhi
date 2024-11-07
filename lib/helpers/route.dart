@@ -1,6 +1,8 @@
 import 'package:event_sharing/views/screen/AddEvent/create_event_one.dart';
 import 'package:event_sharing/views/screen/AddEvent/stepTwoForm.dart';
+import 'package:event_sharing/views/screen/Auth/ForgotPass/forget_otp_verification_screen.dart';
 import 'package:event_sharing/views/screen/Auth/SignIn/sign_in_screen.dart';
+import 'package:event_sharing/views/screen/Auth/SignUp/singup_otp_verification_screen.dart';
 import 'package:event_sharing/views/screen/Categories/categories_filtering.dart';
 import 'package:event_sharing/views/screen/Categories/search_applied_screen.dart';
 import 'package:event_sharing/views/screen/Home/Donet/donation_mood_screen.dart';
@@ -118,11 +120,13 @@ class AppRoutes{
 
   static String categoriesFilterScreen = "/categoriesFilterScreen";
   static String categoriesSearchAppliedScreen = "/categories_search_applied_screen";
-
+  static String forgetPasswordOtpScreen ="/forgetPasswordOtpScreen";
+  static String signUpOtpVerificationScreen ="/signUpOtpVerificationScreen";
 
   //create event
   static String createEventOne ="/create_event_one";
   static String stepTwoContent ="/stepTwoContent";
+
 
 //======================>>>> List PAge
  static List<GetPage> page=[
@@ -137,7 +141,7 @@ class AppRoutes{
     GetPage(name:signInScreen, page: ()=>const SignInScreen()),
     GetPage(name:signUpScreen, page: ()=>const SignUpScreen()),
     GetPage(name:forgotPasswordScreen, page: ()=>const ForgotPasswordScreen()),
-    GetPage(name:verificationCodeScreen, page: ()=>const VerificationCodeScreen()),
+    //GetPage(name:verificationCodeScreen, page: ()=>const VerificationCodeScreen()),
     GetPage(name:resetPasswordScreen, page: ()=>const ResetPasswordScreen()),
     GetPage(name:personalInformationScreen, page: ()=> PersonalInformationScreen()),
     GetPage(name:editProfileScreen, page: ()=>const EditProfileScreen()),
@@ -187,6 +191,8 @@ class AppRoutes{
 
    GetPage(name: makePaymentScreen, page: ()=> MakePaymentScreen()),
    GetPage(name: paymentSuccessScreen, page: ()=> PaymentSuccessScreen()),
+   GetPage(name: forgetPasswordOtpScreen, page: ()=> ForgetPasswordOtpScreen()),
+   GetPage(name: signUpOtpVerificationScreen, page: ()=> SignUpOtpVerificationScreen()),
 
 
    //category
