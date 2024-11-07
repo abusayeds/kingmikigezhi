@@ -90,7 +90,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   SizedBox(height: 24.h),
                   CustomButton(
                     onTap: () {
-                      Get.toNamed(AppRoutes.createAccountScreen);
+                      Get.toNamed(AppRoutes.signUpOtpVerificationScreen);
                     },
                     text: 'Continue',
                     color: AppColors.buttonColor,

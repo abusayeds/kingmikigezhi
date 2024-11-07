@@ -502,14 +502,19 @@ class _HomeScreenState extends State<HomeScreen> {
                         : CalendarFormat.week;
                   });
                 },
-                child: SvgPicture.asset(AppIcons.calendarIcon) // Update this path
+                child: SvgPicture.asset(AppIcons.calendarIcon)
             ),
             leftChevronVisible: false,
             leftChevronIcon: const SizedBox(),
             formatButtonVisible: false,
             titleCentered: false,
             titleTextStyle: TextStyle(
-                fontSize: 18, fontWeight: FontWeight.bold),
+                fontSize: 18.sp, fontWeight: FontWeight.bold,
+            ),
+          ),
+          daysOfWeekStyle: DaysOfWeekStyle(
+            weekdayStyle: TextStyle(color: AppColors.colorA4B9DE),
+            weekendStyle: TextStyle(color: AppColors.colorA4B9DE),
           ),
           calendarStyle: CalendarStyle(
             todayDecoration: BoxDecoration(
@@ -532,10 +537,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     // Using Row for horizontal alignment
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center, // Center the content
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 4.0), // Add vertical padding
+                          padding:  EdgeInsets.symmetric(vertical: 4.0.h),
                           child: Text(
                             '${day.day}',
                             style: TextStyle(
@@ -548,11 +553,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     if (hasAppointments)
                       Container(
-                        height: 8, // Height of the circular indicator
-                        width: 8, // Width of the circular indicator
+                        height: 8.h,
+                        width: 8.w,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Colors.amber, // Change this to your desired color
+                          color: Colors.amber,
                         ),
                       ),
                   ],
