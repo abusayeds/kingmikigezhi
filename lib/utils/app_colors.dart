@@ -15,7 +15,7 @@ class AppColors{
   static Color textColor = const Color(0xFFFFFFFF);
   static Color white = const Color(0xFFFFFFFF);
   static Color subTextColor = const Color(0xFFE8E8E8);
-  static Color hintColor = const Color(0xFFB5B5B5);
+  static Color hintColor = const Color(0xFF5C5C5C);
   static Color greyColor = const Color(0xFFB5B5B5);
   static Color fillColor = const Color(0xFFedf2f4);
   static Color dividerColor = const Color(0xFF555555);
@@ -27,6 +27,7 @@ class AppColors{
 
   static Color colorD9A951 = const Color(0xFFD9A951);
   static Color colorCDBDB6 = const Color(0xFFCDBDB6);
+  static Color colorA4B9DE = const Color(0xFFA4B9DE);
 
 
   static BoxShadow shadow=BoxShadow(

@@ -1,8 +1,11 @@
 import 'package:event_sharing/views/screen/AddEvent/create_event_one.dart';
 import 'package:event_sharing/views/screen/AddEvent/stepTwoForm.dart';
+import 'package:event_sharing/views/screen/Auth/ForgotPass/forget_otp_verification_screen.dart';
 import 'package:event_sharing/views/screen/Auth/SignIn/sign_in_screen.dart';
+import 'package:event_sharing/views/screen/Auth/SignUp/singup_otp_verification_screen.dart';
 import 'package:event_sharing/views/screen/Categories/categories_filtering.dart';
 import 'package:event_sharing/views/screen/Categories/search_applied_screen.dart';
+import 'package:event_sharing/views/screen/Home/Donet/donation_mood_screen.dart';
 import 'package:event_sharing/views/screen/Home/Donet/donation_screen.dart';
 import 'package:event_sharing/views/screen/Home/Donet/make_payment_screen.dart';
 import 'package:event_sharing/views/screen/Home/Donet/paySuccess_screen.dart';
@@ -113,37 +116,33 @@ class AppRoutes{
   static String donationScreen = "/donation_screen";
   static String makePaymentScreen = "/makePayment_screen";
   static String paymentSuccessScreen = "/paymentSuccessScreen";
+  static String donationMoodScreen = "/donationMoodScreen";
 
   static String categoriesFilterScreen = "/categoriesFilterScreen";
   static String categoriesSearchAppliedScreen = "/categories_search_applied_screen";
-
+  static String forgetPasswordOtpScreen ="/forgetPasswordOtpScreen";
+  static String signUpOtpVerificationScreen ="/signUpOtpVerificationScreen";
 
   //create event
   static String createEventOne ="/create_event_one";
   static String stepTwoContent ="/stepTwoContent";
+
 
 //======================>>>> List PAge
  static List<GetPage> page=[
    GetPage(name:splashScreen, page: ()=>const SplashScreen()),
    GetPage(name:homeScreen, page: ()=> HomeScreen(),transition: Transition.noTransition),
    GetPage(name:categoriesScreen, page: ()=> CategoriesScreen(),transition: Transition.noTransition),
-
    GetPage(name:createAccountScreen, page: ()=> CreateAccountScreen(),transition: Transition.noTransition ),
-
    GetPage(name:calenderScreen, page: ()=>const CalenderScreen(),transition: Transition.noTransition ),
    GetPage(name:profileScreen, page: ()=> ProfileScreen(),transition: Transition.noTransition),
-
-
     GetPage(name:walletScreen, page: ()=>const WalletScreen()),
-
     GetPage(name:onboardScreen, page: ()=>const OnboardScreen()),
     GetPage(name:signInScreen, page: ()=>const SignInScreen()),
     GetPage(name:signUpScreen, page: ()=>const SignUpScreen()),
-
     GetPage(name:forgotPasswordScreen, page: ()=>const ForgotPasswordScreen()),
-    GetPage(name:verificationCodeScreen, page: ()=>const VerificationCodeScreen()),
+    //GetPage(name:verificationCodeScreen, page: ()=>const VerificationCodeScreen()),
     GetPage(name:resetPasswordScreen, page: ()=>const ResetPasswordScreen()),
-
     GetPage(name:personalInformationScreen, page: ()=> PersonalInformationScreen()),
     GetPage(name:editProfileScreen, page: ()=>const EditProfileScreen()),
     GetPage(name:memberProfileScreen, page: ()=>const MemberProfileScreen()),
@@ -188,9 +187,12 @@ class AppRoutes{
    GetPage(name: suggestionDonationPage, page: ()=> SuggestionDonationPage()),
    GetPage(name: suggestionScreen, page: ()=> SuggestionScreen()),
    GetPage(name: donationScreen, page: ()=> DonationScreen()),
+   GetPage(name: donationMoodScreen, page: ()=> DonationMoodScreen()),
 
    GetPage(name: makePaymentScreen, page: ()=> MakePaymentScreen()),
    GetPage(name: paymentSuccessScreen, page: ()=> PaymentSuccessScreen()),
+   GetPage(name: forgetPasswordOtpScreen, page: ()=> ForgetPasswordOtpScreen()),
+   GetPage(name: signUpOtpVerificationScreen, page: ()=> SignUpOtpVerificationScreen()),
 
 
    //category

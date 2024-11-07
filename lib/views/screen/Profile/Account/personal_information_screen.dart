@@ -37,9 +37,16 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading:  IconButton(
+          icon: Icon(Icons.arrow_back_ios,
+              color: Colors.black, size: 18.w),
+          onPressed: () {
+            Get.back();
+          },
+        ),
         title: CustomText(
           text: AppStrings.account,
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.bold,
           fontsize: 18.sp,
         ),
         centerTitle: true,
@@ -59,12 +66,12 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
              ),
               CustomListTile(
                 backgroundColor: AppColors.colorEDF2F4,
-                title: '20103200'??'',),
+                title: '20103200'?? '',),
               //=================================> Email Name <==========================
               Padding( padding: const EdgeInsets.all(4),
                 child: Text('First Name',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600)),
               ),
-              CustomListTile(title: 'Mahafujer'??'',  backgroundColor: AppColors.colorEDF2F4,),
+              CustomListTile(title: 'Bashar Islam'?? '',  backgroundColor: AppColors.colorEDF2F4,),
               //=================================> Phone Number <========================
               Padding(
                 padding: const EdgeInsets.all(4),
@@ -355,7 +362,6 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                       ],
                     ),
                   ),
-
                 ],
               ),
             ),
@@ -364,8 +370,6 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
           ),
         ),
       ),
-
     );
   }
-
 }
