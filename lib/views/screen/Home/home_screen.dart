@@ -1,4 +1,4 @@
-import 'package:event_sharing/helpers/route.dart';
+ import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_images.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
@@ -78,36 +78,39 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 HomeAppBar(),
                 SizedBox(height: 20.h),
-                _searchBar(),
-                Row(
+                 _searchBar(),
+                  Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Container(
-                      height: 30.h,
-                      width: 120.w,
-                      padding: EdgeInsets.symmetric(horizontal: 8.h, vertical: 2.w),
+                      height: 35.h,
+                     // width: 120.w,
+                      padding: EdgeInsets.symmetric(horizontal: 8.h,),
                       decoration: BoxDecoration(
                         color: Colors.blueGrey, // Background color
                         borderRadius: BorderRadius.circular(8.r),
                       ),
                       child: DropdownButton<String>(
                         value: dropdownValue,
+                        padding: EdgeInsets.zero,
                         underline: SizedBox(),
-                        icon: Icon(Icons.arrow_drop_down, color: Colors.white, size: 12.sp),
+                       icon: SvgPicture.asset(AppIcons.down_ArrowIcon),
+
+                       // icon: Icon(Icons.arrow_drop_down, color: Colors.white, size: 12.sp),
                         dropdownColor: AppColors.primaryColor,
-                        style: TextStyle(color: Colors.white70, fontSize: 10.sp),
+                        style: TextStyle(color: Colors.white70, fontSize: 10.sp,fontWeight: FontWeight.w400),
                         onChanged: (String? newValue) {
                           setState(() {
                             dropdownValue = newValue!;
                           });
                         },
-                        items: <String>['All', 'Self', 'Spous', 'Child Stephanie', 'Child Sophia'].map<DropdownMenuItem<String>>((String value) {
+                        items: <String>['All', 'Self', 'Spouse', 'Child Stephanie', 'Child Sophia'].map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
                             child: Row(
                               children: [
                                 Text(value),
-                                SizedBox(width: 10.w),
+                                //SizedBox(width: 10.w),
                               ],
                             ),
                           );
@@ -115,13 +118,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     IconButton(
-                      icon: Icon(Icons.add),
+                      icon: const Icon(Icons.add),
+                      padding: EdgeInsets.zero,
                       onPressed: () {
                         HomePageAddBottomSheetWidget.addBottomSheet(context);
                       },
                     ),
                   ],
-                ),
+                                  ),
                // CalendarWidget(),
                 _tableCalendar(),
                 SizedBox(height: 16.h),
@@ -344,7 +348,7 @@ class _HomeScreenState extends State<HomeScreen> {
         itemCount: 3,
         itemBuilder: (context, index) {
           return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8.w),
+            padding: EdgeInsets.only(right: 8),
             child: Container(
               decoration: BoxDecoration(
                 color: const Color(0xffE5CCFF),
@@ -498,14 +502,19 @@ class _HomeScreenState extends State<HomeScreen> {
                         : CalendarFormat.week;
                   });
                 },
-                child: SvgPicture.asset(AppIcons.calendarIcon) // Update this path
+                child: SvgPicture.asset(AppIcons.calendarIcon)
             ),
             leftChevronVisible: false,
             leftChevronIcon: const SizedBox(),
             formatButtonVisible: false,
             titleCentered: false,
             titleTextStyle: TextStyle(
-                fontSize: 18, fontWeight: FontWeight.bold),
+                fontSize: 18.sp, fontWeight: FontWeight.bold,
+            ),
+          ),
+          daysOfWeekStyle: DaysOfWeekStyle(
+            weekdayStyle: TextStyle(color: AppColors.colorA4B9DE),
+            weekendStyle: TextStyle(color: AppColors.colorA4B9DE),
           ),
           calendarStyle: CalendarStyle(
             todayDecoration: BoxDecoration(
@@ -528,10 +537,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     // Using Row for horizontal alignment
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center, // Center the content
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 4.0), // Add vertical padding
+                          padding:  EdgeInsets.symmetric(vertical: 4.0.h),
                           child: Text(
                             '${day.day}',
                             style: TextStyle(
@@ -544,11 +553,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     if (hasAppointments)
                       Container(
-                        height: 8, // Height of the circular indicator
-                        width: 8, // Width of the circular indicator
+                        height: 8.h,
+                        width: 8.w,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Colors.amber, // Change this to your desired color
+                          color: Colors.amber,
                         ),
                       ),
                   ],

@@ -24,10 +24,17 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
     return Scaffold(
       //=======================> App Bar Section <============================
       appBar: AppBar(
+        leading:  IconButton(
+          icon: Icon(Icons.arrow_back_ios,
+              color: Colors.black, size: 18.w),
+          onPressed: () {
+            Get.back();
+          },
+        ),
         title: CustomText(
-          text: AppStrings.detailsEvent,
+          text: 'Event Details',
+          fontWeight: FontWeight.bold,
           fontsize: 18.sp,
-          fontWeight: FontWeight.w500,
         ),
         centerTitle: true,
       ),

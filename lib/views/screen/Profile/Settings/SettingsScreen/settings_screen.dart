@@ -4,6 +4,7 @@ import 'package:event_sharing/utils/app_strings.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 
 class SettingsScreen extends StatefulWidget {
@@ -33,10 +34,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
       resizeToAvoidBottomInset: false,
       extendBody: true,
       appBar: AppBar(
+        leading:  IconButton(
+          icon: Icon(Icons.arrow_back_ios,
+              color: Colors.black, size: 18.w),
+          onPressed: () {
+            Get.back();
+          },
+        ),
         title: CustomText(
-          text: AppStrings.settings,
-          fontsize: 18.h,
-          fontWeight: FontWeight.w500,
+          text: 'Settings',
+          fontWeight: FontWeight.bold,
+          fontsize: 18.sp,
         ),
         centerTitle: true,
       ),
@@ -56,6 +64,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               InputDecorator(
                 decoration: InputDecoration(
                   fillColor: AppColors.fillColor,
+                  filled: true,
                   // labelText: 'Select',
                   border: OutlineInputBorder(
                     borderSide:
@@ -107,6 +116,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               InputDecorator(
                 decoration: InputDecoration(
                   fillColor: AppColors.fillColor,
+                  filled: true,
                   // labelText: 'Select',
                   border: OutlineInputBorder(
                     borderSide:
@@ -158,6 +168,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               InputDecorator(
                 decoration: InputDecoration(
                   fillColor: AppColors.fillColor,
+                  filled: true,
                   // labelText: 'Select',
                   border: OutlineInputBorder(
                     borderSide:
@@ -209,6 +220,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               InputDecorator(
                 decoration: InputDecoration(
                   fillColor: AppColors.fillColor,
+                  filled: true,
                   // labelText: 'Select',
                   border: OutlineInputBorder(
                     borderSide:
@@ -260,6 +272,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               InputDecorator(
                 decoration: InputDecoration(
                   fillColor: AppColors.fillColor,
+                  filled: true,
                   // labelText: 'Select',
                   border: OutlineInputBorder(
                     borderSide:
@@ -308,7 +321,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   // Event Share Section
                   Text(
                     'Event Share',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 18.sp),
                   ),
                   SizedBox(height: 8),
                   Row(
@@ -366,7 +379,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   // Applied Event Update Section
                   Text(
                     'Applied Event Update',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 18.sp),
                   ),
                   SizedBox(height: 8),
                   Row(
