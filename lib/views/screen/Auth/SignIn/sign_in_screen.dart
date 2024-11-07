@@ -126,7 +126,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       //=================================> Forgot Password Button <================================
                       TextButton(
                         onPressed: () {
-                          Get.toNamed(AppRoutes.forgotPasswordScreen);
+                          Get.toNamed(AppRoutes.forgetPasswordOtpScreen);
                         },
                         child: CustomText(
                           fontWeight: FontWeight.bold,
