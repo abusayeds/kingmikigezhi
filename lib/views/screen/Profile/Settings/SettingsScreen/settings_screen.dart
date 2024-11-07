@@ -64,6 +64,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               InputDecorator(
                 decoration: InputDecoration(
                   fillColor: AppColors.fillColor,
+                  filled: true,
                   // labelText: 'Select',
                   border: OutlineInputBorder(
                     borderSide:
@@ -115,6 +116,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               InputDecorator(
                 decoration: InputDecoration(
                   fillColor: AppColors.fillColor,
+                  filled: true,
                   // labelText: 'Select',
                   border: OutlineInputBorder(
                     borderSide:
@@ -166,6 +168,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               InputDecorator(
                 decoration: InputDecoration(
                   fillColor: AppColors.fillColor,
+                  filled: true,
                   // labelText: 'Select',
                   border: OutlineInputBorder(
                     borderSide:
@@ -217,6 +220,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               InputDecorator(
                 decoration: InputDecoration(
                   fillColor: AppColors.fillColor,
+                  filled: true,
                   // labelText: 'Select',
                   border: OutlineInputBorder(
                     borderSide:
@@ -268,6 +272,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               InputDecorator(
                 decoration: InputDecoration(
                   fillColor: AppColors.fillColor,
+                  filled: true,
                   // labelText: 'Select',
                   border: OutlineInputBorder(
                     borderSide:
@@ -316,7 +321,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   // Event Share Section
                   Text(
                     'Event Share',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 18.sp),
                   ),
                   SizedBox(height: 8),
                   Row(
@@ -374,7 +379,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   // Applied Event Update Section
                   Text(
                     'Applied Event Update',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 18.sp),
                   ),
                   SizedBox(height: 8),
                   Row(
