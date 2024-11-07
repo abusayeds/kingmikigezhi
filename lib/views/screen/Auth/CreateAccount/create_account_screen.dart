@@ -406,7 +406,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
       onTap: () {
         if (_formKey.currentState!.validate()) {
           // Perform sign up action
-          Get.toNamed(AppRoutes.homeScreen);
+          Get.toNamed(AppRoutes.verificationCodeScreen);
         }
       },
       color: AppColors.buttonColor,

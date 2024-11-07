@@ -18,12 +18,16 @@ class TopProfileCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 395.h,
+      height: 306.h,
       width: double.infinity,
       decoration: BoxDecoration(
-        image: DecorationImage(
-            image: AssetImage(AppImages.profileContainer), fit: BoxFit.cover),
-      ),
+        color: AppColors.primaryColor,
+        borderRadius: BorderRadius.vertical(
+            bottom: Radius.elliptical(
+                MediaQuery.of(context).size.width, 40.w)),
+    /*    image: DecorationImage(
+            image: AssetImage(AppImages.profileContainer), fit: BoxFit.-cover),*/
+        ),
       child: Column(
         children: [
           CustomText(
@@ -43,13 +47,14 @@ class TopProfileCard extends StatelessWidget {
                   shape: BoxShape.rectangle,
                   image: DecorationImage(
                     // image: NetworkImage('https://www.whitehouse.gov/wp-content/uploads/2021/01/44_barack_obama.jpg'),
-                      image: AssetImage('assets/images/song.png'),
-                      fit: BoxFit.cover)),
+                      image: AssetImage('assets/images/ownerImage.png'),
+                      fit: BoxFit.cover)
+              ),
                //   border: Border.all(width: 2.w, color: AppColors.white)
                      ),
               //=======================> Profile Image <===========================
           CustomText(
-            text: "Mr.Mahafujer" ?? "",
+            text: "Bashar Islam" ?? "",
             fontsize: 20.h,
             color: Colors.white,
             fontWeight: FontWeight.w500,

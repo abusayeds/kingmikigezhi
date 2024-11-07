@@ -105,7 +105,7 @@ class _MyInvitationPageState extends State<MyInvitationPage> {
            onTap: (){
              Get.toNamed(AppRoutes.shareInvitationPage);
            },
-           text: 'Share',
+           text: 'Invitation',
            borderColor: AppColors.buttonA47059,
            color: AppColors.buttonA47059,
            textColor: AppColors.textColor,
