@@ -2,6 +2,7 @@ import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/views/base/custom_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 
@@ -10,21 +11,29 @@ class SuggestionDonationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Get.back();
-          },
+        automaticallyImplyLeading: false,
+        title: Row(
+          children: [
+            IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.black,
+                size: 18.w,
+              ),
+              onPressed: () {
+                Get.back();
+              },
+            ),
+          ],
         ),
-        backgroundColor: Colors.white,
-        elevation: 0,
+        centerTitle: true,
       ),
-      body: Column(
-        children: [
-          Spacer(),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: CustomButton(
+      body: Padding(
+        padding:  EdgeInsets.symmetric(horizontal: 24.w),
+        child: Column(
+          children: [
+            const Spacer(),
+            CustomButton(
                 onTap: (){
                   Get.toNamed(AppRoutes.suggestionScreen);
                 },
@@ -33,26 +42,23 @@ class SuggestionDonationPage extends StatelessWidget {
               color: AppColors.fillColor,
               borderColor: AppColors.buttonA47059,
             ),
-          ),
-          SizedBox(height: 10),
-          Text('OR', style: TextStyle(fontSize: 16, color: Colors.black54,)),
-          SizedBox(height: 10),
+            SizedBox(height: 10.h),
+            const Text('OR', style: TextStyle(fontSize: 16, color: Colors.black54,)),
+            SizedBox(height: 10.h),
 
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: CustomButton(
+            CustomButton(
               onTap: (){
-                Get.toNamed(AppRoutes.donationScreen);
+                Get.toNamed(AppRoutes.donationMoodScreen);
               },
               text: 'Donation',
-              textStyle:TextStyle(color: Colors.black),
+              textStyle:const TextStyle(color: Colors.black),
               color: AppColors.buttonA47059,
               borderColor: AppColors.buttonA47059,
               textColor: AppColors.textColor,
             ),
-          ),
-          SizedBox(height: 20),
-        ],
+            SizedBox(height: 125.h),
+          ],
+        ),
       ),
     );
   }

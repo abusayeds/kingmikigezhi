@@ -1,9 +1,12 @@
 import 'package:event_sharing/utils/app_colors.dart';
+import 'package:event_sharing/utils/app_images.dart';
 import 'package:event_sharing/views/base/custom_button.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
+import 'package:event_sharing/views/base/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class ShareInvitationPage extends StatefulWidget {
   @override
@@ -19,80 +22,56 @@ class _ShareInvitationPageState extends State<ShareInvitationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Row(
-          children: [
-            IconButton(
-              icon: Icon(
-                Icons.arrow_back_ios,
-                color: Colors.black,
-                size: 20.sp,
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            Expanded(
-              child: Align(
-                alignment: Alignment.center, // Center the text
-                child: CustomText(
-                  text: 'Invitation',
-                  fontsize: 18.sp,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ],
+        leading:  IconButton(
+          icon: Icon(Icons.arrow_back_ios,
+              color: Colors.black, size: 18.w),
+          onPressed: () {
+            Get.back();
+          },
+        ),
+        title: CustomText(
+          text: 'Invitation',
+          fontWeight: FontWeight.bold,
+          fontsize: 18.sp,
         ),
         centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.symmetric(horizontal: 24.w),
         child: Column(
           children: [
-            TextField(
-              controller: messageController,
-              maxLines: 3,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                  hintText: 'Message (60 words)',
-                hintStyle: TextStyle(color: Colors.grey),
-              ),
+            CustomTextField(
+                controller: messageController,
+              hintText: 'Message (60 words)',
+              maxLines: 5,
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 24.h),
             // Row for the social media icons
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _buildSocialMediaIcon(Icons.message, "Message",Colors.green),
-                _buildSocialMediaIcon(Icons.mail, "WhatsApp",Colors.greenAccent),
-                _buildSocialMediaIcon(Icons.mail, "Gmail",Colors.redAccent),
-                _buildSocialMediaIcon(Icons.camera_alt, "Instagram",Colors.redAccent),
+                _buildSocialMediaIcon( Image.asset(AppImages.message, width: 60.w,height: 60.h), "iMessage",Colors.green),
+                _buildSocialMediaIcon(Image.asset(AppImages.whatsapp, width: 60.w,height: 60.h), "WhatsApp",Colors.greenAccent),
+                _buildSocialMediaIcon(Image.asset(AppImages.email, width: 60.w,height: 60.h), "Gmail",Colors.redAccent),
+                _buildSocialMediaIcon(Image.asset(AppImages.instagram, width: 60.w,height: 60.h), "Instagram",Colors.redAccent),
               ],
             ),
-            SizedBox(height: 30),
-            TextFormField(
-              controller: urlController,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'https://www.event.org',
-                hintStyle: TextStyle(color: Colors.grey),
-              ),
+            SizedBox(height: 24.h),
+            CustomTextField(
+                controller: urlController,
+              hintText: 'https://www.event.org',
             ),
-            SizedBox(height: 30),
+            SizedBox(height: 16.h),
 
             // Copy CustomButton
-            CustomButton(onTap: () {
+            CustomButton(
+              onTap: () {
               final url = urlController.text;
               Clipboard.setData(ClipboardData(text: url));
-              ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Copied: $url'))
-              );
             },
               text:  'Copy',
               textColor: AppColors.white,
-              color: AppColors.buttonA47059,
-              borderColor: AppColors.buttonA47059,
+              borderColor: AppColors.buttonColor,
             )
           ],
         ),
@@ -101,16 +80,12 @@ class _ShareInvitationPageState extends State<ShareInvitationPage> {
   }
 
   // Widget builder for social media icons
-  Widget _buildSocialMediaIcon(IconData iconData, String label, Color color) {
+   _buildSocialMediaIcon(Widget image, String label, Color color) {
     return Column(
       children: [
-        CircleAvatar(
-          radius: 30,
-          backgroundColor: color,
-          child: Icon(iconData, size: 30),
-        ),
-        SizedBox(height: 8),
-        Text(label, style: TextStyle(fontSize: 12)),
+       image,
+        SizedBox(height: 8.h),
+        CustomText(text: label, fontsize: 10.sp, fontWeight: FontWeight.bold),
       ],
     );
   }

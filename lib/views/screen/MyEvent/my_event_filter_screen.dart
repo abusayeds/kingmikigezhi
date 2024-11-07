@@ -58,6 +58,7 @@ class _MyEventFilterScreenState extends State<MyEventFilterScreen> {
               InputDecorator(
                 decoration: InputDecoration(
                   fillColor: AppColors.fillColor,
+                  filled: true,
                   // labelText: 'Select',
                   border: OutlineInputBorder(
                     borderSide:
@@ -81,6 +82,7 @@ class _MyEventFilterScreenState extends State<MyEventFilterScreen> {
                     //focusColor:  AppColors.primaryColor,
                     iconDisabledColor: AppColors.primaryColor,
                     iconEnabledColor: AppColors.primaryColor,
+                    icon: SvgPicture.asset(AppIcons.down_ArrowIcon,color: AppColors.primaryColor,height:8.h,),
                     isExpanded: true,
                     value: _selectedProgram,
                     hint: CustomText(text: 'Select Program', fontsize: 14.sp),
@@ -109,6 +111,7 @@ class _MyEventFilterScreenState extends State<MyEventFilterScreen> {
               InputDecorator(
                 decoration: InputDecoration(
                   fillColor: AppColors.fillColor,
+                  filled: true,
                   // labelText: 'Select',
                   border: OutlineInputBorder(
                     borderSide:
@@ -132,6 +135,7 @@ class _MyEventFilterScreenState extends State<MyEventFilterScreen> {
                     //focusColor:  AppColors.primaryColor,
                     iconDisabledColor: AppColors.primaryColor,
                     iconEnabledColor: AppColors.primaryColor,
+                    icon: SvgPicture.asset(AppIcons.down_ArrowIcon,color: AppColors.primaryColor,height:8.h,),
                     isExpanded: true,
                     value: _selectedType,
                     hint: CustomText(text: 'Select Type', fontsize: 14.sp),
@@ -162,8 +166,7 @@ class _MyEventFilterScreenState extends State<MyEventFilterScreen> {
                 hintText: 'Type here',
                 sufixicons: Padding(
                   padding: EdgeInsets.all(16.w),
-                  child: SvgPicture.asset(AppIcons.locationIcon,
-                      color: AppColors.primaryColor),
+                  child: SvgPicture.asset(AppIcons.locationIcon, color: AppColors.primaryColor),
                 ),
               ),
               SizedBox(height: 16.h),
@@ -177,6 +180,7 @@ class _MyEventFilterScreenState extends State<MyEventFilterScreen> {
               InputDecorator(
                 decoration: InputDecoration(
                   fillColor: AppColors.fillColor,
+                  filled: true,
                   // labelText: 'Select',
                   border: OutlineInputBorder(
                     borderSide:
@@ -200,6 +204,7 @@ class _MyEventFilterScreenState extends State<MyEventFilterScreen> {
                     //focusColor:  AppColors.primaryColor,
                     iconDisabledColor: AppColors.primaryColor,
                     iconEnabledColor: AppColors.primaryColor,
+                    icon: SvgPicture.asset(AppIcons.down_ArrowIcon,color: AppColors.primaryColor,height:8.h,),
                     isExpanded: true,
                     value: _selectedCategory,
                     hint: CustomText(text: 'Select Category/Group', fontsize: 14.sp),
