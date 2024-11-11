@@ -72,7 +72,7 @@ class SuggestionScreen extends StatelessWidget {
                       backgroundColor: const Color(0xFF815B48),
                       padding: EdgeInsets.symmetric(vertical: 16.h),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(8.r),
                       ),
                     ),
                     child: const Text(
@@ -86,7 +86,7 @@ class SuggestionScreen extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 20), // Bottom padding
+            SizedBox(height: 20.h),
           ],
         ),
       ),

@@ -196,6 +196,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                     SvgPicture.asset(AppIcons.dotIconForFamily),
                                     SizedBox(width: 5.w),
                                     Text('Deadline', style: TextStyle(fontWeight: FontWeight.bold,)),
+
                                   ],
                                 ),
                                 SizedBox(height: 5.h),
@@ -493,28 +494,32 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 15), // Space after header
+                  SizedBox(height: 15),
 
-                  // Row: Deadline and Cost
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SvgPicture.asset(AppIcons.dotIconForFamily),
-                          SizedBox(width: 5),
-                          Text('Deadline: ', style: TextStyle(fontWeight: FontWeight.w600)),
-                          Text('1-1-2024'),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          SvgPicture.asset(AppIcons.dotIconForFamily),
-                          SizedBox(width: 5),
-                          Text('Cost: ', style: TextStyle(fontWeight: FontWeight.w600),
+                          Row(
+                            children: [
+                              SvgPicture.asset(AppIcons.dotIconForFamily),
+                              SizedBox(width: 5),
+                              Text('Deadline: ', style: TextStyle(fontWeight: FontWeight.w600)),
+                            ],
                           ),
-                          Text('\$100'),
-                          SizedBox(width: 10),
+                          Text('1-1-2024'),
+                          Row(
+                            children: [
+                              SvgPicture.asset(AppIcons.dotIconForFamily),
+                              SizedBox(width: 5),
+                              Text('Cost: ', style: TextStyle(fontWeight: FontWeight.w600),
+                              ),
+                              Text('\$100'),
+                              SizedBox(width: 10),
+                            ],
+                          ),
                           Container(
                             decoration: BoxDecoration(
                               color: Colors.blueGrey,
@@ -530,47 +535,32 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                           ),
                         ],
                       ),
-                    ],
-                  ),
-                  SizedBox(height: 10), // Space between rows
-
-                  // Type Section
-                  Row(
-                    children: [
-                      SvgPicture.asset(AppIcons.dotIconForFamily),
-                      SizedBox(width: 5),
-                      Text('Type: ', style: TextStyle(fontWeight: FontWeight.w600),),
-                      Text('Onsite Event'),
-                    ],
-                  ),
-                  SizedBox(height: 10), // Space between rows
-
-                  // Description Section
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SvgPicture.asset(AppIcons.dotIconForFamily),
-                      SizedBox(width: 5),
-                      Expanded(
-                        child: RichText(
-                          text: TextSpan(
-                            text: 'Description : ',
-                            style: TextStyle(fontWeight: FontWeight.w600,color: Colors.black),
-                            children: [
-                              TextSpan(
-                                text:
-                                'The point of using Lorem Ipsum is that it has a more or less normal',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.normal,
-                                  color: Colors.grey.shade600,
-                                ),
-                              ),
-                            ],
+                      SizedBox(height: 8.h),
+                      Row(
+                        children: [
+                          SvgPicture.asset(AppIcons.dotIconForFamily),
+                          SizedBox(width: 5.w),
+                          Text('Type: ', style: TextStyle(fontWeight: FontWeight.w600)),
+                          Text('Onsite Event'),
+                        ],
+                      ),
+                      SizedBox(height: 8.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SvgPicture.asset(AppIcons.dotIconForFamily),
+                          SizedBox(width: 5.w),
+                          Text('Description: ', style: TextStyle(fontWeight: FontWeight.w600)),
+                          Expanded(
+                            child: Text(
+                              'The point of using Lorem Ipsum is that it has a more or less normal',
+                            ),
                           ),
-                        ),
+                        ],
                       ),
                     ],
-                  ),
+                  )
                 ],
               ),
               Divider(thickness: 1,color: Colors.grey),
@@ -587,28 +577,30 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 15), // Space after header
-
-                  // Row: Deadline and Cost
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SvgPicture.asset(AppIcons.dotIconForFamily),
-                          SizedBox(width: 5),
-                          Text('Deadline: ', style: TextStyle(fontWeight: FontWeight.w600)),
-                          Text('1-1-2024'),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          SvgPicture.asset(AppIcons.dotIconForFamily),
-                          SizedBox(width: 5),
-                          Text('Cost: ', style: TextStyle(fontWeight: FontWeight.w600),
+                          Row(
+                            children: [
+                              SvgPicture.asset(AppIcons.dotIconForFamily),
+                              SizedBox(width: 5),
+                              Text('Deadline: ', style: TextStyle(fontWeight: FontWeight.w600)),
+                            ],
                           ),
-                          Text('\$100'),
-                          SizedBox(width: 10),
+                          Text('1-1-2024'),
+                          Row(
+                            children: [
+                              SvgPicture.asset(AppIcons.dotIconForFamily),
+                              SizedBox(width: 5),
+                              Text('Cost: ', style: TextStyle(fontWeight: FontWeight.w600),
+                              ),
+                              Text('\$100'),
+                              SizedBox(width: 10),
+                            ],
+                          ),
                           Container(
                             decoration: BoxDecoration(
                               color: Colors.blueGrey,
@@ -624,47 +616,32 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                           ),
                         ],
                       ),
-                    ],
-                  ),
-                  SizedBox(height: 10), // Space between rows
-
-                  // Type Section
-                  Row(
-                    children: [
-                      SvgPicture.asset(AppIcons.dotIconForFamily),
-                      SizedBox(width: 5),
-                      Text('Type: ', style: TextStyle(fontWeight: FontWeight.w600),),
-                      Text('Onsite Event'),
-                    ],
-                  ),
-                  SizedBox(height: 10), // Space between rows
-
-                  // Description Section
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SvgPicture.asset(AppIcons.dotIconForFamily),
-                      SizedBox(width: 5),
-                      Expanded(
-                        child: RichText(
-                          text: TextSpan(
-                            text: 'Description : ',
-                            style: TextStyle(fontWeight: FontWeight.w600,color: Colors.black),
-                            children: [
-                              TextSpan(
-                                text:
-                                'The point of using Lorem Ipsum is that it has a more or less normal',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.normal,
-                                  color: Colors.grey.shade600,
-                                ),
-                              ),
-                            ],
+                      SizedBox(height: 8),
+                      Row(
+                        children: [
+                          SvgPicture.asset(AppIcons.dotIconForFamily),
+                          SizedBox(width: 5),
+                          Text('Type: ', style: TextStyle(fontWeight: FontWeight.w600)),
+                          Text('Onsite Event'),
+                        ],
+                      ),
+                      SizedBox(height: 8),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SvgPicture.asset(AppIcons.dotIconForFamily),
+                          SizedBox(width: 5),
+                          Text('Description: ', style: TextStyle(fontWeight: FontWeight.w600)),
+                          Expanded(
+                            child: Text(
+                              'The point of using Lorem Ipsum is that it has a more or less normal',
+                            ),
                           ),
-                        ),
+                        ],
                       ),
                     ],
-                  ),
+                  )
                 ],
               ),
               Divider(thickness: 1,color: Colors.grey),
@@ -683,26 +660,30 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                   ),
                   SizedBox(height: 15), // Space after header
 
-                  // Row: Deadline and Cost
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SvgPicture.asset(AppIcons.dotIconForFamily),
-                          SizedBox(width: 5),
-                          Text('Deadline: ', style: TextStyle(fontWeight: FontWeight.w600)),
-                          Text('1-1-2024'),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          SvgPicture.asset(AppIcons.dotIconForFamily),
-                          SizedBox(width: 5),
-                          Text('Cost: ', style: TextStyle(fontWeight: FontWeight.w600),
+                          Row(
+                            children: [
+                              SvgPicture.asset(AppIcons.dotIconForFamily),
+                              SizedBox(width: 5),
+                              Text('Deadline: ', style: TextStyle(fontWeight: FontWeight.w600)),
+                            ],
                           ),
-                          Text('\$100'),
-                          SizedBox(width: 10),
+                          Text('1-1-2024'),
+                          Row(
+                            children: [
+                              SvgPicture.asset(AppIcons.dotIconForFamily),
+                              SizedBox(width: 5),
+                              Text('Cost: ', style: TextStyle(fontWeight: FontWeight.w600),
+                              ),
+                              Text('\$100'),
+                              SizedBox(width: 10),
+                            ],
+                          ),
                           Container(
                             decoration: BoxDecoration(
                               color: Colors.blueGrey,
@@ -718,47 +699,32 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                           ),
                         ],
                       ),
-                    ],
-                  ),
-                  SizedBox(height: 10), // Space between rows
-
-                  // Type Section
-                  Row(
-                    children: [
-                      SvgPicture.asset(AppIcons.dotIconForFamily),
-                      SizedBox(width: 5),
-                      Text('Type: ', style: TextStyle(fontWeight: FontWeight.w600),),
-                      Text('Onsite Event'),
-                    ],
-                  ),
-                  SizedBox(height: 10), // Space between rows
-
-                  // Description Section
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SvgPicture.asset(AppIcons.dotIconForFamily),
-                      SizedBox(width: 5),
-                      Expanded(
-                        child: RichText(
-                          text: TextSpan(
-                            text: 'Description : ',
-                            style: TextStyle(fontWeight: FontWeight.w600,color: Colors.black),
-                            children: [
-                              TextSpan(
-                                text:
-                                'The point of using Lorem Ipsum is that it has a more or less normal',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.normal,
-                                  color: Colors.grey.shade600,
-                                ),
-                              ),
-                            ],
+                      SizedBox(height: 8),
+                      Row(
+                        children: [
+                          SvgPicture.asset(AppIcons.dotIconForFamily),
+                          SizedBox(width: 5),
+                          Text('Type: ', style: TextStyle(fontWeight: FontWeight.w600)),
+                          Text('Onsite Event'),
+                        ],
+                      ),
+                      SizedBox(height: 8),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SvgPicture.asset(AppIcons.dotIconForFamily),
+                          SizedBox(width: 5),
+                          Text('Description: ', style: TextStyle(fontWeight: FontWeight.w600)),
+                          Expanded(
+                            child: Text(
+                              'The point of using Lorem Ipsum is that it has a more or less normal',
+                            ),
                           ),
-                        ),
+                        ],
                       ),
                     ],
-                  ),
+                  )
                 ],
               ),
               Divider(thickness: 1,color: Colors.grey),
@@ -884,7 +850,6 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                     'Has already contribute or verification by (10) Users',
                     style: TextStyle(
                       fontSize: 12.sp,
-                      color: Colors.grey.shade600,
                     ),
                   ),
                   SizedBox(height: 10.h),
@@ -894,28 +859,28 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                         offset: Offset(0, 0),
                         child: CircleAvatar(
                           radius: 12,
-                          backgroundColor: Colors.purple,
+                          backgroundColor: AppColors.colorE5CCFF,
                         ),
                       ),
                       Transform.translate(
                         offset: Offset(-4, 0),
                         child: CircleAvatar(
                           radius: 12,
-                          backgroundColor: Colors.blue,
+                          backgroundColor:AppColors.colorCCFFE6,
                         ),
                       ),
                       Transform.translate(
                         offset: Offset(-6, 0),
                         child: CircleAvatar(
                           radius: 12,
-                          backgroundColor: Colors.orange,
+                          backgroundColor: AppColors.colorFFF2CC,
                         ),
                       ),
                       Transform.translate(
                         offset: Offset(-8, 0),
                         child: CircleAvatar(
                           radius: 12,
-                          backgroundColor: Colors.brown,
+                          backgroundColor: AppColors.colorD9A951,
                         ),
                       ),
                     ],
