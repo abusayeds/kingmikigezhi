@@ -468,6 +468,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
                         ),
                       ),
                     ),
+                    SizedBox(height: 12.h),
                     CustomText(
                       text: 'Description',
                       fontsize: 16,

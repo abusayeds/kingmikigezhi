@@ -268,33 +268,53 @@ class _StepFiveFormState extends State<StepFiveForm> {
                 ),
               ),
             ),
-            SizedBox(height: 10.h),
-            // Shared community checkbox
+            SizedBox(height: 16.h),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                CheckboxListTile(
-                  value: isSharedCommunityChecked,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      isSharedCommunityChecked = value ?? false;
-                    });
-                  },
-                  title: Text("This is a shared community. All events are public",style: AppStyles.h5()),
-                  activeColor: AppColors.primaryColor,
-                  controlAffinity: ListTileControlAffinity.leading,
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.blueGrey,
+                        shape: BoxShape.rectangle,
+                        borderRadius: BorderRadius.circular(4.r),
+                      ),
+                      padding: EdgeInsets.all(4),
+                      child: Icon(
+                        Icons.check,
+                        color: Colors.white,
+                        size: 16.sp,
+                      ),
+                    ),
+                    SizedBox(width: 10.w),
+                    Expanded(
+                      child: Text(
+                        'This is a shared community. All events are public',
+                        style: AppStyles.h5()
+                      ),
+                    ),
+                  ],
                 ),
-                CheckboxListTile(
-                  value: isUserAgreementChecked,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      isUserAgreementChecked = value ?? false;
-                    });
-                  },
-                  title: Text("User agreement",style: AppStyles.h5()),
-                  activeColor: AppColors.primaryColor,
-                  controlAffinity: ListTileControlAffinity.leading,
+                SizedBox(height: 16.h),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 20.w,
+                      height: 20.h,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.blueGrey),
+                        borderRadius: BorderRadius.circular(4.r),
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    Text(
+                      'User agreement',
+                      style: AppStyles.h5()
+                    ),
+                  ],
                 ),
               ],
             ),

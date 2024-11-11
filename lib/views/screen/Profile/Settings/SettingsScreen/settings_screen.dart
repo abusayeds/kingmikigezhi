@@ -1,9 +1,11 @@
 
 import 'package:event_sharing/utils/app_colors.dart';
+import 'package:event_sharing/utils/app_icons.dart';
 import 'package:event_sharing/utils/app_strings.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 
@@ -88,6 +90,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     //focusColor:  AppColors.primaryColor,
                     iconDisabledColor: AppColors.primaryColor,
                     iconEnabledColor: AppColors.primaryColor,
+                    icon: SvgPicture.asset(AppIcons.downArrowIcon,color: AppColors.primaryColor),
                     isExpanded: true,
                     value: _selectedlanguage,
                     hint: CustomText(text: 'Select language', fontsize: 14.sp),
@@ -140,6 +143,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     //focusColor:  AppColors.primaryColor,
                     iconDisabledColor: AppColors.primaryColor,
                     iconEnabledColor: AppColors.primaryColor,
+                    icon: SvgPicture.asset(AppIcons.downArrowIcon,color: AppColors.primaryColor),
                     isExpanded: true,
                     value: _selectedlanguage,
                     hint: CustomText(text: 'Select Date Time', fontsize: 14.sp),
@@ -192,6 +196,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     //focusColor:  AppColors.primaryColor,
                     iconDisabledColor: AppColors.primaryColor,
                     iconEnabledColor: AppColors.primaryColor,
+                    icon: SvgPicture.asset(AppIcons.downArrowIcon,color: AppColors.primaryColor),
                     isExpanded: true,
                     value: _selectedTimeZone,
                     hint: CustomText(text: 'Select Time Zone', fontsize: 14.sp),
@@ -244,6 +249,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     //focusColor:  AppColors.primaryColor,
                     iconDisabledColor: AppColors.primaryColor,
                     iconEnabledColor: AppColors.primaryColor,
+                    icon: SvgPicture.asset(AppIcons.downArrowIcon,color: AppColors.primaryColor),
                     isExpanded: true,
                     value: _selectedCurrency,
                     hint: CustomText(text: 'Select Currency', fontsize: 14.sp),
@@ -273,32 +279,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 decoration: InputDecoration(
                   fillColor: AppColors.fillColor,
                   filled: true,
-                  // labelText: 'Select',
                   border: OutlineInputBorder(
-                    borderSide:
-                    BorderSide(color: AppColors.primaryColor, width: 1.w),
+                    borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderSide:
-                    BorderSide(color: AppColors.primaryColor, width: 1.w),
+                    borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide:
-                    BorderSide(color: AppColors.primaryColor, width: 1.w),
+                    borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                   contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
                 ),
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
-                    //focusColor:  AppColors.primaryColor,
-                    iconDisabledColor: AppColors.primaryColor,
-                    iconEnabledColor: AppColors.primaryColor,
+                    icon: SvgPicture.asset(AppIcons.downArrowIcon,color: AppColors.primaryColor),
                     isExpanded: true,
                     value: _selectedNotification,
-                    hint: CustomText(text: 'Select Notifications', fontsize: 14.sp),
+                    hint: CustomText(
+                      text: 'Select Notifications',
+                      fontsize: 14.sp,
+                    ),
                     items: _notification.map((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
@@ -313,6 +316,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                 ),
               ),
+
               SizedBox(height: 16.h),
               Divider(thickness: .5,color: Colors.grey),
               Column(
@@ -336,6 +340,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             color: AppColors.fillColor
                           ),
                           child: DropdownButton<String>(
+                            icon: SvgPicture.asset(AppIcons.downArrowIcon,color: AppColors.primaryColor),
                             isExpanded: true,
                             underline: SizedBox(),
                             hint: Text('Email'),
@@ -360,6 +365,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             color: AppColors.fillColor
                           ),
                           child: DropdownButton<String>(
+                            icon: SvgPicture.asset(AppIcons.downArrowIcon,color: AppColors.primaryColor),
                             isExpanded: true,
                             underline: SizedBox(),
                             hint: Text('SMS'),
@@ -394,6 +400,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               color: AppColors.fillColor
                           ),
                           child: DropdownButton<String>(
+                            icon: SvgPicture.asset(AppIcons.downArrowIcon,color: AppColors.primaryColor),
                             isExpanded: true,
                             underline: SizedBox(),
                             hint: Text('Email'),
@@ -419,6 +426,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           ),
                           child: DropdownButton<String>(
                             isExpanded: true,
+                            icon: SvgPicture.asset(AppIcons.downArrowIcon,color: AppColors.primaryColor),
                             underline: SizedBox(),
                             hint: Text('SMS'),
                             value: _selectedOption,
