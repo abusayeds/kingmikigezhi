@@ -540,6 +540,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       ],
                     ),
                   ),
+
                   SizedBox(height: 10),
                   CustomButton(
                     color: AppColors.buttonColor,
