@@ -24,6 +24,7 @@ class AppColors{
   static Color redColor = const Color(0xFFFF6161);
   static Color notificationBGcolor = const Color(0xFFF4F4F4);
   static Color colorEDF2F4 = const Color(0xFFEDF2F4);
+  static Color color414141 = const Color(0xFF414141);
 
 
   static Color colorCDBDB6 = const Color(0xFFCDBDB6);
@@ -33,6 +34,8 @@ class AppColors{
   static Color colorCCFFE6 = const Color(0xFFCCFFE6);
   static Color colorFFF2CC = const Color(0xFFFFF2CC);
   static Color colorD9A951 = const Color(0xFFD9A951);
+  static Color color87A9B8 = const Color(0xFF87A9B8);
+  static Color color8C8C8C = const Color(0xFF8C8C8C);
 
 
   static BoxShadow shadow=BoxShadow(
