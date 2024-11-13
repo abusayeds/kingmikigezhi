@@ -2,6 +2,7 @@
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_icons.dart';
 import 'package:event_sharing/utils/app_strings.dart';
+import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -93,7 +94,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     icon: SvgPicture.asset(AppIcons.downArrowIcon,color: AppColors.primaryColor),
                     isExpanded: true,
                     value: _selectedlanguage,
-                    hint: CustomText(text: 'Select language', fontsize: 14.sp),
+                    hint: CustomText(text: 'Select language',fontsize: 14.sp,color: AppColors.color666666),
                     items: _language.map((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
@@ -146,7 +147,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     icon: SvgPicture.asset(AppIcons.downArrowIcon,color: AppColors.primaryColor),
                     isExpanded: true,
                     value: _selectedlanguage,
-                    hint: CustomText(text: 'Select Date Time', fontsize: 14.sp),
+                    hint: CustomText(text: 'Select Date Time', fontsize: 14.sp,color: AppColors.color666666),
                     items: _language.map((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
@@ -199,7 +200,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     icon: SvgPicture.asset(AppIcons.downArrowIcon,color: AppColors.primaryColor),
                     isExpanded: true,
                     value: _selectedTimeZone,
-                    hint: CustomText(text: 'Select Time Zone', fontsize: 14.sp),
+                    hint: CustomText(text: 'Select Time Zone', fontsize: 14.sp,color: AppColors.color666666),
                     items: _timeZone.map((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
@@ -252,7 +253,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     icon: SvgPicture.asset(AppIcons.downArrowIcon,color: AppColors.primaryColor),
                     isExpanded: true,
                     value: _selectedCurrency,
-                    hint: CustomText(text: 'Select Currency', fontsize: 14.sp),
+                    hint: CustomText(text: 'Select Currency', fontsize: 14.sp, color: AppColors.color666666 ,
+                    ),
                     items: _currency.map((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
@@ -268,6 +270,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ),
               SizedBox(height: 16.h),
+              Divider(thickness: .5,color: AppColors.color808080),
               //=================================> Notifications Section <=======================
               CustomText(
                 text: 'Notifications',
@@ -300,6 +303,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     value: _selectedNotification,
                     hint: CustomText(
                       text: 'Select Notifications',
+                      color: AppColors.color666666 ,
                       fontsize: 14.sp,
                     ),
                     items: _notification.map((String value) {
@@ -316,138 +320,200 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                 ),
               ),
-
               SizedBox(height: 16.h),
-              Divider(thickness: .5,color: Colors.grey),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Event Share Section
-                  Text(
-                    'Event Share',
-                    style: TextStyle(fontSize: 18.sp),
-                  ),
-                  SizedBox(height: 8),
+                  Text('Event Share', style: AppStyles.h3()),
+                  SizedBox(height: 8.h),
                   Row(
                     children: [
                       Expanded(
-                        child: Container(
-                          height: 50.h,
-                          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.blueAccent),
-                            borderRadius: BorderRadius.circular(8),
-                            color: AppColors.fillColor
-                          ),
-                          child: DropdownButton<String>(
-                            icon: SvgPicture.asset(AppIcons.downArrowIcon,color: AppColors.primaryColor),
-                            isExpanded: true,
-                            underline: SizedBox(),
-                            hint: Text('Email'),
-                            items: <String>['Option 1', 'Option 2', 'Option 3'].map((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                            onChanged: (String? newValue) {},
-                          ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Email',
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.blackColor,
+                              ),
+                            ),
+                            SizedBox(height: 8.h),
+                            Container(
+                              height: 52.h,
+                              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                              decoration: BoxDecoration(
+                                border: Border.all(color:AppColors.borderColor),
+                                borderRadius: BorderRadius.circular(8),
+                                color: AppColors.fillColor,
+                              ),
+                              child: DropdownButton<String>(
+                                icon: SvgPicture.asset(
+                                  AppIcons.downArrowIcon,
+                                  color: AppColors.primaryColor,
+                                ),
+                                isExpanded: true,
+                                underline: SizedBox(),
+                                hint: Text('', style: TextStyle(color: AppColors.color414141, fontSize: 14.sp),),
+                                items: <String>['Option 1', 'Option 2', 'Option 3']
+                                    .map((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                                onChanged: (String? newValue) {},
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       SizedBox(width: 16),
                       Expanded(
-                        child: Container(
-                          height: 50.h,
-                          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.blueAccent),
-                            borderRadius: BorderRadius.circular(8),
-                            color: AppColors.fillColor
-                          ),
-                          child: DropdownButton<String>(
-                            icon: SvgPicture.asset(AppIcons.downArrowIcon,color: AppColors.primaryColor),
-                            isExpanded: true,
-                            underline: SizedBox(),
-                            hint: Text('SMS'),
-                            items: <String>['Option 1', 'Option 2', 'Option 3'].map((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                            onChanged: (String? newValue) {},
-                          ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'SMS',
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.blackColor,
+                              ),
+                            ),
+                            SizedBox(height: 8.h),
+                            Container(
+                              height: 52.h,
+                              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: AppColors.borderColor),
+                                borderRadius: BorderRadius.circular(8),
+                                color: AppColors.fillColor,
+                              ),
+                              child: DropdownButton<String>(
+                                icon: SvgPicture.asset(
+                                  AppIcons.downArrowIcon,
+                                  color: AppColors.primaryColor,
+                                ),
+                                isExpanded: true,
+                                underline: SizedBox(),
+                                hint: Text('', style: TextStyle(color: AppColors.color414141, fontSize: 14.sp),),
+                                items: <String>['Option 1', 'Option 2', 'Option 3']
+                                    .map((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                                onChanged: (String? newValue) {},
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 24),
+                  SizedBox(height: 8.h),
                   // Applied Event Update Section
-                  Text(
-                    'Applied Event Update',
-                    style: TextStyle(fontSize: 18.sp),
-                  ),
-                  SizedBox(height: 8),
+                  Text('Applied Event Update',  style: AppStyles.h3()),
+                  SizedBox(height: 8.h),
                   Row(
                     children: [
                       Expanded(
-                        child: Container(
-                          height: 50.h,
-                          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.blueAccent),
-                            borderRadius: BorderRadius.circular(8),
-                              color: AppColors.fillColor
-                          ),
-                          child: DropdownButton<String>(
-                            icon: SvgPicture.asset(AppIcons.downArrowIcon,color: AppColors.primaryColor),
-                            isExpanded: true,
-                            underline: SizedBox(),
-                            hint: Text('Email'),
-                            items: <String>['Option 1', 'Option 2', 'Option 3'].map((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                            onChanged: (String? newValue) {},
-                          ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Email',
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.blackColor,
+                              ),
+                            ),
+                            SizedBox(height: 8.h),
+                            Container(
+                              height: 52.h,
+                              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                              decoration: BoxDecoration(
+                                border: Border.all(color:AppColors.borderColor),
+                                borderRadius: BorderRadius.circular(8),
+                                color: AppColors.fillColor,
+                              ),
+                              child: DropdownButton<String>(
+                                icon: SvgPicture.asset(
+                                  AppIcons.downArrowIcon,
+                                  color: AppColors.primaryColor,
+                                ),
+                                isExpanded: true,
+                                underline: SizedBox(),
+                                hint: Text('', style: TextStyle(color: AppColors.color414141, fontSize: 14.sp),),
+                                items: <String>['Option 1', 'Option 2', 'Option 3']
+                                    .map((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                                onChanged: (String? newValue) {},
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       SizedBox(width: 16),
                       Expanded(
-                        child: Container(
-                          height: 50.h,
-                          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.blueAccent),
-                            borderRadius: BorderRadius.circular(8),
-                            color: AppColors.fillColor
-                          ),
-                          child: DropdownButton<String>(
-                            isExpanded: true,
-                            icon: SvgPicture.asset(AppIcons.downArrowIcon,color: AppColors.primaryColor),
-                            underline: SizedBox(),
-                            hint: Text('SMS'),
-                            value: _selectedOption,
-                            items: _updateOption.map((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value,style: TextStyle(color: AppColors.greyColor),),
-                              );
-                            }).toList(),
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                _selectedOption = newValue;
-                              });
-                            },
-                          ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'SMS',
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.blackColor,
+                              ),
+                            ),
+                            SizedBox(height: 8.h),
+                            Container(
+                              height: 52.h,
+                              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: AppColors.borderColor),
+                                borderRadius: BorderRadius.circular(8),
+                                color: AppColors.fillColor,
+                              ),
+                              child: DropdownButton<String>(
+                                icon: SvgPicture.asset(
+                                  AppIcons.downArrowIcon,
+                                  color: AppColors.primaryColor,
+                                ),
+                                isExpanded: true,
+                                underline: SizedBox(),
+                                hint: Text('', style: TextStyle(color: AppColors.color414141, fontSize: 14.sp),),
+                                items: <String>['Option 1', 'Option 2', 'Option 3']
+                                    .map((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                                onChanged: (String? newValue) {},
+                              ),
+                            ),
+                          ],
                         ),
-                      )
-
+                      ),
                     ],
                   ),
-
+                  SizedBox(height: 8.h),
                 ],
               ),
               SizedBox(height: 16.h),
