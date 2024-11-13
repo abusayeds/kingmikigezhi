@@ -51,28 +51,31 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
             ),
             SizedBox(height: 16.h),
             //========================> Search bar <=========================
-            Container(
-              height: 50.h,
-              decoration: BoxDecoration(
-                color: AppColors.colorEDF2F4,
-                borderRadius: BorderRadius.all(Radius.circular(8.r)),
-                border: Border.all(color:AppColors.primaryColor, width: 1.0),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Search...',
-                    hintStyle: TextStyle(color: AppColors.greyColor),
-                    border: InputBorder.none,
-                    suffixIcon: Icon(Icons.search,color: AppColors.primaryColor),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                height: 50,
+                decoration: BoxDecoration(
+                  color: AppColors.colorEDF2F4,
+                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                  border: Border.all(color:AppColors.primaryColor, width: 1.0),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: 'Search Member',
+                      hintStyle: TextStyle(color: AppColors.greyColor),
+                      border: InputBorder.none,
+                      suffixIcon: Icon(Icons.search,color: AppColors.primaryColor),
+                    ),
                   ),
                 ),
               ),
             ),
             // Family members list
             ListView.builder(
-              shrinkWrap: true, // Important to fit inside SingleChildScrollView
+              shrinkWrap: true,
              // physics: NeverScrollableScrollPhysics(), // Disable inner scroll
               itemCount: familyMembers.length,
               itemBuilder: (context, index) {
@@ -88,7 +91,7 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                       ),
                       alignment: Alignment.centerRight,
                       padding: EdgeInsets.symmetric(horizontal: 20),
-                      child: Icon(Icons.delete, color: Colors.white),
+                      child: SvgPicture.asset(AppIcons.deleteIcon),
                     ),
                     direction: DismissDirection.endToStart,
                     confirmDismiss: (direction) async {
@@ -96,36 +99,82 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                       shouldRemove = result ?? false;
                       return shouldRemove;
                     },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: AppColors.colorEDF2F4,
-                        borderRadius: BorderRadius.all(Radius.circular(8)),
-                        border: Border.all(color: Colors.black12, width: 1.0),
-                      ),
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          backgroundImage: AssetImage(member['image']!),
-                          radius: 35.r,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(),
+                      child: Dismissible(
+                        key: Key(member['name']!),
+                        background: Container(
+                          decoration: BoxDecoration(
+                            color: AppColors.colorEDF2F4,
+                            borderRadius: BorderRadius.all(Radius.circular(8)),
+                            border: Border.all(color: Colors.black12, width: 1.0),
+                          ),
+                          alignment: Alignment.centerRight,
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          child: SvgPicture.asset(AppIcons.deleteIcon),
                         ),
-                        title: Text(member['name']!,
-                            style: TextStyle(fontWeight: FontWeight.bold)),
-                        subtitle: Row(
-                          children: [
-                            SvgPicture.asset(AppIcons.dotIconForFamily),
-                            SizedBox(width: 4.w),
-                            Text(member['relation']!),
-                          ],
-                        ),
-                        trailing: InkWell(
-                          onTap: () {
-                            _showViewModeBottomSheet(context);
-                          },
-                          child: Icon(Icons.more_horiz, color: AppColors.greyColor),
+                        direction: DismissDirection.endToStart,
+                        confirmDismiss: (direction) async {
+                          final bool? result = await _showCustomBottomSheet(context, member['name']!);
+                          shouldRemove = result ?? false;
+                          return shouldRemove;
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: AppColors.colorEDF2F4,
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: Colors.black12, width: 1.0),
+                          ),
+                          padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                          child: Stack(
+                            children: [
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  CircleAvatar(
+                                    backgroundImage: AssetImage(member['image']!),
+                                    radius: 30.r,
+                                  ),
+                                  SizedBox(width: 12.w),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          member['name']!,
+                                          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16.sp),
+                                        ),
+                                        SizedBox(height: 4.h),
+                                        Row(
+                                          children: [
+                                            SvgPicture.asset(AppIcons.dotIconForFamily, width: 5.w, height: 5.h),
+                                            SizedBox(width: 4.w),
+                                            Text(
+                                              member['relation']!,
+                                              style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12.sp),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Positioned(
+                                bottom: 0,
+                                right: 0,
+                                child: InkWell(
+                                  onTap: () {
+                                    _showViewModeBottomSheet(context);
+                                  },
+                                  child: Icon(Icons.more_horiz, color: AppColors.color8C8C8C, size: 20.sp),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-
-
                   )
                 );
               },
