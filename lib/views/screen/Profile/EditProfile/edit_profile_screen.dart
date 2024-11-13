@@ -549,7 +549,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     text: "Update Profile",
                     textColor:Colors.white,
                   ),
-
                 ],
               ),
             ),
