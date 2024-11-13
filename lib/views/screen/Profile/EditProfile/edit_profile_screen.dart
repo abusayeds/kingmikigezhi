@@ -558,7 +558,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
     );
   }
-
   _prefixIcon(String icon) {
     return Padding(
       padding: EdgeInsets.only(left: 8.w, right: 16.w),
