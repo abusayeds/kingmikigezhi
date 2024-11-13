@@ -1,4 +1,5 @@
 import 'package:event_sharing/utils/app_icons.dart';
+import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/custom_button.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:event_sharing/views/base/custom_text_field.dart';
@@ -56,15 +57,12 @@ class _StepFourFormState extends State<StepFourForm> {
                     showRepeatPopup(context);
                   },
                   child: InputDecorator(
-                    decoration: InputDecoration.collapsed(hintText: null), // Hide underline and make it look like a button
+                    decoration: InputDecoration.collapsed(hintText: null),
                     child: Center( // Center the content
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          CustomText(
-                            text: 'Function Type',
-                            fontsize: 16.sp,
-                          ),
+                          Text('Function Type', style: AppStyles.h4(color: AppColors.color414141)),
                           SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
                           ),
                         ],
@@ -73,28 +71,29 @@ class _StepFourFormState extends State<StepFourForm> {
                   ),
                 ),
               ),
-
-              SizedBox(height: 200.h),
-              Row(
-                children: [
-                  Expanded(
-                    child: CustomButton(
-                      onTap: () {},
-                      text: "Back",
-                      color: AppColors.fillColor,
-                      textColor: Colors.black,
+              SizedBox(height: 20.h),
+              Align(
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: CustomButton(
+                        onTap: () {},
+                        text: "Back",
+                        color: AppColors.fillColor,
+                        textColor: Colors.black,
+                      ),
                     ),
-                  ),
-                  SizedBox(width: 10.w),
-                  Expanded(
-                    child: CustomButton(
-                      onTap: () {},
-                      text: "Next",
-                      textColor: Colors.white,
-                      color: AppColors.buttonColor,
+                    SizedBox(width: 10.w),
+                    Expanded(
+                      child: CustomButton(
+                        onTap: () {},
+                        text: "Next",
+                        textColor: Colors.white,
+                        color: AppColors.buttonColor,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),
@@ -204,9 +203,18 @@ class _StepFourFormState extends State<StepFourForm> {
                     ],
                   ),
                   // Additional text
-                  Text(
-                    "Every Jan 6. Choose an end date",
-                    style: TextStyle(color: Colors.blue, fontSize: 14.sp),
+                  Row(
+                    children: [
+                      Text(
+                        "Every Jan 6 ",
+                        style: TextStyle(color: AppColors.blackColor, fontSize: 14.sp),
+                      ),
+                      Text(
+                        "Choose an end date",
+                        style: TextStyle(color: Colors.blue, fontSize: 14.sp),
+                        textAlign: TextAlign.justify,
+                      ),
+                    ],
                   ),
                   SizedBox(height: 20.h),
                   // Buttons
@@ -218,8 +226,8 @@ class _StepFourFormState extends State<StepFourForm> {
                             Get.back();
                           },
                           text: "Save",
-                          color: AppColors.fillColor,
-                          textColor: Colors.black,
+                          color: AppColors.buttonColor,
+                          textColor:AppColors.textColor,
                         ),
                       ),
                       SizedBox(width: 10.w),
@@ -227,8 +235,9 @@ class _StepFourFormState extends State<StepFourForm> {
                         child: CustomButton(
                           onTap: () {},
                           text: "Discard",
-                          textColor: Colors.white,
-                          color: AppColors.buttonColor,
+                          textColor: AppColors.blackColor,
+                          color: AppColors.fillColor,
+
                         ),
                       ),
                     ],
