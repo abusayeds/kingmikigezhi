@@ -103,129 +103,133 @@ class _CategoriesSearchAppliedScreenState
                     onTap: () {
                       Get.toNamed(AppRoutes.eventDetailsScreen);
                     },
-                    child: Card(
-                      margin: EdgeInsets.symmetric(vertical: 8.h),
-                      color: const Color(0xffedf2f4),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.r),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 16.w, vertical: 12.h),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            //=====================> Event Image Section <=========================
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(10.r),
-                              child: Image.asset(
-                                event['imageUrl']!,
-                                height: 75.0.h,
-                                width: 75.0.w,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            SizedBox(width: 16.w),
-                            //=====================> Event Details Section <=========================
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  CustomText(
-                                    text: event['title']!,
-                                    fontsize: 18.sp,
-                                    fontWeight: FontWeight.bold,
+                    child: Stack(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 8.h),
+                          decoration: BoxDecoration(
+                            color: const Color(0xffedf2f4),
+                            border: Border.all(color: AppColors.colorC8D7DE, width: 1.w),
+                            borderRadius: BorderRadius.circular(15.r),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 12.h),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                //=====================> Event Image Section <=========================
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(10.r),
+                                  child: Image.asset(
+                                    event['imageUrl']!,
+                                    height: 75.0.h,
+                                    width: 75.0.w,
+                                    fit: BoxFit.cover,
                                   ),
-                                  SizedBox(height: 8.h),
-                                  //=====================> Event Info Section <=========================
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                ),
+                                SizedBox(width: 12.w),
+                                //=====================> Event Details Section <=========================
+                                Expanded(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              SvgPicture.asset(AppIcons.dotIconForFamily),
-                                               SizedBox(width: 4.w),
-                                               Text(
-                                                'Onsite Event',
-                                                style: TextStyle(fontSize: 8.sp),
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              SvgPicture.asset(AppIcons.dotIconForFamily),
-                                               SizedBox(width: 4.w),
-                                               Text(
-                                                'Dhaka Bangladesh',
-                                                style: TextStyle(fontSize: 8.sp),
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              SvgPicture.asset(AppIcons.dotIconForFamily),
-                                               SizedBox(width: 4.w),
-                                               Text(
-                                                'History: 2023-1st winner',
-                                                style: TextStyle(fontSize: 8.sp),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
+                                      CustomText(
+                                        text: event['title']!,
+                                        fontsize: 18.sp,
+                                        fontWeight: FontWeight.bold,
                                       ),
-                                      Column(
+                                      //=====================> Event Info Section <=========================
+                                      Row(
                                         crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Row(
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
-                                              SvgPicture.asset(AppIcons.dotIconForFamily),
-                                               SizedBox(width: 4.w),
-                                               Text('Cost : \$100', style: TextStyle(fontSize: 8.sp),
+                                              Padding(
+                                                padding: const EdgeInsets.symmetric(vertical: 3.0),
+                                                child: Row(
+                                                  children: [
+                                                    SvgPicture.asset(AppIcons.dotIconForFamily),
+                                                    SizedBox(width: 4.w),
+                                                    Text('Onsite Event', style: TextStyle(fontSize: 8.sp, color: AppColors.color414141)),
+                                                  ],
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.symmetric(vertical: 3.0),
+                                                child: Row(
+                                                  children: [
+                                                    SvgPicture.asset(AppIcons.dotIconForFamily),
+                                                    SizedBox(width: 4.w),
+                                                    Text('Dhaka Bangladesh', style: TextStyle(fontSize: 8.sp, color: AppColors.color414141)),
+                                                  ],
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.symmetric(vertical: 3.0),
+                                                child: Row(
+                                                  children: [
+                                                    SvgPicture.asset(AppIcons.dotIconForFamily),
+                                                    SizedBox(width: 4.w),
+                                                    Text('History: 2023-1st winner', style: TextStyle(fontSize: 8.sp, color: AppColors.color808080)),
+                                                  ],
+                                                ),
                                               ),
                                             ],
                                           ),
-                                          Row(
+                                          Column(
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
-                                              SvgPicture.asset(AppIcons.dotIconForFamily),
-                                               SizedBox(width: 4.w),
-                                               Text('Deadline: 1-6-2025', style: TextStyle(fontSize: 8.sp),
+                                              Padding(
+                                                padding: const EdgeInsets.symmetric(vertical: 3.0),
+                                                child: Row(
+                                                  children: [
+                                                    SvgPicture.asset(AppIcons.dotIconForFamily),
+                                                    SizedBox(width: 4.w),
+                                                    Text('Cost: \$100', style: TextStyle(fontSize: 8.sp, color: AppColors.color414141)),
+                                                  ],
+                                                ),
                                               ),
+                                              Padding(
+                                                padding: const EdgeInsets.symmetric(vertical: 3.0),
+                                                child: Row(
+                                                  children: [
+                                                    SvgPicture.asset(AppIcons.dotIconForFamily),
+                                                    SizedBox(width: 4.w),
+                                                    Text('Deadline: 1-6-2025', style: TextStyle(fontSize: 8.sp, color: AppColors.color414141)),
+                                                  ],
+                                                ),
+                                              ),
+
                                             ],
                                           ),
                                         ],
                                       ),
                                     ],
                                   ),
-                                  // Aligning the More options icon to the right
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: const [
-                                      Icon(
-                                        Icons.more_horiz,
-                                        color: Colors.grey,
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
+                                ),
+                                //=====================> Share Icon <=========================
+                                SvgPicture.asset(
+                                  AppIcons.share,
+                                  width: 16.w,
+                                  height: 16.h,
+                                  color: Colors.blueGrey,
+                                ),
+                              ],
                             ),
-                            //=====================> Share Icon <=========================
-                            Padding(
-                              padding: EdgeInsets.only(top: 8.h),
-                              child: SvgPicture.asset(
-                                AppIcons.share,
-                                width: 16.w,
-                                height: 16.h,
-                                color: Colors.blueGrey,
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
+                        //=====================> Positioned More Icon at Top Right <=========================
+                        Positioned(
+                          bottom: 10,
+                          right: 10,
+                          child: Icon(Icons.more_horiz, color:AppColors.greyColor),
+                        ),
+                      ],
+                    )
                   );
                 },
               ),
