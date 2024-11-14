@@ -82,7 +82,7 @@ class _AppliedSearchScreenState extends State<AppliedSearchScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Total Event :',style: AppStyles.h4(fontWeight: FontWeight.w600)),
+                        Text('Total Event :',style: AppStyles.fontSize16(fontWeight: FontWeight.w600)),
                         Text('500'),
                       ],
                     ),
@@ -91,7 +91,7 @@ class _AppliedSearchScreenState extends State<AppliedSearchScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Total Cost :',style: AppStyles.h4(fontWeight: FontWeight.w600)),
+                        Text('Total Cost :',style: AppStyles.fontSize16(fontWeight: FontWeight.w600)),
                         Text('200'),
                       ],
                     ),

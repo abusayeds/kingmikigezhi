@@ -325,7 +325,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Event Share Section
-                  Text('Event Share', style: AppStyles.h3()),
+                  Text('Event Share', style: AppStyles.fontSize18()),
                   SizedBox(height: 8.h),
                   Row(
                     children: [
@@ -420,7 +420,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                   SizedBox(height: 8.h),
                   // Applied Event Update Section
-                  Text('Applied Event Update',  style: AppStyles.h3()),
+                  Text('Applied Event Update',  style: AppStyles.fontSize18()),
                   SizedBox(height: 8.h),
                   Row(
                     children: [

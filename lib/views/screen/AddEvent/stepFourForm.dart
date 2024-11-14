@@ -62,7 +62,7 @@ class _StepFourFormState extends State<StepFourForm> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Function Type', style: AppStyles.h4(color: AppColors.color414141)),
+                          Text('Function Type', style: AppStyles.fontSize16(color: AppColors.color414141)),
                           SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
                           ),
                         ],

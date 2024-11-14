@@ -161,7 +161,7 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                                 ],
                               ),
                               Positioned(
-                                bottom: 0,
+                                bottom: -5,
                                 right: 0,
                                 child: InkWell(
                                   onTap: () {
@@ -209,9 +209,9 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
               SizedBox(height: 20.h),
               Divider(thickness: 1, color: AppColors.greyColor),
               SizedBox(height: 20.h),
-              Text("Delete", style: AppStyles.h2(color: AppColors.primaryColor, fontWeight: FontWeight.w600)),
+              Text("Delete", style: AppStyles.fontSize20(color: AppColors.primaryColor, fontWeight: FontWeight.w600)),
               Text("Are you sure to delete this?",
-                style: AppStyles.h3(color: AppColors.borderColor),
+                style: AppStyles.fontSize18(color: AppColors.borderColor),
               ),
               SizedBox(height: 20.h),
               Row(
@@ -232,7 +232,7 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                         ),
                       ),
                       child: Text('Cancel',
-                        style: AppStyles.h4(color: AppColors.primaryColor),
+                        style: AppStyles.fontSize16(color: AppColors.primaryColor),
                       ),
                     ),
                   ),
@@ -250,7 +250,7 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                         ),
                       ),
                       child: Text('Yes',
-                        style: AppStyles.h4(color: AppColors.backgroundColor),
+                        style: AppStyles.fontSize16(color: AppColors.backgroundColor),
                       ),
                     ),
                   ),
@@ -291,7 +291,7 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
               SizedBox(height: 20.h),
               Text(
                 "What you want?",
-                style: AppStyles.h3(color: AppColors.borderColor),
+                style: AppStyles.fontSize18(color: AppColors.borderColor),
               ),
               SizedBox(height: 20.h),
               Row(
@@ -314,7 +314,7 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                         children: [
                           SvgPicture.asset(AppIcons.eyeIcon, width: 24.w,height:24.h,color: Colors.white,),
                           SizedBox(width: 4.w),
-                          Text('View Profile', style: AppStyles.h5(color: AppColors.backgroundColor),),
+                          Text('View Profile', style: AppStyles.fontSize14(color: AppColors.backgroundColor),),
                         ],
                       ),
                     ),
@@ -335,7 +335,7 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                         children: [
                           SvgPicture.asset(AppIcons.delete, width: 24.w,height:24.h),
                           SizedBox(width: 4.w),
-                          Text('Delete Profile', style: AppStyles.h5(color: AppColors.backgroundColor)),
+                          Text('Delete Profile', style: AppStyles.fontSize14(color: AppColors.backgroundColor)),
                         ],
                       ),
                     ),

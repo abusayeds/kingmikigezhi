@@ -55,7 +55,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
             //registration date
             SizedBox(height: 12.h),
            Text('Session',
-                style: AppStyles.h4(fontWeight: FontWeight.w500)),
+                style: AppStyles.fontSize16(fontWeight: FontWeight.w500)),
             SizedBox(height: 12.h),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -70,7 +70,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
                   dropdownColor: AppColors.fillColor,
                   menuWidth: 240.w,
                   borderRadius: BorderRadius.circular(8.r),
-                  hint: Text("Type Session", style: AppStyles.h5(color: AppColors.color414141)),
+                  hint: Text("Type Session", style: AppStyles.fontSize14(color: AppColors.color414141)),
                   icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
                   ),
                   isExpanded: true,
@@ -95,7 +95,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
             Padding(
               padding: const EdgeInsets.all(4),
               child: Text('Record',
-                  style: AppStyles.h4(fontWeight: FontWeight.w500)),
+                  style: AppStyles.fontSize16(fontWeight: FontWeight.w500)),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -114,7 +114,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
                         dropdownColor: AppColors.fillColor,
                         menuWidth: 240.w,
                         borderRadius: BorderRadius.circular(8.r),
-                        hint: Text("Type Score",style: AppStyles.h5(color: AppColors.color414141)),
+                        hint: Text("Type Score",style: AppStyles.fontSize14(color: AppColors.color414141)),
                         icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
                         ),
                         isExpanded: true,
@@ -151,7 +151,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
             Padding(
               padding: const EdgeInsets.all(4),
               child: Text('History',
-                  style: AppStyles.h4(fontWeight: FontWeight.w500)),
+                  style: AppStyles.fontSize16(fontWeight: FontWeight.w500)),
             ),
             Container(
               decoration: BoxDecoration(
@@ -291,7 +291,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
                     Expanded(
                       child: Text(
                         'This is a shared community. All events are public',
-                        style: AppStyles.h5(color: AppColors.hintColor)
+                        style: AppStyles.fontSize14(color: AppColors.hintColor)
                       ),
                     ),
                   ],
@@ -311,7 +311,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
                     SizedBox(width: 10),
                     Text(
                       'User agreement',
-                        style: AppStyles.h5(color: AppColors.hintColor)
+                        style: AppStyles.fontSize14(color: AppColors.hintColor)
                     ),
                   ],
                 ),
