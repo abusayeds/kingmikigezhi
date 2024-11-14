@@ -42,7 +42,7 @@ class _AddedConneectionScreenState extends State<AddedConneectionScreen> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding:  EdgeInsets.symmetric(horizontal: 8.w,vertical: 8.h),
             child: CustomTextField(
               controller: _searchController,
               contenpaddingHorizontal: 12.w,
@@ -61,17 +61,16 @@ class _AddedConneectionScreenState extends State<AddedConneectionScreen> {
           ),
           Expanded(
             child: ListView.builder(
-              padding: const EdgeInsets.all(8.0),
               itemCount: invitations.length,
               itemBuilder: (context, index) {
                 final invitation = invitations[index];
                 return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  padding:  EdgeInsets.symmetric(vertical: 8.h),
                   child: Container(
-                    padding: EdgeInsets.all(12.0),
+                    padding: EdgeInsets.all(12..r),
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(10.r),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -79,18 +78,15 @@ class _AddedConneectionScreenState extends State<AddedConneectionScreen> {
                         Row(
                           children: [
                             CircleAvatar(
-                              radius: 45,
+                              radius: 45.r,
                               backgroundColor: Colors.grey.shade300,
                               child: Icon(Icons.person, size: 40, color: Colors.white),
                             ),
-                            SizedBox(width: 12),
+                            SizedBox(width: 4.w),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  invitation['name'],
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
+                                Text('Alax Tom', style: AppStyles.fontSize16(fontWeight: FontWeight.w600,color: AppColors.color414141),),
                                 SizedBox(height: 8),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -101,7 +97,7 @@ class _AddedConneectionScreenState extends State<AddedConneectionScreen> {
                                         SizedBox(width: 4),
                                         Text(
                                           "Account ID: ${invitation['accountID']}",
-                                          style: TextStyle(fontSize: 8),
+                                          style: AppStyles.fontSize10(color: AppColors.color414141),
                                         ),
                                       ],
                                     ),
@@ -112,24 +108,30 @@ class _AddedConneectionScreenState extends State<AddedConneectionScreen> {
                                         SizedBox(width: 4),
                                         Text(
                                           "Contribution: ${invitation['contribution']}",
-                                          style: TextStyle(fontSize: 8),
+                                          style: AppStyles.fontSize10(color: AppColors.color414141),
                                         ),
                                       ],
                                     ),
                                   ],
                                 ),
+                                SizedBox(height: 8),
                                 Row(
                                   children: [
                                     SvgPicture.asset(AppIcons.dotIconForFamily),
                                     SizedBox(width: 4),
-                                    Text("Phone: 123456789",style: TextStyle(fontSize: 8),),
+                                    Text("Phone: 123456789",
+                                      style: AppStyles.fontSize10(color: AppColors.color414141),
+                                    ),
                                   ],
                                 ),
+                                SizedBox(height: 8),
                                 Row(
                                   children: [
                                     SvgPicture.asset(AppIcons.dotIconForFamily),
                                     SizedBox(width: 4),
-                                    Text("Email: mahafujer@gmail.com",style: TextStyle(fontSize: 8),),
+                                    Text("Email: mahafujer@gmail.com",
+                                      style: AppStyles.fontSize10(color: AppColors.color414141),
+                                    ),
                                   ],
                                 ),
                               ],
@@ -190,9 +192,9 @@ class _AddedConneectionScreenState extends State<AddedConneectionScreen> {
               SizedBox(height: 20.h),
               Divider(thickness: 1, color: AppColors.greyColor),
               SizedBox(height: 20.h),
-              Text("Remove", style: AppStyles.h2(color: AppColors.primaryColor,fontWeight: FontWeight.w600),),
+              Text("Remove", style: AppStyles.fontSize20(color: AppColors.primaryColor,fontWeight: FontWeight.w600),),
               Text("Are you sure to remove Alax Tom ??",
-                style: AppStyles.h3(color: AppColors.borderColor),
+                style: AppStyles.fontSize18(color: AppColors.borderColor),
               ),
               SizedBox(height: 20.h),
               Row(
@@ -213,7 +215,7 @@ class _AddedConneectionScreenState extends State<AddedConneectionScreen> {
                         ),
                       ),
                       child:Text('Cancel',
-                        style: AppStyles.h4(color: AppColors.primaryColor),
+                        style: AppStyles.fontSize16(color: AppColors.primaryColor),
                       ),
                     ),
                   ),
@@ -229,7 +231,7 @@ class _AddedConneectionScreenState extends State<AddedConneectionScreen> {
                         ),
                       ),
                       child: Text('Yes',
-                        style:  AppStyles.h4(color: AppColors.backgroundColor),
+                        style:  AppStyles.fontSize16(color: AppColors.backgroundColor),
                       ),
                     ),
                   ),

@@ -191,9 +191,9 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
               SizedBox(height: 20.h),
               Divider(thickness: 1, color: AppColors.greyColor),
               SizedBox(height: 20.h),
-              Text("Delete", style: AppStyles.h2(color: AppColors.primaryColor, fontWeight: FontWeight.w600)),
+              Text("Delete", style: AppStyles.fontSize20(color: AppColors.primaryColor, fontWeight: FontWeight.w600)),
               Text("Are you sure to delete this?",
-                style: AppStyles.h3(color: AppColors.borderColor),
+                style: AppStyles.fontSize18(color: AppColors.borderColor),
               ),
               SizedBox(height: 20.h),
               Row(
@@ -201,7 +201,7 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
-                        Get.back(); // Close the bottom sheet
+                        Get.back();
                       },
                       style: ElevatedButton.styleFrom(
                         minimumSize: Size(double.infinity, 58),
@@ -214,7 +214,7 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
                         ),
                       ),
                       child: Text('Cancel',
-                        style: AppStyles.h4(color: AppColors.primaryColor),
+                        style: AppStyles.fontSize16(color: AppColors.primaryColor),
                       ),
                     ),
                   ),
@@ -232,7 +232,7 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
                         ),
                       ),
                       child: Text('Yes',
-                        style: AppStyles.h4(color: AppColors.backgroundColor),
+                        style: AppStyles.fontSize16(color: AppColors.backgroundColor),
                       ),
                     ),
                   ),
@@ -272,7 +272,7 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
               SizedBox(height: 20.h),
               Text(
                 "What you want?",
-                style: AppStyles.h3(color: AppColors.borderColor),
+                style: AppStyles.fontSize18(color: AppColors.borderColor),
               ),
               SizedBox(height: 20.h),
               Row(
@@ -296,7 +296,7 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
                           SizedBox(width: 4.w),
                           Text(
                             'View Profile',
-                            style: AppStyles.h5(color: AppColors.backgroundColor),
+                            style: AppStyles.fontSize14(color: AppColors.backgroundColor),
                           ),
                         ],
                       ),
@@ -318,7 +318,7 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
                           SvgPicture.asset(AppIcons.delete, width: 24.w,height:24.h),
                           Text(
                             'Delete Profile',
-                            style: AppStyles.h5(color: AppColors.backgroundColor),
+                            style: AppStyles.fontSize14(color: AppColors.backgroundColor),
                           ),
                         ],
                       ),

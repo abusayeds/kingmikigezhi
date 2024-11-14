@@ -1,7 +1,9 @@
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_icons.dart';
+import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/custom_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class NewInvitationScreen extends StatefulWidget {
@@ -60,22 +62,25 @@ class _NewInvitationScreenState extends State<NewInvitationScreen> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            invitation['name'],
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
+                          Text('Alax Tom', style: AppStyles.fontSize16(fontWeight: FontWeight.w600,color: AppColors.color414141),),
+                          SizedBox(height: 8.h,),
                           Row(
                             children: [
                               SvgPicture.asset(AppIcons.dotIconForFamily),
                               SizedBox(width: 4),
-                              Text("Account ID: ${invitation['accountID']}"),
+                              Text("Account ID: ${invitation['accountID']}",
+                                style: AppStyles.fontSize10(color: AppColors.color414141),
+                              ),
                             ],
                           ),
+                          SizedBox(height: 8.h,),
                           Row(
                             children: [
                               SvgPicture.asset(AppIcons.dotIconForFamily),
                               SizedBox(width: 4),
-                              Text("Contribution: ${invitation['contribution']}"),
+                              Text("Contribution: ${invitation['contribution']}",
+                                style: AppStyles.fontSize10(color: AppColors.color414141),
+                                ),
                             ],
                           ),
                         ],
