@@ -250,12 +250,12 @@ class NotificationsScreen extends StatelessWidget {
                             children: [
                               Text(
                                 'Sophia',
-                                style: AppStyles.h5(fontWeight: FontWeight.w500),
+                                style: AppStyles.fontSize14(fontWeight: FontWeight.w500),
                                 textAlign: TextAlign.start,
                               ),
                               Text(
                                 'requested to join your family',
-                                style: AppStyles.h6(fontWeight: FontWeight.w400), // Adjusted style for subtitle
+                                style: AppStyles.fontSize12(fontWeight: FontWeight.w400), // Adjusted style for subtitle
                                 textAlign: TextAlign.start,
                               ),
                               SizedBox(height: 8.h),

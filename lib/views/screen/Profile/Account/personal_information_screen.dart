@@ -276,16 +276,16 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
           Container(
             decoration: BoxDecoration(
               color:AppColors.colorEDF2F4,
-              borderRadius: BorderRadius.all(Radius.circular(8)),
-              border: Border.all(color: AppColors.primaryColor, width: 1),
+              borderRadius: BorderRadius.all(Radius.circular(8.r)),
+              border: Border.all(color: AppColors.primaryColor, width: 1.w),
             ),
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding:  EdgeInsets.symmetric(vertical: 16.h),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding:  EdgeInsets.symmetric(horizontal: 8.0),
+                    padding: EdgeInsets.symmetric(horizontal: 8.w),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -298,7 +298,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                               ),
                               TextSpan(
                                 text: 'Chess since 2020',
-                                style: AppStyles.h5(color: AppColors.color414141)
+                                style: AppStyles.fontSize14(color: AppColors.color414141)
                               ),
                             ],
                           ),
@@ -326,7 +326,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                               ),
                               TextSpan(
                                 text: 'Math since 2021',
-                                style: AppStyles.h5(color: AppColors.color414141)
+                                style: AppStyles.fontSize14(color: AppColors.color414141)
                               ),
                             ],
                           ),
@@ -354,7 +354,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                               ),
                               TextSpan(
                                 text: 'Piano since 2023',
-                                style: AppStyles.h5(color: AppColors.color414141)
+                                style: AppStyles.fontSize14(color: AppColors.color414141)
                               ),
                             ],
                           ),

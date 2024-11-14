@@ -1,3 +1,4 @@
+import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/custom_button.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:event_sharing/views/base/custom_text_field.dart';
@@ -130,7 +131,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
                 border: Border.all(color: AppColors.primaryColor, width: 1),
               ),
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding:  EdgeInsets.symmetric(vertical: 8.w,horizontal: 8.w),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -139,9 +140,8 @@ class _StepThreeFormState extends State<StepThreeForm> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                         CustomText(
-                           text: '1 Age up to 10 years old',
-                         ),
+                          Text('1 Age up to 10 years old',style: AppStyles.fontSize14(color: AppColors.color414141)),
+
                           Row(
                             children: [
                               InkWell(
@@ -165,9 +165,8 @@ class _StepThreeFormState extends State<StepThreeForm> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          CustomText(
-                            text: '2 Age up to 15 years old',
-                          ),
+                          Text('2 Age up to 15 years old',style: AppStyles.fontSize14(color: AppColors.color414141)),
+
                           Row(
                             children: [
                               InkWell(
@@ -191,9 +190,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          CustomText(
-                            text: '3 Age up to 18 years old',
-                          ),
+                          Text('3 Age up to 18 years old',style: AppStyles.fontSize14(color: AppColors.color414141)),
                           Row(
                             children: [
                               InkWell(
