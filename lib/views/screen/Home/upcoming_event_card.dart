@@ -1,3 +1,4 @@
+import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -88,7 +89,7 @@ class EventCard extends StatelessWidget {
                               Icon(Icons.circle,
                                   color: AppColors.primaryColor, size: 12.w),
                               SizedBox(width: 4.w),
-                              CustomText(text: 'Onsite Event', fontsize: 12.sp,),
+                              Text('Onsite Event',style: AppStyles.fontSize12(color: AppColors.color414141),)
                             ],
                           ),
                           Row(
@@ -96,7 +97,7 @@ class EventCard extends StatelessWidget {
                               Icon(Icons.circle,
                                   color: AppColors.primaryColor, size: 12.w),
                               SizedBox(width: 4.w),
-                              CustomText(text: 'Dhaka Bangladesh', fontsize: 12.sp,),
+                              Text('Dhaka Bangladesh',style: AppStyles.fontSize12(color: AppColors.color414141),)
                             ],
                           ),
                         ],
@@ -109,16 +110,14 @@ class EventCard extends StatelessWidget {
                               Icon(Icons.circle,
                                   color: AppColors.primaryColor, size: 12.w),
                               SizedBox(width: 4.w),
-                              CustomText(text: ' Cost-100', fontsize: 12.sp,),
+                              Text('Cost-100',style: AppStyles.fontSize12(color: AppColors.color414141),)
                             ],
                           ),
                           Row(
                             children: [
                               Icon(Icons.circle, color: AppColors.primaryColor, size: 12.w),
                               SizedBox(width: 4.w),
-                              CustomText(text: 'Deadline: 1-6-2025',
-                                fontsize: 12.sp,
-                              ),
+                              Text('Deadline: 1-6-2025',style: AppStyles.fontSize12(color: AppColors.color414141),)
                             ],
                           ),
                         ],
@@ -126,11 +125,11 @@ class EventCard extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: 8.h),
-                  const Align(
+                   Align(
                       alignment: Alignment.bottomRight,
                       child: Icon(
                         Icons.more_horiz_outlined,
-                        color: Colors.grey,
+                        color: AppColors.greyColor,
                       ))
                 ],
               ),

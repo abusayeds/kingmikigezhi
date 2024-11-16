@@ -10,6 +10,7 @@ class CustomListTile extends StatelessWidget {
   final Widget? prefixIcon;
   final Widget? suffixIcon;
   final Color? borderColor;
+  final Color? titleColor;
   final VoidCallback? onTap;
   final Color? backgroundColor;
   CustomListTile({
@@ -20,6 +21,7 @@ class CustomListTile extends StatelessWidget {
     this.suffixIcon,
     this.borderColor,
     this.backgroundColor,
+    this.titleColor,
   });
 
   @override
@@ -40,13 +42,14 @@ class CustomListTile extends StatelessWidget {
             trailing: suffixIcon,
             horizontalTitleGap: 16.w,
             dense: true,
-            title: CustomText(
+            title: Text(
+              title,style: TextStyle(
+                color: titleColor ?? AppColors.blackColor ,
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w400),
               textAlign: TextAlign.left,
-              text: title,
-              maxline: 2,
-              fontsize: 16.sp,
-              fontWeight: FontWeight.w400,
-            ),
+              maxLines: 2,
+            )
           ),
         ),
       ),

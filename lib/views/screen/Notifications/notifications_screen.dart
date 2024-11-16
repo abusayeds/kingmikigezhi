@@ -1,6 +1,9 @@
+import 'package:event_sharing/utils/app_strings.dart';
+import 'package:event_sharing/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get_utils/get_utils.dart';
 import 'package:timeago/timeago.dart' as TimeAgo;
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_icons.dart';
@@ -29,7 +32,6 @@ class NotificationsScreen extends StatelessWidget {
             ),
             Expanded(
               child: Align(
-                alignment: Alignment.center, // Center the text
                 child: CustomText(
                   text: 'Notification(20)',
                   fontsize: 18.sp,
@@ -62,14 +64,29 @@ class NotificationsScreen extends StatelessWidget {
                 )
               ],
             ),
-            Card(
-              margin: EdgeInsets.symmetric(vertical: 8.h),
-              color: const Color(0xffedf2f4),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15.r),
+            //========================> Details Card
+            Dismissible(
+              key: UniqueKey(),
+              direction: DismissDirection.endToStart,
+              background: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12.r),
+                  color: AppColors.colorD9A951,
+                ),
+                alignment: Alignment.centerRight,
+                padding: EdgeInsets.only(right: 26.w),
+                child: SvgPicture.asset(AppIcons.deleteIcon),
               ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 12.h),
+              onDismissed: (direction) {},
+              child: Container(
+                margin: EdgeInsets.symmetric(vertical: 8.h),
+                decoration: BoxDecoration(
+                  color: const Color(0xffedf2f4),
+                  borderRadius: BorderRadius.circular(15.r),
+                  border: Border.all(color: AppColors.primaryColor, width: .5),
+                ),
+                child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -89,12 +106,25 @@ class NotificationsScreen extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          CustomText(
-                            text: 'Event Name',
-                            fontsize: 18.sp,
-                            fontWeight: FontWeight.bold,
+                          // Title and Share Icon Row
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  'Tom Alax shared Akcent Music',
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                              Icon(Icons.share, color: Colors.blueGrey, size: 16.sp), // Share Icon
+                            ],
                           ),
                           SizedBox(height: 8.h),
+
                           //=====================> Event Info Section <=========================
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -104,31 +134,22 @@ class NotificationsScreen extends StatelessWidget {
                                 children: [
                                   Row(
                                     children: [
-                                      SvgPicture.asset(AppIcons.dotIconForFamily),
+                                      Icon(Icons.circle, size: 8.sp, color: Colors.blueGrey),
                                       SizedBox(width: 4.w),
                                       Text(
                                         'Onsite Event',
-                                        style: TextStyle(fontSize: 8.sp),
+                                        style: TextStyle(fontSize: 10.sp, color: Colors.grey[800]),
                                       ),
                                     ],
                                   ),
+                                  SizedBox(height: 4.h),
                                   Row(
                                     children: [
-                                      SvgPicture.asset(AppIcons.dotIconForFamily),
+                                      Icon(Icons.circle, size: 8.sp, color: Colors.blueGrey),
                                       SizedBox(width: 4.w),
                                       Text(
                                         'Dhaka Bangladesh',
-                                        style: TextStyle(fontSize: 8.sp),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      SvgPicture.asset(AppIcons.dotIconForFamily),
-                                      SizedBox(width: 4.w),
-                                      Text(
-                                        'History: 2023-1st winner',
-                                        style: TextStyle(fontSize: 8.sp),
+                                        style: TextStyle(fontSize: 10.sp, color: Colors.grey[800]),
                                       ),
                                     ],
                                   ),
@@ -139,21 +160,22 @@ class NotificationsScreen extends StatelessWidget {
                                 children: [
                                   Row(
                                     children: [
-                                      SvgPicture.asset(AppIcons.dotIconForFamily),
+                                      Icon(Icons.circle, size: 8.sp, color: Colors.blueGrey),
                                       SizedBox(width: 4.w),
                                       Text(
-                                        'Cost : \$100',
-                                        style: TextStyle(fontSize: 8.sp),
+                                        'Cost: \$100',
+                                        style: TextStyle(fontSize: 10.sp, color: Colors.grey[800]),
                                       ),
                                     ],
                                   ),
+                                  SizedBox(height: 4.h),
                                   Row(
                                     children: [
-                                      SvgPicture.asset(AppIcons.dotIconForFamily),
+                                      Icon(Icons.circle, size: 8.sp, color: Colors.blueGrey),
                                       SizedBox(width: 4.w),
                                       Text(
                                         'Deadline: 1-6-2025',
-                                        style: TextStyle(fontSize: 8.sp),
+                                        style: TextStyle(fontSize: 10.sp, color: Colors.grey[800]),
                                       ),
                                     ],
                                   ),
@@ -161,28 +183,121 @@ class NotificationsScreen extends StatelessWidget {
                               ),
                             ],
                           ),
-                          const Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Icon(Icons.more_horiz, color: Colors.grey)
-                            ],
-                          )
+
+                          //=====================> More Options Icon at the Bottom Right <=========================
+                          Align(
+                            alignment: Alignment.bottomRight,
+                            child: Padding(
+                              padding: EdgeInsets.only(top: 8.h),
+                              child: Icon(Icons.more_horiz, color: AppColors.color87A9B8, size: 20.sp),
+                            ),
+                          ),
                         ],
                       ),
                     ),
-
-                    //=====================> Share Icon <=========================
-                    Padding(
-                      padding: EdgeInsets.only(top: 8.h),
-                      child: SvgPicture.asset(
-                        AppIcons.share, // Share icon
-                        width: 16.w,
-                        height: 16.h,
-                        color: Colors.blueGrey,
-                      ),
-                    ),
                   ],
+                ),
+              ),
+            ),
+          ),
+
+          //========================> Request Card
+            Dismissible(
+              key: UniqueKey(),
+              direction: DismissDirection.endToStart,
+              background: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12.r),
+                  color: AppColors.colorD9A951,
+                ),
+                alignment: Alignment.centerRight,
+                padding: EdgeInsets.only(right: 26.w),
+                child: SvgPicture.asset(AppIcons.deleteIcon),
+              ),
+              onDismissed: (direction) {
+                // Handle dismissal action here
+              },
+              child: Container(
+                margin: EdgeInsets.symmetric(vertical: 8.h),
+                decoration: BoxDecoration(
+                  color: const Color(0xffedf2f4),
+                  borderRadius: BorderRadius.circular(15.r),
+                  border: Border.all(color: AppColors.primaryColor, width: .5),
+                ),
+                child: SizedBox(
+                  height: 102.h,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        //=====================> Image Section <=========================
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(50.r),
+                          child: Image.asset(
+                            'assets/images/shoot.png',
+                            height: 59.0.h,
+                            width: 59.0.w,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        SizedBox(width: 12.w),
+                        //=====================> Details Section <=========================
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center, // Center align content vertically
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Sophia',
+                                style: AppStyles.fontSize14(fontWeight: FontWeight.w500),
+                                textAlign: TextAlign.start,
+                              ),
+                              Text(
+                                'requested to join your family',
+                                style: AppStyles.fontSize12(fontWeight: FontWeight.w400), // Adjusted style for subtitle
+                                textAlign: TextAlign.start,
+                              ),
+                              SizedBox(height: 8.h),
+                              //=====================> Event Info Section <=========================
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(Icons.circle, size: 8.sp, color: Colors.blueGrey), // Dot icon
+                                      SizedBox(width: 4.w),
+                                      Text(
+                                        'Account ID: 102',
+                                        style: TextStyle(fontSize: 10.sp, color: Colors.grey[800]), // Style adjustment
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(width: 20.w),
+                                  Row(
+                                    children: [
+                                      Icon(Icons.circle, size: 8.sp, color: Colors.blueGrey), // Dot icon
+                                      SizedBox(width: 4.w),
+                                      Text(
+                                        'Contribution: 100',
+                                        style: TextStyle(fontSize: 10.sp, color: Colors.grey[800]), // Style adjustment
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 8.h),
+                        //=====================> More Options Icon <=========================
+                        Align(
+                          alignment: Alignment.bottomRight,
+                          child: Icon(Icons.more_horiz, color: AppColors.color87A9B8, size: 20.sp),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -207,6 +322,8 @@ class NotificationsScreen extends StatelessWidget {
                 },
               ),
             ),
+
+
           ],
         ),
       ),
@@ -228,7 +345,7 @@ class NotificationsScreen extends StatelessWidget {
         ),
         alignment: Alignment.centerRight,
         padding: EdgeInsets.only(right: 26.w),
-        child: SvgPicture.asset(AppIcons.remove),
+        child: SvgPicture.asset(AppIcons.deleteIcon),
       ),
       onDismissed: (direction) {},
       child: Container(
@@ -252,8 +369,8 @@ class NotificationsScreen extends StatelessWidget {
                         // Title
                         CustomText(
                           text: title,
-                          fontsize: 14.h,
-                          color: Colors.black,
+                          fontsize: 18.h,
+                          color: AppColors.color414141,
                           fontWeight: FontWeight.w600,
                         ),
                         Align(
@@ -261,9 +378,9 @@ class NotificationsScreen extends StatelessWidget {
                           child: CustomText(
                             top: 2.h,
                             text: TimeAgo.format(time),
-                            fontsize: 12.h,
+                            fontsize: 14.sp,
                             fontWeight: FontWeight.w400,
-                            color: const Color(0xFF8C8C8C),
+                            color: AppColors.color414141,
                           ),
                         ),
                       ],

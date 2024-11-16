@@ -200,7 +200,6 @@ class _MemberProfileDetailsScreenState
                 title: '+88111111188888' ?? '',
                 backgroundColor: AppColors.colorEDF2F4,
               ),
-
               //=================================> Skill <========================
               Padding(
                 padding: const EdgeInsets.all(4),
