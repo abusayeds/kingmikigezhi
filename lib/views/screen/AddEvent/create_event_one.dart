@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_icons.dart';
+import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/custom_button.dart';
 import 'package:event_sharing/views/base/custom_text_field.dart';
 import 'package:event_sharing/views/screen/AddEvent/stepFiveForm.dart';
@@ -212,7 +213,7 @@ class _CreateEventOneState extends State<CreateEventOne> {
                       dropdownColor: AppColors.fillColor,
                       menuWidth: 240.w,
                       borderRadius: BorderRadius.circular(8.r),
-                      hint: Text("Select Number", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500),),
+                      hint: Text("Select Number", style:AppStyles.fontSize14(color: AppColors.color414141)),
                       icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
                       ),
                       isExpanded: true,
@@ -239,7 +240,7 @@ class _CreateEventOneState extends State<CreateEventOne> {
                       padding: const EdgeInsets.all(4),
                       child: Text(
                         'Year',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                        style: AppStyles.fontSize16(color: AppColors.blackColor,fontWeight: FontWeight.w600),
                       ),
                     ),
                     SizedBox(width: 120.w),
@@ -247,7 +248,7 @@ class _CreateEventOneState extends State<CreateEventOne> {
                       padding: const EdgeInsets.all(4),
                       child: Text(
                         'Session',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                        style:AppStyles.fontSize16(color: AppColors.blackColor,fontWeight: FontWeight.w600),
                       ),
                     ),
                   ],
@@ -269,7 +270,7 @@ class _CreateEventOneState extends State<CreateEventOne> {
                             dropdownColor: AppColors.fillColor,
                             menuWidth: 240.w,
                             borderRadius: BorderRadius.circular(8.r),
-                            hint: Text("Year", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500),),
+                            hint: Text("Year",style:AppStyles.fontSize14(color: AppColors.color414141)),
                             icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
                             ),
                             isExpanded: true,
@@ -291,7 +292,7 @@ class _CreateEventOneState extends State<CreateEventOne> {
                         ),
                       ),
                     ),
-                    SizedBox(width: 8), // Spacing between the dropdown fields
+                    SizedBox(width: 8.w),
                     Expanded(
                       child: Container(
                         padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -306,7 +307,7 @@ class _CreateEventOneState extends State<CreateEventOne> {
                             dropdownColor: AppColors.fillColor,
                             menuWidth: 240.w,
                             borderRadius: BorderRadius.circular(8.r),
-                            hint: Text("Session", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500),),
+                            hint: Text("Session", style:AppStyles.fontSize14(color: AppColors.color414141)),
                             icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
                             ),
                             isExpanded: true,
@@ -350,7 +351,7 @@ class _CreateEventOneState extends State<CreateEventOne> {
               dropdownColor: AppColors.fillColor,
               menuWidth: 240.w,
               borderRadius: BorderRadius.circular(8.r),
-              hint: Text("Select Program", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500)),
+              hint: Text("Select Program", style:AppStyles.fontSize14(color: AppColors.color414141)),
               icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
               ),
               isExpanded: true,
@@ -378,6 +379,7 @@ class _CreateEventOneState extends State<CreateEventOne> {
         CustomTextField(
           controller: organizerController,
           hintText: 'Type Organizer',
+          hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
           sufixicons: Padding(
             padding: EdgeInsets.all(16.w),
           ),
@@ -389,6 +391,7 @@ class _CreateEventOneState extends State<CreateEventOne> {
         CustomTextField(
           controller: eventName,
           hintText: 'Type Event Name',
+          hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
           sufixicons: Padding(
             padding: EdgeInsets.all(16.w),
           ),
@@ -400,6 +403,7 @@ class _CreateEventOneState extends State<CreateEventOne> {
         CustomTextField(
           controller: eventPortal,
           hintText: 'Type Event Portal',
+          hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
           sufixicons: Padding(
             padding: EdgeInsets.all(16.w),
           ),
@@ -411,6 +415,7 @@ class _CreateEventOneState extends State<CreateEventOne> {
         CustomTextField(
           controller: registrationPortal,
           hintText: 'Type Registartion Portal',
+          hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
           sufixicons: Padding(
             padding: EdgeInsets.all(16.w),
           ),
@@ -423,7 +428,8 @@ class _CreateEventOneState extends State<CreateEventOne> {
         CustomTextField(
           maxLines: 3,
           controller: descriptionCRTL,
-          hintText: 'Type your Description',
+          hintText: 'Type your Description...',
+          hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
           sufixicons: Padding(
             padding: EdgeInsets.all(16.w),
           ),
@@ -437,6 +443,7 @@ class _CreateEventOneState extends State<CreateEventOne> {
           maxLines: 3,
           controller: noteCRTL,
           hintText: 'Type your event note',
+          hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
           sufixicons: Padding(
             padding: EdgeInsets.all(16.w),
           ),
