@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
 class AppStyles {
-  static TextStyle h1(
+  static TextStyle fontSize24(
       {Color? color, FontWeight? fontWeight, double? letterSpacing}) {
     return TextStyle(
         color: color,
@@ -13,7 +13,7 @@ class AppStyles {
         fontWeight: fontWeight ?? FontWeight.w400);
   }
 
-  static TextStyle h2(
+  static TextStyle fontSize20(
       {Color? color, FontWeight? fontWeight, double? letterSpacing}) {
     return TextStyle(
         color: color,
@@ -22,7 +22,7 @@ class AppStyles {
         fontWeight: fontWeight ?? FontWeight.w400);
   }
 
-  static TextStyle h3({
+  static TextStyle fontSize18({
     Color? color,
     FontWeight? fontWeight,
     double? letterSpacing,
@@ -35,7 +35,7 @@ class AppStyles {
         fontWeight: fontWeight ?? FontWeight.w400);
   }
 
-  static TextStyle h4(
+  static TextStyle fontSize16(
       {Color? color,
         FontWeight? fontWeight,
         double? letterSpacing,
@@ -48,7 +48,7 @@ class AppStyles {
         fontWeight: fontWeight ?? FontWeight.w400);
   }
 
-  static TextStyle h5(
+  static TextStyle fontSize14(
       {Color? color,
         FontWeight? fontWeight,
         double? letterSpacing,
@@ -61,13 +61,26 @@ class AppStyles {
         fontWeight: fontWeight ?? FontWeight.w400);
   }
 
-  static TextStyle h6(
+  static TextStyle fontSize12(
       {Color? color,
         FontWeight? fontWeight,
         double? letterSpacing,
         double? height}) {
     return TextStyle(
         fontSize: 12.sp,
+        color: color,
+        height: height,
+        letterSpacing: letterSpacing,
+        fontWeight: fontWeight ?? FontWeight.w400);
+  }
+
+  static TextStyle fontSize10(
+      {Color? color,
+        FontWeight? fontWeight,
+        double? letterSpacing,
+        double? height}) {
+    return TextStyle(
+        fontSize: 10.sp,
         color: color,
         height: height,
         letterSpacing: letterSpacing,
