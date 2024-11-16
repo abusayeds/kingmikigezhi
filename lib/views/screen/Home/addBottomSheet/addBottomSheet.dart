@@ -199,8 +199,7 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
                     menuWidth: 240.w,
                     borderRadius: BorderRadius.circular(8.r),
                     hint: Text("Select Repeat", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500),),
-                    icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
-                    ),
+                    icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,),
                     isExpanded: true,
                     items: _repeat.map((String value) {
                       return DropdownMenuItem<String>(

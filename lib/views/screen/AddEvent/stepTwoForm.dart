@@ -1,5 +1,6 @@
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_icons.dart';
+import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/custom_button.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:event_sharing/views/base/custom_text_field.dart';
@@ -65,7 +66,7 @@ class _StepTwoFormState extends State<StepTwoForm> {
               dropdownColor: AppColors.fillColor,
               menuWidth: 240.w,
               borderRadius: BorderRadius.circular(8.r),
-              hint: Text("Select Competition Level", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500)),
+              hint: Text("Select Competition Level", style: AppStyles.fontSize14(color: AppColors.color414141)),
               icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
               ),
               isExpanded: true,
@@ -104,7 +105,7 @@ class _StepTwoFormState extends State<StepTwoForm> {
               dropdownColor: AppColors.fillColor,
               menuWidth: 240.w,
               borderRadius: BorderRadius.circular(8.r),
-              hint: Text("Select Type", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500)),
+              hint: Text("Select Type",  style: AppStyles.fontSize14(color: AppColors.color414141)),
               icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
               ),
               isExpanded: true,
@@ -137,6 +138,7 @@ class _StepTwoFormState extends State<StepTwoForm> {
                 prifixicon: IconButton(onPressed: (){}, icon: Icon(Icons.calendar_today_rounded)),
                 controller: resgitationOpenDateCRTL,
                 hintText: 'Date',
+                hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
                 sufixicons: Padding(
                   padding: EdgeInsets.only(right: 12.w),
                   child: SvgPicture.asset(
@@ -154,6 +156,7 @@ class _StepTwoFormState extends State<StepTwoForm> {
                 prifixicon: IconButton(onPressed: (){}, icon: Icon(Icons.watch_later_rounded)),
                 controller: resgitationOpenTimeCRTL,
                 hintText: 'Time',
+                hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
                 sufixicons: Padding(
                   padding: EdgeInsets.only(right: 12.w),
                   child: SvgPicture.asset(
@@ -168,7 +171,7 @@ class _StepTwoFormState extends State<StepTwoForm> {
         ),
 
         SizedBox(height: 12.h),
-        //deadline date
+        //============================>> Deadline Date
         CustomText(text: 'Deadline ',fontsize: 16,fontWeight: FontWeight.w600,),
         SizedBox(height: 12.h),
         Row(
@@ -208,13 +211,14 @@ class _StepTwoFormState extends State<StepTwoForm> {
             ),
           ],
         ),
-        //cost
+        //=============================Cost
         SizedBox(height: 12.h),
         CustomText(text: 'Cost ',fontsize: 16,fontWeight: FontWeight.w600,),
         SizedBox(height: 12.h),
         CustomTextField(
           controller: costCRTL,
           hintText: '\$',
+          hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
         ),
         SizedBox(height: 12.h),
         Container(
@@ -230,7 +234,7 @@ class _StepTwoFormState extends State<StepTwoForm> {
               dropdownColor: AppColors.fillColor,
               menuWidth: 240.w,
               borderRadius: BorderRadius.circular(8.r),
-              hint: Text("Select Cost", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500)),
+              hint: Text("Select Cost", style: AppStyles.fontSize14(color: AppColors.color414141)),
               icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
               ),
               isExpanded: true,
@@ -264,6 +268,7 @@ class _StepTwoFormState extends State<StepTwoForm> {
               child: CustomTextField(
                 controller: monthCRTL,
                 hintText: 'Year',
+                hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
                 sufixicons: Padding(
                   padding: EdgeInsets.only(right: 12.w),
                   child: SvgPicture.asset(
@@ -280,6 +285,7 @@ class _StepTwoFormState extends State<StepTwoForm> {
               child: CustomTextField(
                 controller: dayCRTL,
                 hintText: 'Month',
+                hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
                 sufixicons: Padding(
                   padding: EdgeInsets.only(right: 12.w),
                   child: SvgPicture.asset(
@@ -296,6 +302,7 @@ class _StepTwoFormState extends State<StepTwoForm> {
               child: CustomTextField(
                 controller: yearCRTL,
                 hintText: 'Day',
+                hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
                 sufixicons: Padding(
                   padding: EdgeInsets.only(right: 12.w),
                   child: SvgPicture.asset(
@@ -314,6 +321,7 @@ class _StepTwoFormState extends State<StepTwoForm> {
         CustomTextField(
           controller: lateFeeCRTL,
           hintText: '\$',
+          hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
         ),
         SizedBox(height: 12.h),
         Row(
