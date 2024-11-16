@@ -253,18 +253,33 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     CustomText(
                       text: 'Piano Song Event',
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w600,
                     ),
                     SizedBox(height: 12.h),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SvgPicture.asset(AppIcons.dotIconForFamily),
-                        Padding(
-                          padding: EdgeInsets.only(left: 5.w),
-                          child: CustomText(
-                            text: 'Piano',
-                            fontsize: 10.sp,
-                          ),
+                        Row(
+                          children: [
+                            SvgPicture.asset(AppIcons.dotIconForFamily),
+                            SizedBox(width: 4.w),
+                            CustomText(
+                              text: 'Piano',
+                              fontsize: 10.sp,
+                            ),
+                          ],
+                        ),
+                        SizedBox(width: 12.w),
+                        Row(
+                          children: [
+                            SvgPicture.asset(AppIcons.dotIconForFamily),
+                            SizedBox(width: 4.w),
+                            CustomText(
+                              text: 'Type: Online',
+                              fontsize: 10.sp,
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -342,7 +357,7 @@ class _HomeScreenState extends State<HomeScreen> {
   //============================> Piano Event List View <=================================
   _pianoList() {
     return SizedBox(
-      height: 190.h,
+      height: 160.h,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: 3,
@@ -380,31 +395,33 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: [
                             CustomText(
                               text: 'Piano Song Event',
-                              fontWeight: FontWeight.w500,
+                              fontWeight: FontWeight.w600,
                             ),
                             SizedBox(height: 12.h),
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                SvgPicture.asset(AppIcons.dotIconForFamily),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 5.w),
-                                  child: CustomText(
-                                    text: 'Piano',
-                                    fontsize: 10.sp,
-                                  ),
+                                Row(
+                                  children: [
+                                    SvgPicture.asset(AppIcons.dotIconForFamily),
+                                   SizedBox(width: 4.w),
+                                    CustomText(
+                                      text: 'Piano',
+                                      fontsize: 10.sp,
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                            SizedBox(height: 8.h),
-                            Row(
-                              children: [
-                                SvgPicture.asset(AppIcons.dotIconForFamily),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 5.w),
-                                  child: CustomText(
-                                    text: 'Type: Online',
-                                    fontsize: 10.sp,
-                                  ),
+                                SizedBox(width: 12.w),
+                                Row(
+                                  children: [
+                                    SvgPicture.asset(AppIcons.dotIconForFamily),
+                                    SizedBox(width: 4.w),
+                                    CustomText(
+                                      text: 'Type: Online',
+                                      fontsize: 10.sp,
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
@@ -569,58 +586,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ],
     );
   }
-/*  _tableCalendar2() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        // TableCalendar Widget
-        TableCalendar(
-          firstDay: DateTime.utc(2020, 10, 16),
-          lastDay: DateTime.utc(2030, 3, 14),
-          focusedDay: _focusedDay,
-          calendarFormat: _calendarFormat,
-          startingDayOfWeek: StartingDayOfWeek.monday,
-          selectedDayPredicate: (day) {
-            return isSameDay(_selectedDay, day);
-          },
-          onDaySelected: (selectedDay, focusedDay) {
-            setState(() {
-              _selectedDay = selectedDay;
-              _focusedDay = focusedDay;
-            });
-          },
-          headerStyle: HeaderStyle(
-            rightChevronIcon: InkWell(
-                onTap: () {
-                  setState(() {
-                    _calendarFormat = _calendarFormat == CalendarFormat.week
-                        ? CalendarFormat.month
-                        : CalendarFormat.week;
-                  });
-                },
-                //  child: Icon(Icons.calendar_today_rounded, color: AppColors.primaryColor),
-                child: SvgPicture.asset(AppIcons.calendarIcon)
-            ),
-            leftChevronIcon: const SizedBox(),
-            formatButtonVisible: false,
-            titleCentered: false,
-            titleTextStyle: TextStyle(
-                fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-          calendarStyle: CalendarStyle(
-            todayDecoration: BoxDecoration(
-              color: AppColors.colorCDBDB6,
-              shape: BoxShape.rectangle,
-            ),
-            selectedDecoration: BoxDecoration(
-              color: AppColors.colorCDBDB6,
-              shape: BoxShape.rectangle,
-            ),
-          ),
-        ),
-      ],
-    );
-  }*/
   // Function to check for appointments for a specific day
   bool _checkForAppointments(DateTime day) {
     // Check if the day exists in the appointment map

@@ -1,6 +1,7 @@
 
 import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/utils/app_colors.dart';
+import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/custom_button.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:flutter/material.dart';
@@ -87,9 +88,11 @@ class _MyInvitationPageState extends State<MyInvitationPage> {
                     ),
                     title: Text(
                       invitee['name'],
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                    style: AppStyles.fontSize16(color: AppColors.color414141,fontWeight: FontWeight.w600),
                     ),
-                    subtitle: Text(invitee['location']),
+                    subtitle: Text(invitee['location'],
+                      style: AppStyles.fontSize14(color: AppColors.color414141),
+                    ),
                     trailing: Checkbox(
                       activeColor: AppColors.primaryColor,
                       value: invitee['checked'],

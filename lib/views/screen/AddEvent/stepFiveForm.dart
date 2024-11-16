@@ -54,12 +54,8 @@ class _StepFiveFormState extends State<StepFiveForm> {
             ),
             //registration date
             SizedBox(height: 12.h),
-            //registration date
-            CustomText(
-              text: 'Session',
-              fontsize: 14,
-              fontWeight: FontWeight.w600,
-            ),
+           Text('Session',
+                style: AppStyles.fontSize16(fontWeight: FontWeight.w500)),
             SizedBox(height: 12.h),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -74,7 +70,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
                   dropdownColor: AppColors.fillColor,
                   menuWidth: 240.w,
                   borderRadius: BorderRadius.circular(8.r),
-                  hint: Text("Type Session", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500)),
+                  hint: Text("Type Session", style: AppStyles.fontSize14(color: AppColors.color414141)),
                   icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
                   ),
                   isExpanded: true,
@@ -99,7 +95,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
             Padding(
               padding: const EdgeInsets.all(4),
               child: Text('Record',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  style: AppStyles.fontSize16(fontWeight: FontWeight.w500)),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -118,7 +114,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
                         dropdownColor: AppColors.fillColor,
                         menuWidth: 240.w,
                         borderRadius: BorderRadius.circular(8.r),
-                        hint: Text("Type Score", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500)),
+                        hint: Text("Type Score",style: AppStyles.fontSize14(color: AppColors.color414141)),
                         icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
                         ),
                         isExpanded: true,
@@ -155,7 +151,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
             Padding(
               padding: const EdgeInsets.all(4),
               child: Text('History',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  style: AppStyles.fontSize16(fontWeight: FontWeight.w500)),
             ),
             Container(
               decoration: BoxDecoration(
@@ -179,6 +175,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
                               SizedBox(width: 4.w),
                               CustomText(
                                 text: '2021 - 1st place winner',
+                                color: AppColors.color414141,
                               ),
                             ],
                           ),
@@ -211,6 +208,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
                               SizedBox(width: 4.w),
                               CustomText(
                                 text: '2022 - 1st place winner',
+                                color: AppColors.color414141,
                               ),
                             ],
                           ),
@@ -243,6 +241,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
                               SizedBox(width: 4.w),
                               CustomText(
                                 text: '2023 - 1st place winner',
+                                color: AppColors.color414141,
                               ),
                             ],
                           ),
@@ -268,33 +267,53 @@ class _StepFiveFormState extends State<StepFiveForm> {
                 ),
               ),
             ),
-            SizedBox(height: 10.h),
-            // Shared community checkbox
+            SizedBox(height: 16.h),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                CheckboxListTile(
-                  value: isSharedCommunityChecked,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      isSharedCommunityChecked = value ?? false;
-                    });
-                  },
-                  title: Text("This is a shared community. All events are public",style: AppStyles.h5()),
-                  activeColor: AppColors.primaryColor,
-                  controlAffinity: ListTileControlAffinity.leading,
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.blueGrey,
+                        shape: BoxShape.rectangle,
+                        borderRadius: BorderRadius.circular(4.r),
+                      ),
+                      padding: EdgeInsets.all(4),
+                      child: Icon(
+                        Icons.check,
+                        color: Colors.white,
+                        size: 16.sp,
+                      ),
+                    ),
+                    SizedBox(width: 10.w),
+                    Expanded(
+                      child: Text(
+                        'This is a shared community. All events are public',
+                        style: AppStyles.fontSize14(color: AppColors.hintColor)
+                      ),
+                    ),
+                  ],
                 ),
-                CheckboxListTile(
-                  value: isUserAgreementChecked,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      isUserAgreementChecked = value ?? false;
-                    });
-                  },
-                  title: Text("User agreement",style: AppStyles.h5()),
-                  activeColor: AppColors.primaryColor,
-                  controlAffinity: ListTileControlAffinity.leading,
+                SizedBox(height: 16.h),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 20.w,
+                      height: 20.h,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.blueGrey),
+                        borderRadius: BorderRadius.circular(4.r),
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    Text(
+                      'User agreement',
+                        style: AppStyles.fontSize14(color: AppColors.hintColor)
+                    ),
+                  ],
                 ),
               ],
             ),

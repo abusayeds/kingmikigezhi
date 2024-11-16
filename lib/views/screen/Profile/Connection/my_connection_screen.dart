@@ -1,9 +1,7 @@
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
-import 'package:event_sharing/views/screen/Profile/Connection/added_connection_screen.dart';
-import 'package:event_sharing/views/screen/Profile/Connection/new_invitations_screen.dart';
-import 'package:event_sharing/views/screen/Profile/MyFamily/member/member_profile.dart';
-import 'package:event_sharing/views/screen/Profile/MyFamily/owner/owner_profile.dart';
+import 'package:event_sharing/views/screen/Profile/Connection/remove_connection_screen.dart';
+import 'package:event_sharing/views/screen/Profile/Connection/new_connection_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';

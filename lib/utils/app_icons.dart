@@ -8,7 +8,7 @@ class AppIcons{
   static String downArrowIcon="$baseUrl/chevron-down.svg";
   static String card="$baseUrl/card.svg";
   static String check="$baseUrl/check.svg";
-  static String remove="$baseUrl/remove.svg";
+  static String deleteIcon="$baseUrl/deleteIcon.svg";
   static String connection="$baseUrl/connection.svg";
   static String timeIcon="$baseUrl/clock.svg";
   static String settingsIcon="$baseUrl/settings.svg";
