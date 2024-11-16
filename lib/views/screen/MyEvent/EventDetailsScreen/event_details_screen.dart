@@ -807,7 +807,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                     children: [
                       Row(
                         children: [
-                          Text('Created By'),
+                          Text('Created By',style: AppStyles.fontSize14(color: AppColors.color414141,fontWeight: FontWeight.w600)),
                           SizedBox(width: 8.w),
                           CircleAvatar(
                             radius: 30.r,
@@ -818,10 +818,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                       Text(
                         'Created at\n1-1-2022',
                         textAlign: TextAlign.right,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14.sp,
-                        ),
+                        style: AppStyles.fontSize14(color: AppColors.color414141,fontWeight: FontWeight.w600),
                       ),
                     ],
                   ),
@@ -872,8 +869,8 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                   Text(
                     'Latest active 3 days ago',
                     style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey.shade600,
+                      fontSize: 14.sp,
+                      color: AppColors.color414141,
                     ),
                   ),
                   SizedBox(height: 20),
