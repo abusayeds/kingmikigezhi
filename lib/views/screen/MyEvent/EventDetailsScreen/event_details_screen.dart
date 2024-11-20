@@ -310,62 +310,27 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                           //cost
                             SizedBox(height: 16.h),
                             Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Keeps the layout structured
                                   children: [
+                                    // Empty space for alignment
                                     Row(
                                       children: [
                                         SvgPicture.asset(AppIcons.dotIconForFamily),
-                                        SizedBox(width: 5), // Spacing between circle and text
+                                        SizedBox(width: 5.w),
                                         Text(
                                           'Cost',
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
-                                        SizedBox(width: 50.w),
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            color: Colors.blueGrey, // Background color for check icon
-                                            shape: BoxShape.rectangle,
-                                            borderRadius: BorderRadius.circular(4),
-                                          ),
-                                          child: Icon(
-                                            Icons.check,
-                                            color: Colors.white,
-                                            size: 10,
-                                          ),
-                                          padding: EdgeInsets.all(4), // Padding inside the container
-                                        ),
                                       ],
                                     ),
-                                    SizedBox(height: 5), // Spacing between row and subtext
-                                    Text(
-                                      '\$100',
-                                      style: TextStyle(
-                                        color: Colors.grey.shade600,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                            //late  fee
-                            SizedBox(height: 16.h),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    SvgPicture.asset(AppIcons.dotIconForFamily),
-                                    SizedBox(width: 5), // Spacing between circle and text
-                                    Text(
-                                      'Cost',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    SizedBox(width: 50.w),
                                     Container(
                                       decoration: BoxDecoration(
-                                        color: Colors.blueGrey, // Background color for check icon
+                                        color: Colors.blueGrey,
                                         shape: BoxShape.rectangle,
                                         borderRadius: BorderRadius.circular(4),
                                       ),
@@ -374,20 +339,62 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                         color: Colors.white,
                                         size: 10,
                                       ),
-                                      padding: EdgeInsets.all(4), // Padding inside the container
+                                      padding: EdgeInsets.all(4),
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: 5), // Spacing between row and subtext
+                                SizedBox(height: 5.h),
                                 Text(
                                   '\$100',
-                                  style: TextStyle(
-                                    color: Colors.grey.shade600,
-                                  ),
+                                  style: TextStyle(color: Colors.grey.shade600),
                                 ),
                               ],
                             ),
+                            //late  fee
+                            SizedBox(height: 16.h),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Keeps the layout structured
+                                  children: [
+                                    // Empty space for alignment
+                                    Row(
+                                      children: [
+                                        SvgPicture.asset(AppIcons.dotIconForFamily),
+                                        SizedBox(width: 5.w),
+                                        Text(
+                                          'Cost',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.blueGrey,
+                                        shape: BoxShape.rectangle,
+                                        borderRadius: BorderRadius.circular(4),
+                                      ),
+                                      child: Icon(
+                                        Icons.check,
+                                        color: Colors.white,
+                                        size: 10,
+                                      ),
+                                      padding: EdgeInsets.all(4),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 5.h),
+                                Text(
+                                  '\$100',
+                                  style: TextStyle(color: Colors.grey.shade600),
+                                ),
                               ],
+                            ),
+
+                          ],
                             ),)
                           ],
 
