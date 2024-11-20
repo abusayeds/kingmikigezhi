@@ -68,7 +68,7 @@ class _ForgetPasswordOtpScreenState extends State<ForgetPasswordOtpScreen> {
                     onTap: () {
                       Get.toNamed(AppRoutes.forgotPasswordScreen);
                     },
-                    text: 'Send OTP',
+                    text: 'Send Verification Code',
                     color: AppColors.buttonColor,
                     textColor: Colors.white,
                     textStyle: TextStyle(fontSize: 12.sp),
