@@ -1,5 +1,6 @@
 import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/utils/app_colors.dart';
+import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/custom_button.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:flutter/material.dart';
@@ -20,8 +21,7 @@ class _DonationScreenState extends State<DonationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: CustomText(text: 'Donate',fontsize: 18.sp,
-        fontWeight: FontWeight.bold,),
+        title:  Text("Donate",style: AppStyles.fontSize18()),
         leading:  IconButton(
           icon: Icon(
             Icons.arrow_back_ios,
