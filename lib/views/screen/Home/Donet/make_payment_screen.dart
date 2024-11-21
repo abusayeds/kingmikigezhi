@@ -1,4 +1,5 @@
 import 'package:event_sharing/helpers/route.dart';
+import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -47,11 +48,7 @@ class _MakePaymentScreenState extends State<MakePaymentScreen> {
               Navigator.pop(context);
             },
           ),
-          title: CustomText(
-            text: 'Make Payment',
-            fontsize: 18.sp,
-            fontWeight: FontWeight.bold,
-          ),
+          title:  Text("Make Payment",style: AppStyles.fontSize18()),
           centerTitle: true,
           backgroundColor: Colors.transparent,
         ),
