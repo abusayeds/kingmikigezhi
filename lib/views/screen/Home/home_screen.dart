@@ -146,7 +146,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             default:
                               backgroundColor = Colors.white;
                           }
-
                           return DropdownMenuItem<String>(
                             value: value,
                             child: Padding(
