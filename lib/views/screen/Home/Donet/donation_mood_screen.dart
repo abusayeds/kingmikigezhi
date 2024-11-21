@@ -12,7 +12,7 @@ class DonationMoodScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Donate",style: AppStyles.fontSize18(),),
+        title: Text("Donate",style: AppStyles.fontSize18()),
         centerTitle: true,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios,size: 18.sp,),
