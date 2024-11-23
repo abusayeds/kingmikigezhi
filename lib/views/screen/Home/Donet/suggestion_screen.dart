@@ -32,12 +32,13 @@ class SuggestionScreen extends StatelessWidget {
         child: Column(
           children: [
            CustomTextField(
-               controller: _describtionCTRL,
+             controller: _describtionCTRL,
              hintText: 'Share your suggestion',
              maxLines: 15,
 
            ),
             SizedBox(height: 59.h),
+           // Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
