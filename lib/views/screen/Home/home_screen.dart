@@ -72,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 10.h),
+            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -84,34 +84,88 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     Container(
                       height: 35.h,
-                     // width: 120.w,
-                      padding: EdgeInsets.symmetric(horizontal: 8.h,),
+                      padding: EdgeInsets.symmetric(horizontal: 8.h),
                       decoration: BoxDecoration(
-                        color: Colors.blueGrey, // Background color
+                        color: AppColors.primaryColor,
                         borderRadius: BorderRadius.circular(8.r),
                       ),
                       child: DropdownButton<String>(
                         value: dropdownValue,
                         padding: EdgeInsets.zero,
                         underline: SizedBox(),
-                       icon: SvgPicture.asset(AppIcons.down_ArrowIcon),
-
-                       // icon: Icon(Icons.arrow_drop_down, color: Colors.white, size: 12.sp),
-                        dropdownColor: AppColors.primaryColor,
-                        style: TextStyle(color: Colors.white70, fontSize: 10.sp,fontWeight: FontWeight.w400),
+                        icon: SvgPicture.asset(AppIcons.down_ArrowIcon),
+                        dropdownColor: Colors.white,
                         onChanged: (String? newValue) {
                           setState(() {
                             dropdownValue = newValue!;
                           });
                         },
-                        items: <String>['All', 'Self', 'Spouse', 'Child Stephanie', 'Child Sophia'].map<DropdownMenuItem<String>>((String value) {
+                        selectedItemBuilder: (BuildContext context) {
+                          return <String>[
+                            'All',
+                            'Self',
+                            'Spouse',
+                            'Child Stephanie',
+                            'Child Sophia',
+                          ].map<Widget>((String value) {
+                            return Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 8.w),
+                              child: Center(
+                                child: Text(
+                                  value,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12.sp,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }).toList();
+                        },
+                        items: <String>[
+                          'All',
+                          'Self',
+                          'Spouse',
+                          'Child Stephanie',
+                          'Child Sophia',
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          Color backgroundColor;
+                          switch (value) {
+                            case 'Self':
+                              backgroundColor = AppColors.color67AB9F;
+                              break;
+                            case 'Spouse':
+                              backgroundColor = AppColors.colorE5CCFF;
+                              break;
+                            case 'Child Stephanie':
+                              backgroundColor = AppColors.colorCCFFE6;
+                              break;
+                            case 'Child Sophia':
+                              backgroundColor = AppColors.colorFFF2CC;
+                              break;
+                            default:
+                              backgroundColor = Colors.white;
+                          }
                           return DropdownMenuItem<String>(
                             value: value,
-                            child: Row(
-                              children: [
-                                Text(value),
-                                //SizedBox(width: 10.w),
-                              ],
+                            child: Padding(
+                              padding: EdgeInsets.all(4.r),
+                              child: Container(
+                                alignment: Alignment.centerLeft,
+                                decoration: BoxDecoration(
+                                  color: backgroundColor,
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 8.w),
+                                  child: Text(
+                                    value,
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 12.sp,
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
                           );
                         }).toList(),
@@ -185,7 +239,7 @@ class _HomeScreenState extends State<HomeScreen> {
             controller: _searchController,
             contenpaddingHorizontal: 12.w,
             contenpaddingVertical: 12.h,
-            hintText: "Search",
+            hintText: "Search Event",
             sufixicons: Padding(
               padding: EdgeInsets.symmetric(horizontal: 8.w),
               child: SvgPicture.asset(
