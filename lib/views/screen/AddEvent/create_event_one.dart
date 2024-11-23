@@ -55,7 +55,6 @@ class _CreateEventOneState extends State<CreateEventOne> {
   int _activeStepIndex = 0;
 
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,90 +67,158 @@ class _CreateEventOneState extends State<CreateEventOne> {
         centerTitle: true,
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 24.w,),
+        padding: EdgeInsets.symmetric(horizontal: 24.w),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              EasyStepper(
-                activeStep: _activeStepIndex,
-                stepShape: StepShape.rRectangle,
-                stepBorderRadius: 15,
-                borderThickness: 2,
-                stepRadius: 28,
-                finishedStepBorderColor: Colors.deepPurple,
-                finishedStepTextColor: Colors.deepPurple,
-                finishedStepBackgroundColor: Colors.brown,
-                activeStepIconColor: Colors.deepOrange,
-                showLoadingAnimation: false,
-                steps: [
-                  EasyStep(
-                    customStep: ClipRRect(
-                      borderRadius: BorderRadius.circular(15),
-                      child: Opacity(
-                        opacity: _activeStepIndex >= 0 ? 1 : 0.3,
-                        child: Image.asset('assets/images/music.png'),
+              Container(
+                height: 100.h,
+                child: EasyStepper(
+                  activeStep: _activeStepIndex,
+                  stepShape: StepShape.rRectangle,
+                  stepBorderRadius: 20,
+                  borderThickness: 2,
+                  stepRadius: 20,
+                  finishedStepBorderColor: AppColors.primaryColor,
+                  finishedStepTextColor:  AppColors.primaryColor,
+                  finishedStepBackgroundColor: AppColors.primaryColor,
+                  activeStepIconColor: AppColors.primaryColor,
+                  showLoadingAnimation: false,
+                  steps: [
+                    EasyStep(
+                      customStep: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Opacity(
+                          opacity: _activeStepIndex >= 0 ? 1 : 0.3,
+                          child: Container(
+                            color: AppColors.primaryColor,
+                            width: 50,
+                            height: 50,
+                            alignment: Alignment.center,
+                            child: const Text(
+                              '1',
+                              style: TextStyle(
+                                fontSize: 24,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      customTitle: Text(
+                        'Basic', style: TextStyle(fontSize: 12.sp),
+                        textAlign: TextAlign.center,
                       ),
                     ),
-                    customTitle: const Text(
-                      'Basic',style: TextStyle(fontSize: 10),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  EasyStep(
-                    customStep: ClipRRect(
-                      borderRadius: BorderRadius.circular(15),
-                      child: Opacity(
-                        opacity: _activeStepIndex >= 1 ? 1 : 0.3,
-                        child: Image.asset('assets/images/music.png'),
+                    EasyStep(
+                      customStep: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Opacity(
+                          opacity: _activeStepIndex >= 1 ? 1 : 0.3,
+                          child: Container(
+                            color: AppColors.primaryColor,
+                            width: 50,
+                            height: 50,
+                            alignment: Alignment.center,
+                            child: const Text(
+                              '2',
+                              style: TextStyle(
+                                fontSize: 24,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      customTitle: Text(
+                        'Details',style: TextStyle(fontSize: 12.sp),
+                        textAlign: TextAlign.center,
                       ),
                     ),
-                    customTitle: const Text(
-                      'Details',style: TextStyle(fontSize: 10),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  EasyStep(
-                    customStep: ClipRRect(
-                      borderRadius: BorderRadius.circular(15),
-                      child: Opacity(
-                        opacity: _activeStepIndex >= 2 ? 1 : 0.3,
-                        child: Image.asset('assets/images/music.png'),
+                    EasyStep(
+                      customStep: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Opacity(
+                          opacity: _activeStepIndex >= 2 ? 1 : 0.3,
+                          child: Container(
+                            color: AppColors.primaryColor,
+                            width: 50,
+                            height: 50,
+                            alignment: Alignment.center,
+                            child: const Text(
+                              '3',
+                              style: TextStyle(
+                                fontSize: 24,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      customTitle: Text(
+                        'Group/Category',style: TextStyle(fontSize: 12.sp),
+                        textAlign: TextAlign.center,
                       ),
                     ),
-                    customTitle: const Text(
-                      'Group/Category',style: TextStyle(fontSize: 10),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  EasyStep(
-                    customStep: ClipRRect(
-                      borderRadius: BorderRadius.circular(15),
-                      child: Opacity(
-                        opacity: _activeStepIndex >= 3 ? 1 : 0.3,
-                        child: Image.asset('assets/images/music.png'),
+                    EasyStep(
+                      customStep: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Opacity(
+                          opacity: _activeStepIndex >= 3 ? 1 : 0.3,
+                          child: Container(
+                            color: AppColors.primaryColor,
+                            width: 50,
+                            height: 50,
+                            alignment: Alignment.center,
+                            child: const Text(
+                              '4',
+                              style: TextStyle(
+                                fontSize: 24,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      customTitle:  Text(
+                        'Configuration',style:TextStyle(fontSize: 12.sp),
+                        textAlign: TextAlign.center,
                       ),
                     ),
-                    customTitle: const Text(
-                      'Configuration',style: TextStyle(fontSize: 10),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  EasyStep(
-                    customStep: ClipRRect(
-                      borderRadius: BorderRadius.circular(15),
-                      child: Opacity(
-                        opacity: _activeStepIndex >= 4 ? 1 : 0.3,
-                        child: Image.asset('assets/images/music.png'),
+                    EasyStep(
+                      customStep: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Opacity(
+                          opacity: _activeStepIndex >= 4 ? 1 : 0.3,
+                          child: Container(
+                            color: AppColors.primaryColor,
+                            width: 50,
+                            height: 50,
+                            alignment: Alignment.center,
+                            child: const Text(
+                              '5',
+                              style: TextStyle(
+                                fontSize: 24,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      customTitle: const Text(
+                        'History',style: TextStyle(fontSize: 10),
+                        textAlign: TextAlign.center,
                       ),
                     ),
-                    customTitle: const Text(
-                      'History',style: TextStyle(fontSize: 10),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ],
-                onStepReached: (index) => setState(() => _activeStepIndex = index),
+                  ],
+                  onStepReached: (index) => setState(() => _activeStepIndex = index),
+                ),
               ),
               if (_activeStepIndex == 0)
                 _buildStepOneContent()
@@ -162,7 +229,7 @@ class _CreateEventOneState extends State<CreateEventOne> {
                 else if (_activeStepIndex == 3)
                   StepFourForm()
                   else if (_activeStepIndex == 4)
-                    StepFiveForm()
+                  StepFiveForm()
             ],
           ),
         ),
@@ -172,321 +239,324 @@ class _CreateEventOneState extends State<CreateEventOne> {
 
   // Step 1 Content
   Widget _buildStepOneContent() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-
-        CustomText(text: "This is a shared community. All events are public",color: AppColors.colorD9A951),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: CustomText(text: "Step 1: Basic",fontsize: 20,fontWeight: FontWeight.w600,),
-        ),
-        // Cover Image Section
-        DottedBorderContainer(
-          child: AspectRatio(
-            aspectRatio: 16 / 9,
-            child: coverImage != null
-                ? Image.memory(coverImage!, fit: BoxFit.cover)
-                : _addImageButton(() => _pickImage(
-                    (image) => setState(() => coverImage = image))),
+    return Padding(
+      padding:  EdgeInsets.symmetric(vertical: 12.h),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CustomText(text: "This is a shared community. All events are public",color: AppColors.colorD9A951),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: CustomText(text: "Step 1: Basic",fontsize: 20,fontWeight: FontWeight.w600,),
           ),
-        ),
-        SizedBox(height: 23.h),
-        DottedBorderContainer(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CustomText(text: 'Session Number', fontWeight: FontWeight.w700, fontsize: 16.sp, bottom: 8.h,
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20.w),
-                  decoration: BoxDecoration(
-                    color: AppColors.fillColor,
-                    borderRadius: BorderRadius.circular(8.r),
-                    border: Border.all(color: AppColors.primaryColor, width: 1),
+          // Cover Image Section
+          DottedBorderContainer(
+            child: AspectRatio(
+              aspectRatio: 16 / 9,
+              child: coverImage != null
+                  ? Image.memory(coverImage!, fit: BoxFit.cover)
+                  : _addImageButton(() => _pickImage(
+                      (image) => setState(() => coverImage = image))),
+            ),
+          ),
+          SizedBox(height: 23.h),
+          DottedBorderContainer(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomText(text: 'Session Number', fontWeight: FontWeight.w700, fontsize: 16.sp, bottom: 8.h,
                   ),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      value: _selectedNumber,
-                      dropdownColor: AppColors.fillColor,
-                      menuWidth: 240.w,
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20.w),
+                    decoration: BoxDecoration(
+                      color: AppColors.fillColor,
                       borderRadius: BorderRadius.circular(8.r),
-                      hint: Text("Select Number", style:AppStyles.fontSize14(color: AppColors.color414141)),
-                      icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
+                      border: Border.all(color: AppColors.primaryColor, width: 1),
+                    ),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton<String>(
+                        value: _selectedNumber,
+                        dropdownColor: AppColors.fillColor,
+                        menuWidth: 240.w,
+                        borderRadius: BorderRadius.circular(8.r),
+                        hint: Text("Select Number", style:AppStyles.fontSize14(color: AppColors.color414141)),
+                        icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
+                        ),
+                        isExpanded: true,
+                        items: numberList.map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(
+                              value,
+                              style: const TextStyle(color: Colors.black),
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: (newValue) {
+                          setState(() {
+                            _selectedNumber = newValue;
+                          });
+                        },
                       ),
-                      isExpanded: true,
-                      items: numberList.map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(
-                            value,
-                            style: const TextStyle(color: Colors.black),
-                          ),
-                        );
-                      }).toList(),
-                      onChanged: (newValue) {
-                        setState(() {
-                          _selectedNumber = newValue;
-                        });
-                      },
                     ),
                   ),
-                ),
-                Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(4),
-                      child: Text(
-                        'Year',
-                        style: AppStyles.fontSize16(color: AppColors.blackColor,fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                    SizedBox(width: 120.w),
-                    Padding(
-                      padding: const EdgeInsets.all(4),
-                      child: Text(
-                        'Session',
-                        style:AppStyles.fontSize16(color: AppColors.blackColor,fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 20.w),
-                        decoration: BoxDecoration(
-                          color: AppColors.fillColor,
-                          borderRadius: BorderRadius.circular(8.r),
-                          border: Border.all(color: AppColors.primaryColor, width: 1),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(4),
+                        child: Text(
+                          'Year',
+                          style: AppStyles.fontSize16(color: AppColors.blackColor,fontWeight: FontWeight.w600),
                         ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            value: _selectedYear,
-                            dropdownColor: AppColors.fillColor,
-                            menuWidth: 240.w,
+                      ),
+                      SizedBox(width: 120.w),
+                      Padding(
+                        padding: const EdgeInsets.all(4),
+                        child: Text(
+                          'Session',
+                          style:AppStyles.fontSize16(color: AppColors.blackColor,fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 20.w),
+                          decoration: BoxDecoration(
+                            color: AppColors.fillColor,
                             borderRadius: BorderRadius.circular(8.r),
-                            hint: Text("Year",style:AppStyles.fontSize14(color: AppColors.color414141)),
-                            icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
+                            border: Border.all(color: AppColors.primaryColor, width: 1),
+                          ),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                              value: _selectedYear,
+                              dropdownColor: AppColors.fillColor,
+                              menuWidth: 240.w,
+                              borderRadius: BorderRadius.circular(8.r),
+                              hint: Text("Year",style:AppStyles.fontSize14(color: AppColors.color414141)),
+                              icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
+                              ),
+                              isExpanded: true,
+                              items: yearList.map((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style: const TextStyle(color: Colors.black),
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: (newValue) {
+                                setState(() {
+                                  _selectedYear = newValue;
+                                });
+                              },
                             ),
-                            isExpanded: true,
-                            items: yearList.map((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(
-                                  value,
-                                  style: const TextStyle(color: Colors.black),
-                                ),
-                              );
-                            }).toList(),
-                            onChanged: (newValue) {
-                              setState(() {
-                                _selectedYear = newValue;
-                              });
-                            },
                           ),
                         ),
                       ),
-                    ),
-                    SizedBox(width: 8.w),
-                    Expanded(
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 20.w),
-                        decoration: BoxDecoration(
-                          color: AppColors.fillColor,
-                          borderRadius: BorderRadius.circular(8.r),
-                          border: Border.all(color: AppColors.primaryColor, width: 1),
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            value: _selectedSession,
-                            dropdownColor: AppColors.fillColor,
-                            menuWidth: 240.w,
+                      SizedBox(width: 8.w),
+                      Expanded(
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 20.w),
+                          decoration: BoxDecoration(
+                            color: AppColors.fillColor,
                             borderRadius: BorderRadius.circular(8.r),
-                            hint: Text("Session", style:AppStyles.fontSize14(color: AppColors.color414141)),
-                            icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
+                            border: Border.all(color: AppColors.primaryColor, width: 1),
+                          ),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                              value: _selectedSession,
+                              dropdownColor: AppColors.fillColor,
+                              menuWidth: 240.w,
+                              borderRadius: BorderRadius.circular(8.r),
+                              hint: Text("Session", style:AppStyles.fontSize14(color: AppColors.color414141)),
+                              icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
+                              ),
+                              isExpanded: true,
+                              items: sessionList.map((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style: const TextStyle(color: Colors.black),
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: (newValue) {
+                                setState(() {
+                                  _selectedSession = newValue;
+                                });
+                              },
                             ),
-                            isExpanded: true,
-                            items: sessionList.map((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(
-                                  value,
-                                  style: const TextStyle(color: Colors.black),
-                                ),
-                              );
-                            }).toList(),
-                            onChanged: (newValue) {
-                              setState(() {
-                                _selectedSession = newValue;
-                              });
-                            },
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-        SizedBox(height: 16.h),
-        CustomText(text: 'Program',fontsize: 16,fontWeight: FontWeight.w600,),
-        SizedBox(height: 12.h),
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 20.w),
-          decoration: BoxDecoration(
-            color: AppColors.fillColor,
-            borderRadius: BorderRadius.circular(8.r),
-            border: Border.all(color: AppColors.primaryColor, width: 1),
-          ),
-          child: DropdownButtonHideUnderline(
-            child: DropdownButton<String>(
-              value: _selectedProgram,
-              dropdownColor: AppColors.fillColor,
-              menuWidth: 240.w,
+          SizedBox(height: 16.h),
+          CustomText(text: 'Program',fontsize: 16,fontWeight: FontWeight.w600,),
+          SizedBox(height: 12.h),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            decoration: BoxDecoration(
+              color: AppColors.fillColor,
               borderRadius: BorderRadius.circular(8.r),
-              hint: Text("Select Program", style:AppStyles.fontSize14(color: AppColors.color414141)),
-              icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
-              ),
-              isExpanded: true,
-              items:programList.map((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(
-                    value,
-                    style: const TextStyle(color: Colors.black),
-                  ),
-                );
-              }).toList(),
-              onChanged: (newValue) {
-                setState(() {
-                  _selectedProgram = newValue;
-                });
-              },
+              border: Border.all(color: AppColors.primaryColor, width: 1),
             ),
-          ),
-        ),
-        //organization Name
-        SizedBox(height: 16.h),
-        CustomText(text: 'Organizer',fontsize: 16,fontWeight: FontWeight.w600,),
-        SizedBox(height: 12.h),
-        CustomTextField(
-          controller: organizerController,
-          hintText: 'Type Organizer',
-          hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
-          sufixicons: Padding(
-            padding: EdgeInsets.all(16.w),
-          ),
-        ),
-        //organization Name
-        SizedBox(height: 16.h),
-        CustomText(text: 'Event Name',fontsize: 16,fontWeight: FontWeight.w600,),
-        SizedBox(height: 12.h),
-        CustomTextField(
-          controller: eventName,
-          hintText: 'Type Event Name',
-          hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
-          sufixicons: Padding(
-            padding: EdgeInsets.all(16.w),
-          ),
-        ),
-        //event portal Name
-        SizedBox(height: 16.h),
-        CustomText(text: 'Event Portal',fontsize: 16,fontWeight: FontWeight.w600,),
-        SizedBox(height: 12.h),
-        CustomTextField(
-          controller: eventPortal,
-          hintText: 'Type Event Portal',
-          hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
-          sufixicons: Padding(
-            padding: EdgeInsets.all(16.w),
-          ),
-        ),
-        //registartion portal Name
-        SizedBox(height: 16.h),
-        CustomText(text: 'Registartion Portal',fontsize: 16,fontWeight: FontWeight.w600,),
-        SizedBox(height: 12.h),
-        CustomTextField(
-          controller: registrationPortal,
-          hintText: 'Type Registartion Portal',
-          hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
-          sufixicons: Padding(
-            padding: EdgeInsets.all(16.w),
-          ),
-        ),
-
-        //description portal Name
-        SizedBox(height: 16.h),
-        CustomText(text: 'Description',fontsize: 16,fontWeight: FontWeight.w600,),
-        SizedBox(height: 12.h),
-        CustomTextField(
-          maxLines: 3,
-          controller: descriptionCRTL,
-          hintText: 'Type your Description...',
-          hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
-          sufixicons: Padding(
-            padding: EdgeInsets.all(16.w),
-          ),
-        ),
-
-        //note portal Name
-        SizedBox(height: 16.h),
-        CustomText(text: 'Note',fontsize: 16,fontWeight: FontWeight.w600,),
-        SizedBox(height: 12.h),
-        CustomTextField(
-          maxLines: 3,
-          controller: noteCRTL,
-          hintText: 'Type your event note',
-          hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
-          sufixicons: Padding(
-            padding: EdgeInsets.all(16.w),
-          ),
-        ),
-        SizedBox(height: 16.h),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(
-              width: 166.w,
-              child: CustomButton(
-                onTap: () {
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton<String>(
+                value: _selectedProgram,
+                dropdownColor: AppColors.fillColor,
+                menuWidth: 240.w,
+                borderRadius: BorderRadius.circular(8.r),
+                hint: Text("Select Program", style:AppStyles.fontSize14(color: AppColors.color414141)),
+                icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
+                ),
+                isExpanded: true,
+                items:programList.map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(
+                      value,
+                      style: const TextStyle(color: Colors.black),
+                    ),
+                  );
+                }).toList(),
+                onChanged: (newValue) {
                   setState(() {
-                    if (_activeStepIndex > 0) {
-                      _activeStepIndex--;
-                    }
+                    _selectedProgram = newValue;
                   });
                 },
-                text: "Back",
-                color: AppColors.fillColor,
-                textColor: Colors.black,
               ),
             ),
-            SizedBox(
-              width: 166.w,
-              child: CustomButton(
-                onTap: () {
-                  setState(() {
-                    if (_activeStepIndex < 1) {
-                      _activeStepIndex++;
-                    }
-                  });
-                },
-                text: "Next",
-                textColor: Colors.white,
-                color: AppColors.buttonColor,
-              ),
+          ),
+          //organization Name
+          SizedBox(height: 16.h),
+          CustomText(text: 'Organizer',fontsize: 16,fontWeight: FontWeight.w600,),
+          SizedBox(height: 12.h),
+          CustomTextField(
+            controller: organizerController,
+            hintText: 'Type Organizer',
+            hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
+            sufixicons: Padding(
+              padding: EdgeInsets.all(16.w),
             ),
-          ],
-        ),
+          ),
+          //organization Name
+          SizedBox(height: 16.h),
+          CustomText(text: 'Event Name',fontsize: 16,fontWeight: FontWeight.w600,),
+          SizedBox(height: 12.h),
+          CustomTextField(
+            controller: eventName,
+            hintText: 'Type Event Name',
+            hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
+            sufixicons: Padding(
+              padding: EdgeInsets.all(16.w),
+            ),
+          ),
+          //event portal Name
+          SizedBox(height: 16.h),
+          CustomText(text: 'Event Portal',fontsize: 16,fontWeight: FontWeight.w600,),
+          SizedBox(height: 12.h),
+          CustomTextField(
+            controller: eventPortal,
+            hintText: 'Type Event Portal',
+            hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
+            sufixicons: Padding(
+              padding: EdgeInsets.all(16.w),
+            ),
+          ),
+          //registartion portal Name
+          SizedBox(height: 16.h),
+          CustomText(text: 'Registartion Portal',fontsize: 16,fontWeight: FontWeight.w600,),
+          SizedBox(height: 12.h),
+          CustomTextField(
+            controller: registrationPortal,
+            hintText: 'Type Registartion Portal',
+            hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
+            sufixicons: Padding(
+              padding: EdgeInsets.all(16.w),
+            ),
+          ),
 
-        SizedBox(height: 12.h),
-      ],
+          //description portal Name
+          SizedBox(height: 16.h),
+          CustomText(text: 'Description',fontsize: 16,fontWeight: FontWeight.w600,),
+          SizedBox(height: 12.h),
+          CustomTextField(
+            maxLines: 3,
+            controller: descriptionCRTL,
+            hintText: 'Type your Description...',
+            hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
+            sufixicons: Padding(
+              padding: EdgeInsets.all(16.w),
+            ),
+          ),
+
+          //note portal Name
+          SizedBox(height: 16.h),
+          CustomText(text: 'Note',fontsize: 16,fontWeight: FontWeight.w600,),
+          SizedBox(height: 12.h),
+          CustomTextField(
+            maxLines: 3,
+            controller: noteCRTL,
+            hintText: 'Type your event note',
+            hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
+            sufixicons: Padding(
+              padding: EdgeInsets.all(16.w),
+            ),
+          ),
+          SizedBox(height: 16.h),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(
+                width: 166.w,
+                child: CustomButton(
+                  onTap: () {
+                    setState(() {
+                      if (_activeStepIndex > 0) {
+                        _activeStepIndex--;
+                      }
+                    });
+                  },
+                  text: "Back",
+                  color: AppColors.fillColor,
+                  textColor: Colors.black,
+                ),
+              ),
+              SizedBox(
+                width: 166.w,
+                child: CustomButton(
+                  onTap: () {
+                    setState(() {
+                      if (_activeStepIndex < 1) {
+                        _activeStepIndex++;
+                      }
+                    });
+                  },
+                  text: "Next",
+                  textColor: Colors.white,
+                  color: AppColors.buttonColor,
+                ),
+              ),
+            ],
+          ),
+
+          SizedBox(height: 12.h),
+        ],
+      ),
     );
   }
 

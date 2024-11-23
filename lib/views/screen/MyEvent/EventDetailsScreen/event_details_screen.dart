@@ -411,26 +411,26 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                 fontsize: 16.sp,
                 fontWeight: FontWeight.w600,
               ),
-              const SizedBox(height: 8),
+               SizedBox(height: 8.h),
               Text( 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable.',
                 maxLines: 20,
                 textAlign: TextAlign.start,
                 style: AppStyles.fontSize14(color: AppColors.color414141),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16.w),
               //Note
               CustomText(
                 text: AppStrings.note,
                 fontsize: 16.sp,
                 fontWeight: FontWeight.w600,
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: 8.h),
               Text( 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable.',
                 maxLines: 20,
                 textAlign: TextAlign.start,
                 style: AppStyles.fontSize14(color: AppColors.color414141),
               ),
-              const SizedBox(height: 16),
+             SizedBox(height: 16.h),
               //=======================> Age up to 10 years old Section <============================
               InputDecorator(
                 decoration: InputDecoration(
@@ -560,18 +560,19 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
               ),
               Divider(thickness: 1,color: Colors.grey),
               // Semi Final section
-              SizedBox(height: 16),
+              SizedBox(height: 16.h),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
                       SvgPicture.asset(AppIcons.myEventIcon,color: AppColors.primaryColor,),
-                      SizedBox(width: 8),
+                      SizedBox(width: 8.w),
                       Text('Semi Final', style: TextStyle(fontSize: 16.sp),
                       ),
                     ],
                   ),
+                  SizedBox(height: 16.h),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -611,7 +612,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 8),
+                      SizedBox(height: 8.h),
                       Row(
                         children: [
                           SvgPicture.asset(AppIcons.dotIconForFamily),
@@ -620,7 +621,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                           Text('Onsite Event',style: TextStyle(color: AppColors.color414141)),
                         ],
                       ),
-                      SizedBox(height: 8),
+                      SizedBox(height: 8.h),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -640,20 +641,19 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
               ),
               Divider(thickness: 1,color: Colors.grey),
               // Final section
-              SizedBox(height: 16),
+              SizedBox(height: 16.h),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
                       SvgPicture.asset(AppIcons.myEventIcon,color: AppColors.primaryColor,),
-                      SizedBox(width: 8),
+                      SizedBox(width: 8.w),
                       Text('Final', style: TextStyle(fontSize: 16),
                       ),
                     ],
                   ),
-                  SizedBox(height: 15), // Space after header
-
+                  SizedBox(height: 16.h),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -721,7 +721,6 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                 ],
               ),
               Divider(thickness: 1,color: Colors.grey),
-
               //history
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -730,11 +729,11 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                   Text(
                     'History :',
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 16.sp,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 8),
+                  SizedBox(height: 8.h),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -748,11 +747,11 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                               shape: BoxShape.circle,
                             ),
                           ),
-                          SizedBox(width: 8),
+                          SizedBox(width: 8.w),
                           Text('2021 - 1st place winner',style: TextStyle(color: AppColors.color414141)),
                         ],
                       ),
-                      SizedBox(height: 8),
+                      SizedBox(height: 8.h),
                       Row(
                         children: [
                           Container(
@@ -767,7 +766,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                           Text('2022 - 2nd place winner',style: TextStyle(color: AppColors.color414141)),
                         ],
                       ),
-                      SizedBox(height: 8),
+                      SizedBox(height: 8.h),
                       Row(
                         children: [
                           Container(
@@ -784,7 +783,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 15),
+                  SizedBox(height: 16.h),
                   Divider(thickness: 1,color: Colors.grey),
                   Align(
                     alignment: Alignment.centerRight,
