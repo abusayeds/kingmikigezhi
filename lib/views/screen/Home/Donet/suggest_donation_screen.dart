@@ -12,19 +12,11 @@ class SuggestionDonationPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Row(
-          children: [
-            IconButton(
-              icon: Icon(
-                Icons.arrow_back_ios,
-                color: Colors.black,
-                size: 18.w,
-              ),
-              onPressed: () {
-                Get.back();
-              },
-            ),
-          ],
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios,size: 18.sp,),
+          onPressed: () {
+            Get.back();
+          },
         ),
         centerTitle: true,
       ),
