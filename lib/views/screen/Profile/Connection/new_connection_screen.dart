@@ -36,90 +36,87 @@ class _NewInvitationScreenState extends State<NewInvitationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView.builder(
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(12.r),
         itemCount: invitations.length,
         itemBuilder: (context, index) {
           final invitation = invitations[index];
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Container(
-              padding: EdgeInsets.all(12.0),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 45,
-                        backgroundColor: Colors.grey.shade300,
-                        child: Icon(Icons.person, size: 40, color: Colors.white),
-                      ),
-                      SizedBox(width: 12),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Alax Tom', style: AppStyles.fontSize16(fontWeight: FontWeight.w600,color: AppColors.color414141),),
-                          SizedBox(height: 8.h,),
-                          Row(
-                            children: [
-                              SvgPicture.asset(AppIcons.dotIconForFamily),
-                              SizedBox(width: 4),
-                              Text("Account ID: ${invitation['accountID']}",
-                                style: AppStyles.fontSize10(color: AppColors.color414141),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 8.h,),
-                          Row(
-                            children: [
-                              SvgPicture.asset(AppIcons.dotIconForFamily),
-                              SizedBox(width: 4),
-                              Text("Contribution: ${invitation['contribution']}",
-                                style: AppStyles.fontSize10(color: AppColors.color414141),
-                                ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10),
-                  Row(
-                    children: [
-                      Expanded(
-                          child:CustomButton(
-                            onTap: (){},
-                            text: 'Ignore',textStyle: TextStyle(fontSize: 16,fontWeight: FontWeight.w500),
-                            color: AppColors.fillColor,
-                            borderColor: AppColors.buttonA47059,
-                            textColor: AppColors.blackColor,
-                          )
-                      ),
-                      SizedBox(width: 10),
-                      Expanded(
-                          child:CustomButton(
-                            onTap: (){},
-                            text: 'Accept',textStyle: TextStyle(fontSize: 16,fontWeight: FontWeight.w500),
-                            color: AppColors.buttonA47059,
-                            borderColor: AppColors.buttonA47059,
-                            textColor: AppColors.textColor,
-                          )
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child:  Divider(thickness: .5,color: AppColors.greyColor,),
-                  )
-                ],
-
-              ),
-
+          return Container(
+            padding: EdgeInsets.symmetric(vertical: 4.h,horizontal: 8.w),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10.r),
             ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 45.r,
+                      backgroundColor: Colors.grey.shade300,
+                      child: Icon(Icons.person, size: 40, color: Colors.white),
+                    ),
+                    SizedBox(width: 12.w),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Alax Tom', style: AppStyles.fontSize16(fontWeight: FontWeight.w600,color: AppColors.color414141),),
+                        SizedBox(height: 8.h,),
+                        Row(
+                          children: [
+                            SvgPicture.asset(AppIcons.dotIconForFamily),
+                            SizedBox(width: 4),
+                            Text("Account ID: ${invitation['accountID']}",
+                              style: AppStyles.fontSize10(color: AppColors.color414141),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 8.h,),
+                        Row(
+                          children: [
+                            SvgPicture.asset(AppIcons.dotIconForFamily),
+                            SizedBox(width: 4),
+                            Text("Contribution: ${invitation['contribution']}",
+                              style: AppStyles.fontSize10(color: AppColors.color414141),
+                              ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                SizedBox(height: 10.h),
+                Row(
+                  children: [
+                    Expanded(
+                        child:CustomButton(
+                          onTap: (){},
+                          text: 'Ignore',textStyle: TextStyle(fontSize: 16,fontWeight: FontWeight.w500),
+                          color: AppColors.fillColor,
+                          borderColor: AppColors.buttonA47059,
+                          textColor: AppColors.blackColor,
+                        )
+                    ),
+                    SizedBox(width: 10.w),
+                    Expanded(
+                        child:CustomButton(
+                          onTap: (){},
+                          text: 'Accept',textStyle: TextStyle(fontSize: 16,fontWeight: FontWeight.w500),
+                          color: AppColors.buttonA47059,
+                          borderColor: AppColors.buttonA47059,
+                          textColor: AppColors.textColor,
+                        )
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8.w),
+                  child:  Divider(thickness: .5,color: AppColors.greyColor,),
+                )
+              ],
+            ),
+
           );
         },
       ),

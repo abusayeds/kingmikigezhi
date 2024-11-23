@@ -55,7 +55,7 @@ class DonationMoodScreen extends StatelessWidget {
               textColor: AppColors.textColor,
             ),
           ),
-          SizedBox(height: 20),
+          SizedBox(height: 60.h),
         ],
       ),
     );

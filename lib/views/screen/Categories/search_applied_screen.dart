@@ -90,7 +90,7 @@ class _CategoriesSearchAppliedScreenState
               ),
               SizedBox(height: 16.h),
               CustomText(
-                text: 'Total 50 Events', fontsize: 20.sp, color: AppColors.blackColor,fontWeight: FontWeight.w600),
+                text: 'Total 50 Events', fontsize: 18.sp, color: AppColors.blackColor,fontWeight: FontWeight.w600),
               //=======================> Event Name Section <============================
               ListView.builder(
                 itemCount: events.length,
@@ -122,13 +122,13 @@ class _CategoriesSearchAppliedScreenState
                                   borderRadius: BorderRadius.circular(10.r),
                                   child: Image.asset(
                                     event['imageUrl']!,
-                                    height: 75.0.h,
-                                    width: 75.0.w,
+                                    height: 75.h,
+                                    width: 75.w,
                                     fit: BoxFit.cover,
                                   ),
                                 ),
                                 SizedBox(width: 12.w),
-                                //=====================> Event Details Section <=========================
+                                //===================== >> Event Details Section << =========================
                                 Expanded(
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
@@ -136,8 +136,8 @@ class _CategoriesSearchAppliedScreenState
                                     children: [
                                       CustomText(
                                         text: event['title']!,
-                                        fontsize: 18.sp,
-                                        fontWeight: FontWeight.bold,
+                                        fontsize: 14.sp,
+                                        fontWeight: FontWeight.w500
                                       ),
                                       //=====================> Event Info Section <=========================
                                       Row(
