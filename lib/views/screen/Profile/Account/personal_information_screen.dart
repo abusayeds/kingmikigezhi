@@ -1,5 +1,6 @@
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:event_sharing/utils/app_strings.dart';
+import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/custom_text_field.dart';
 import 'package:event_sharing/views/screen/Profile/Account/top_profile_section.dart';
 import 'package:flutter/material.dart';
@@ -37,9 +38,16 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading:  IconButton(
+          icon: Icon(Icons.arrow_back_ios,
+              color: Colors.black, size: 18.w),
+          onPressed: () {
+            Get.back();
+          },
+        ),
         title: CustomText(
           text: AppStrings.account,
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.bold,
           fontsize: 18.sp,
         ),
         centerTitle: true,
@@ -55,34 +63,33 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
               //=================================> Profile Name <==========================
              Padding(
                padding: const EdgeInsets.all(4),
-               child: Text('Account ID',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600)),
+               child: Text('Account ID',style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w600)),
              ),
               CustomListTile(
-                backgroundColor: AppColors.colorEDF2F4,
-                title: '20103200'??'',),
+                title: '20103200'?? '' ,backgroundColor: AppColors.colorEDF2F4,titleColor: AppColors.color414141),
               //=================================> Email Name <==========================
               Padding( padding: const EdgeInsets.all(4),
-                child: Text('First Name',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600)),
+                child: Text('First Name',style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w600)),
               ),
-              CustomListTile(title: 'Mahafujer'??'',  backgroundColor: AppColors.colorEDF2F4,),
+              CustomListTile(title: 'Bashar Islam'?? '',  backgroundColor: AppColors.colorEDF2F4,titleColor: AppColors.color414141),
               //=================================> Phone Number <========================
               Padding(
-                padding: const EdgeInsets.all(4),
-                child: Text('Last Name',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600)),
+                padding:  EdgeInsets.all(4),
+                child: Text('Last Name',style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w600)),
               ),
-              CustomListTile(title:'Rahman'??'',backgroundColor: AppColors.colorEDF2F4,),
+              CustomListTile(title:'Rahman'??'',backgroundColor: AppColors.colorEDF2F4,titleColor: AppColors.color414141),
               //=================================> Address Number <========================
               Padding(
                 padding: const EdgeInsets.all(4),
                 child: Text('Public Display Name',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600)),
               ),
-              CustomListTile(title: 'Dhaka'??'',backgroundColor: AppColors.colorEDF2F4,),
+              CustomListTile(title: 'Dhaka'??'', backgroundColor: AppColors.colorEDF2F4,titleColor: AppColors.color414141),
               //=================================> Gender <========================
               Padding(
                 padding: const EdgeInsets.all(4),
                 child: Text('Gender',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600)),
               ),
-              CustomListTile(title: 'Male'??'',backgroundColor: AppColors.colorEDF2F4,),
+              CustomListTile(title: 'Male'??'',backgroundColor: AppColors.colorEDF2F4,titleColor: AppColors.color414141),
               //==========================> Birth Date Text Field Row <=======================
               Padding(
                 padding: const EdgeInsets.all(4),
@@ -96,6 +103,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                     child: CustomTextField(
                       controller: birthDayYearController,
                       hintText: 'Day',
+                      hintTextStyle: TextStyle(color: AppColors.color414141,fontSize: 14.sp),
                       sufixicons: Padding(
                         padding: EdgeInsets.only(right: 12.w),
                         child: SvgPicture.asset(
@@ -112,6 +120,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                     child: CustomTextField(
                       controller: birthDayMonthController,
                       hintText: 'Month',
+                      hintTextStyle: TextStyle(color: AppColors.color414141,fontSize: 14.sp),
                       sufixicons: Padding(
                         padding: EdgeInsets.only(right: 12.w),
                         child: SvgPicture.asset(
@@ -128,6 +137,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                     child: CustomTextField(
                       controller: birthDayYearController,
                       hintText: 'Year',
+                      hintTextStyle: TextStyle(color: AppColors.color414141,fontSize: 14.sp),
                       sufixicons: Padding(
                         padding: EdgeInsets.only(right: 12.w),
                         child: SvgPicture.asset(
@@ -140,10 +150,10 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                   ),
                 ],
               ),
-
+              SizedBox(height: 8.h),
               //=================================> Email <========================
               Padding(
-                padding: const EdgeInsets.all(4),
+                padding:  EdgeInsets.all(4.r),
                 child: Text('Email',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600)),
               ),
               CustomListTile(
@@ -195,11 +205,12 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                       controller: phoneNumberController,
                       keyboardType: TextInputType.phone,
                       hintText: AppStrings.phoneNumberHintText,
+                      hintTextStyle: TextStyle(color: AppColors.color414141,fontSize: 14.sp),
                       ),
                     ),
                 ],
               ),
-
+              SizedBox(height: 8.h),
               //=================================> Location <========================
               Padding(
                 padding: const EdgeInsets.all(4),
@@ -213,6 +224,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                     child: CustomTextField(
                       controller: locationCountryController,
                       hintText: 'Country',
+                      hintTextStyle: TextStyle(color: AppColors.color414141,fontSize: 14.sp),
                       sufixicons: Padding(
                         padding: EdgeInsets.only(right: 12.w),
                         child: SvgPicture.asset(
@@ -220,7 +232,6 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                           width: 16.w,
                         ),
                       ),
-
                     ),
                   ),
                   SizedBox(
@@ -228,6 +239,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                     child: CustomTextField(
                       controller: locationStateController,
                       hintText: 'State',
+                      hintTextStyle: TextStyle(color: AppColors.color414141,fontSize: 14.sp),
                       sufixicons: Padding(
                         padding: EdgeInsets.only(right: 12.w),
                         child: SvgPicture.asset(
@@ -243,6 +255,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                     child: CustomTextField(
                       controller: locationCityController,
                       hintText: 'City',
+                      hintTextStyle: TextStyle(color: AppColors.color414141,fontSize: 14.sp),
                       sufixicons: Padding(
                         padding: EdgeInsets.only(right: 12.w),
                         child: SvgPicture.asset(
@@ -254,7 +267,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                   ),
                 ],
               ),
-
+              SizedBox(height: 8.h),
               //=================================> Skill <========================
               Padding(
                 padding: const EdgeInsets.all(4),
@@ -263,16 +276,16 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
           Container(
             decoration: BoxDecoration(
               color:AppColors.colorEDF2F4,
-              borderRadius: BorderRadius.all(Radius.circular(8)),
-              border: Border.all(color: AppColors.primaryColor, width: 1),
+              borderRadius: BorderRadius.all(Radius.circular(8.r)),
+              border: Border.all(color: AppColors.primaryColor, width: 1.w),
             ),
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding:  EdgeInsets.symmetric(vertical: 16.h),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding:  EdgeInsets.symmetric(horizontal: 8.0),
+                    padding: EdgeInsets.symmetric(horizontal: 8.w),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -285,7 +298,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                               ),
                               TextSpan(
                                 text: 'Chess since 2020',
-                                style: TextStyle(color: Colors.black),
+                                style: AppStyles.fontSize14(color: AppColors.color414141)
                               ),
                             ],
                           ),
@@ -313,7 +326,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                               ),
                               TextSpan(
                                 text: 'Math since 2021',
-                                style: TextStyle(color: Colors.black),
+                                style: AppStyles.fontSize14(color: AppColors.color414141)
                               ),
                             ],
                           ),
@@ -341,7 +354,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                               ),
                               TextSpan(
                                 text: 'Piano since 2023',
-                                style: TextStyle(color: Colors.black),
+                                style: AppStyles.fontSize14(color: AppColors.color414141)
                               ),
                             ],
                           ),
@@ -355,7 +368,6 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                       ],
                     ),
                   ),
-
                 ],
               ),
             ),
@@ -364,8 +376,6 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
           ),
         ),
       ),
-
     );
   }
-
 }

@@ -1,11 +1,10 @@
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
-import 'package:event_sharing/views/screen/Profile/Connection/added_connection_screen.dart';
-import 'package:event_sharing/views/screen/Profile/Connection/new_invitations_screen.dart';
-import 'package:event_sharing/views/screen/Profile/MyFamily/member/member_profile.dart';
-import 'package:event_sharing/views/screen/Profile/MyFamily/owner/owner_profile.dart';
+import 'package:event_sharing/views/screen/Profile/Connection/remove_connection_screen.dart';
+import 'package:event_sharing/views/screen/Profile/Connection/new_connection_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 
 class MyConnectionScreen extends StatefulWidget {
@@ -44,8 +43,15 @@ class _MyConnectionScreenState extends State<MyConnectionScreen>
         // bottomNavigationBar: const UserBottomMenu(2),
         appBar: AppBar(
           backgroundColor: Colors.white,
-          title: const Text('Connection',style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600)),
+          title:  Text('Connection',style: TextStyle(fontSize: 18.sp,fontWeight: FontWeight.bold)),
           centerTitle: true,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios,
+                color: Colors.black, size: 18.w),
+            onPressed: () {
+              Get.back();
+            },
+          ),
           bottom: TabBar(
             controller: _tabController,
             indicatorColor: Colors.transparent,

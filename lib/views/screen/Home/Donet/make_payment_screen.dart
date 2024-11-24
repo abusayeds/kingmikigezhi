@@ -1,195 +1,161 @@
 import 'package:event_sharing/helpers/route.dart';
-import 'package:event_sharing/utils/app_colors.dart';
-import 'package:event_sharing/utils/app_images.dart';
+import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/custom_button.dart';
-import 'package:event_sharing/views/base/custom_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import '../../../../utils/app_colors.dart';
+import '../../../../utils/app_icons.dart';
+import '../../../../utils/app_images.dart';
+import '../../../base/custom_text.dart';
+import '../../../base/custom_text_field.dart';
+
 
 class MakePaymentScreen extends StatefulWidget {
+  const MakePaymentScreen({super.key});
+
   @override
-  _MakePaymentScreenState createState() => _MakePaymentScreenState();
+  State<MakePaymentScreen> createState() => _MakePaymentScreenState();
 }
 
 class _MakePaymentScreenState extends State<MakePaymentScreen> {
-  TextEditingController cardHolderName = TextEditingController();
-  TextEditingController cardNumber = TextEditingController();
-  TextEditingController cardCVV = TextEditingController();
-  TextEditingController cardDate = TextEditingController();
+  final TextEditingController _holderNameCTRL = TextEditingController();
+  final TextEditingController _cardNumberCTRL = TextEditingController();
+  final TextEditingController _cvvCTRL = TextEditingController();
+  final TextEditingController _mmCTRL = TextEditingController();
 
-  final _formKey = GlobalKey<FormState>();
   String? _selectedPaymentMethod;
+
+  _selectPaymentMethod(String method) {
+    setState(() {
+      _selectedPaymentMethod = method;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Make Payment'),
-        centerTitle: true,
         backgroundColor: Colors.white,
-        elevation: 0,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Form(
-          key: _formKey,
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Colors.black,
+              size: 18.w,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          title:  Text("Make Payment",style: AppStyles.fontSize18()),
+          centerTitle: true,
+          backgroundColor: Colors.transparent,
+        ),
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 24.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Select Payment Method',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              CustomText(
+                text: 'Select Payment Method',
+                fontWeight: FontWeight.w600,
+                fontsize: 18.sp,
               ),
-              const SizedBox(height: 20),
-              // Payment method selection
+              SizedBox(height: 16.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  // Visa
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _selectedPaymentMethod = 'visa';
-                      });
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(8.0),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: _selectedPaymentMethod == 'visa'
-                              ? Colors.blue
-                              : Colors.transparent,
-                          width: 2,
-                        ),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Image.asset(AppImages.visaImage,),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  // MasterCard
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _selectedPaymentMethod = 'mastercard';
-                      });
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(8.0),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: _selectedPaymentMethod == 'mastercard'
-                              ? Colors.blue
-                              : Colors.transparent,
-                          width: 2,
-                        ),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Image.asset(AppImages.masterCardImage),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  // PayPal
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _selectedPaymentMethod = 'paypal';
-                      });
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(8.0),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: _selectedPaymentMethod == 'paypal' ? Colors.blue : Colors.transparent,
-                          width: 2,
-                        ),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Image.asset(AppImages.poyPalImage),
-                    ),
-                  ),
+                  _paymentOption('Visa', AppImages.visaImage),
+                  _paymentOption('Mastercard', AppImages.masterCardImage),
+                  _paymentOption('Paypal', AppImages.payPalImage),
+
                 ],
               ),
-              const SizedBox(height: 10),
-              // Card holder name
+              SizedBox(height: 32.h),
               CustomTextField(
-                controller: cardHolderName,
+                controller: _holderNameCTRL,
                 prifixicon: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: const Icon(Icons.person_outline),
+                  padding:
+                  EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
+                  child: SvgPicture.asset(AppIcons.userIcon, color: AppColors.primaryColor),
                 ),
                 hintText: 'Card holder name',
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter card holder name';
-                  }
-                  return null;
-                },
               ),
-              const SizedBox(height: 20),
-              // Card number
+              SizedBox(height: 16.h),
               CustomTextField(
-                controller: cardNumber,
+                controller: _cardNumberCTRL,
                 prifixicon: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: const Icon(Icons.credit_card),
+                  padding:
+                  EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
+                  child: SvgPicture.asset(AppIcons.cardIcon),
                 ),
+
                 hintText: 'Card number',
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter card number';
-                  }
-                  return null;
-                },
               ),
-              const SizedBox(height: 20),
-              // Card cvv/cvc
+              SizedBox(height: 16.h),
               CustomTextField(
-                controller: cardCVV,
+                controller: _cvvCTRL,
                 prifixicon: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: const Icon(Icons.lock_outline),
+                  padding:
+                  EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
+                  child: SvgPicture.asset(AppIcons.lockIcon, color: AppColors.primaryColor),
                 ),
                 hintText: 'CVV/CVC',
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter CVV/CVC';
-                  }
-                  return null;
-                },
               ),
-              const SizedBox(height: 20),
-              // Expiry date
+              SizedBox(height: 16.h),
               CustomTextField(
-                controller: cardDate,
+                controller: _mmCTRL,
                 prifixicon: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: const Icon(Icons.calendar_today_outlined),
+                  padding:
+                  EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
+                  child: SvgPicture.asset(AppIcons.calenderIcon, color: AppColors.primaryColor),
                 ),
                 hintText: 'MM/YY',
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter expiration date';
-                  }
-                  return null;
-                },
               ),
-              const SizedBox(height: 20),
-              const Spacer(),
-              CustomButton(onTap: (){
-                if (_formKey.currentState!.validate()) {
-                  print('Payment Processed');
-                  print('Payment Method - ${_selectedPaymentMethod}');
+              SizedBox(height: 175.h),
+              CustomButton(
+                onTap: (){
                   Get.toNamed(AppRoutes.paymentSuccessScreen);
-                }
-              }, text: 'Payment Now',
-                  color: AppColors.buttonColor,
-                  borderColor: AppColors.buttonColor,textColor: AppColors.textColor,
-              ),
+                },
+                  text: 'Payment Now',
+                textColor: Colors.white,
+                borderColor: AppColors.buttonColor,
+              )
             ],
           ),
+        ));
+  }
+
+  //============================> Payment Option Section <======================
+  _paymentOption(String method, String assetPath) {
+    return Stack(
+      children: [
+        GestureDetector(
+          onTap: () => _selectPaymentMethod(method),
+          child: Container(
+            padding: EdgeInsets.all(8.w),
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Colors.transparent,
+                width: 2.w,
+              ),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Image.asset(
+              assetPath,
+              width: 50.w,
+              height: 50.h,
+            ),
+          ),
         ),
-      ),
+        _selectedPaymentMethod == method
+            ? Positioned(
+            bottom: 10.h,
+            right: 0.w,
+            child: SvgPicture.asset(AppIcons.check))
+            :const SizedBox()
+      ],
     );
   }
 }

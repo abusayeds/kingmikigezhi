@@ -1,6 +1,7 @@
 
 import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/utils/app_colors.dart';
+import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/custom_button.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:flutter/material.dart';
@@ -57,74 +58,64 @@ class _MyInvitationPageState extends State<MyInvitationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Row(
-          children: [
-            IconButton(
-              icon: Icon(
-                Icons.arrow_back_ios,
-                color: Colors.black,
-                size: 20.sp,
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            Expanded(
-              child: Align(
-                alignment: Alignment.center, // Center the text
-                child: CustomText(
-                  text: 'Invitation',
-                  fontsize: 18.sp,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ],
+        leading:  IconButton(
+          icon: Icon(Icons.arrow_back_ios,
+              color: Colors.black, size: 18.w),
+          onPressed: () {
+            Get.back();
+          },
+        ),
+        title: CustomText(
+          text: 'Invitation',
+          fontWeight: FontWeight.bold,
+          fontsize: 18.sp,
         ),
         centerTitle: true,
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: invitees.length,
-              itemBuilder: (context, index) {
-                final invitee = invitees[index];
-                return ListTile(
-                  leading: CircleAvatar(
-                    radius: 24,
-                    backgroundColor: invitee['avatarColor'],
-                  ),
-                  title: Text(
-                    invitee['name'],
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  subtitle: Text(invitee['location']),
-                  trailing: Checkbox(
-                    activeColor: AppColors.primaryColor,
-                    value: invitee['checked'],
-                    onChanged: (bool? value) {
-                      _toggleCheckbox(index, value);
-                    },
-                  ),
-                );
-              },
+      body: Padding(
+        padding:  EdgeInsets.symmetric(horizontal:24.w ),
+        child: Column(
+          children: [
+            Expanded(
+              child: ListView.builder(
+                itemCount: invitees.length,
+                itemBuilder: (context, index) {
+                  final invitee = invitees[index];
+                  return ListTile(
+                    leading: CircleAvatar(
+                      radius: 24,
+                      backgroundColor: invitee['avatarColor'],
+                    ),
+                    title: Text(
+                      invitee['name'],
+                    style: AppStyles.fontSize16(color: AppColors.color414141,fontWeight: FontWeight.w600),
+                    ),
+                    subtitle: Text(invitee['location'],
+                      style: AppStyles.fontSize14(color: AppColors.color414141),
+                    ),
+                    trailing: Checkbox(
+                      activeColor: AppColors.primaryColor,
+                      value: invitee['checked'],
+                      onChanged: (bool? value) {
+                        _toggleCheckbox(index, value);
+                      },
+                    ),
+                  );
+                },
+              ),
             ),
-          ),
-       Padding(
-         padding: const EdgeInsets.all(8.0),
-         child: CustomButton(
+         CustomButton(
            onTap: (){
              Get.toNamed(AppRoutes.shareInvitationPage);
            },
-           text: 'Share',
+           text: 'Invitation',
            borderColor: AppColors.buttonA47059,
            color: AppColors.buttonA47059,
            textColor: AppColors.textColor,
          ),
-       )
-        ],
+            SizedBox(height: 41.h)
+          ],
+        ),
       ),
     );
   }
