@@ -142,4 +142,9 @@ class AppStrings{
   static String  phoneNumberHintText   = "Enter  phone number";
 
 
+  //================>  Notification Screen <====================
+  static String  onsiteEventText   = "Onsite Event";
+  static String  accountIDText   = "Account ID";
+
+
 }

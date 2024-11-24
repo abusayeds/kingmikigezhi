@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/screen/AddEvent/InnerWidget/dotted_border_container.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
 
   var parameter = Get.parameters;
   Uint8List? _image;
-  File? selectedIMage;
+  File? selectedImage;
 
   final TextEditingController birthDayYearController = TextEditingController();
   final TextEditingController birthDayMonthController = TextEditingController();
@@ -111,7 +112,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(4),
+                    padding: EdgeInsets.symmetric(vertical: 8.h),
                     child: Text('Relationship',
                         style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   ),
@@ -120,7 +121,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                     hintText: 'Child',
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(4),
+                    padding: EdgeInsets.symmetric(vertical: 8.h),
                     child: Text('Account Id',
                         style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   ),
@@ -129,7 +130,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                     hintText: '20103200',
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(4),
+                    padding: EdgeInsets.symmetric(vertical: 8.h),
                     child: Text('Full Name',
                         style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   ),
@@ -138,7 +139,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                     hintText: 'Mahafujer',
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(4),
+                    padding: EdgeInsets.symmetric(vertical: 8.h),
                     child: Text('Last Name',
                         style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   ),
@@ -146,9 +147,10 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                     controller: lastNameController,
                     hintText: 'Rahman',
                   ),
+
                   Padding(
-                    padding: const EdgeInsets.all(4),
-                    child: Text('Public display name',
+                    padding: EdgeInsets.symmetric(vertical: 8.h),
+                    child: Text('Public Display name',
                         style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   ),
                   CustomTextField(
@@ -156,7 +158,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                     hintText: 'Public',
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(4),
+                    padding: EdgeInsets.symmetric(vertical: 8.h),
                     child: Text('Gender',
                         style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   ),
@@ -165,7 +167,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                     hintText: 'Male',
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(4),
+                    padding: EdgeInsets.symmetric(vertical: 8.h),
                     child: Text('Birthday',
                         style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   ),
@@ -220,7 +222,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                     ],
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(4),
+                    padding: EdgeInsets.symmetric(vertical: 8.h),
                     child: Text('Email',
                         style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   ),
@@ -231,7 +233,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                     prifixicon: _prefixIcon(AppIcons.mailIcon),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(4),
+                    padding: EdgeInsets.symmetric(vertical: 8.h),
                     child: Text('Phone Number',
                         style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   ),
@@ -279,7 +281,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                     ],
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(4),
+                    padding: EdgeInsets.symmetric(vertical: 8.h),
                     child: Text('Location',
                         style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   ),
@@ -331,243 +333,252 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
 
                     ],
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 10.h),
                   DottedBorderContainer(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(4),
-                          child: Text(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
                             'Skill',
+                            style: AppStyles.fontSize18(fontWeight: FontWeight.w500)
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Start Year',
+                                      style: AppStyles.fontSize16(fontWeight: FontWeight.w500)
+                                    ),
+                                    SizedBox(height: 8.h),
+                                    Container(
+                                      height: 52.h,
+                                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                      decoration: BoxDecoration(
+                                        border: Border.all(color:AppColors.borderColor),
+                                        borderRadius: BorderRadius.circular(8),
+                                        color: AppColors.fillColor,
+                                      ),
+                                      child: DropdownButton<String>(
+                                        icon: SvgPicture.asset(
+                                          AppIcons.downArrowIcon,
+                                          color: AppColors.primaryColor,
+                                        ),
+                                        isExpanded: true,
+                                        underline: SizedBox(),
+                                        hint: Text('Select Year', style: AppStyles.fontSize14(fontWeight: FontWeight.w400,color: AppColors.color414141)),
+                                        items: <String>['Option 1', 'Option 2', 'Option 3']
+                                            .map((String value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(value),
+                                          );
+                                        }).toList(),
+                                        onChanged: (String? newValue) {},
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(width: 4.w),
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Program',
+                                      style:  AppStyles.fontSize16(fontWeight: FontWeight.w500)
+                                    ),
+                                    SizedBox(height: 8.h),
+                                    Container(
+                                      height: 52.h,
+                                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                      decoration: BoxDecoration(
+                                        border: Border.all(color: AppColors.borderColor),
+                                        borderRadius: BorderRadius.circular(8),
+                                        color: AppColors.fillColor,
+                                      ),
+                                      child: DropdownButton<String>(
+                                        icon: SvgPicture.asset(
+                                          AppIcons.downArrowIcon,
+                                          color: AppColors.primaryColor,
+                                        ),
+                                        isExpanded: true,
+                                        underline: SizedBox(),
+                                        hint: Text('Select Program', style: AppStyles.fontSize14(fontWeight: FontWeight.w400,color: AppColors.color414141)),
+                                        items: <String>['Option 1', 'Option 2', 'Option 3']
+                                            .map((String value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(value),
+                                          );
+                                        }).toList(),
+                                        onChanged: (String? newValue) {},
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          SizedBox(height: 10.h),
+                          CustomButton(
+                            color: AppColors.buttonColor,
+                            borderColor: Colors.white,
+                            onTap: (){},
+                            text: "Add",
+                            textColor:Colors.white,
+                          ),
+                          SizedBox(height: 16.h),
+                          Text(
+                            'Added Skill',
                             style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                           ),
-                        ),
-                        Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(4),
-                              child: Text(
-                                'Start Year',
-                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                              ),
+                          SizedBox(height: 8),
+                          Container(
+                            decoration: BoxDecoration(
+                              color:AppColors.colorEDF2F4,
+                              borderRadius: BorderRadius.all(Radius.circular(8)),
+                              border: Border.all(color: AppColors.primaryColor, width: 1),
                             ),
-                            SizedBox(width: 80.w),
-                            Padding(
-                              padding: const EdgeInsets.all(4),
-                              child: Text(
-                                'Program',
-                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.all(4),
-                                child: DropdownButtonFormField<String>(
-                                  decoration: InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                                    labelText: 'Select Year',
-                                  ),
-                                  value: null,
-                                  items: ['2020', '2021', '2022', '2023']
-                                      .map((year) => DropdownMenuItem(
-                                    value: year,
-                                    child: Text(year),
-                                  ))
-                                      .toList(),
-                                  onChanged: (value) {
-                                    // Handle year selection
-                                  },
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 8), // Spacing between the dropdown fields
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.all(4),
-                                child: DropdownButtonFormField<String>(
-                                  decoration: InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    contentPadding: EdgeInsets.symmetric(horizontal: 2),
-                                    labelText: 'Select Program',
-                                  ),
-                                  value: null,
-                                  items: ['Chess', 'Math', 'Piano']
-                                      .map((program) => DropdownMenuItem(
-                                    value: program,
-                                    child: Text(
-                                      program,
-                                      style: TextStyle(fontSize: 12),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding:  EdgeInsets.symmetric(horizontal: 8.0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text.rich(
+                                          TextSpan(
+                                            children: [
+                                              TextSpan(
+                                                text: '\u2022 ',
+                                                style: TextStyle(color: AppColors.primaryColor),
+                                              ),
+                                              TextSpan(
+                                                text: 'Chess since 2020',
+                                                  style: AppStyles.fontSize14(color: AppColors.color414141)
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Row(
+                                          children: [
+                                            InkWell(
+                                                onTap: (){
+                                                  Get.back();
+                                                },
+                                                child: SvgPicture.asset(AppIcons.editIcon)
+                                            ),
+                                            SizedBox(width: 4),
+                                            InkWell(
+                                                onTap: (){
+                                                  Get.back();
+                                                },
+                                                child: SvgPicture.asset(AppIcons.trashIcon)
+                                            )
+                                          ],
+                                        ),
+
+                                      ],
                                     ),
-                                  ))
-                                      .toList(),
-                                  onChanged: (value) {
-                                    // Handle program selection
-                                  },
-                                ),
+                                  ),
+                                  Padding(
+                                    padding:  EdgeInsets.symmetric(horizontal: 8.0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text.rich(
+                                          TextSpan(
+                                            children: [
+                                              TextSpan(
+                                                text: '\u2022 ',
+                                                style: TextStyle(color: AppColors.primaryColor),
+                                              ),
+                                              TextSpan(
+                                                text: 'Math since 2021',
+                                                style: AppStyles.fontSize14(color: AppColors.color414141)
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Row(
+                                          children: [
+                                            InkWell(
+                                                onTap: (){
+                                                  Get.back();
+                                                },
+                                                child: SvgPicture.asset(AppIcons.editIcon)
+                                            ),
+                                            SizedBox(width: 4),
+                                            InkWell(
+                                                onTap: (){
+                                                  Get.back();
+                                                },
+                                                child: SvgPicture.asset(AppIcons.trashIcon)
+                                            )
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding:  EdgeInsets.symmetric(horizontal: 8.0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text.rich(
+                                          TextSpan(
+                                            children: [
+                                              TextSpan(
+                                                text: '\u2022 ',
+                                                style: TextStyle(color: AppColors.primaryColor),
+                                              ),
+                                              TextSpan(
+                                                text: 'Piano since 2023',
+                                                  style: AppStyles.fontSize14(color: AppColors.color414141)
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Row(
+                                          children: [
+                                            InkWell(
+                                                onTap: (){
+                                                  Get.back();
+                                                },
+                                                child: SvgPicture.asset(AppIcons.editIcon)
+                                            ),
+                                            SizedBox(width: 4),
+                                            InkWell(
+                                                onTap: (){
+                                                  Get.back();
+                                                },
+                                                child: SvgPicture.asset(AppIcons.trashIcon)
+                                            )
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                          ],
-                        ),
-                        SizedBox(height: 10),
-                        CustomButton(
-                          color: AppColors.buttonColor,
-                          borderColor: Colors.white,
-                          onTap: (){},
-                          text: "Add",
-                          textColor:Colors.white,
-                        ),
-                        SizedBox(height: 16),
-                        Text(
-                          'Added Skill',
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                        ),
-                        SizedBox(height: 8),
-                        Padding(
-                          padding: const EdgeInsets.all(4),
-                          child: Text('Skill',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600)),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            color:AppColors.colorEDF2F4,
-                            borderRadius: BorderRadius.all(Radius.circular(8)),
-                            border: Border.all(color: AppColors.primaryColor, width: 1),
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding:  EdgeInsets.symmetric(horizontal: 8.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text.rich(
-                                        TextSpan(
-                                          children: [
-                                            TextSpan(
-                                              text: '\u2022 ',
-                                              style: TextStyle(color: AppColors.primaryColor),
-                                            ),
-                                            TextSpan(
-                                              text: 'Chess since 2020',
-                                              style: TextStyle(color: Colors.black),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Row(
-                                        children: [
-                                          InkWell(
-                                              onTap: (){
-                                                Get.back();
-                                              },
-                                              child: SvgPicture.asset(AppIcons.editIcon)
-                                          ),
-                                          SizedBox(width: 4),
-                                          InkWell(
-                                              onTap: (){
-                                                Get.back();
-                                              },
-                                              child: SvgPicture.asset(AppIcons.trashIcon)
-                                          )
-                                        ],
-                                      ),
-
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding:  EdgeInsets.symmetric(horizontal: 8.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text.rich(
-                                        TextSpan(
-                                          children: [
-                                            TextSpan(
-                                              text: '\u2022 ',
-                                              style: TextStyle(color: AppColors.primaryColor),
-                                            ),
-                                            TextSpan(
-                                              text: 'Math since 2021',
-                                              style: TextStyle(color: Colors.black),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Row(
-                                        children: [
-                                          InkWell(
-                                              onTap: (){
-                                                Get.back();
-                                              },
-                                              child: SvgPicture.asset(AppIcons.editIcon)
-                                          ),
-                                          SizedBox(width: 4),
-                                          InkWell(
-                                              onTap: (){
-                                                Get.back();
-                                              },
-                                              child: SvgPicture.asset(AppIcons.trashIcon)
-                                          )
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding:  EdgeInsets.symmetric(horizontal: 8.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text.rich(
-                                        TextSpan(
-                                          children: [
-                                            TextSpan(
-                                              text: '\u2022 ',
-                                              style: TextStyle(color: AppColors.primaryColor),
-                                            ),
-                                            TextSpan(
-                                              text: 'Piano since 2023',
-                                              style: TextStyle(color: Colors.black),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Row(
-                                        children: [
-                                          InkWell(
-                                              onTap: (){
-                                                Get.back();
-                                              },
-                                              child: SvgPicture.asset(AppIcons.editIcon)
-                                          ),
-                                          SizedBox(width: 4),
-                                          InkWell(
-                                              onTap: (){
-                                                Get.back();
-                                              },
-                                              child: SvgPicture.asset(AppIcons.trashIcon)
-                                          )
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-
-                      ],
+                          SizedBox(height: 8.h)
+                        ],
+                      ),
                     ),
                   ),
                   SizedBox(height: 10),
@@ -583,10 +594,10 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                             borderColor: Colors.white,
                             onTap: (){},
                             text: "Active a separate family account",
-                            textColor:Colors.white,
+                            textColor: AppColors.white,
                           ),
                           Padding(
-                            padding: const EdgeInsets.all(4),
+                            padding: EdgeInsets.symmetric(vertical: 8.h),
                             child: Text('User Name',
                                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                           ),
@@ -597,7 +608,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                             prifixicon: _prefixIcon(AppIcons.mailIcon),
                           ),
                           Padding(
-                            padding: const EdgeInsets.all(4),
+                            padding: EdgeInsets.symmetric(vertical: 8.h),
                             child: Text('Password',
                                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                           ),
@@ -620,7 +631,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                             },
                           ),
                           Padding(
-                            padding: const EdgeInsets.all(4),
+                            padding: EdgeInsets.symmetric(vertical: 8.h),
                             child: Text('Confirm Password',
                                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                           ),
@@ -740,19 +751,19 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
     await ImagePicker().pickImage(source: ImageSource.gallery);
     if (returnImage == null) return;
     setState(() {
-      selectedIMage = File(returnImage.path);
+      selectedImage = File(returnImage.path);
       _image = File(returnImage.path).readAsBytesSync();
     });
     Get.back();
   }
 
-//==================================> Camera <===============================
+//==================================>> Camera <<===============================
   Future _pickImageFromCamera() async {
     final returnImage =
     await ImagePicker().pickImage(source: ImageSource.camera);
     if (returnImage == null) return;
     setState(() {
-      selectedIMage = File(returnImage.path);
+      selectedImage = File(returnImage.path);
       _image = File(returnImage.path).readAsBytesSync();
     });
     Get.back();

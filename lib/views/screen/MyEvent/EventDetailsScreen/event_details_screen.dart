@@ -2,6 +2,7 @@ import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_icons.dart';
 import 'package:event_sharing/utils/app_strings.dart';
+import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/custom_button.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:flutter/material.dart';
@@ -24,10 +25,17 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
     return Scaffold(
       //=======================> App Bar Section <============================
       appBar: AppBar(
+        leading:  IconButton(
+          icon: Icon(Icons.arrow_back_ios,
+              color: Colors.black, size: 18.w),
+          onPressed: () {
+            Get.back();
+          },
+        ),
         title: CustomText(
-          text: AppStrings.detailsEvent,
+          text: 'Event Details',
+          fontWeight: FontWeight.bold,
           fontsize: 18.sp,
-          fontWeight: FontWeight.w500,
         ),
         centerTitle: true,
       ),
@@ -189,6 +197,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                     SvgPicture.asset(AppIcons.dotIconForFamily),
                                     SizedBox(width: 5.w),
                                     Text('Deadline', style: TextStyle(fontWeight: FontWeight.bold,)),
+
                                   ],
                                 ),
                                 SizedBox(height: 5.h),
@@ -230,12 +239,12 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                 Row(
                                   children: [
                                     SvgPicture.asset(AppIcons.dotIconForFamily),
-                                    SizedBox(width: 5), // Spacing between circle and text
-                                    Text('Registration Open',
+                                    SizedBox(width: 5.w),
+                                    Text('Competition Level',
                                         style: TextStyle(fontWeight: FontWeight.bold)),
                                   ],
                                 ),
-                                SizedBox(height: 5), // Spacing between row and subtext
+                                SizedBox(height: 5.h),
                                 Row(
                                   children: [
                                     Text(
@@ -255,12 +264,12 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                 Row(
                                   children: [
                                     SvgPicture.asset(AppIcons.dotIconForFamily),
-                                    SizedBox(width: 5), // Spacing between circle and text
+                                    SizedBox(width: 5.w),
                                     Text('Registration Open',
-                                        style: TextStyle(fontWeight: FontWeight.bold)),
+                                        style: TextStyle(fontWeight: FontWeight.w600)),
                                   ],
                                 ),
-                                SizedBox(height: 5), // Spacing between row and subtext
+                                SizedBox(height: 5.h),
                                 Row(
                                   children: [
                                     Text(
@@ -269,7 +278,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                         color: Colors.grey.shade600,
                                       ),
                                     ),
-                                    SizedBox(width: 10), // Spacing between date and time
+                                    SizedBox(width: 10.w),
                                     Text(
                                       '7.00 AM',
                                       style: TextStyle(
@@ -287,90 +296,41 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                 Row(
                                   children: [
                                     SvgPicture.asset(AppIcons.dotIconForFamily),
-                                    SizedBox(width: 5), // Spacing between circle and text
-                                    Text('Registration Open',
-                                        style: TextStyle(fontWeight: FontWeight.bold)),
+                                    SizedBox(width: 5.w),
+                                    Text('Repeat Function',
+                                        style: TextStyle(fontWeight: FontWeight.w600)),
                                   ],
                                 ),
-                                SizedBox(height: 5), // Spacing between row and subtext
-                                Row(
-                                  children: [
-                                    Text(
-                                      '1-1-2025',
-                                      style: TextStyle(
-                                        color: Colors.grey.shade600,
-                                      ),
-                                    ),
-                                    SizedBox(width: 10), // Spacing between date and time
-                                    Text(
-                                      '7.00 AM',
-                                      style: TextStyle(
-                                        color: Colors.grey.shade600,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                SizedBox(height: 5.h),
+                                Text('Never', style: TextStyle(
+                                    color: Colors.grey.shade600,
+                                  )),
                               ],
                             ),
-                            //cost
+                          //cost
                             SizedBox(height: 16.h),
                             Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Keeps the layout structured
                                   children: [
+                                    // Empty space for alignment
                                     Row(
                                       children: [
                                         SvgPicture.asset(AppIcons.dotIconForFamily),
-                                        SizedBox(width: 5), // Spacing between circle and text
+                                        SizedBox(width: 5.w),
                                         Text(
                                           'Cost',
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
-                                        SizedBox(width: 50.w),
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            color: Colors.blueGrey, // Background color for check icon
-                                            shape: BoxShape.rectangle,
-                                            borderRadius: BorderRadius.circular(4),
-                                          ),
-                                          child: Icon(
-                                            Icons.check,
-                                            color: Colors.white,
-                                            size: 10,
-                                          ),
-                                          padding: EdgeInsets.all(4), // Padding inside the container
-                                        ),
                                       ],
                                     ),
-                                    SizedBox(height: 5), // Spacing between row and subtext
-                                    Text(
-                                      '\$100',
-                                      style: TextStyle(
-                                        color: Colors.grey.shade600,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                            //late  fee
-                            SizedBox(height: 16.h),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    SvgPicture.asset(AppIcons.dotIconForFamily),
-                                    SizedBox(width: 5), // Spacing between circle and text
-                                    Text(
-                                      'Cost',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    SizedBox(width: 50.w),
                                     Container(
                                       decoration: BoxDecoration(
-                                        color: Colors.blueGrey, // Background color for check icon
+                                        color: Colors.blueGrey,
                                         shape: BoxShape.rectangle,
                                         borderRadius: BorderRadius.circular(4),
                                       ),
@@ -379,20 +339,62 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                         color: Colors.white,
                                         size: 10,
                                       ),
-                                      padding: EdgeInsets.all(4), // Padding inside the container
+                                      padding: EdgeInsets.all(4),
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: 5), // Spacing between row and subtext
+                                SizedBox(height: 5.h),
                                 Text(
                                   '\$100',
-                                  style: TextStyle(
-                                    color: Colors.grey.shade600,
-                                  ),
+                                  style: TextStyle(color: Colors.grey.shade600),
                                 ),
                               ],
                             ),
+                            //late  fee
+                            SizedBox(height: 16.h),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Keeps the layout structured
+                                  children: [
+                                    // Empty space for alignment
+                                    Row(
+                                      children: [
+                                        SvgPicture.asset(AppIcons.dotIconForFamily),
+                                        SizedBox(width: 5.w),
+                                        Text(
+                                          'Cost',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.blueGrey,
+                                        shape: BoxShape.rectangle,
+                                        borderRadius: BorderRadius.circular(4),
+                                      ),
+                                      child: Icon(
+                                        Icons.check,
+                                        color: Colors.white,
+                                        size: 10,
+                                      ),
+                                      padding: EdgeInsets.all(4),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 5.h),
+                                Text(
+                                  '\$100',
+                                  style: TextStyle(color: Colors.grey.shade600),
+                                ),
                               ],
+                            ),
+
+                          ],
                             ),)
                           ],
 
@@ -409,26 +411,26 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                 fontsize: 16.sp,
                 fontWeight: FontWeight.w600,
               ),
-              const SizedBox(height: 8),
-              CustomText(
-                maxline: 20,
+               SizedBox(height: 8.h),
+              Text( 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable.',
+                maxLines: 20,
                 textAlign: TextAlign.start,
-                text:
-                'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable.',),
-              const SizedBox(height: 16),
+                style: AppStyles.fontSize14(color: AppColors.color414141),
+              ),
+              SizedBox(height: 16.w),
               //Note
               CustomText(
                 text: AppStrings.note,
                 fontsize: 16.sp,
                 fontWeight: FontWeight.w600,
               ),
-              const SizedBox(height: 8),
-              CustomText(
-                maxline: 20,
+              SizedBox(height: 8.h),
+              Text( 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable.',
+                maxLines: 20,
                 textAlign: TextAlign.start,
-                text:
-                'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable.',),
-              const SizedBox(height: 16),
+                style: AppStyles.fontSize14(color: AppColors.color414141),
+              ),
+             SizedBox(height: 16.h),
               //=======================> Age up to 10 years old Section <============================
               InputDecorator(
                 decoration: InputDecoration(
@@ -457,13 +459,15 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                     iconDisabledColor: AppColors.primaryColor,
                     iconEnabledColor: AppColors.primaryColor,
                     isExpanded: true,
-                    value: _selectedAge,
+                    value: _selectedAge,style: AppStyles.fontSize18(color: AppColors.blackColor,fontWeight: FontWeight.w600),
                     hint: CustomText(text: 'Select Ages', fontsize: 14.sp),
+                    icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,),
                     items: _agesList.map((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
                         child: Text(value),
                       );
+
                     }).toList(),
                     onChanged: (String? newValue) {
                       setState(() {
@@ -486,28 +490,32 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 15), // Space after header
+                  SizedBox(height: 15),
 
-                  // Row: Deadline and Cost
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SvgPicture.asset(AppIcons.dotIconForFamily),
-                          SizedBox(width: 5),
-                          Text('Deadline: ', style: TextStyle(fontWeight: FontWeight.w600)),
-                          Text('1-1-2024'),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          SvgPicture.asset(AppIcons.dotIconForFamily),
-                          SizedBox(width: 5),
-                          Text('Cost: ', style: TextStyle(fontWeight: FontWeight.w600),
+                          Row(
+                            children: [
+                              SvgPicture.asset(AppIcons.dotIconForFamily),
+                              SizedBox(width: 5.w),
+                              Text('Deadline: ', style: TextStyle(fontWeight: FontWeight.w600)),
+                            ],
                           ),
-                          Text('\$100'),
-                          SizedBox(width: 10),
+                          Text('1-1-2024',style: TextStyle(color: AppColors.color414141)),
+                          Row(
+                            children: [
+                              SvgPicture.asset(AppIcons.dotIconForFamily),
+                              SizedBox(width: 5.w),
+                              Text('Cost: ', style: TextStyle(fontWeight: FontWeight.w600),
+                              ),
+                              Text('\$100',style: TextStyle(color: AppColors.color414141)),
+                              SizedBox(width: 10.w),
+                            ],
+                          ),
                           Container(
                             decoration: BoxDecoration(
                               color: Colors.blueGrey,
@@ -523,85 +531,72 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                           ),
                         ],
                       ),
-                    ],
-                  ),
-                  SizedBox(height: 10), // Space between rows
-
-                  // Type Section
-                  Row(
-                    children: [
-                      SvgPicture.asset(AppIcons.dotIconForFamily),
-                      SizedBox(width: 5),
-                      Text('Type: ', style: TextStyle(fontWeight: FontWeight.w600),),
-                      Text('Onsite Event'),
-                    ],
-                  ),
-                  SizedBox(height: 10), // Space between rows
-
-                  // Description Section
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SvgPicture.asset(AppIcons.dotIconForFamily),
-                      SizedBox(width: 5),
-                      Expanded(
-                        child: RichText(
-                          text: TextSpan(
-                            text: 'Description : ',
-                            style: TextStyle(fontWeight: FontWeight.w600,color: Colors.black),
-                            children: [
-                              TextSpan(
-                                text:
-                                'The point of using Lorem Ipsum is that it has a more or less normal',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.normal,
-                                  color: Colors.grey.shade600,
-                                ),
-                              ),
-                            ],
+                      SizedBox(height: 8.h),
+                      Row(
+                        children: [
+                          SvgPicture.asset(AppIcons.dotIconForFamily),
+                          SizedBox(width: 5.w),
+                          Text('Type: ', style: TextStyle(fontWeight: FontWeight.w600)),
+                          Text('Onsite Event',style: TextStyle(color: AppColors.color414141)),
+                        ],
+                      ),
+                      SizedBox(height: 8.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SvgPicture.asset(AppIcons.dotIconForFamily),
+                          SizedBox(width: 5.w),
+                          Text('Description: ', style: TextStyle(fontWeight: FontWeight.w600)),
+                          Expanded(
+                            child: Text(
+                              'The point of using Lorem Ipsum is that it has a more or less normal',style: TextStyle(color: AppColors.color414141)),
                           ),
-                        ),
+                        ],
                       ),
                     ],
-                  ),
+                  )
                 ],
               ),
               Divider(thickness: 1,color: Colors.grey),
               // Semi Final section
-              SizedBox(height: 16),
+              SizedBox(height: 16.h),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
                       SvgPicture.asset(AppIcons.myEventIcon,color: AppColors.primaryColor,),
-                      SizedBox(width: 8),
-                      Text('Semi Final', style: TextStyle(fontSize: 16),
+                      SizedBox(width: 8.w),
+                      Text('Semi Final', style: TextStyle(fontSize: 16.sp),
                       ),
                     ],
                   ),
-                  SizedBox(height: 15), // Space after header
-
-                  // Row: Deadline and Cost
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  SizedBox(height: 16.h),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SvgPicture.asset(AppIcons.dotIconForFamily),
-                          SizedBox(width: 5),
-                          Text('Deadline: ', style: TextStyle(fontWeight: FontWeight.w600)),
-                          Text('1-1-2024'),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          SvgPicture.asset(AppIcons.dotIconForFamily),
-                          SizedBox(width: 5),
-                          Text('Cost: ', style: TextStyle(fontWeight: FontWeight.w600),
+                          Row(
+                            children: [
+                              SvgPicture.asset(AppIcons.dotIconForFamily),
+                              SizedBox(width: 5),
+                              Text('Deadline: ', style: TextStyle(fontWeight: FontWeight.w600)),
+                            ],
                           ),
-                          Text('\$100'),
-                          SizedBox(width: 10),
+                          Text('1-1-2024'),
+                          Row(
+                            children: [
+                              SvgPicture.asset(AppIcons.dotIconForFamily),
+                              SizedBox(width: 5),
+                              Text('Cost: ', style: TextStyle(fontWeight: FontWeight.w600),
+                              ),
+                              Text('\$100'),
+                              SizedBox(width: 10),
+                            ],
+                          ),
                           Container(
                             decoration: BoxDecoration(
                               color: Colors.blueGrey,
@@ -617,85 +612,72 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                           ),
                         ],
                       ),
-                    ],
-                  ),
-                  SizedBox(height: 10), // Space between rows
-
-                  // Type Section
-                  Row(
-                    children: [
-                      SvgPicture.asset(AppIcons.dotIconForFamily),
-                      SizedBox(width: 5),
-                      Text('Type: ', style: TextStyle(fontWeight: FontWeight.w600),),
-                      Text('Onsite Event'),
-                    ],
-                  ),
-                  SizedBox(height: 10), // Space between rows
-
-                  // Description Section
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SvgPicture.asset(AppIcons.dotIconForFamily),
-                      SizedBox(width: 5),
-                      Expanded(
-                        child: RichText(
-                          text: TextSpan(
-                            text: 'Description : ',
-                            style: TextStyle(fontWeight: FontWeight.w600,color: Colors.black),
-                            children: [
-                              TextSpan(
-                                text:
-                                'The point of using Lorem Ipsum is that it has a more or less normal',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.normal,
-                                  color: Colors.grey.shade600,
-                                ),
-                              ),
-                            ],
+                      SizedBox(height: 8.h),
+                      Row(
+                        children: [
+                          SvgPicture.asset(AppIcons.dotIconForFamily),
+                          SizedBox(width: 5),
+                          Text('Type: ', style: TextStyle(fontWeight: FontWeight.w600)),
+                          Text('Onsite Event',style: TextStyle(color: AppColors.color414141)),
+                        ],
+                      ),
+                      SizedBox(height: 8.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SvgPicture.asset(AppIcons.dotIconForFamily),
+                          SizedBox(width: 5),
+                          Text('Description: ', style: TextStyle(fontWeight: FontWeight.w600)),
+                          Expanded(
+                            child: Text(
+                              'The point of using Lorem Ipsum is that it has a more or less normal', style: TextStyle(color: AppColors.color414141)),
                           ),
-                        ),
+                        ],
                       ),
                     ],
-                  ),
+                  )
                 ],
               ),
               Divider(thickness: 1,color: Colors.grey),
               // Final section
-              SizedBox(height: 16),
+              SizedBox(height: 16.h),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
                       SvgPicture.asset(AppIcons.myEventIcon,color: AppColors.primaryColor,),
-                      SizedBox(width: 8),
+                      SizedBox(width: 8.w),
                       Text('Final', style: TextStyle(fontSize: 16),
                       ),
                     ],
                   ),
-                  SizedBox(height: 15), // Space after header
-
-                  // Row: Deadline and Cost
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  SizedBox(height: 16.h),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SvgPicture.asset(AppIcons.dotIconForFamily),
-                          SizedBox(width: 5),
-                          Text('Deadline: ', style: TextStyle(fontWeight: FontWeight.w600)),
-                          Text('1-1-2024'),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          SvgPicture.asset(AppIcons.dotIconForFamily),
-                          SizedBox(width: 5),
-                          Text('Cost: ', style: TextStyle(fontWeight: FontWeight.w600),
+                          Row(
+                            children: [
+                              SvgPicture.asset(AppIcons.dotIconForFamily),
+                              SizedBox(width: 5),
+                              Text('Deadline: ', style: TextStyle(fontWeight: FontWeight.w600)),
+                            ],
                           ),
-                          Text('\$100'),
-                          SizedBox(width: 10),
+                          Text('1-1-2024'),
+                          Row(
+                            children: [
+                              SvgPicture.asset(AppIcons.dotIconForFamily),
+                              SizedBox(width: 5),
+                              Text('Cost: ', style: TextStyle(fontWeight: FontWeight.w600),
+                              ),
+                              Text('\$100'),
+                              SizedBox(width: 10),
+                            ],
+                          ),
                           Container(
                             decoration: BoxDecoration(
                               color: Colors.blueGrey,
@@ -711,51 +693,34 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                           ),
                         ],
                       ),
-                    ],
-                  ),
-                  SizedBox(height: 10), // Space between rows
-
-                  // Type Section
-                  Row(
-                    children: [
-                      SvgPicture.asset(AppIcons.dotIconForFamily),
-                      SizedBox(width: 5),
-                      Text('Type: ', style: TextStyle(fontWeight: FontWeight.w600),),
-                      Text('Onsite Event'),
-                    ],
-                  ),
-                  SizedBox(height: 10), // Space between rows
-
-                  // Description Section
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SvgPicture.asset(AppIcons.dotIconForFamily),
-                      SizedBox(width: 5),
-                      Expanded(
-                        child: RichText(
-                          text: TextSpan(
-                            text: 'Description : ',
-                            style: TextStyle(fontWeight: FontWeight.w600,color: Colors.black),
-                            children: [
-                              TextSpan(
-                                text:
-                                'The point of using Lorem Ipsum is that it has a more or less normal',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.normal,
-                                  color: Colors.grey.shade600,
-                                ),
-                              ),
-                            ],
+                      SizedBox(height: 8),
+                      Row(
+                        children: [
+                          SvgPicture.asset(AppIcons.dotIconForFamily),
+                          SizedBox(width: 5),
+                          Text('Type: ', style: TextStyle(fontWeight: FontWeight.w600)),
+                          Text('Onsite Event',style: TextStyle(color: AppColors.color414141)),
+                        ],
+                      ),
+                      SizedBox(height: 8),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SvgPicture.asset(AppIcons.dotIconForFamily),
+                          SizedBox(width: 5),
+                          Text('Description: ', style: TextStyle(fontWeight: FontWeight.w600)),
+                          Expanded(
+                            child: Text(
+                              'The point of using Lorem Ipsum is that it has a more or less normal', style: TextStyle(color: AppColors.color414141)),
                           ),
-                        ),
+                        ],
                       ),
                     ],
-                  ),
+                  )
                 ],
               ),
               Divider(thickness: 1,color: Colors.grey),
-
               //history
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -764,11 +729,11 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                   Text(
                     'History :',
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 16.sp,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 8),
+                  SizedBox(height: 8.h),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -782,11 +747,11 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                               shape: BoxShape.circle,
                             ),
                           ),
-                          SizedBox(width: 8),
-                          Text('2021 - 1st place winner'),
+                          SizedBox(width: 8.w),
+                          Text('2021 - 1st place winner',style: TextStyle(color: AppColors.color414141)),
                         ],
                       ),
-                      SizedBox(height: 8),
+                      SizedBox(height: 8.h),
                       Row(
                         children: [
                           Container(
@@ -798,10 +763,10 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                             ),
                           ),
                           SizedBox(width: 8),
-                          Text('2022 - 2nd place winner'),
+                          Text('2022 - 2nd place winner',style: TextStyle(color: AppColors.color414141)),
                         ],
                       ),
-                      SizedBox(height: 8),
+                      SizedBox(height: 8.h),
                       Row(
                         children: [
                           Container(
@@ -813,12 +778,12 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                             ),
                           ),
                           SizedBox(width: 8),
-                          Text('2023 - 1st place winner'),
+                          Text('2023 - 1st place winner',style: TextStyle(color: AppColors.color414141)),
                         ],
                       ),
                     ],
                   ),
-                  SizedBox(height: 15),
+                  SizedBox(height: 16.h),
                   Divider(thickness: 1,color: Colors.grey),
                   Align(
                     alignment: Alignment.centerRight,
@@ -833,11 +798,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                         children: [
                           Text(
                             'Estimation Total Cost: 400',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14,
-                            ),
-                          ),
+                          style: AppStyles.fontSize14(color: AppColors.color414141,fontWeight: FontWeight.w600)),
                           SizedBox(width: 8.w),
                           SvgPicture.asset(AppIcons.editIcon),
                         ],
@@ -852,7 +813,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                     children: [
                       Row(
                         children: [
-                          Text('Created By'),
+                          Text('Created By',style: AppStyles.fontSize14(color: AppColors.color414141,fontWeight: FontWeight.w600)),
                           SizedBox(width: 8.w),
                           CircleAvatar(
                             radius: 30.r,
@@ -863,10 +824,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                       Text(
                         'Created at\n1-1-2022',
                         textAlign: TextAlign.right,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14.sp,
-                        ),
+                        style: AppStyles.fontSize14(color: AppColors.color414141,fontWeight: FontWeight.w600),
                       ),
                     ],
                   ),
@@ -877,7 +835,6 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                     'Has already contribute or verification by (10) Users',
                     style: TextStyle(
                       fontSize: 12.sp,
-                      color: Colors.grey.shade600,
                     ),
                   ),
                   SizedBox(height: 10.h),
@@ -887,28 +844,28 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                         offset: Offset(0, 0),
                         child: CircleAvatar(
                           radius: 12,
-                          backgroundColor: Colors.purple,
+                          backgroundColor: AppColors.colorE5CCFF,
                         ),
                       ),
                       Transform.translate(
                         offset: Offset(-4, 0),
                         child: CircleAvatar(
                           radius: 12,
-                          backgroundColor: Colors.blue,
+                          backgroundColor:AppColors.colorCCFFE6,
                         ),
                       ),
                       Transform.translate(
                         offset: Offset(-6, 0),
                         child: CircleAvatar(
                           radius: 12,
-                          backgroundColor: Colors.orange,
+                          backgroundColor: AppColors.colorFFF2CC,
                         ),
                       ),
                       Transform.translate(
                         offset: Offset(-8, 0),
                         child: CircleAvatar(
                           radius: 12,
-                          backgroundColor: Colors.brown,
+                          backgroundColor: AppColors.colorD9A951,
                         ),
                       ),
                     ],
@@ -918,8 +875,8 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                   Text(
                     'Latest active 3 days ago',
                     style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey.shade600,
+                      fontSize: 14.sp,
+                      color: AppColors.color414141,
                     ),
                   ),
                   SizedBox(height: 20),

@@ -30,34 +30,31 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Top action button
+            //========================> Top action button <=====================
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    height: 36.h,
-                    width: 36.w,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(30)),
-                      color: AppColors.buttonColor,
-                    ),
-                    child: InkWell(
-                      onTap: (){
-                        Get.toNamed(AppRoutes.createMemberProfileScreen);
-                      },
-                        child: Icon(Icons.add, color: Colors.white)),
+                Container(
+                  height: 36.h,
+                  width: 36.w,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(30.r)),
+                    color: AppColors.buttonColor,
                   ),
+                  child: InkWell(
+                    onTap: (){
+                      Get.toNamed(AppRoutes.createMemberProfileScreen);
+                    },
+                      child: const Icon(Icons.add, color: Colors.white)),
                 ),
               ],
             ),
-
-            // Search bar
+            SizedBox(height: 16.h),
+            //========================> Search bar <=========================
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
-                height: 50.h,
+                height: 50,
                 decoration: BoxDecoration(
                   color: AppColors.colorEDF2F4,
                   borderRadius: BorderRadius.all(Radius.circular(8)),
@@ -67,7 +64,7 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextField(
                     decoration: InputDecoration(
-                      hintText: 'Search...',
+                      hintText: 'Search Member',
                       hintStyle: TextStyle(color: AppColors.greyColor),
                       border: InputBorder.none,
                       suffixIcon: Icon(Icons.search,color: AppColors.primaryColor),
@@ -78,8 +75,8 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
             ),
             // Family members list
             ListView.builder(
-              shrinkWrap: true, // Important to fit inside SingleChildScrollView
-              physics: NeverScrollableScrollPhysics(), // Disable inner scroll
+              shrinkWrap: true,
+             // physics: NeverScrollableScrollPhysics(), // Disable inner scroll
               itemCount: familyMembers.length,
               itemBuilder: (context, index) {
                 final member = familyMembers[index];
@@ -94,7 +91,7 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                       ),
                       alignment: Alignment.centerRight,
                       padding: EdgeInsets.symmetric(horizontal: 20),
-                      child: Icon(Icons.delete, color: Colors.white),
+                      child: SvgPicture.asset(AppIcons.deleteIcon),
                     ),
                     direction: DismissDirection.endToStart,
                     confirmDismiss: (direction) async {
@@ -102,36 +99,82 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                       shouldRemove = result ?? false;
                       return shouldRemove;
                     },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: AppColors.colorEDF2F4,
-                        borderRadius: BorderRadius.all(Radius.circular(8)),
-                        border: Border.all(color: Colors.black12, width: 1.0),
-                      ),
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          backgroundImage: AssetImage(member['image']!),
-                          radius: 35.r,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(),
+                      child: Dismissible(
+                        key: Key(member['name']!),
+                        background: Container(
+                          decoration: BoxDecoration(
+                            color: AppColors.colorEDF2F4,
+                            borderRadius: BorderRadius.all(Radius.circular(8)),
+                            border: Border.all(color: Colors.black12, width: 1.0),
+                          ),
+                          alignment: Alignment.centerRight,
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          child: SvgPicture.asset(AppIcons.deleteIcon),
                         ),
-                        title: Text(member['name']!,
-                            style: TextStyle(fontWeight: FontWeight.bold)),
-                        subtitle: Row(
-                          children: [
-                            SvgPicture.asset(AppIcons.dotIconForFamily),
-                            SizedBox(width: 4.w),
-                            Text(member['relation']!),
-                          ],
-                        ),
-                        trailing: InkWell(
-                          onTap: () {
-                            _showViewModeBottomSheet(context);
-                          },
-                          child: Icon(Icons.more_horiz, color: AppColors.greyColor),
+                        direction: DismissDirection.endToStart,
+                        confirmDismiss: (direction) async {
+                          final bool? result = await _showCustomBottomSheet(context, member['name']!);
+                          shouldRemove = result ?? false;
+                          return shouldRemove;
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: AppColors.colorEDF2F4,
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: Colors.black12, width: 1.0),
+                          ),
+                          padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                          child: Stack(
+                            children: [
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  CircleAvatar(
+                                    backgroundImage: AssetImage(member['image']!),
+                                    radius: 30.r,
+                                  ),
+                                  SizedBox(width: 12.w),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          member['name']!,
+                                          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16.sp),
+                                        ),
+                                        SizedBox(height: 4.h),
+                                        Row(
+                                          children: [
+                                            SvgPicture.asset(AppIcons.dotIconForFamily, width: 5.w, height: 5.h),
+                                            SizedBox(width: 4.w),
+                                            Text(
+                                              member['relation']!,
+                                              style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12.sp),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Positioned(
+                                bottom: -5,
+                                right: 0,
+                                child: InkWell(
+                                  onTap: () {
+                                    _showViewModeBottomSheet(context);
+                                  },
+                                  child: Icon(Icons.more_horiz, color: AppColors.color8C8C8C, size: 20.sp),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-
-
                   )
                 );
               },
@@ -166,9 +209,9 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
               SizedBox(height: 20.h),
               Divider(thickness: 1, color: AppColors.greyColor),
               SizedBox(height: 20.h),
-              Text("Delete", style: AppStyles.h2(color: AppColors.primaryColor, fontWeight: FontWeight.w600)),
+              Text("Delete", style: AppStyles.fontSize20(color: AppColors.primaryColor, fontWeight: FontWeight.w600)),
               Text("Are you sure to delete this?",
-                style: AppStyles.h3(color: AppColors.borderColor),
+                style: AppStyles.fontSize18(color: AppColors.borderColor),
               ),
               SizedBox(height: 20.h),
               Row(
@@ -189,7 +232,7 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                         ),
                       ),
                       child: Text('Cancel',
-                        style: AppStyles.h4(color: AppColors.primaryColor),
+                        style: AppStyles.fontSize16(color: AppColors.primaryColor),
                       ),
                     ),
                   ),
@@ -207,7 +250,7 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                         ),
                       ),
                       child: Text('Yes',
-                        style: AppStyles.h4(color: AppColors.backgroundColor),
+                        style: AppStyles.fontSize16(color: AppColors.backgroundColor),
                       ),
                     ),
                   ),
@@ -248,7 +291,7 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
               SizedBox(height: 20.h),
               Text(
                 "What you want?",
-                style: AppStyles.h3(color: AppColors.borderColor),
+                style: AppStyles.fontSize18(color: AppColors.borderColor),
               ),
               SizedBox(height: 20.h),
               Row(
@@ -271,7 +314,7 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                         children: [
                           SvgPicture.asset(AppIcons.eyeIcon, width: 24.w,height:24.h,color: Colors.white,),
                           SizedBox(width: 4.w),
-                          Text('View Profile', style: AppStyles.h5(color: AppColors.backgroundColor),),
+                          Text('View Profile', style: AppStyles.fontSize14(color: AppColors.backgroundColor),),
                         ],
                       ),
                     ),
@@ -292,7 +335,7 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                         children: [
                           SvgPicture.asset(AppIcons.delete, width: 24.w,height:24.h),
                           SizedBox(width: 4.w),
-                          Text('Delete Profile', style: AppStyles.h5(color: AppColors.backgroundColor)),
+                          Text('Delete Profile', style: AppStyles.fontSize14(color: AppColors.backgroundColor)),
                         ],
                       ),
                     ),

@@ -2,6 +2,7 @@ import 'package:event_sharing/utils/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_icons.dart';
 import '../../../base/custom_text.dart';
@@ -15,9 +16,16 @@ class MemberProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading:  IconButton(
+          icon: Icon(Icons.arrow_back_ios,
+              color: Colors.black, size: 18.w),
+          onPressed: () {
+            Get.back();
+          },
+        ),
         title: CustomText(
-          text: AppStrings.memberProfile,
-          fontWeight: FontWeight.w500,
+          text: 'Member Profile',
+          fontWeight: FontWeight.bold,
           fontsize: 18.sp,
         ),
         centerTitle: true,

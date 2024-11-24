@@ -23,7 +23,6 @@ class EditProfileScreen extends StatefulWidget {
 class _EditProfileScreenState extends State<EditProfileScreen> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
-  final _phoneNumberController = TextEditingController();
   final _addressController = TextEditingController();
   var parameter = Get.parameters;
   Uint8List? _image;
@@ -56,9 +55,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading:  IconButton(
+          icon: Icon(Icons.arrow_back_ios,
+              color: Colors.black, size: 18.w),
+          onPressed: () {
+            Get.back();
+          },
+        ),
         title: CustomText(
-          text: AppStrings.editProfile.tr,
-          fontWeight: FontWeight.w500,
+          text:'Edit account',
+          fontWeight: FontWeight.bold,
           fontsize: 18.sp,
         ),
         centerTitle: true,
@@ -111,56 +117,46 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(4),
-                    child: Text('Account ID',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                  ),
+                  SizedBox(height: 12.h),
+                  Text('Account ID',
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   CustomTextField(
                     controller: _nameController,
                     hintText: '20103200',
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(4),
-                    child: Text('Full Name',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                  ),
+                  SizedBox(height: 8.h),
+                  Text('Full Name',
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   CustomTextField(
                     controller: _nameController,
                     hintText: 'Mahafujer',
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(4),
-                    child: Text('Last Name',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                  ),
+                  SizedBox(height: 8.h),
+                  Text('Last Name',
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   CustomTextField(
                     controller: _emailController,
                     hintText: 'Rahman',
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(4),
-                    child: Text('Public display name',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                  ),
+                  //=======================>>> Public display name <<====================
+                  SizedBox(height: 8.h),
+                  Text('Public display name',
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   CustomTextField(
                     controller: _addressController,
                     hintText: 'Public',
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(4),
-                    child: Text('Gender',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                  ),
+                  //=======================>>> Gender <<====================
+                  SizedBox(height: 8.h),
+                  Text('Gender',
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   CustomTextField(
                     controller: _addressController,
                     hintText: 'Male',
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(4),
-                    child: Text('Birthday',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                  ),
+                  SizedBox(height: 8.h),
+                  Text('Birthday',
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -211,11 +207,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       ),
                     ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(4),
-                    child: Text('Email',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                  ),
+                  //====================>>  Email <<===================================
+                  SizedBox(height: 8.h),
+                  Text('Email',
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   CustomTextField(
                     keyboardType: TextInputType.text,
                     controller: _emailController,
@@ -270,11 +265,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       ),
                     ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(4),
-                    child: Text('Location',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                  ),
+                  //====================>>  Location <<===================================
+                  SizedBox(height: 8.h),
+                  Text('Location',
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -366,55 +360,35 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.all(4),
-                                child: DropdownButtonFormField<String>(
-                                  decoration: InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                                    labelText: 'Select Year',
+                              child: CustomTextField(
+                                controller: locationCountryController,
+                                hintText: 'Select Year',
+                                sufixicons: Padding(
+                                  padding: EdgeInsets.only(right: 12.w),
+                                  child: SvgPicture.asset(
+                                    AppIcons.downArrowIcon,
+                                    width: 16.w,
                                   ),
-                                  value: null,
-                                  items: ['2020', '2021', '2022', '2023']
-                                      .map((year) => DropdownMenuItem(
-                                    value: year,
-                                    child: Text(year),
-                                  ))
-                                      .toList(),
-                                  onChanged: (value) {
-                                    // Handle year selection
-                                  },
                                 ),
                               ),
                             ),
-                            SizedBox(width: 8), // Spacing between the dropdown fields
+                            SizedBox(width: 10.w),
                             Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.all(4),
-                                child: DropdownButtonFormField<String>(
-                                  decoration: InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    contentPadding: EdgeInsets.symmetric(horizontal: 2),
-                                    labelText: 'Select Program',
+                              child: CustomTextField(
+                                controller: locationCityController,
+                                hintText: 'Select Program',
+                                sufixicons: Padding(
+                                  padding: EdgeInsets.only(right: 12.w),
+                                  child: SvgPicture.asset(
+                                    AppIcons.downArrowIcon,
+                                    width: 16.w,
                                   ),
-                                  value: null,
-                                  items: ['Chess', 'Math', 'Piano']
-                                      .map((program) => DropdownMenuItem(
-                                    value: program,
-                                    child: Text(
-                                      program,
-                                      style: TextStyle(fontSize: 12),
-                                    ),
-                                  ))
-                                      .toList(),
-                                  onChanged: (value) {
-                                    // Handle program selection
-                                  },
                                 ),
                               ),
                             ),
                           ],
                         ),
+
                         SizedBox(height: 10),
                         CustomButton(
                             color: AppColors.buttonColor,
@@ -423,16 +397,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             text: "Add",
                           textColor:Colors.white,
                         ),
-                        SizedBox(height: 16),
+                        SizedBox(height: 8.h),
                         Text(
                           'Added Skill',
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                          style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
                         ),
-                        SizedBox(height: 8),
-                        Padding(
-                          padding: const EdgeInsets.all(4),
-                          child: Text('Skill',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600)),
-                        ),
+                        SizedBox(height: 8.h),
                         Container(
                           decoration: BoxDecoration(
                             color:AppColors.colorEDF2F4,
@@ -566,10 +536,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             ),
                           ),
                         ),
-
+                        SizedBox(height: 10.h),
                       ],
                     ),
                   ),
+
                   SizedBox(height: 10),
                   CustomButton(
                     color: AppColors.buttonColor,
@@ -578,7 +549,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     text: "Update Profile",
                     textColor:Colors.white,
                   ),
-
                 ],
               ),
             ),
@@ -588,7 +558,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
     );
   }
-
   _prefixIcon(String icon) {
     return Padding(
       padding: EdgeInsets.only(left: 8.w, right: 16.w),
