@@ -42,6 +42,7 @@ class _ErrorScreenState extends State<ErrorScreen> {
                     borderColor: AppColors.buttonA47059,
                     textColor: AppColors.textColor,
                     text: 'Back to Home Page'),
+
               )
             ],
           ),
