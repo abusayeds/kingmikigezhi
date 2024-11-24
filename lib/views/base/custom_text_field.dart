@@ -1,4 +1,5 @@
 
+import 'package:event_sharing/utils/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -24,6 +25,7 @@ class CustomTextField extends StatefulWidget {
   final bool isPassword;
   final bool? isEmail;
   final bool? readOnly;
+  final TextStyle? hintTextStyle;
 
   const CustomTextField({
     super.key,
@@ -44,6 +46,7 @@ class CustomTextField extends StatefulWidget {
     this.isPassword = false,
     this.readOnly = false,
     this.onTab,
+    this.hintTextStyle,
   });
 
   @override
@@ -68,8 +71,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       controller: widget.controller,
       keyboardType: widget.keyboardType,
       obscuringCharacter: widget.obscureCharacrter!,
-      validator: widget.validator,
-      /*validator: widget.validator ??
+      validator: widget.validator ??
               (value) {
             if (widget.isEmail == null) {
               if (value!.isEmpty) {
@@ -91,7 +93,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               }
             }
             return null;
-          },*/
+          },
       cursorColor: AppColors.primaryColor,
       obscureText: widget.isPassword ? obscureText : false,
       style: const TextStyle(color: Colors.black),
@@ -115,7 +117,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         prefixIconColor: AppColors.primaryColor,
         labelText: widget.labelText,
         hintText: widget.hintText,
-        hintStyle: TextStyle(color: AppColors.hintColor, fontFamily: 'Poppins'),
+        hintStyle: widget.hintTextStyle ?? TextStyle(color: AppColors.hintColor, fontFamily: 'Poppins', fontSize: 14.sp),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.r),
           borderSide: BorderSide(

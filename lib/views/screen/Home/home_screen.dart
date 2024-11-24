@@ -1,4 +1,4 @@
-import 'package:event_sharing/helpers/route.dart';
+ import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_images.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
@@ -72,56 +72,114 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 10.h),
+            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 HomeAppBar(),
                 SizedBox(height: 20.h),
-                _searchBar(),
-                Row(
+                 _searchBar(),
+                  Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Container(
-                      height: 30.h,
-                      width: 120.w,
-                      padding: EdgeInsets.symmetric(horizontal: 8.h, vertical: 2.w),
+                      height: 35.h,
+                      padding: EdgeInsets.symmetric(horizontal: 8.h),
                       decoration: BoxDecoration(
-                        color: Colors.blueGrey, // Background color
+                        color: AppColors.primaryColor,
                         borderRadius: BorderRadius.circular(8.r),
                       ),
                       child: DropdownButton<String>(
                         value: dropdownValue,
+                        padding: EdgeInsets.zero,
                         underline: SizedBox(),
-                        icon: Icon(Icons.arrow_drop_down, color: Colors.white, size: 12.sp),
-                        dropdownColor: AppColors.primaryColor,
-                        style: TextStyle(color: Colors.white70, fontSize: 10.sp),
+                        icon: SvgPicture.asset(AppIcons.down_ArrowIcon),
+                        dropdownColor: Colors.white,
                         onChanged: (String? newValue) {
                           setState(() {
                             dropdownValue = newValue!;
                           });
                         },
-                        items: <String>['All', 'Self', 'Spous', 'Child Stephanie', 'Child Sophia'].map<DropdownMenuItem<String>>((String value) {
+                        selectedItemBuilder: (BuildContext context) {
+                          return <String>[
+                            'All',
+                            'Self',
+                            'Spouse',
+                            'Child Stephanie',
+                            'Child Sophia',
+                          ].map<Widget>((String value) {
+                            return Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 8.w),
+                              child: Center(
+                                child: Text(
+                                  value,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12.sp,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }).toList();
+                        },
+                        items: <String>[
+                          'All',
+                          'Self',
+                          'Spouse',
+                          'Child Stephanie',
+                          'Child Sophia',
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          Color backgroundColor;
+                          switch (value) {
+                            case 'Self':
+                              backgroundColor = AppColors.color67AB9F;
+                              break;
+                            case 'Spouse':
+                              backgroundColor = AppColors.colorE5CCFF;
+                              break;
+                            case 'Child Stephanie':
+                              backgroundColor = AppColors.colorCCFFE6;
+                              break;
+                            case 'Child Sophia':
+                              backgroundColor = AppColors.colorFFF2CC;
+                              break;
+                            default:
+                              backgroundColor = Colors.white;
+                          }
                           return DropdownMenuItem<String>(
                             value: value,
-                            child: Row(
-                              children: [
-                                Text(value),
-                                SizedBox(width: 10.w),
-                              ],
+                            child: Padding(
+                              padding: EdgeInsets.all(4.r),
+                              child: Container(
+                                alignment: Alignment.centerLeft,
+                                decoration: BoxDecoration(
+                                  color: backgroundColor,
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 8.w),
+                                  child: Text(
+                                    value,
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 12.sp,
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
                           );
                         }).toList(),
                       ),
                     ),
                     IconButton(
-                      icon: Icon(Icons.add),
+                      icon: const Icon(Icons.add),
+                      padding: EdgeInsets.zero,
                       onPressed: () {
                         HomePageAddBottomSheetWidget.addBottomSheet(context);
                       },
                     ),
                   ],
-                ),
+                                  ),
                // CalendarWidget(),
                 _tableCalendar(),
                 SizedBox(height: 16.h),
@@ -181,7 +239,7 @@ class _HomeScreenState extends State<HomeScreen> {
             controller: _searchController,
             contenpaddingHorizontal: 12.w,
             contenpaddingVertical: 12.h,
-            hintText: "Search",
+            hintText: "Search Event",
             sufixicons: Padding(
               padding: EdgeInsets.symmetric(horizontal: 8.w),
               child: SvgPicture.asset(
@@ -249,18 +307,33 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     CustomText(
                       text: 'Piano Song Event',
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w600,
                     ),
                     SizedBox(height: 12.h),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SvgPicture.asset(AppIcons.dotIconForFamily),
-                        Padding(
-                          padding: EdgeInsets.only(left: 5.w),
-                          child: CustomText(
-                            text: 'Piano',
-                            fontsize: 10.sp,
-                          ),
+                        Row(
+                          children: [
+                            SvgPicture.asset(AppIcons.dotIconForFamily),
+                            SizedBox(width: 4.w),
+                            CustomText(
+                              text: 'Piano',
+                              fontsize: 10.sp,
+                            ),
+                          ],
+                        ),
+                        SizedBox(width: 12.w),
+                        Row(
+                          children: [
+                            SvgPicture.asset(AppIcons.dotIconForFamily),
+                            SizedBox(width: 4.w),
+                            CustomText(
+                              text: 'Type: Online',
+                              fontsize: 10.sp,
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -338,13 +411,13 @@ class _HomeScreenState extends State<HomeScreen> {
   //============================> Piano Event List View <=================================
   _pianoList() {
     return SizedBox(
-      height: 190.h,
+      height: 160.h,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: 3,
         itemBuilder: (context, index) {
           return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8.w),
+            padding: EdgeInsets.only(right: 8),
             child: Container(
               decoration: BoxDecoration(
                 color: const Color(0xffE5CCFF),
@@ -376,31 +449,33 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: [
                             CustomText(
                               text: 'Piano Song Event',
-                              fontWeight: FontWeight.w500,
+                              fontWeight: FontWeight.w600,
                             ),
                             SizedBox(height: 12.h),
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                SvgPicture.asset(AppIcons.dotIconForFamily),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 5.w),
-                                  child: CustomText(
-                                    text: 'Piano',
-                                    fontsize: 10.sp,
-                                  ),
+                                Row(
+                                  children: [
+                                    SvgPicture.asset(AppIcons.dotIconForFamily),
+                                   SizedBox(width: 4.w),
+                                    CustomText(
+                                      text: 'Piano',
+                                      fontsize: 10.sp,
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                            SizedBox(height: 8.h),
-                            Row(
-                              children: [
-                                SvgPicture.asset(AppIcons.dotIconForFamily),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 5.w),
-                                  child: CustomText(
-                                    text: 'Type: Online',
-                                    fontsize: 10.sp,
-                                  ),
+                                SizedBox(width: 12.w),
+                                Row(
+                                  children: [
+                                    SvgPicture.asset(AppIcons.dotIconForFamily),
+                                    SizedBox(width: 4.w),
+                                    CustomText(
+                                      text: 'Type: Online',
+                                      fontsize: 10.sp,
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
@@ -498,14 +573,19 @@ class _HomeScreenState extends State<HomeScreen> {
                         : CalendarFormat.week;
                   });
                 },
-                child: SvgPicture.asset(AppIcons.calendarIcon) // Update this path
+                child: SvgPicture.asset(AppIcons.calendarIcon)
             ),
             leftChevronVisible: false,
             leftChevronIcon: const SizedBox(),
             formatButtonVisible: false,
             titleCentered: false,
             titleTextStyle: TextStyle(
-                fontSize: 18, fontWeight: FontWeight.bold),
+                fontSize: 18.sp, fontWeight: FontWeight.bold,
+            ),
+          ),
+          daysOfWeekStyle: DaysOfWeekStyle(
+            weekdayStyle: TextStyle(color: AppColors.colorA4B9DE),
+            weekendStyle: TextStyle(color: AppColors.colorA4B9DE),
           ),
           calendarStyle: CalendarStyle(
             todayDecoration: BoxDecoration(
@@ -528,10 +608,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     // Using Row for horizontal alignment
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center, // Center the content
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 4.0), // Add vertical padding
+                          padding:  EdgeInsets.symmetric(vertical: 4.0.h),
                           child: Text(
                             '${day.day}',
                             style: TextStyle(
@@ -544,11 +624,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     if (hasAppointments)
                       Container(
-                        height: 8, // Height of the circular indicator
-                        width: 8, // Width of the circular indicator
+                        height: 8.h,
+                        width: 8.w,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Colors.amber, // Change this to your desired color
+                          color: Colors.amber,
                         ),
                       ),
                   ],
@@ -560,58 +640,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ],
     );
   }
-/*  _tableCalendar2() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        // TableCalendar Widget
-        TableCalendar(
-          firstDay: DateTime.utc(2020, 10, 16),
-          lastDay: DateTime.utc(2030, 3, 14),
-          focusedDay: _focusedDay,
-          calendarFormat: _calendarFormat,
-          startingDayOfWeek: StartingDayOfWeek.monday,
-          selectedDayPredicate: (day) {
-            return isSameDay(_selectedDay, day);
-          },
-          onDaySelected: (selectedDay, focusedDay) {
-            setState(() {
-              _selectedDay = selectedDay;
-              _focusedDay = focusedDay;
-            });
-          },
-          headerStyle: HeaderStyle(
-            rightChevronIcon: InkWell(
-                onTap: () {
-                  setState(() {
-                    _calendarFormat = _calendarFormat == CalendarFormat.week
-                        ? CalendarFormat.month
-                        : CalendarFormat.week;
-                  });
-                },
-                //  child: Icon(Icons.calendar_today_rounded, color: AppColors.primaryColor),
-                child: SvgPicture.asset(AppIcons.calendarIcon)
-            ),
-            leftChevronIcon: const SizedBox(),
-            formatButtonVisible: false,
-            titleCentered: false,
-            titleTextStyle: TextStyle(
-                fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-          calendarStyle: CalendarStyle(
-            todayDecoration: BoxDecoration(
-              color: AppColors.colorCDBDB6,
-              shape: BoxShape.rectangle,
-            ),
-            selectedDecoration: BoxDecoration(
-              color: AppColors.colorCDBDB6,
-              shape: BoxShape.rectangle,
-            ),
-          ),
-        ),
-      ],
-    );
-  }*/
   // Function to check for appointments for a specific day
   bool _checkForAppointments(DateTime day) {
     // Check if the day exists in the appointment map

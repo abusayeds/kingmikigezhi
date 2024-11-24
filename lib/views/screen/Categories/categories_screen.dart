@@ -64,7 +64,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                   final category = categories[index];
                   return GestureDetector(
                     onTap: (){
-                      Get.toNamed(AppRoutes.eventDetailsScreen);
+                      Get.toNamed(AppRoutes.categoriesSearchAppliedScreen);
+                     // Get.toNamed(AppRoutes.eventDetailsScreen);
                     },
                     child: Card(
                       shape: RoundedRectangleBorder(

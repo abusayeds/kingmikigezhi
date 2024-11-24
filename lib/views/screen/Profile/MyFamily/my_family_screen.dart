@@ -3,6 +3,7 @@ import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:event_sharing/views/screen/Profile/MyFamily/member/member_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 import 'owner/owner_profile.dart';
 
@@ -43,7 +44,14 @@ class _MyFamilyScreenState extends State<MyFamilyScreen>
        // bottomNavigationBar: const UserBottomMenu(2),
         appBar: AppBar(
           backgroundColor: Colors.white,
-          title: const Text('My Family',style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600)),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios,
+                color: Colors.black, size: 18.w),
+            onPressed: () {
+              Get.back();
+            },
+          ),
+          title:  Text('My Family',style: TextStyle(fontSize: 18.sp,fontWeight: FontWeight.bold)),
           centerTitle: true,
           bottom: TabBar(
             controller: _tabController,
@@ -101,12 +109,15 @@ class _MyFamilyScreenState extends State<MyFamilyScreen>
             ],
           ),
         ),
-        body: TabBarView(
-          controller: _tabController,
-          children: const [
-            MyFamilyMemberAddScreen(),
-            OwnerMemberAddScreen(),
-          ],
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 8.h),
+          child: TabBarView(
+            controller: _tabController,
+            children: const [
+              MyFamilyMemberAddScreen(),
+              OwnerMemberAddScreen(),
+            ],
+          ),
         ),
       ),
     );

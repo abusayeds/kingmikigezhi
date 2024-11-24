@@ -1,61 +1,62 @@
 import 'package:event_sharing/utils/app_colors.dart';
+import 'package:event_sharing/views/base/custom_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class SuggestionScreen extends StatelessWidget {
+  final TextEditingController _describtionCTRL = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+        automaticallyImplyLeading: false,
+        title: Row(
+          children: [
+            IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.black,
+                size: 18.w,
+              ),
+              onPressed: () {
+                Get.back();
+              },
+            ),
+          ],
         ),
-        backgroundColor: Colors.white,
-        elevation: 0,
+        centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding:  EdgeInsets.symmetric(horizontal: 24.w),
         child: Column(
           children: [
-            // Text Input Field
-            Expanded(
-              child: TextField(
-                maxLines: null,
-                expands: true,
-                decoration: InputDecoration(
-                  hintText: 'Type your Text Line',
-                  hintStyle: TextStyle(color: AppColors.greyColor),
-                  filled: true,
-                  fillColor: Color(0xFFF4F7F9), // Light background color
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: AppColors.buttonA47059),
-                  ),
-                ),
-              ),
-            ),
+           CustomTextField(
+             controller: _describtionCTRL,
+             hintText: 'Share your suggestion',
+             maxLines: 15,
 
-            SizedBox(height: 20), // Spacing before buttons
-
-            // Buttons (Cancel & Commit)
+           ),
+            SizedBox(height: 59.h),
+           // Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 // Cancel Button (Outlined)
                 Expanded(
                   child: OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.back();
+                    },
                     style: OutlinedButton.styleFrom(
                       backgroundColor: AppColors.fillColor,
-                      padding: EdgeInsets.symmetric(vertical: 16),
-                      side: BorderSide(color: Color(0xFFB58974)), // Outline color
+                      padding: EdgeInsets.symmetric(vertical: 16.h),
+                      side: const BorderSide(color: Color(0xFFB58974)), // Outline color
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(8.r),
                       ),
                     ),
-                    child: Text(
+                    child: const Text(
                       'Cancel',
                       style: TextStyle(
                         color: Colors.black,
@@ -64,18 +65,18 @@ class SuggestionScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(width: 16),
+                SizedBox(width: 16.w),
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF815B48),
-                      padding: EdgeInsets.symmetric(vertical: 16),
+                      backgroundColor: const Color(0xFF815B48),
+                      padding: EdgeInsets.symmetric(vertical: 16.h),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(8.r),
                       ),
                     ),
-                    child: Text(
+                    child: const Text(
                       'Commit',
                       style: TextStyle(
                         color: Colors.white, // Text color
@@ -86,7 +87,7 @@ class SuggestionScreen extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 20), // Bottom padding
+            SizedBox(height: 20.h),
           ],
         ),
       ),

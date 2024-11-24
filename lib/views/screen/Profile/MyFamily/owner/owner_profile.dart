@@ -18,19 +18,18 @@ class OwnerMemberAddScreen extends StatefulWidget {
 class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
 
   final List<Map<String, String>> familyMembers = [
-    {'name': 'Kiefer', 'relation': 'Spouse', 'image': 'assets/images/show.png'},
-    {'name': 'John', 'relation': 'Father', 'image': 'assets/images/shoot.png'},
-    {'name': 'Emily', 'relation': 'Daughter', 'image': 'assets/images/song.png'},
+    {'name': 'Kiefer', 'number': '55555-000045', 'image': 'assets/images/show.png'},
+    {'name': 'John', 'number': '666-412045', 'image': 'assets/images/shoot.png'},
+    {'name': 'Emily', 'number': '55555-000045', 'image': 'assets/images/song.png'},
   ];
   bool shouldRemove = false;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Top action button
+            //     Top action button
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -67,7 +66,7 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextField(
                     decoration: InputDecoration(
-                      hintText: 'Search...',
+                      hintText: 'Search Member',
                       hintStyle: TextStyle(color: AppColors.greyColor),
                       border: InputBorder.none,
                       suffixIcon: Icon(Icons.search,color: AppColors.primaryColor),
@@ -78,8 +77,8 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
             ),
             // Family members list
             ListView.builder(
-              shrinkWrap: true, // Important to fit inside SingleChildScrollView
-              physics: NeverScrollableScrollPhysics(), // Disable inner scroll
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
               itemCount: familyMembers.length,
               itemBuilder: (context, index) {
                 final member = familyMembers[index];
@@ -94,7 +93,7 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
                       ),
                       alignment: Alignment.centerRight,
                       padding: EdgeInsets.symmetric(horizontal: 20),
-                      child: Icon(Icons.delete, color: Colors.white),
+                      child: SvgPicture.asset(AppIcons.deleteIcon),
                     ),
                     direction: DismissDirection.endToStart,
                     confirmDismiss: (direction) async {
@@ -106,44 +105,57 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
                     child: Container(
                       decoration: BoxDecoration(
                         color: AppColors.colorEDF2F4,
-                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                        borderRadius: BorderRadius.circular(8),
                         border: Border.all(color: Colors.black12, width: 1.0),
                       ),
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          backgroundImage: AssetImage(member['image']!),
-                          radius: 35.r,
-                        ),
-                        title: Text(member['name']!,
-                            style: TextStyle(fontWeight: FontWeight.bold)),
-                        subtitle: Column(
-                          children: [
-                            Row(
-                              children: [
-                                SvgPicture.asset(AppIcons.dotIconForFamily),
-                                SizedBox(width: 4.w),
-                                Text(member['relation']!,style: TextStyle(fontSize: 10),),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                SvgPicture.asset(AppIcons.dotIconForFamily),
-                                SizedBox(width: 4.w),
-                                Text('Email: Abc@gmail.com',style: TextStyle(fontSize: 10),),
-                              ],
-                            ),
-                          ],
-                        ),
-                        trailing: InkWell(
-                          onTap: () {
-                            _showViewModeBottomSheet(context);
-                          },
-                          child: Icon(Icons.more_horiz, color: AppColors.greyColor),
-                        ),
+                      padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                      child: Stack(
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              CircleAvatar(
+                                backgroundImage: AssetImage(member['image']!),
+                                radius: 30.r,
+                              ),
+                              SizedBox(width: 12.w),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      member['name']!,
+                                      style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16.sp),
+                                    ),
+                                    SizedBox(height: 4.h),
+                                    Row(
+                                      children: [
+                                        SvgPicture.asset(AppIcons.dotIconForFamily, width: 5.w, height: 5.h),
+                                        SizedBox(width: 4.w),
+                                        Text('Phone : ${member['number']}',
+                                          style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12.sp),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 4.h),
+                                    Row(
+                                      children: [
+                                        SvgPicture.asset(AppIcons.dotIconForFamily, width: 5.w, height: 5.h),
+                                        SizedBox(width: 4.w),
+                                        Text(
+                                          'Email : abac@gmail.com',
+                                          style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12.sp),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
-
-
                   )
 
                 );
@@ -179,9 +191,9 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
               SizedBox(height: 20.h),
               Divider(thickness: 1, color: AppColors.greyColor),
               SizedBox(height: 20.h),
-              Text("Delete", style: AppStyles.h2(color: AppColors.primaryColor, fontWeight: FontWeight.w600)),
+              Text("Delete", style: AppStyles.fontSize20(color: AppColors.primaryColor, fontWeight: FontWeight.w600)),
               Text("Are you sure to delete this?",
-                style: AppStyles.h3(color: AppColors.borderColor),
+                style: AppStyles.fontSize18(color: AppColors.borderColor),
               ),
               SizedBox(height: 20.h),
               Row(
@@ -189,7 +201,7 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
-                        Get.back(); // Close the bottom sheet
+                        Get.back();
                       },
                       style: ElevatedButton.styleFrom(
                         minimumSize: Size(double.infinity, 58),
@@ -202,7 +214,7 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
                         ),
                       ),
                       child: Text('Cancel',
-                        style: AppStyles.h4(color: AppColors.primaryColor),
+                        style: AppStyles.fontSize16(color: AppColors.primaryColor),
                       ),
                     ),
                   ),
@@ -220,7 +232,7 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
                         ),
                       ),
                       child: Text('Yes',
-                        style: AppStyles.h4(color: AppColors.backgroundColor),
+                        style: AppStyles.fontSize16(color: AppColors.backgroundColor),
                       ),
                     ),
                   ),
@@ -260,7 +272,7 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
               SizedBox(height: 20.h),
               Text(
                 "What you want?",
-                style: AppStyles.h3(color: AppColors.borderColor),
+                style: AppStyles.fontSize18(color: AppColors.borderColor),
               ),
               SizedBox(height: 20.h),
               Row(
@@ -284,7 +296,7 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
                           SizedBox(width: 4.w),
                           Text(
                             'View Profile',
-                            style: AppStyles.h5(color: AppColors.backgroundColor),
+                            style: AppStyles.fontSize14(color: AppColors.backgroundColor),
                           ),
                         ],
                       ),
@@ -306,7 +318,7 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
                           SvgPicture.asset(AppIcons.delete, width: 24.w,height:24.h),
                           Text(
                             'Delete Profile',
-                            style: AppStyles.h5(color: AppColors.backgroundColor),
+                            style: AppStyles.fontSize14(color: AppColors.backgroundColor),
                           ),
                         ],
                       ),

@@ -6,7 +6,10 @@ class AppIcons{
   static String notificationIcon="$baseUrl/bell.svg";
   static String calendarIcon="$baseUrl/calendar.svg";
   static String downArrowIcon="$baseUrl/chevron-down.svg";
-
+  static String card="$baseUrl/card.svg";
+  static String check="$baseUrl/check.svg";
+  static String deleteIcon="$baseUrl/deleteIcon.svg";
+  static String connection="$baseUrl/connection.svg";
   static String timeIcon="$baseUrl/clock.svg";
   static String settingsIcon="$baseUrl/settings.svg";
   static String termsIcon="$baseUrl/exclamation.svg";
@@ -42,6 +45,8 @@ class AppIcons{
   static String heart="$baseUrl/heart.svg";
   static String search="$baseUrl/search.svg";
   static String homeIcons="$baseUrl/home_icons.svg";
+  static String circle="$baseUrl/circle.svg";
+  static String cardIcon="$baseUrl/card_icon.svg";
 
 
 
@@ -60,6 +65,8 @@ class AppIcons{
   static String calenderIcon ="$baseUrl/calenderIcon.svg";
   static String userIcon ="$baseUrl/user.svg";
   static String homeIcon="$baseUrl/homeIcon.svg";
+  static String down_ArrowIcon="$baseUrl/down_arrow_icon.svg";
+
 
 
 }
