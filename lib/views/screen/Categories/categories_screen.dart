@@ -127,7 +127,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             controller: _searchController,
             contenpaddingHorizontal: 12.w,
             contenpaddingVertical: 12.h,
-            hintText: "Search",
+            hintText: "Search Event",
             sufixicons: Padding(
               padding: EdgeInsets.symmetric(horizontal: 8.w),
               child: SvgPicture.asset(
