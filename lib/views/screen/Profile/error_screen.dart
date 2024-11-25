@@ -24,24 +24,19 @@ class _ErrorScreenState extends State<ErrorScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Image.asset(AppImages.errorPageImage),
-              Text(
-                'Oops!',
-                style: TextStyle(fontSize: 32, fontWeight: FontWeight.w600),
-              ),
-              Text(
-                'The page you were looking for can’t be found.',
-                style: TextStyle(fontSize: 10, fontWeight: FontWeight.w400),
-              ),
+              Text('Oops!', style: TextStyle(fontSize: 32, fontWeight: FontWeight.w600)),
+              Text('The page you were looking for can’t be found.',
+                style: TextStyle(fontSize: 10, fontWeight: FontWeight.w400)),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: CustomButton(
                     onTap: () {
                       Get.toNamed(AppRoutes.homeScreen);
-                    },
+                      },
                     color: AppColors.buttonA47059,
                     borderColor: AppColors.buttonA47059,
                     textColor: AppColors.textColor,
-                    text: 'Back to Home page'),
+                    text: 'Back to Home Page'),
               )
             ],
           ),
