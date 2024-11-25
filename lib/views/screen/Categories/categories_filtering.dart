@@ -1,4 +1,3 @@
-import 'package:event_sharing/controllers/home_controller.dart';
 import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_icons.dart';
@@ -40,7 +39,15 @@ class _CategoriesFilterScreenState extends State<CategoriesFilterScreen> {
             fontsize: 18.sp,
             fontWeight: FontWeight.w500,
           ),
-          centerTitle: true),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios,
+              color: Colors.black, size: 18.w),
+          onPressed: () {
+            Get.back();
+          },
+        ),
+          centerTitle: true,
+      ),
       //=======================> Body Section <============================
       body: SingleChildScrollView(
         child: Padding(
