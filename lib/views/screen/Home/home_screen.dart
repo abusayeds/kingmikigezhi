@@ -639,7 +639,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
   // Function to check for appointments for a specific day
   bool _checkForAppointments(DateTime day) {
-    // Check if the day exists in the appointment map
     return appointmentDates.containsKey(day);
   }
 }
