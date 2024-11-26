@@ -27,6 +27,8 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
   var parameter = Get.parameters;
   Uint8List? _image;
   File? selectedImage;
+  String? _selectedRelationship;
+  final List<String> relationshipList = ['Brother', 'Father', 'Mother'];
 
   final TextEditingController birthDayYearController = TextEditingController();
   final TextEditingController birthDayMonthController = TextEditingController();
@@ -60,6 +62,13 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
           text: AppStrings.createProfile.tr,
           fontWeight: FontWeight.w500,
           fontsize: 18.sp,
+        ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios,
+              color: Colors.black, size: 18.w),
+          onPressed: () {
+            Get.back();
+          },
         ),
         centerTitle: true,
       ),
@@ -116,9 +125,39 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                     child: Text('Relationship',
                         style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   ),
-                  CustomTextField(
-                    controller: relationShipController,
-                    hintText: 'Child',
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20.w),
+                    decoration: BoxDecoration(
+                      color: AppColors.fillColor,
+                      borderRadius: BorderRadius.circular(8.r),
+                      border: Border.all(color: AppColors.primaryColor, width: 1),
+                    ),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton<String>(
+                        value: _selectedRelationship,
+                        dropdownColor: AppColors.fillColor,
+                        menuWidth: 240.w,
+                        borderRadius: BorderRadius.circular(8.r),
+                        hint: Text("Select RelationShip", style:AppStyles.fontSize14(color: AppColors.color414141)),
+                        icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
+                        ),
+                        isExpanded: true,
+                        items: relationshipList.map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(
+                              value,
+                              style: const TextStyle(color: Colors.black),
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: (newValue) {
+                          setState(() {
+                            _selectedRelationship = newValue;
+                          });
+                        },
+                      ),
+                    ),
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 8.h),
