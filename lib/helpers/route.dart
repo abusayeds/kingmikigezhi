@@ -110,7 +110,7 @@ class AppRoutes{
   static String errorScreen = "/errorScreen";
   static String memberProfileDetailsScreen = "/memberProfileDetailsScreen";
   static String ownerProfileDetailsScreen = "/OwnerProfileDetailsScreen";
-  static String appliedSearchScreen = "/appliedSearch_Screen";
+  static String appliedSearchEventListScreen = "/appliedSearch_Screen";
   static String suggestionDonationPage = "/suggestion_donation_page";
   static String suggestionScreen = "/suggestion_screen";
   static String donationScreen = "/donation_screen";
@@ -180,7 +180,7 @@ class AppRoutes{
 
    GetPage(name: memberProfileDetailsScreen, page: ()=> MemberProfileDetailsScreen()),
    GetPage(name: ownerProfileDetailsScreen, page: ()=> OwnerProfileDetailsScreen()),
-   GetPage(name: appliedSearchScreen, page: ()=> AppliedSearchScreen()),
+   GetPage(name: appliedSearchEventListScreen, page: ()=> AppliedSearchEventListScreen()),
 
 
    //home

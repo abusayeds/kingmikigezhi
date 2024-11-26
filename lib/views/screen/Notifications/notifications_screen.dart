@@ -1,9 +1,7 @@
-import 'package:event_sharing/utils/app_strings.dart';
 import 'package:event_sharing/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get_utils/get_utils.dart';
 import 'package:timeago/timeago.dart' as TimeAgo;
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_icons.dart';
@@ -67,6 +65,7 @@ class NotificationsScreen extends StatelessWidget {
             //========================> Details Card
             Dismissible(
               key: UniqueKey(),
+              //crossAxisEndOffset : 1,
               direction: DismissDirection.endToStart,
               background: Container(
                 decoration: BoxDecoration(
@@ -79,7 +78,7 @@ class NotificationsScreen extends StatelessWidget {
               ),
               onDismissed: (direction) {},
               child: Container(
-                margin: EdgeInsets.symmetric(vertical: 8.h),
+               margin: EdgeInsets.symmetric(vertical: 8.h),
                 decoration: BoxDecoration(
                   color: const Color(0xffedf2f4),
                   borderRadius: BorderRadius.circular(15.r),
@@ -198,109 +197,111 @@ class NotificationsScreen extends StatelessWidget {
                   ],
                 ),
               ),
-            ),
+                          ),
           ),
 
           //========================> Request Card
-            Dismissible(
-              key: UniqueKey(),
-              direction: DismissDirection.endToStart,
-              background: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12.r),
-                  color: AppColors.colorD9A951,
-                ),
-                alignment: Alignment.centerRight,
-                padding: EdgeInsets.only(right: 26.w),
-                child: SvgPicture.asset(AppIcons.deleteIcon),
-              ),
-              onDismissed: (direction) {
-                // Handle dismissal action here
-              },
-              child: Container(
-                margin: EdgeInsets.symmetric(vertical: 8.h),
-                decoration: BoxDecoration(
-                  color: const Color(0xffedf2f4),
-                  borderRadius: BorderRadius.circular(15.r),
-                  border: Border.all(color: AppColors.primaryColor, width: .5),
-                ),
-                child: SizedBox(
-                  height: 102.h,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        //=====================> Image Section <=========================
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(50.r),
-                          child: Image.asset(
-                            'assets/images/shoot.png',
-                            height: 59.0.h,
-                            width: 59.0.w,
-                            fit: BoxFit.cover,
-                          ),
+        Dismissible(
+         // crossAxisEndOffset : 1,
+          key: UniqueKey(),
+          direction: DismissDirection.endToStart,
+          background: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12.r),
+              color: AppColors.colorD9A951,
+
+            ),
+            alignment: Alignment.centerRight,
+            padding: EdgeInsets.only(right: 26.r),
+            child: SvgPicture.asset(AppIcons.deleteIcon),
+          ),
+          onDismissed: (direction) {
+            // Handle dismissal action here
+          },
+          child: Container(
+            margin: EdgeInsets.symmetric(vertical: 8.h),
+            decoration: BoxDecoration(
+              color: AppColors.colorEDF2F4,
+              borderRadius: BorderRadius.circular(12.r),
+              border: Border.all(color: AppColors.primaryColor, width: .5),
+            ),
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      //=====================> Image Section <=========================
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(50.r),
+                        child: Image.asset(
+                          'assets/images/shoot.png',
+                          height: 59.0.h,
+                          width: 59.0.w,
+                          fit: BoxFit.cover,
                         ),
-                        SizedBox(width: 12.w),
-                        //=====================> Details Section <=========================
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center, // Center align content vertically
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Sophia',
-                                style: AppStyles.fontSize14(fontWeight: FontWeight.w500),
-                                textAlign: TextAlign.start,
-                              ),
-                              Text(
-                                'requested to join your family',
-                                style: AppStyles.fontSize12(fontWeight: FontWeight.w400), // Adjusted style for subtitle
-                                textAlign: TextAlign.start,
-                              ),
-                              SizedBox(height: 8.h),
-                              //=====================> Event Info Section <=========================
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Icon(Icons.circle, size: 8.sp, color: Colors.blueGrey), // Dot icon
-                                      SizedBox(width: 4.w),
-                                      Text(
-                                        'Account ID: 102',
-                                        style: TextStyle(fontSize: 10.sp, color: Colors.grey[800]), // Style adjustment
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(width: 20.w),
-                                  Row(
-                                    children: [
-                                      Icon(Icons.circle, size: 8.sp, color: Colors.blueGrey), // Dot icon
-                                      SizedBox(width: 4.w),
-                                      Text(
-                                        'Contribution: 100',
-                                        style: TextStyle(fontSize: 10.sp, color: Colors.grey[800]), // Style adjustment
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                      ),
+                      SizedBox(width: 12.w),
+                      //=====================> Details Section <=========================
+                      Expanded(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Sophia',
+                              style: AppStyles.fontSize14(fontWeight: FontWeight.w500),
+                              textAlign: TextAlign.start,
+                            ),
+                            Text(
+                              'requested to join your family',
+                              style: AppStyles.fontSize12(fontWeight: FontWeight.w400), // Adjusted style for subtitle
+                              textAlign: TextAlign.start,
+                            ),
+                            SizedBox(height: 8.h),
+                            //=====================> Event Info Section <=========================
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(Icons.circle, size: 8.sp, color: Colors.blueGrey), // Dot icon
+                                    SizedBox(width: 4.w),
+                                    Text(
+                                      'Account ID: 102',
+                                      style: TextStyle(fontSize: 10.sp, color: Colors.grey[800]), // Style adjustment
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(width: 20.w),
+                                Row(
+                                  children: [
+                                    Icon(Icons.circle, size: 8.sp, color: Colors.blueGrey), // Dot icon
+                                    SizedBox(width: 4.w),
+                                    Text(
+                                      'Contribution: 100',
+                                      style: TextStyle(fontSize: 10.sp, color: Colors.grey[800]), // Style adjustment
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                        SizedBox(height: 8.h),
-                        //=====================> More Options Icon <=========================
-                        Align(
-                          alignment: Alignment.bottomRight,
-                          child: Icon(Icons.more_horiz, color: AppColors.color87A9B8, size: 20.sp),
-                        ),
-                      ],
-                    ),
+                      ),
+                      //=====================> More Options Icon <=========================
+                      Align(
+                        alignment: Alignment.bottomRight,
+                        child: Icon(Icons.more_horiz, color: AppColors.color87A9B8, size: 20.sp),
+                      ),
+                    ],
                   ),
                 ),
-              ),
+              ],
             ),
+          ),
+        ),
             Expanded(
               child: ListView.builder(
                 itemCount: 2,
@@ -352,7 +353,7 @@ class NotificationsScreen extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12.r),
-          color: AppColors.colorEDF2F4,
+          color: AppColors.colorEDF2F4
         ),
         child: Column(
           children: [

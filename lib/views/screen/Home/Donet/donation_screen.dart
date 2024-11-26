@@ -84,7 +84,8 @@ class _DonationScreenState extends State<DonationScreen> {
                 onTap: (){
               print('Donated: \$${selectedAmount}');
               Get.toNamed(AppRoutes.makePaymentScreen);
-            },
+              },
+                color: AppColors.buttonColor,
                 borderColor: AppColors.buttonColor,
                 textColor: Colors.white,
                 text: 'Donate Now'),

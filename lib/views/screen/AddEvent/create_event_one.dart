@@ -64,7 +64,9 @@ class _CreateEventOneState extends State<CreateEventOne> {
           fontsize: 18.sp,
           fontWeight: FontWeight.w500,
         ),
+
         centerTitle: true,
+
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -532,6 +534,7 @@ class _CreateEventOneState extends State<CreateEventOne> {
                     });
                   },
                   text: "Back",
+                  borderColor: AppColors.buttonColor,
                   color: AppColors.fillColor,
                   textColor: Colors.black,
                 ),
@@ -547,6 +550,7 @@ class _CreateEventOneState extends State<CreateEventOne> {
                     });
                   },
                   text: "Next",
+                  borderColor: AppColors.buttonColor,
                   textColor: Colors.white,
                   color: AppColors.buttonColor,
                 ),

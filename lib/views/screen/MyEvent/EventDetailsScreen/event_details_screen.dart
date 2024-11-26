@@ -897,7 +897,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                           width: 166.w,
                           child: CustomButton(
                             onTap: () {
-                              Get.toNamed(AppRoutes.appliedSearchScreen);
+                              Get.toNamed(AppRoutes.appliedSearchEventListScreen);
                             },
                             text: "Apply",
                             textColor: Colors.white,
