@@ -29,7 +29,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   String? _selectedCurrency;
   String? _selectedNotification;
   String? _selectedTimeZone;
-  String? _selectedOption;
+
 
   @override
   Widget build(BuildContext context) {

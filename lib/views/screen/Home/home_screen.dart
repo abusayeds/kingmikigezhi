@@ -92,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: DropdownButton<String>(
                         value: dropdownValue,
                         padding: EdgeInsets.zero,
-                        underline: SizedBox(),
+                        underline: const SizedBox(),
                         icon: SvgPicture.asset(AppIcons.down_ArrowIcon),
                         dropdownColor: Colors.white,
                         onChanged: (String? newValue) {
@@ -333,7 +333,7 @@ class _HomeScreenState extends State<HomeScreen> {
                              ),
                            ],
                          ),
-                         Spacer(),
+                         const Spacer(),
                          Row(
                            children: [
                              SvgPicture.asset(AppIcons.dotIconForFamily),
@@ -461,7 +461,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                     ],
                                   ),
-                                  Spacer(),
+                                  const Spacer(),
                                   Row(
                                     children: [
                                       SvgPicture.asset(AppIcons.dotIconForFamily),
@@ -599,7 +599,7 @@ class _HomeScreenState extends State<HomeScreen> {
               // Check if today has appointments
               bool hasAppointments = _checkForAppointments(day);
               return Container(
-                margin: EdgeInsets.only(bottom: 5),
+                margin: const EdgeInsets.only(bottom: 5),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -623,7 +623,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Container(
                         height: 8.h,
                         width: 8.w,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           shape: BoxShape.circle,
                           color: Colors.amber,
                         ),
