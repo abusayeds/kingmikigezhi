@@ -215,9 +215,7 @@ class NotificationsScreen extends StatelessWidget {
             padding: EdgeInsets.only(right: 26.r),
             child: SvgPicture.asset(AppIcons.deleteIcon),
           ),
-          onDismissed: (direction) {
-            // Handle dismissal action here
-          },
+          onDismissed: (direction) {},
           child: Container(
             margin: EdgeInsets.symmetric(vertical: 8.h),
             decoration: BoxDecoration(
