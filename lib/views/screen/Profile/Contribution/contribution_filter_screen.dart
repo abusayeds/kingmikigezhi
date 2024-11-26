@@ -16,7 +16,7 @@ class ContributionFilterScreen extends StatefulWidget {
 }
 
 class _ContributionFilterScreenState extends State<ContributionFilterScreen> {
-  final TextEditingController _categoriesCTRL = TextEditingController();
+
   final TextEditingController _locationCTRL = TextEditingController();
   final List<String> _program = ['Musical Instrument', 'Keyboard', 'Piano', 'Chess', 'Ballet'];
   final List<String> _type = ['Onsite', 'Online', 'Hybrid'];
