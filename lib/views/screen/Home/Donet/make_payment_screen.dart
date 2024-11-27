@@ -120,6 +120,7 @@ class _MakePaymentScreenState extends State<MakePaymentScreen> {
                 },
                   text: 'Payment Now',
                 textColor: Colors.white,
+
                 borderColor: AppColors.buttonColor,
               )
             ],

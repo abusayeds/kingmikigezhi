@@ -491,7 +491,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
 
                     SizedBox(height: 10),
                     CustomButton(
-                      color: AppColors.buttonColor,
+                      color: AppColors.buttonA47059,
                       borderColor: Colors.white,
                       onTap: () {},
                       text: "Add",
@@ -617,6 +617,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
                     text: "Back",
                     color: AppColors.fillColor,
                     textColor: Colors.black,
+                    borderColor: AppColors.buttonColor,
                   ),
                 ),
                 SizedBox(width: 10.w),
@@ -625,6 +626,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
                     onTap: () {},
                     text: "Next",
                     textColor: Colors.white,
+                    borderColor: AppColors.buttonColor,
                     color: AppColors.buttonColor,
                   ),
                 ),
