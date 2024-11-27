@@ -76,12 +76,9 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
+                   Text(
                     'Piano Star Event',
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: AppStyles.fontSize16(fontWeight: FontWeight.w600)
                   ),
                 ],
               ),
@@ -897,7 +894,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                           width: 166.w,
                           child: CustomButton(
                             onTap: () {
-                              Get.toNamed(AppRoutes.appliedSearchScreen);
+                              Get.toNamed(AppRoutes.appliedSearchEventListScreen);
                             },
                             text: "Apply",
                             textColor: Colors.white,

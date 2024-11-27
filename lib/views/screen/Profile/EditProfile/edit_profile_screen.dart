@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:event_sharing/views/screen/AddEvent/InnerWidget/dotted_border_container.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -268,7 +269,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   //====================>>  Location <<===================================
                   SizedBox(height: 8.h),
                   Text('Location',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                      style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600)),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -317,227 +318,261 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
                     ],
                   ),
-                  SizedBox(height: 10),
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('assets/images/RectangleBorder.png'),
-                          fit: BoxFit.contain,
+                  SizedBox(height: 10.h),
+                  DottedBorderContainer(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8.w),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding:  EdgeInsets.only(bottom: 8.h),
+                            child: Text(
+                              'Skill',
+                              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Start Year',
+                                      style: TextStyle(
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: AppColors.blackColor,
+                                      ),
+                                    ),
+                                    SizedBox(height: 8.h),
+                                    Container(
+                                      height: 52.h,
+                                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                      decoration: BoxDecoration(
+                                        border: Border.all(color:AppColors.borderColor),
+                                        borderRadius: BorderRadius.circular(8),
+                                        color: AppColors.fillColor,
+                                      ),
+                                      child: DropdownButton<String>(
+                                        icon: SvgPicture.asset(
+                                          AppIcons.downArrowIcon,
+                                          color: AppColors.primaryColor,
+                                        ),
+                                        isExpanded: true,
+                                        underline: SizedBox(),
+                                        hint: Text('', style: TextStyle(color: AppColors.color414141, fontSize: 14.sp),),
+                                        items: <String>['2020', '2021', '2023']
+                                            .map((String value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(value),
+                                          );
+                                        }).toList(),
+                                        onChanged: (String? newValue) {},
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(width: 16.w),
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Program',
+                                      style: TextStyle(
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: AppColors.blackColor,
+                                      ),
+                                    ),
+                                    SizedBox(height: 8.h),
+                                    Container(
+                                      height: 52.h,
+                                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                      decoration: BoxDecoration(
+                                        border: Border.all(color: AppColors.borderColor),
+                                        borderRadius: BorderRadius.circular(8),
+                                        color: AppColors.fillColor,
+                                      ),
+                                      child: DropdownButton<String>(
+                                        icon: SvgPicture.asset(
+                                          AppIcons.downArrowIcon,
+                                          color: AppColors.primaryColor,
+                                        ),
+                                        isExpanded: true,
+                                        underline: SizedBox(),
+                                        hint: Text('', style: TextStyle(color: AppColors.color414141, fontSize: 14.sp),),
+                                        items: <String>['Option 1', 'Option 2', 'Option 3']
+                                            .map((String value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(value),
+                                          );
+                                        }).toList(),
+                                        onChanged: (String? newValue) {},
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 10),
+                          CustomButton(
+                              color: AppColors.buttonColor,
+                              borderColor: Colors.white,
+                              onTap: (){},
+                              text: "Add",
+                            textColor:Colors.white,
+                          ),
+                          SizedBox(height: 8.h),
+                          Text(
+                            'Added Skill',
+                            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+                          ),
+                          SizedBox(height: 8.h),
+                          Container(
+                            decoration: BoxDecoration(
+                              color:AppColors.colorEDF2F4,
+                              borderRadius: BorderRadius.all(Radius.circular(8)),
+                              border: Border.all(color: AppColors.primaryColor, width: 1),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding:  EdgeInsets.symmetric(horizontal: 8.0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text.rich(
+                                          TextSpan(
+                                            children: [
+                                              TextSpan(
+                                                text: '\u2022 ',
+                                                style: TextStyle(color: AppColors.primaryColor),
+                                              ),
+                                              TextSpan(
+                                                text: 'Chess since 2020',
+                                                style: TextStyle(color: Colors.black),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Row(
+                                          children: [
+                                            InkWell(
+                                                onTap: (){
+                                                  Get.back();
+                                                },
+                                                child: SvgPicture.asset(AppIcons.editIcon)
+                                            ),
+                                            SizedBox(width: 4),
+                                            InkWell(
+                                                onTap: (){
+                                                  Get.back();
+                                                },
+                                                child: SvgPicture.asset(AppIcons.trashIcon)
+                                            )
+                                          ],
+                                        ),
+
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding:  EdgeInsets.symmetric(horizontal: 8.0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text.rich(
+                                          TextSpan(
+                                            children: [
+                                              TextSpan(
+                                                text: '\u2022 ',
+                                                style: TextStyle(color: AppColors.primaryColor),
+                                              ),
+                                              TextSpan(
+                                                text: 'Math since 2021',
+                                                style: TextStyle(color: Colors.black),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Row(
+                                          children: [
+                                            InkWell(
+                                                onTap: (){
+                                                  Get.back();
+                                                },
+                                                child: SvgPicture.asset(AppIcons.editIcon)
+                                            ),
+                                            SizedBox(width: 4),
+                                            InkWell(
+                                                onTap: (){
+                                                  Get.back();
+                                                },
+                                                child: SvgPicture.asset(AppIcons.trashIcon)
+                                            )
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding:  EdgeInsets.symmetric(horizontal: 8.0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text.rich(
+                                          TextSpan(
+                                            children: [
+                                              TextSpan(
+                                                text: '\u2022 ',
+                                                style: TextStyle(color: AppColors.primaryColor),
+                                              ),
+                                              TextSpan(
+                                                text: 'Piano since 2023',
+                                                style: TextStyle(color: Colors.black),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Row(
+                                          children: [
+                                            InkWell(
+                                                onTap: (){
+                                                  Get.back();
+                                                },
+                                                child: SvgPicture.asset(AppIcons.editIcon)
+                                            ),
+                                            SizedBox(width: 4),
+                                            InkWell(
+                                                onTap: (){
+                                                  Get.back();
+                                                },
+                                                child: SvgPicture.asset(AppIcons.trashIcon)
+                                            )
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 10.h),
+                        ],
                       ),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(4),
-                          child: Text(
-                            'Skill',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(4),
-                              child: Text(
-                                'Start Year',
-                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                              ),
-                            ),
-                          SizedBox(width: 80.w),
-                            Padding(
-                              padding: const EdgeInsets.all(4),
-                              child: Text(
-                                'Program',
-                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: CustomTextField(
-                                controller: locationCountryController,
-                                hintText: 'Select Year',
-                                sufixicons: Padding(
-                                  padding: EdgeInsets.only(right: 12.w),
-                                  child: SvgPicture.asset(
-                                    AppIcons.downArrowIcon,
-                                    width: 16.w,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 10.w),
-                            Expanded(
-                              child: CustomTextField(
-                                controller: locationCityController,
-                                hintText: 'Select Program',
-                                sufixicons: Padding(
-                                  padding: EdgeInsets.only(right: 12.w),
-                                  child: SvgPicture.asset(
-                                    AppIcons.downArrowIcon,
-                                    width: 16.w,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        SizedBox(height: 10),
-                        CustomButton(
-                            color: AppColors.buttonColor,
-                            borderColor: Colors.white,
-                            onTap: (){},
-                            text: "Add",
-                          textColor:Colors.white,
-                        ),
-                        SizedBox(height: 8.h),
-                        Text(
-                          'Added Skill',
-                          style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
-                        ),
-                        SizedBox(height: 8.h),
-                        Container(
-                          decoration: BoxDecoration(
-                            color:AppColors.colorEDF2F4,
-                            borderRadius: BorderRadius.all(Radius.circular(8)),
-                            border: Border.all(color: AppColors.primaryColor, width: 1),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding:  EdgeInsets.symmetric(horizontal: 8.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text.rich(
-                                        TextSpan(
-                                          children: [
-                                            TextSpan(
-                                              text: '\u2022 ',
-                                              style: TextStyle(color: AppColors.primaryColor),
-                                            ),
-                                            TextSpan(
-                                              text: 'Chess since 2020',
-                                              style: TextStyle(color: Colors.black),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Row(
-                                        children: [
-                                          InkWell(
-                                              onTap: (){
-                                                Get.back();
-                                              },
-                                              child: SvgPicture.asset(AppIcons.editIcon)
-                                          ),
-                                          SizedBox(width: 4),
-                                          InkWell(
-                                              onTap: (){
-                                                Get.back();
-                                              },
-                                              child: SvgPicture.asset(AppIcons.trashIcon)
-                                          )
-                                        ],
-                                      ),
-
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding:  EdgeInsets.symmetric(horizontal: 8.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text.rich(
-                                        TextSpan(
-                                          children: [
-                                            TextSpan(
-                                              text: '\u2022 ',
-                                              style: TextStyle(color: AppColors.primaryColor),
-                                            ),
-                                            TextSpan(
-                                              text: 'Math since 2021',
-                                              style: TextStyle(color: Colors.black),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Row(
-                                        children: [
-                                          InkWell(
-                                              onTap: (){
-                                                Get.back();
-                                              },
-                                              child: SvgPicture.asset(AppIcons.editIcon)
-                                          ),
-                                          SizedBox(width: 4),
-                                          InkWell(
-                                              onTap: (){
-                                                Get.back();
-                                              },
-                                              child: SvgPicture.asset(AppIcons.trashIcon)
-                                          )
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding:  EdgeInsets.symmetric(horizontal: 8.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text.rich(
-                                        TextSpan(
-                                          children: [
-                                            TextSpan(
-                                              text: '\u2022 ',
-                                              style: TextStyle(color: AppColors.primaryColor),
-                                            ),
-                                            TextSpan(
-                                              text: 'Piano since 2023',
-                                              style: TextStyle(color: Colors.black),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Row(
-                                        children: [
-                                          InkWell(
-                                              onTap: (){
-                                                Get.back();
-                                              },
-                                              child: SvgPicture.asset(AppIcons.editIcon)
-                                          ),
-                                          SizedBox(width: 4),
-                                          InkWell(
-                                              onTap: (){
-                                                Get.back();
-                                              },
-                                              child: SvgPicture.asset(AppIcons.trashIcon)
-                                          )
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 10.h),
-                      ],
                     ),
                   ),
 

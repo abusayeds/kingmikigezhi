@@ -102,7 +102,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
               children: [
                 Expanded(
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20.w),
+                    padding: EdgeInsets.symmetric(horizontal: 18.w),
                     decoration: BoxDecoration(
                       color: AppColors.fillColor,
                       borderRadius: BorderRadius.circular(8.r),
@@ -142,6 +142,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
                     onTap: (){},
                     text: 'Add',
                     textColor: AppColors.textColor,
+                    borderColor: AppColors.buttonColor,
                   ),
                 ),
               ],
@@ -324,6 +325,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
                   child: CustomButton(
                     onTap: () {},
                     text: "Back",
+                    borderColor: AppColors.buttonColor,
                     color: AppColors.fillColor,
                     textColor: Colors.black,
                   ),
@@ -334,6 +336,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
                     onTap: () {},
                     text: "Add & Share",
                     textColor: Colors.white,
+                    borderColor: AppColors.buttonColor,
                     color: AppColors.buttonColor,
                   ),
                 ),

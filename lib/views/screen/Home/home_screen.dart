@@ -1,6 +1,7 @@
  import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_images.dart';
+import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:event_sharing/views/screen/Home/InnerWidget/home_app_bar.dart';
 import 'package:event_sharing/views/screen/Home/addBottomSheet/addBottomSheet.dart';
@@ -92,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: DropdownButton<String>(
                         value: dropdownValue,
                         padding: EdgeInsets.zero,
-                        underline: SizedBox(),
+                        underline: const SizedBox(),
                         icon: SvgPicture.asset(AppIcons.down_ArrowIcon),
                         dropdownColor: Colors.white,
                         onChanged: (String? newValue) {
@@ -192,12 +193,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Upcoming Event', style: TextStyle(fontSize: 20.sp)),
+                      Text('Upcoming Event', style: AppStyles.fontSize18(fontWeight: FontWeight.w500)),
                       InkWell(
                           onTap: () {
                             Get.toNamed(AppRoutes.upcomingEventScreen);
                           },
-                          child: Text('More', style: TextStyle(fontSize: 12.sp))),
+                          child: Text('More',style: AppStyles.fontSize14(fontWeight: FontWeight.w500))),
                     ],
                   ),
                 ),
@@ -231,9 +232,11 @@ class _HomeScreenState extends State<HomeScreen> {
 //============================> Search Bar Section <=================================
   _searchBar() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        SizedBox(
+        Container(
+          height: 53.h,
           width: 271.w,
           child: CustomTextField(
             controller: _searchController,
@@ -250,11 +253,14 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ),
+        SizedBox(width: 18.w),
         GestureDetector(
           onTap: () {
             Get.toNamed(AppRoutes.filterScreen);
           },
           child: Container(
+            height: 53.h,
+            width: 53.h,
             decoration: BoxDecoration(
               color: AppColors.fillColor,
               borderRadius: BorderRadius.circular(10.r),
@@ -276,149 +282,138 @@ class _HomeScreenState extends State<HomeScreen> {
 
 //============================> Gray Event Card Section <=================================
   _grayEventCard() {
-    return Container(
-      decoration: BoxDecoration(
-        color: const Color(0xffAAAFAE),
-        borderRadius: BorderRadius.circular(16.r),
-      ),
-      child: Stack(
-        children: [
-          Padding(
-            padding: EdgeInsets.all(12.w),
-            child: Row(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: const Color(0xffd5d7d7),
-                    borderRadius: BorderRadius.circular(16.r),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 20.w, vertical: 10.h),
-                    child: Image.asset(AppImages.logoCard,
-                        color: AppColors.primaryColor,
-                        width: 85.w,
-                        height: 104.h),
-                  ),
-                ),
-                SizedBox(width: 12.w),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CustomText(
-                      text: 'Piano Song Event',
-                      fontWeight: FontWeight.w600,
-                    ),
-                    SizedBox(height: 12.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            SvgPicture.asset(AppIcons.dotIconForFamily),
-                            SizedBox(width: 4.w),
-                            CustomText(
-                              text: 'Piano',
-                              fontsize: 10.sp,
-                            ),
-                          ],
-                        ),
-                        SizedBox(width: 12.w),
-                        Row(
-                          children: [
-                            SvgPicture.asset(AppIcons.dotIconForFamily),
-                            SizedBox(width: 4.w),
-                            CustomText(
-                              text: 'Type: Online',
-                              fontsize: 10.sp,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 8.h),
-                    Row(
-                      children: [
-                        SvgPicture.asset(AppIcons.dotIconForFamily),
-                        Padding(
-                          padding: EdgeInsets.only(left: 5.w),
-                          child: CustomText(
-                            text: 'Type: Online',
-                            fontsize: 10.sp,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 8.h),
-                    Row(
-                      children: [
-                        SvgPicture.asset(AppIcons.dotIconForFamily),
-                        Padding(
-                          padding: EdgeInsets.only(left: 5.w),
-                          child: CustomText(
-                            text: 'Dhaka Bangladesh',
-                            fontsize: 10.sp,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 8.h),
-                    Row(
-                      children: [
-                        SvgPicture.asset(AppIcons.dotIconForFamily),
-                        Padding(
-                          padding: EdgeInsets.only(left: 5.w),
-                          child: CustomText(
-                            text: '7.00 AM-7.00PM',
-                            fontsize: 10.sp,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 8.h),
-                    Row(
-                      children: [
-                        SvgPicture.asset(AppIcons.dotIconForFamily),
-                        Padding(
-                          padding: EdgeInsets.only(left: 5.w),
-                          child: CustomText(
-                            text: 'History: 2023-1st winner',
-                            fontsize: 10.sp,
-                            color: Colors.black26,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 8.h),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          Positioned(
-              bottom: 5.h,
-              right: 10.w,
-              child: const Icon(
-                Icons.more_horiz_outlined,
-                color: Colors.white,
-              ))
-        ],
-      ),
+    return Stack(
+     children: [
+       Container(
+         height: 160.h,
+         decoration: BoxDecoration(
+           color: const Color(0xffAAAFAE),
+           borderRadius: BorderRadius.circular(16.r),
+         ),
+         child: Padding(
+           padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 12.w),
+           child: Row(
+             children: [
+               Container(
+                 decoration: BoxDecoration(
+                   color: const Color(0xffd5d7d7),
+                   borderRadius: BorderRadius.circular(16.r),
+                 ),
+                 child: Padding(
+                   padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+                   child: Image.asset(
+                     AppImages.logoCard,
+                     color: AppColors.primaryColor,
+                     width: 85.w,
+                     height: 104.h,
+                   ),
+                 ),
+               ),
+               SizedBox(width: 12.w),
+               Expanded(
+                 child: Column(
+                   crossAxisAlignment: CrossAxisAlignment.start,
+                   children: [
+                     // Title
+                     Padding(
+                       padding: EdgeInsets.only(bottom: 12.h),
+                       child: CustomText(
+                         text: 'Piano Song Event',
+                         fontWeight: FontWeight.w600,
+                       ),
+                     ),
+                     Row(
+                       children: [
+                         Row(
+                           children: [
+                             SvgPicture.asset(AppIcons.dotIconForFamily),
+                             SizedBox(width: 5.w),
+                             CustomText(
+                               text: 'Piano',
+                               fontsize: 10.sp,
+                             ),
+                           ],
+                         ),
+                         const Spacer(),
+                         Row(
+                           children: [
+                             SvgPicture.asset(AppIcons.dotIconForFamily),
+                             SizedBox(width: 5.w),
+                             CustomText(
+                               text: 'Type: Online',
+                               fontsize: 10.sp,
+                             ),
+                           ],
+                         ),
+                       ],
+                     ),
+                     SizedBox(height: 8.h),
+                     // Other Information Rows
+                     Row(
+                       children: [
+                         SvgPicture.asset(AppIcons.dotIconForFamily),
+                         SizedBox(width: 5.w),
+                         CustomText(
+                           text: 'Dhaka Bangladesh',
+                           fontsize: 10.sp,
+                         ),
+                       ],
+                     ),
+                     SizedBox(height: 8.h),
+                     Row(
+                       children: [
+                         SvgPicture.asset(AppIcons.dotIconForFamily),
+                         SizedBox(width: 5.w),
+                         CustomText(
+                           text: '7.00 AM-7.00PM',
+                           fontsize: 10.sp,
+                         ),
+                       ],
+                     ),
+                     SizedBox(height: 8.h),
+                     Row(
+                       children: [
+                         SvgPicture.asset(AppIcons.dotIconForFamily),
+                         SizedBox(width: 5.w),
+                         CustomText(
+                           text: 'History: 2023-1st winner',
+                           fontsize: 10.sp,
+                           color: Colors.black26,
+                         ),
+                       ],
+                     ),
+                   ],
+                 ),
+               ),
+             ],
+           ),
+         ),
+       ),
+       Positioned(
+           bottom: 5.h,
+           right: 10.w,
+           child: const Icon(
+             Icons.more_horiz_outlined,
+             color: Colors.white,
+           ))
+
+     ],
     );
   }
 
   //============================> Piano Event List View <=================================
   _pianoList() {
-    return SizedBox(
+    return Container(
+      width: MediaQuery.of(context).size.width,
       height: 160.h,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: 3,
         itemBuilder: (context, index) {
           return Padding(
-            padding: EdgeInsets.only(right: 8),
+            padding: EdgeInsets.only(right: 8.w),
             child: Container(
+              width: MediaQuery.of(context).size.width * 0.9,
               decoration: BoxDecoration(
                 color: const Color(0xffE5CCFF),
                 borderRadius: BorderRadius.circular(16.r),
@@ -437,101 +432,104 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Padding(
                             padding: EdgeInsets.symmetric(
                                 horizontal: 20.w, vertical: 10.h),
-                            child: Image.asset(AppImages.logoCard,
-                                color: AppColors.primaryColor,
-                                width: 85.w,
-                                height: 104.h),
+                            child: Image.asset(
+                              AppImages.logoCard,
+                              color: AppColors.primaryColor,
+                              width: 85.w,
+                              height: 104.h,
+                            ),
                           ),
                         ),
                         SizedBox(width: 12.w),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            CustomText(
-                              text: 'Piano Song Event',
-                              fontWeight: FontWeight.w600,
-                            ),
-                            SizedBox(height: 12.h),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    SvgPicture.asset(AppIcons.dotIconForFamily),
-                                   SizedBox(width: 4.w),
-                                    CustomText(
-                                      text: 'Piano',
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CustomText(
+                                text: 'Piano Song Event',
+                                fontWeight: FontWeight.w600,
+                              ),
+                              SizedBox(height: 12.h),
+                              Row(
+                                children: [
+                                  Row(
+                                    children: [
+                                      SvgPicture.asset(AppIcons.dotIconForFamily),
+                                      SizedBox(width: 5.w),
+                                      CustomText(
+                                        text: 'Piano',
+                                        fontsize: 10.sp,
+                                      ),
+                                    ],
+                                  ),
+                                  const Spacer(),
+                                  Row(
+                                    children: [
+                                      SvgPicture.asset(AppIcons.dotIconForFamily),
+                                      SizedBox(width: 5.w),
+                                      CustomText(
+                                        text: 'Type: Online',
+                                        fontsize: 10.sp,
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 8.h),
+                              Row(
+                                children: [
+                                  SvgPicture.asset(AppIcons.dotIconForFamily),
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 5.w),
+                                    child: CustomText(
+                                      text: 'Dhaka Bangladesh',
                                       fontsize: 10.sp,
                                     ),
-                                  ],
-                                ),
-                                SizedBox(width: 12.w),
-                                Row(
-                                  children: [
-                                    SvgPicture.asset(AppIcons.dotIconForFamily),
-                                    SizedBox(width: 4.w),
-                                    CustomText(
-                                      text: 'Type: Online',
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 8.h),
+                              Row(
+                                children: [
+                                  SvgPicture.asset(AppIcons.dotIconForFamily),
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 5.w),
+                                    child: CustomText(
+                                      text: '7.00 AM-7.00PM',
                                       fontsize: 10.sp,
                                     ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 8.h),
-                            Row(
-                              children: [
-                                SvgPicture.asset(AppIcons.dotIconForFamily),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 5.w),
-                                  child: CustomText(
-                                    text: 'Dhaka Bangladesh',
-                                    fontsize: 10.sp,
                                   ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 8.h),
-                            Row(
-                              children: [
-                                SvgPicture.asset(AppIcons.dotIconForFamily),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 5.w),
-                                  child: CustomText(
-                                    text: '7.00 AM-7.00PM',
-                                    fontsize: 10.sp,
+                                ],
+                              ),
+                              SizedBox(height: 8.h),
+                              Row(
+                                children: [
+                                  SvgPicture.asset(AppIcons.dotIconForFamily),
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 5.w),
+                                    child: CustomText(
+                                      text: 'History: 2023-1st winner',
+                                      fontsize: 10.sp,
+                                      color: Colors.black26,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 8.h),
-                            Row(
-                              children: [
-                                SvgPicture.asset(AppIcons.dotIconForFamily),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 5.w),
-                                  child: CustomText(
-                                    text: 'History: 2023-1st winner',
-                                    fontsize: 10.sp,
-                                    color: Colors.black26,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 8.h),
-                          ],
+                                ],
+                              ),
+                              SizedBox(height: 8.h),
+                            ],
+                          ),
                         ),
                       ],
                     ),
                   ),
                   Positioned(
-                      bottom: 5.h,
-                      right: 10.w,
-                      child: const Icon(
-                        Icons.more_horiz_outlined,
-                        color: Colors.white,
-                      ))
+                    bottom: 5.h,
+                    right: 10.w,
+                    child: const Icon(
+                      Icons.more_horiz_outlined,
+                      color: Colors.white,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -602,7 +600,7 @@ class _HomeScreenState extends State<HomeScreen> {
               // Check if today has appointments
               bool hasAppointments = _checkForAppointments(day);
               return Container(
-                margin: EdgeInsets.only(bottom: 5),
+                margin: const EdgeInsets.only(bottom: 5),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -626,7 +624,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Container(
                         height: 8.h,
                         width: 8.w,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           shape: BoxShape.circle,
                           color: Colors.amber,
                         ),
@@ -642,7 +640,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
   // Function to check for appointments for a specific day
   bool _checkForAppointments(DateTime day) {
-    // Check if the day exists in the appointment map
     return appointmentDates.containsKey(day);
   }
 }

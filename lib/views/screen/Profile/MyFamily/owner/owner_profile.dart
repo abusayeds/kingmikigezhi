@@ -66,7 +66,7 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextField(
                     decoration: InputDecoration(
-                      hintText: 'Search Member',
+                      hintText: 'Search Name',
                       hintStyle: TextStyle(color: AppColors.greyColor),
                       border: InputBorder.none,
                       suffixIcon: Icon(Icons.search,color: AppColors.primaryColor),
