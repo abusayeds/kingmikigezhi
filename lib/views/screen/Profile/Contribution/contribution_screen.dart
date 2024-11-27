@@ -104,7 +104,7 @@ class _MyContributionScreenState extends State<MyContributionScreen> {
                                 children: [
                                   CustomText(
                                     text: event['title']!,
-                                    fontsize: 18.sp,
+                                    fontsize: 16.sp,
                                     fontWeight: FontWeight.bold,
                                   ),
                                   SizedBox(height: 8.h),

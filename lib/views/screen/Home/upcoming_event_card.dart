@@ -68,7 +68,7 @@ class EventCard extends StatelessWidget {
                         CustomText(
                           text: 'Snowboard Festival',
                           fontsize: 16.sp,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w600,
                         ),
                         SvgPicture.asset(
                           AppIcons.share,

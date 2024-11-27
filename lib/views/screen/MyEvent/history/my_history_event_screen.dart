@@ -90,7 +90,7 @@ class _MyHistoryEventScreenState extends State<MyHistoryEventScreen> {
                                       children: [
                                         CustomText(
                                           text: event['title']!,
-                                          fontsize: 18.sp,
+                                          fontsize: 16.sp,
                                           fontWeight: FontWeight.bold,
                                         ),
                                         //=====================> Event Info Section <=========================

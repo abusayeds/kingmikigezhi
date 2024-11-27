@@ -1,6 +1,7 @@
  import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_images.dart';
+import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:event_sharing/views/screen/Home/InnerWidget/home_app_bar.dart';
 import 'package:event_sharing/views/screen/Home/addBottomSheet/addBottomSheet.dart';
@@ -192,12 +193,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Upcoming Event', style: TextStyle(fontSize: 20.sp)),
+                      Text('Upcoming Event', style: AppStyles.fontSize18(fontWeight: FontWeight.w500)),
                       InkWell(
                           onTap: () {
                             Get.toNamed(AppRoutes.upcomingEventScreen);
                           },
-                          child: Text('More', style: TextStyle(fontSize: 12.sp))),
+                          child: Text('More',style: AppStyles.fontSize14(fontWeight: FontWeight.w500))),
                     ],
                   ),
                 ),
