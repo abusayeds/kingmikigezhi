@@ -48,7 +48,8 @@ class ProfileScreen extends StatelessWidget {
                   //============================> My Event List Tile <=================
                   ProfileListTile(
                     onTap: () {
-                      Get.toNamed(AppRoutes.myEventScreen);
+                    //  Get.toNamed(AppRoutes.myEventScreen);
+                      Get.toNamed(AppRoutes.appliedSearchEventListScreen);
                     },
                     title:AppStrings.myEvent,
                     prefixIcon: SvgPicture.asset(AppIcons.myEventIcon, color: AppColors.primaryColor),

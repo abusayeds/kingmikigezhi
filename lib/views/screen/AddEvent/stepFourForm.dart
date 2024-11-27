@@ -29,7 +29,7 @@ class _StepFourFormState extends State<StepFourForm> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                padding:  EdgeInsets.symmetric(vertical: 8.h),
                 child: CustomText(
                   text: "Step 4: Configuration",
                   fontsize: 20,
@@ -38,7 +38,7 @@ class _StepFourFormState extends State<StepFourForm> {
               ),
               SizedBox(height: 22.h),
               Padding(
-                padding: const EdgeInsets.all(4),
+                padding: EdgeInsets.all(4.r),
                 child: Text(
                   'Repeat Function',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
@@ -71,7 +71,7 @@ class _StepFourFormState extends State<StepFourForm> {
                   ),
                 ),
               ),
-              SizedBox(height: 20.h),
+              SizedBox(height: 350.h),
               Align(
                 child: Row(
                   children: [
@@ -81,6 +81,7 @@ class _StepFourFormState extends State<StepFourForm> {
                         text: "Back",
                         color: AppColors.fillColor,
                         textColor: Colors.black,
+                        borderColor: AppColors.buttonColor,
                       ),
                     ),
                     SizedBox(width: 10.w),
@@ -90,6 +91,7 @@ class _StepFourFormState extends State<StepFourForm> {
                         text: "Next",
                         textColor: Colors.white,
                         color: AppColors.buttonColor,
+                        borderColor: AppColors.buttonColor,
                       ),
                     ),
                   ],
@@ -227,6 +229,7 @@ class _StepFourFormState extends State<StepFourForm> {
                           },
                           text: "Save",
                           color: AppColors.buttonColor,
+                          borderColor: AppColors.buttonColor,
                           textColor:AppColors.textColor,
                         ),
                       ),
@@ -237,6 +240,7 @@ class _StepFourFormState extends State<StepFourForm> {
                           text: "Discard",
                           textColor: AppColors.blackColor,
                           color: AppColors.fillColor,
+                          borderColor: AppColors.buttonColor,
 
                         ),
                       ),
