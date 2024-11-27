@@ -491,7 +491,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
 
                     SizedBox(height: 10),
                     CustomButton(
-                      color: AppColors.buttonColor,
+                      color: AppColors.buttonA47059,
                       borderColor: Colors.white,
                       onTap: () {},
                       text: "Add",

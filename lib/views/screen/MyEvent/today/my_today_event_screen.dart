@@ -94,7 +94,7 @@ class _MyTodayEventScreenState extends State<MyTodayEventScreen> {
                                       children: [
                                         CustomText(
                                           text: event['title']!,
-                                          fontsize: 18.sp,
+                                          fontsize: 16.sp,
                                           fontWeight: FontWeight.bold,
                                         ),
                                         //=====================> Event Info Section <=========================
