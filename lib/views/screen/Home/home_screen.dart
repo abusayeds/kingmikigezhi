@@ -232,10 +232,11 @@ class _HomeScreenState extends State<HomeScreen> {
 //============================> Search Bar Section <=================================
   _searchBar() {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Container(
+        // Search Bar Container
+        SizedBox(
           height: 53.h,
           width: 271.w,
           child: CustomTextField(
@@ -254,6 +255,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         SizedBox(width: 18.w),
+        // Filter Button Container
         GestureDetector(
           onTap: () {
             Get.toNamed(AppRoutes.filterScreen);
@@ -266,8 +268,7 @@ class _HomeScreenState extends State<HomeScreen> {
               borderRadius: BorderRadius.circular(10.r),
               border: Border.all(width: 1.w, color: AppColors.primaryColor),
             ),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
+            child: Center(
               child: SvgPicture.asset(
                 AppIcons.filterIcon,
                 width: 24.w,
@@ -279,6 +280,8 @@ class _HomeScreenState extends State<HomeScreen> {
       ],
     );
   }
+
+
 
 //============================> Gray Event Card Section <=================================
   _grayEventCard() {

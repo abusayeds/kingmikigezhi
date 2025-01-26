@@ -123,7 +123,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
             ),
             SizedBox(height: 8),
             Padding(
-              padding: const EdgeInsets.all(4),
+              padding: EdgeInsets.symmetric(horizontal: 4),
               child: Text('Added Group/Category',
               style: AppStyles.fontSize16(color: AppColors.blackColor,fontWeight: FontWeight.w600),)
             ),
