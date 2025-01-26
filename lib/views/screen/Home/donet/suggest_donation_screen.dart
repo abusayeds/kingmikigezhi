@@ -1,5 +1,6 @@
 import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/utils/app_colors.dart';
+import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -30,7 +31,7 @@ class SuggestionDonationPage extends StatelessWidget {
                   Get.toNamed(AppRoutes.suggestionScreen);
                 },
                 text: 'Suggestion',
-              textStyle:TextStyle(color: Colors.black),
+              textStyle: AppStyles.fontSize16(),
               color: AppColors.fillColor,
               borderColor: AppColors.buttonColor,
             ),
@@ -43,7 +44,7 @@ class SuggestionDonationPage extends StatelessWidget {
                 Get.toNamed(AppRoutes.donationMoodScreen);
               },
               text: 'Donation',
-              textStyle:const TextStyle(color: Colors.black),
+              textStyle:AppStyles.fontSize16(),
               color: AppColors.buttonColor,
               borderColor: AppColors.buttonColor,
               textColor: AppColors.textColor,
