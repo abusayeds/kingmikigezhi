@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:event_sharing/views/base/skillItem.dart';
 import 'package:event_sharing/views/screen/AddEvent/InnerWidget/dotted_border_container.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -51,6 +52,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final TextEditingController phoneNumberController = TextEditingController();
 
   String selectedCountryCodes = '+880';
+  final List<Map<String, String>> skills = [
+    {'name': 'Chess since 2020'},
+    {'name': 'Math  since 2021',},
+    {'name': 'Piano since 2022',},
+  ];
+
 
   @override
   Widget build(BuildContext context) {
@@ -424,14 +431,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             ],
                           ),
                           SizedBox(height: 10),
-                          CustomButton(
-                              color: AppColors.buttonColor,
-                              borderColor: Colors.white,
-                              onTap: (){},
-                              text: "Add",
-                            textColor:Colors.white,
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 8.h),
+                            child: CustomButton(
+                                color: AppColors.buttonColor,
+                                borderColor: Colors.white,
+                                onTap: (){},
+                                text: "Add",
+                              textColor:Colors.white,
+                            ),
                           ),
                           SizedBox(height: 8.h),
+
                           Text(
                             'Added Skill',
                             style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
@@ -448,124 +459,24 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Padding(
-                                    padding:  EdgeInsets.symmetric(horizontal: 8.0),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text.rich(
-                                          TextSpan(
-                                            children: [
-                                              TextSpan(
-                                                text: '\u2022 ',
-                                                style: TextStyle(color: AppColors.primaryColor),
-                                              ),
-                                              TextSpan(
-                                                text: 'Chess since 2020',
-                                                style: TextStyle(color: Colors.black),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Row(
-                                          children: [
-                                            InkWell(
-                                                onTap: (){
-                                                  Get.back();
-                                                },
-                                                child: SvgPicture.asset(AppIcons.editIcon)
-                                            ),
-                                            SizedBox(width: 4),
-                                            InkWell(
-                                                onTap: (){
-                                                  Get.back();
-                                                },
-                                                child: SvgPicture.asset(AppIcons.trashIcon)
-                                            )
-                                          ],
-                                        ),
-
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding:  EdgeInsets.symmetric(horizontal: 8.0),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text.rich(
-                                          TextSpan(
-                                            children: [
-                                              TextSpan(
-                                                text: '\u2022 ',
-                                                style: TextStyle(color: AppColors.primaryColor),
-                                              ),
-                                              TextSpan(
-                                                text: 'Math since 2021',
-                                                style: TextStyle(color: Colors.black),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Row(
-                                          children: [
-                                            InkWell(
-                                                onTap: (){
-                                                  Get.back();
-                                                },
-                                                child: SvgPicture.asset(AppIcons.editIcon)
-                                            ),
-                                            SizedBox(width: 4),
-                                            InkWell(
-                                                onTap: (){
-                                                  Get.back();
-                                                },
-                                                child: SvgPicture.asset(AppIcons.trashIcon)
-                                            )
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding:  EdgeInsets.symmetric(horizontal: 8.0),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text.rich(
-                                          TextSpan(
-                                            children: [
-                                              TextSpan(
-                                                text: '\u2022 ',
-                                                style: TextStyle(color: AppColors.primaryColor),
-                                              ),
-                                              TextSpan(
-                                                text: 'Piano since 2023',
-                                                style: TextStyle(color: Colors.black),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Row(
-                                          children: [
-                                            InkWell(
-                                                onTap: (){
-                                                  Get.back();
-                                                },
-                                                child: SvgPicture.asset(AppIcons.editIcon)
-                                            ),
-                                            SizedBox(width: 4),
-                                            InkWell(
-                                                onTap: (){
-                                                  Get.back();
-                                                },
-                                                child: SvgPicture.asset(AppIcons.trashIcon)
-                                            )
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                                  SkillRowWidget(
+                                      leadingText: 'Chess since 2020',
+                                      editIconPath: '${AppIcons.editIcon}',
+                                      deleteIconPath: '${AppIcons.trashIcon}',
+                                      onEditTap: () {},
+                                      onDeleteTap: () {}),
+                                  SkillRowWidget(
+                                    leadingText: 'Math since 2021',
+                                    editIconPath: '${AppIcons.editIcon}',
+                                    deleteIconPath: '${AppIcons.trashIcon}',
+                                    onEditTap: () {},
+                                    onDeleteTap: () {}),
+                                  SkillRowWidget(
+                                      leadingText: 'Piano since 2023',
+                                      editIconPath: '${AppIcons.editIcon}',
+                                      deleteIconPath: '${AppIcons.trashIcon}',
+                                      onEditTap: () {},
+                                      onDeleteTap: () {}),
                                 ],
                               ),
                             ),

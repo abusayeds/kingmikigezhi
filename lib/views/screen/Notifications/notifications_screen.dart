@@ -54,18 +54,21 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           children: [
             //================================> Notification section <=======================
 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(
-                  'Ignore All',
-                  style: TextStyle(
-                    color: AppColors.primaryColor,
-                    decoration: TextDecoration.underline,
-                    fontWeight: FontWeight.w600,
-                  ),
-                )
-              ],
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    'Ignore All',
+                    style: TextStyle(
+                      color: AppColors.primaryColor,
+                      decoration: TextDecoration.underline,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  )
+                ],
+              ),
             ),
             //========================> Details Card
             Dismissible(
@@ -304,6 +307,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
               ],
             ),
           ),
+
         ),
             Expanded(
               child: ListView.builder(

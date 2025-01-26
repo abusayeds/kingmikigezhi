@@ -29,7 +29,8 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            //     Top action button
+            SizedBox(height: 20.h),
+        /*    //     Top action button
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -50,7 +51,7 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
                   ),
                 ),
               ],
-            ),
+            ),*/
 
             // Search bar
             Padding(

@@ -100,7 +100,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       decoration: InputDecoration(
         contentPadding: EdgeInsets.symmetric(
             horizontal: widget.contenpaddingHorizontal ?? 12.w,
-            vertical: widget.contenpaddingVertical ?? 16.w),
+            vertical: widget.contenpaddingVertical ?? 16.h),
         filled: true,
         fillColor: widget.filColor ?? AppColors.fillColor,
         prefixIcon: widget.prifixicon,
