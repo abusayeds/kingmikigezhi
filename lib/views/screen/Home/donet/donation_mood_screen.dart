@@ -23,40 +23,43 @@ class DonationMoodScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
       ),
-      body: Column(
-        children: [
-          Text('Donation helps us to grow',style: TextStyle(fontSize: 22.sp,fontWeight: FontWeight.w600),),
-          SizedBox(height: 12.h),
-          Text('We do not sell or trade your information to anyone. \nBy donating, you agree to share your personal information with Savorboard Co..',textAlign: TextAlign.center,style: TextStyle(fontSize: 10.sp),),
-          Spacer(),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: CustomButton(
-              onTap: (){
-                Get.toNamed(AppRoutes.donationScreen);
-              },
-              text: 'Just Once',
-              textStyle:TextStyle(color: Colors.black),
-              color: AppColors.fillColor,
-              borderColor: AppColors.buttonColor,
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            Text('Donation helps us to grow',style: TextStyle(fontSize: 22.sp,fontWeight: FontWeight.w600),),
+            SizedBox(height: 12.h),
+            Text('We do not sell or trade your information to anyone. \nBy donating, you agree to share your personal information with Savorboard Co..',textAlign: TextAlign.center,style: TextStyle(fontSize: 10.sp),),
+            Spacer(),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CustomButton(
+                onTap: (){
+                  Get.toNamed(AppRoutes.donationScreen);
+                },
+                text: 'Just Once',
+                textStyle:TextStyle(color: Colors.black),
+                color: AppColors.fillColor,
+                borderColor: AppColors.buttonColor,
+              ),
             ),
-          ),
 
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: CustomButton(
-              onTap: (){
-                Get.toNamed(AppRoutes.donationScreen);
-              },
-              text: 'Give Monthly',
-              textStyle:TextStyle(color: Colors.black),
-              color: AppColors.buttonColor,
-              borderColor: AppColors.buttonColor,
-              textColor: AppColors.textColor,
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CustomButton(
+                onTap: (){
+                  Get.toNamed(AppRoutes.donationScreen);
+                },
+                text: 'Give Monthly',
+                textStyle:TextStyle(color: Colors.black),
+                color: AppColors.buttonColor,
+                borderColor: AppColors.buttonColor,
+                textColor: AppColors.textColor,
+              ),
             ),
-          ),
-          SizedBox(height: 60.h),
-        ],
+            SizedBox(height: 60.h),
+          ],
+        ),
       ),
     );
   }
