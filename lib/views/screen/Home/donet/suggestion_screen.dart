@@ -30,7 +30,7 @@ class SuggestionScreen extends StatelessWidget {
         centerTitle: true,
       ),
       body: Padding(
-        padding:  EdgeInsets.symmetric(horizontal: 24.w),
+        padding:  EdgeInsets.symmetric(horizontal: 24.w,vertical: 16.h),
         child: Column(
           children: [
            CustomTextField(
