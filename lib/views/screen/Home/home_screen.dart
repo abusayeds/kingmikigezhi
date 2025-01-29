@@ -230,32 +230,44 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
 //============================> Search Bar Section <=================================
-  _searchBar() {
+  Widget _searchBar() {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        // Search Bar Container
-        SizedBox(
-          height: 53.h,
-          width: 271.w,
-          child: CustomTextField(
+        Expanded(
+          child: TextFormField(
             controller: _searchController,
-            contenpaddingHorizontal: 12.w,
-            contenpaddingVertical: 12.h,
-            hintText: "Search Event",
-            sufixicons: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.w),
-              child: SvgPicture.asset(
-                AppIcons.search,
-                width: 24.w,
-                height: 24.h,
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: AppColors.fillColor,
+              contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
+              hintText: "Search Event",
+              hintStyle: AppStyles.fontSize14(color: AppColors.greyColor),
+              suffixIcon: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8.w),
+                child: SvgPicture.asset(
+                  AppIcons.search,
+                  width: 24.w,
+                  height: 24.h,
+                ),
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.r),
+                borderSide: BorderSide(color: AppColors.primaryColor),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.r),
+                borderSide: BorderSide(color: AppColors.primaryColor),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.r),
+                borderSide: BorderSide(color: AppColors.primaryColor, width: 2.w),
               ),
             ),
           ),
         ),
         SizedBox(width: 18.w),
-        // Filter Button Container
         GestureDetector(
           onTap: () {
             Get.toNamed(AppRoutes.filterScreen);
@@ -276,10 +288,11 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
-        )
+        ),
       ],
     );
   }
+
 
 
 
