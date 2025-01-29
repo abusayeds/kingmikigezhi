@@ -35,7 +35,7 @@ class _MapScreenState extends State<MapScreen> {
     String location = _locationController.text;
     try {
       List<Location> locations = await locationFromAddress(location);
-      if (locations.isNotEmpty) {
+      if (locations.isEmpty) {
         final LatLng position =
             LatLng(locations.first.latitude, locations.first.longitude);
 

@@ -42,7 +42,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
       //=======================> Body Section <============================
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -100,7 +100,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                               child: SvgPicture.asset(AppIcons.editIcon)),
                         ),
                       ),
-                      SizedBox(width: 10), // Spacing between icons
+                      SizedBox(width: 10.w),
                       Container(
                         width: 40.w,height: 40.h,
                         decoration: BoxDecoration(
@@ -162,11 +162,11 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                 Row(
                                   children: [
                                     SvgPicture.asset(AppIcons.dotIconForFamily),
-                                    SizedBox(width: 5),
+                                    SizedBox(width: 5.w),
                                     Text('Type', style: TextStyle(fontWeight: FontWeight.bold,)),
                                   ],
                                 ),
-                                SizedBox(height: 5),
+                                SizedBox(height: 5.w),
                                 Text('Onsite Event', style: TextStyle(color: Colors.grey.shade600)),
                               ],
                             ),
@@ -310,7 +310,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Keeps the layout structured
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     // Empty space for alignment
                                     Row(
@@ -329,7 +329,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                       decoration: BoxDecoration(
                                         color: Colors.blueGrey,
                                         shape: BoxShape.rectangle,
-                                        borderRadius: BorderRadius.circular(4),
+                                        borderRadius: BorderRadius.circular(4.r),
                                       ),
                                       child: Icon(
                                         Icons.check,
@@ -353,7 +353,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Keeps the layout structured
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     // Empty space for alignment
                                     Row(
@@ -415,7 +415,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                 style: AppStyles.fontSize14(color: AppColors.color414141),
               ),
               SizedBox(height: 16.w),
-              //Note
+              // Note
               CustomText(
                 text: AppStrings.note,
                 fontsize: 16.sp,
@@ -482,8 +482,8 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                   Row(
                     children: [
                       SvgPicture.asset(AppIcons.myEventIcon,color: AppColors.primaryColor,),
-                      SizedBox(width: 8),
-                      Text('Preliminary', style: TextStyle(fontSize: 16),
+                      SizedBox(width: 8.w),
+                      Text('Preliminary', style: TextStyle(fontSize: 16.sp),
                       ),
                     ],
                   ),
