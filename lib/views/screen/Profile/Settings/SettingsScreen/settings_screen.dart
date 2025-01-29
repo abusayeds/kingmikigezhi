@@ -22,7 +22,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   final List<String> _currency = ['USD', 'EURO', 'TAKA'];
   final List<String> _notification = ['ON', 'OFF'];
   final List<String> _timeZone = ['Dhaka(+6)', 'Canada(-6)'];
-  final List<String> _updateOption = ['Option 1', 'Option 2'];
+
 
 
   String? _selectedlanguage;
@@ -164,12 +164,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               SizedBox(height: 16.h),
               //=================================> Time zone Section <=======================
-              CustomText(
-                text: 'Time zone',
-                fontWeight: FontWeight.w500,
-                fontsize: 16.sp,
-                bottom: 8.h,
-              ),
+              Text('Time zone',style: AppStyles.fontSize16(fontWeight: FontWeight.w500)),
+              SizedBox(height: 8.h),
               InputDecorator(
                 decoration: InputDecoration(
                   fillColor: AppColors.fillColor,
@@ -217,12 +213,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               SizedBox(height: 16.h),
               //=================================> Currency Section <=======================
-              CustomText(
-                text: 'Currency',
-                fontWeight: FontWeight.w500,
-                fontsize: 16.sp,
-                bottom: 8.h,
-              ),
+              Text('Currency',style: AppStyles.fontSize16(fontWeight: FontWeight.w500)),
+              SizedBox(height: 8.h),
               InputDecorator(
                 decoration: InputDecoration(
                   fillColor: AppColors.fillColor,
@@ -272,12 +264,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               SizedBox(height: 16.h),
               Divider(thickness: .5,color: AppColors.color808080),
               //=================================> Notifications Section <=======================
-              CustomText(
-                text: 'Notifications',
-                fontWeight: FontWeight.w500,
-                fontsize: 16.sp,
-                bottom: 8.h,
-              ),
+              Text('Notifications',style: AppStyles.fontSize16(fontWeight: FontWeight.w500)),
+              SizedBox(height: 8.h),
               InputDecorator(
                 decoration: InputDecoration(
                   fillColor: AppColors.fillColor,
@@ -325,7 +313,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Event Share Section
-                  Text('Event Share', style: AppStyles.fontSize18()),
+                  Text('Event Share',style: AppStyles.fontSize16(fontWeight: FontWeight.w500)),
                   SizedBox(height: 8.h),
                   Row(
                     children: [
@@ -420,7 +408,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                   SizedBox(height: 8.h),
                   // Applied Event Update Section
-                  Text('Applied Event Update',  style: AppStyles.fontSize18()),
+                  Text('Applied Event Update',style: AppStyles.fontSize16(fontWeight: FontWeight.w500)),
                   SizedBox(height: 8.h),
                   Row(
                     children: [

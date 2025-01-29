@@ -37,7 +37,6 @@ class SuggestionScreen extends StatelessWidget {
              controller: _describtionCTRL,
              hintText: 'Share your suggestion',
              maxLines: 15,
-
            ),
             SizedBox(height: 59.h),
            // Spacer(),
