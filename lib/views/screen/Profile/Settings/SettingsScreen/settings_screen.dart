@@ -58,11 +58,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               //=================================> Language Section <=======================
-              CustomText(
-                text: 'Display language',
-                fontWeight: FontWeight.w500,
-                fontsize: 16.sp,
-                bottom: 8.h,
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 8.h),
+                child: Text('Display language',style: AppStyles.fontSize16()),
               ),
               InputDecorator(
                 decoration: InputDecoration(
@@ -109,13 +107,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 16.h),
               //=================================> Date time format Section <=======================
-              CustomText(
-                text: 'Date time format',
-                fontWeight: FontWeight.w500,
-                fontsize: 16.sp,
-                bottom: 8.h,
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 8.h),
+                child: Text('Date time format',style: AppStyles.fontSize16()),
               ),
               InputDecorator(
                 decoration: InputDecoration(
@@ -162,10 +157,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 16.h),
               //=================================> Time zone Section <=======================
-              Text('Time zone',style: AppStyles.fontSize16(fontWeight: FontWeight.w500)),
-              SizedBox(height: 8.h),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 8.h),
+                child: Text('Time zone',style: AppStyles.fontSize16()),
+              ),
               InputDecorator(
                 decoration: InputDecoration(
                   fillColor: AppColors.fillColor,
@@ -211,10 +207,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 16.h),
               //=================================> Currency Section <=======================
-              Text('Currency',style: AppStyles.fontSize16(fontWeight: FontWeight.w500)),
-              SizedBox(height: 8.h),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 8.h),
+                child: Text('Currency',style: AppStyles.fontSize16()),
+              ),
               InputDecorator(
                 decoration: InputDecoration(
                   fillColor: AppColors.fillColor,
@@ -264,8 +261,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
               SizedBox(height: 16.h),
               Divider(thickness: .5,color: AppColors.color808080),
               //=================================> Notifications Section <=======================
-              Text('Notifications',style: AppStyles.fontSize16(fontWeight: FontWeight.w500)),
-              SizedBox(height: 8.h),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 8.h),
+                child: Text('Notifications',style: AppStyles.fontSize16()),
+              ),
               InputDecorator(
                 decoration: InputDecoration(
                   fillColor: AppColors.fillColor,
@@ -313,8 +312,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Event Share Section
-                  Text('Event Share',style: AppStyles.fontSize16(fontWeight: FontWeight.w500)),
-                  SizedBox(height: 8.h),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 8.h),
+                    child: Text('Event Share',style: AppStyles.fontSize16()),
+                  ),
                   Row(
                     children: [
                       Expanded(
