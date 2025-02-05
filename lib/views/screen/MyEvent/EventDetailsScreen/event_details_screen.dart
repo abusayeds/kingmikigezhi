@@ -474,7 +474,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 16),
+              SizedBox(height: 16.h),
               // Preliminary section
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -487,7 +487,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 15),
+                  SizedBox(height: 15.h),
 
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

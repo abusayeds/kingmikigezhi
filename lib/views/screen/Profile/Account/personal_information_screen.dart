@@ -62,38 +62,38 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
               SizedBox(height: 24.h),
               //=================================> Profile Name <==========================
              Padding(
-               padding: const EdgeInsets.all(4),
-               child: Text('Account ID',style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w600)),
+               padding: EdgeInsets.all(4.r),
+               child: Text('Account ID',style: AppStyles.fontSize16(fontWeight: FontWeight.w600 )),
              ),
               CustomListTile(
                 title: '20103200'?? '' ,backgroundColor: AppColors.colorEDF2F4,titleColor: AppColors.color414141),
               //=================================> Email Name <==========================
               Padding( padding: const EdgeInsets.all(4),
-                child: Text('First Name',style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w600)),
+                child: Text('First Name',style:  AppStyles.fontSize16(fontWeight: FontWeight.w600 )),
               ),
               CustomListTile(title: 'Bashar Islam'?? '',  backgroundColor: AppColors.colorEDF2F4,titleColor: AppColors.color414141),
               //=================================> Phone Number <========================
               Padding(
-                padding:  EdgeInsets.all(4),
-                child: Text('Last Name',style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w600)),
+                padding: EdgeInsets.all(4),
+                child: Text('Last Name',style:  AppStyles.fontSize16(fontWeight: FontWeight.w600 )),
               ),
               CustomListTile(title:'Rahman'??'',backgroundColor: AppColors.colorEDF2F4,titleColor: AppColors.color414141),
               //=================================> Address Number <========================
               Padding(
                 padding: const EdgeInsets.all(4),
-                child: Text('Public Display Name',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600)),
+                child: Text('Public Display Name',style: AppStyles.fontSize16(fontWeight: FontWeight.w600 )),
               ),
               CustomListTile(title: 'Dhaka'??'', backgroundColor: AppColors.colorEDF2F4,titleColor: AppColors.color414141),
               //=================================> Gender <========================
               Padding(
                 padding: const EdgeInsets.all(4),
-                child: Text('Gender',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600)),
+                child: Text('Gender',style:  AppStyles.fontSize16(fontWeight: FontWeight.w600 )),
               ),
               CustomListTile(title: 'Male'??'',backgroundColor: AppColors.colorEDF2F4,titleColor: AppColors.color414141),
               //==========================> Birth Date Text Field Row <=======================
               Padding(
                 padding: const EdgeInsets.all(4),
-                child: Text('Birthday',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600)),
+                child: Text('Birthday',style:  AppStyles.fontSize16(fontWeight: FontWeight.w600 )),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -153,16 +153,16 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
               SizedBox(height: 8.h),
               //=================================> Email <========================
               Padding(
-                padding:  EdgeInsets.all(4.r),
-                child: Text('Email',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600)),
+                padding:EdgeInsets.all(4.r),
+                child: Text('Email',style:  AppStyles.fontSize16(fontWeight: FontWeight.w600 )),
               ),
               CustomListTile(
                 prefixIcon: Icon(Icons.email_rounded,color: AppColors.primaryColor),
                 title: 'email@gmail.com'??'',backgroundColor: AppColors.colorEDF2F4,),
               //=======================> Phone Number Text Field <======================
               Padding(
-                padding: const EdgeInsets.all(4),
-                child: Text('Phone Number',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600)),
+                padding: EdgeInsets.all(4.r),
+                child: Text('Phone Number',style: AppStyles.fontSize16(fontWeight: FontWeight.w600 )),
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -214,7 +214,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
               //=================================> Location <========================
               Padding(
                 padding: const EdgeInsets.all(4),
-                child: Text('Location',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600)),
+                child: Text('Location',style:  AppStyles.fontSize16(fontWeight: FontWeight.w600 )),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -271,7 +271,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
               //=================================> Skill <========================
               Padding(
                 padding: const EdgeInsets.all(4),
-                child: Text('Skill',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600)),
+                child: Text('Skill',style: AppStyles.fontSize16(fontWeight: FontWeight.w600 )),
               ),
           Container(
             decoration: BoxDecoration(
