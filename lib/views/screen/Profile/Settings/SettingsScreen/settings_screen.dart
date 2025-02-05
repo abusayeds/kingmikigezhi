@@ -409,7 +409,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                   SizedBox(height: 8.h),
                   // Applied Event Update Section
-                  Text('Applied Event Update',style: AppStyles.fontSize16(fontWeight: FontWeight.w500)),
+
+                  Padding(
+                    padding:  EdgeInsets.symmetric(vertical: 8.w),
+                    child: Text('Applied Event Update',style: AppStyles.fontSize16()),
+                  ),
                   SizedBox(height: 8.h),
                   Row(
                     children: [
