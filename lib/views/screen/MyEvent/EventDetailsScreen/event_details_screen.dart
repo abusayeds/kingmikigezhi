@@ -840,29 +840,29 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                       Transform.translate(
                         offset: Offset(0, 0),
                         child: CircleAvatar(
-                          radius: 12,
-                          backgroundColor: AppColors.colorE5CCFF,
+                          radius: 25.r,
+                          backgroundImage: NetworkImage('https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg'), // Placeholder image
                         ),
                       ),
                       Transform.translate(
-                        offset: Offset(-4, 0),
+                        offset: Offset(-15, 0),
                         child: CircleAvatar(
-                          radius: 12,
-                          backgroundColor:AppColors.colorCCFFE6,
+                          radius: 25.r,
+                          backgroundImage: NetworkImage('https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=400'), // Placeholder image
                         ),
                       ),
                       Transform.translate(
-                        offset: Offset(-6, 0),
+                        offset: Offset(-30, 0),
                         child: CircleAvatar(
-                          radius: 12,
-                          backgroundColor: AppColors.colorFFF2CC,
+                          radius: 25.r,
+                          backgroundImage: NetworkImage('https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'), // Placeholder image
                         ),
                       ),
                       Transform.translate(
-                        offset: Offset(-8, 0),
+                        offset: Offset(-50, 0),
                         child: CircleAvatar(
-                          radius: 12,
-                          backgroundColor: AppColors.colorD9A951,
+                          radius: 25.r,
+                          backgroundImage: NetworkImage('https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&w=400'), // Placeholder image
                         ),
                       ),
                     ],
