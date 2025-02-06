@@ -34,18 +34,6 @@ class _AppliedSearchEventListScreenState extends State<AppliedSearchEventListScr
       "location": "Dhaka, Bangladesh",
       "time": "10:00 AM",
     },
-    {
-      "imageUrl": "assets/images/music.png",
-      "title": "Bangla Music",
-      "location": "Dhaka, Bangladesh",
-      "time": "10:00 AM",
-    },
-    {
-      "imageUrl": "assets/images/music.png",
-      "title": "Bangla Music",
-      "location": "Dhaka, Bangladesh",
-      "time": "10:00 AM",
-    },
   ];
   final TextEditingController _searchController = TextEditingController();
 
@@ -83,7 +71,7 @@ class _AppliedSearchEventListScreenState extends State<AppliedSearchEventListScr
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('Total Event :',style: AppStyles.fontSize16(fontWeight: FontWeight.w600)),
-                        Text('500'),
+                        Text('500',style: AppStyles.fontSize12()),
                       ],
                     ),
                   ),
@@ -92,7 +80,7 @@ class _AppliedSearchEventListScreenState extends State<AppliedSearchEventListScr
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('Total Cost :',style: AppStyles.fontSize16(fontWeight: FontWeight.w600)),
-                        Text('200'),
+                        Text('200',style: AppStyles.fontSize12()),
                       ],
                     ),
                   ),
@@ -103,7 +91,7 @@ class _AppliedSearchEventListScreenState extends State<AppliedSearchEventListScr
             //=================================> Event List view <========================
             Expanded(
               child: ListView.builder(
-                itemCount: events.length,
+                itemCount: 4,
                 itemBuilder: (context, index) {
                   final event = events[index];
 
