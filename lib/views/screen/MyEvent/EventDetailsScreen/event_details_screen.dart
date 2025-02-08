@@ -679,27 +679,27 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                             decoration: BoxDecoration(
                               color: Colors.blueGrey,
                               shape: BoxShape.rectangle,
-                              borderRadius: BorderRadius.circular(4),
+                              borderRadius: BorderRadius.circular(4.r),
                             ),
                             child: Icon(
                               Icons.check,
                               color: Colors.white,
-                              size: 10,
+                              size: 10.sp,
                             ),
                             padding: EdgeInsets.all(4),
                           ),
                         ],
                       ),
-                      SizedBox(height: 8),
+                      SizedBox(height: 8.h),
                       Row(
                         children: [
                           SvgPicture.asset(AppIcons.dotIconForFamily),
-                          SizedBox(width: 5),
+                          SizedBox(width: 5.w),
                           Text('Type: ', style: TextStyle(fontWeight: FontWeight.w600)),
                           Text('Onsite Event',style: TextStyle(color: AppColors.color414141)),
                         ],
                       ),
-                      SizedBox(height: 8),
+                      SizedBox(height: 8.h),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -737,8 +737,8 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                       Row(
                         children: [
                           Container(
-                            width: 6,
-                            height: 6,
+                            width: 6.w,
+                            height: 6.h,
                             decoration: BoxDecoration(
                               color: Colors.blueGrey,
                               shape: BoxShape.circle,
@@ -752,14 +752,14 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                       Row(
                         children: [
                           Container(
-                            width: 6,
-                            height: 6,
+                            width: 6.w,
+                            height: 6.h,
                             decoration: BoxDecoration(
                               color: Colors.blueGrey,
                               shape: BoxShape.circle,
                             ),
                           ),
-                          SizedBox(width: 8),
+                          SizedBox(width: 8.w),
                           Text('2022 - 2nd place winner',style: TextStyle(color: AppColors.color414141)),
                         ],
                       ),
@@ -767,14 +767,14 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                       Row(
                         children: [
                           Container(
-                            width: 6,
-                            height: 6,
+                            width: 6.w,
+                            height: 6.h,
                             decoration: BoxDecoration(
                               color: Colors.blueGrey,
                               shape: BoxShape.circle,
                             ),
                           ),
-                          SizedBox(width: 8),
+                          SizedBox(width: 8.w),
                           Text('2023 - 1st place winner',style: TextStyle(color: AppColors.color414141)),
                         ],
                       ),
@@ -785,10 +785,10 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                   Align(
                     alignment: Alignment.centerRight,
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
                       decoration: BoxDecoration(
                         color: Colors.grey.shade200,
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(8.r),
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -867,7 +867,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 10.h),
                   // Latest active info
                   Text(
                     'Latest active 3 days ago',
@@ -876,8 +876,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                       color: AppColors.color414141,
                     ),
                   ),
-                  SizedBox(height: 20),
-
+                  SizedBox(height: 20.h),
                   // Buttons Row
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
