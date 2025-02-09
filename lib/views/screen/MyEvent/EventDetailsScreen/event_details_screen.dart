@@ -32,11 +32,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
             Get.back();
           },
         ),
-        title: CustomText(
-          text: 'Event Details',
-          fontWeight: FontWeight.bold,
-          fontsize: 18.sp,
-        ),
+        title: Text('Event Details',style: AppStyles.fontSize18(fontWeight: FontWeight.w500)),
         centerTitle: true,
       ),
       //=======================> Body Section <============================
@@ -403,11 +399,8 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
 
               //=======================> description Event Section <============================
               SizedBox(height: 16.h),
-              CustomText(
-                text: AppStrings.description,
-                fontsize: 16.sp,
-                fontWeight: FontWeight.w600,
-              ),
+
+               Text(AppStrings.description,style: AppStyles.fontSize16(fontWeight: FontWeight.w600)),
                SizedBox(height: 8.h),
               Text( 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable.',
                 maxLines: 20,
@@ -416,11 +409,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
               ),
               SizedBox(height: 16.w),
               // Note
-              CustomText(
-                text: AppStrings.note,
-                fontsize: 16.sp,
-                fontWeight: FontWeight.w600,
-              ),
+              Text(AppStrings.note,style: AppStyles.fontSize16(fontWeight: FontWeight.w600)),
               SizedBox(height: 8.h),
               Text( 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable.',
                 maxLines: 20,
@@ -483,8 +472,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                     children: [
                       SvgPicture.asset(AppIcons.myEventIcon,color: AppColors.primaryColor,),
                       SizedBox(width: 8.w),
-                      Text('Preliminary', style: TextStyle(fontSize: 16.sp),
-                      ),
+                        Text('Preliminary',style: AppStyles.fontSize16()),
                     ],
                   ),
                   SizedBox(height: 15.h),
@@ -544,7 +532,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                         children: [
                           SvgPicture.asset(AppIcons.dotIconForFamily),
                           SizedBox(width: 5.w),
-                          Text('Description: ', style: TextStyle(fontWeight: FontWeight.w600)),
+                          Text('Description: ',style: AppStyles.fontSize10(fontWeight: FontWeight.w600)),
                           Expanded(
                             child: Text(
                               'The point of using Lorem Ipsum is that it has a more or less normal',style: TextStyle(color: AppColors.color414141)),
@@ -646,10 +634,11 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                     children: [
                       SvgPicture.asset(AppIcons.myEventIcon,color: AppColors.primaryColor,),
                       SizedBox(width: 8.w),
-                      Text('Final', style: TextStyle(fontSize: 16),
+                      Text('Final',style: AppStyles.fontSize16()
                       ),
                     ],
                   ),
+
                   SizedBox(height: 16.h),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -660,7 +649,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                           Row(
                             children: [
                               SvgPicture.asset(AppIcons.dotIconForFamily),
-                              SizedBox(width: 5),
+                              SizedBox(width: 5.w),
                               Text('Deadline: ', style: TextStyle(fontWeight: FontWeight.w600)),
                             ],
                           ),
@@ -668,9 +657,8 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                           Row(
                             children: [
                               SvgPicture.asset(AppIcons.dotIconForFamily),
-                              SizedBox(width: 5),
-                              Text('Cost: ', style: TextStyle(fontWeight: FontWeight.w600),
-                              ),
+                              SizedBox(width: 5.w),
+                              Text('Cost: ', style: TextStyle(fontWeight: FontWeight.w600)),
                               Text('\$100'),
                               SizedBox(width: 10),
                             ],
@@ -723,13 +711,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // History Section
-                  Text(
-                    'History :',
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                    Text('Preliminary',style: AppStyles.fontSize16()),
                   SizedBox(height: 8.h),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
