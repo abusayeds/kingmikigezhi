@@ -238,7 +238,6 @@ class _CreateEventOneState extends State<CreateEventOne> {
       ),
     );
   }
-
   // Step 1 Content
   Widget _buildStepOneContent() {
     return Padding(
