@@ -47,20 +47,12 @@ class _StepThreeFormState extends State<StepThreeForm> {
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: CustomText(
-                text: "Step 3: Group/Category",
-                fontsize: 20,
-                fontWeight: FontWeight.w600,
-              ),
+              child:   Text('Step 3: Group/Category',style: AppStyles.fontSize20(fontWeight: FontWeight.w600)),
             ),
             //registration date
             SizedBox(height: 12.h),
             //registration date
-            CustomText(
-              text: 'Define Group/Category',
-              fontsize: 14,
-              fontWeight: FontWeight.w600,
-            ),
+            Text('Define Group/Category',style: AppStyles.fontSize14(fontWeight: FontWeight.w600)),
             SizedBox(height: 12.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -114,6 +106,8 @@ class _StepThreeFormState extends State<StepThreeForm> {
                   height: 60.h,
                   width: 90.w,
                   child: CustomButton(
+                    color: AppColors.buttonA47059,
+                    borderColor: Colors.transparent,
                     onTap: () {},
                     text: 'Add',
                     textColor: AppColors.textColor,
@@ -121,12 +115,13 @@ class _StepThreeFormState extends State<StepThreeForm> {
                 ),
               ],
             ),
-            SizedBox(height: 8),
+            SizedBox(height: 8.h),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 4),
-              child: Text('Added Group/Category',
-              style: AppStyles.fontSize16(color: AppColors.blackColor,fontWeight: FontWeight.w600),)
+              child:
+              Text('Added Group/Category',style: AppStyles.fontSize14(fontWeight: FontWeight.w600)),
             ),
+            SizedBox(height: 8.h),
             Container(
               decoration: BoxDecoration(
                 color: AppColors.colorEDF2F4,
@@ -224,11 +219,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomText(
-                      text: 'Defile Round ',
-                      fontsize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    Text('Defile Round',style: AppStyles.fontSize14(fontWeight: FontWeight.w600)),
                     SizedBox(height: 8.h),
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -243,8 +234,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
                           dropdownColor: AppColors.fillColor,
                           menuWidth: 240.w,
                           borderRadius: BorderRadius.circular(8.r),
-                          hint: Text("Select Round",
-                              style: AppStyles.fontSize14(color: AppColors.color414141)),
+                          hint: Text("Select Round", style: AppStyles.fontSize14(color: AppColors.color414141)),
                           icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
                           ),
                           isExpanded: true,
@@ -267,11 +257,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
                     ),
                     SizedBox(height: 12.h),
                     //deadline date
-                    CustomText(
-                      text: 'Deadline ',
-                      fontsize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    Text("Deadline", style: AppStyles.fontSize14(fontWeight: FontWeight.w600)),
                     SizedBox(height: 12.h),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -317,11 +303,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
                     ),
                     //cost
                     SizedBox(height: 12.h),
-                    CustomText(
-                      text: 'Cost ',
-                      fontsize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    Text("Cost", style: AppStyles.fontSize14(fontWeight: FontWeight.w600)),
                     SizedBox(height: 12.h),
                     CustomTextField(
                       controller: dateController,
@@ -364,11 +346,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
                     ),
                     //final date
                     SizedBox(height: 12.h),
-                    CustomText(
-                      text: 'Final Deadline',
-                      fontsize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    Text("Final Deadline", style: AppStyles.fontSize14(fontWeight: FontWeight.w600)),
                     SizedBox(height: 12.h),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -424,11 +402,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
                       ],
                     ),
                     SizedBox(height: 16.h),
-                    CustomText(
-                      text: 'Late fee',
-                      fontsize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    Text("Late fee", style: AppStyles.fontSize14(fontWeight: FontWeight.w600)),
                     SizedBox(height: 12.h),
                     CustomTextField(
                       controller: lateFee,
@@ -436,11 +410,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
                       hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
                     ),
                     SizedBox(height: 12.h),
-                    CustomText(
-                      text: 'Type',
-                      fontsize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    Text("Type", style: AppStyles.fontSize14(fontWeight: FontWeight.w600)),
                     SizedBox(height: 12.h),
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -455,6 +425,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
                           dropdownColor: AppColors.fillColor,
                           menuWidth: 240.w,
                           borderRadius: BorderRadius.circular(8.r),
+
                           hint: Text("Select Type", style: AppStyles.fontSize14(color: AppColors.color414141),),
                           icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
                           ),
@@ -477,11 +448,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
                       ),
                     ),
                     SizedBox(height: 12.h),
-                    CustomText(
-                      text: 'Description',
-                      fontsize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    Text("Description", style: AppStyles.fontSize14(fontWeight: FontWeight.w600)),
                     SizedBox(height: 12.h),
                     CustomTextField(
                       controller: lateFee,
@@ -498,11 +465,8 @@ class _StepThreeFormState extends State<StepThreeForm> {
                       textColor: Colors.white,
                     ),
                     SizedBox(height: 10.h),
-                    CustomText(
-                      text: 'Added Round',
-                      fontsize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    Text("Added Round", style: AppStyles.fontSize14(fontWeight: FontWeight.w600)),
+                    SizedBox(height: 8.h),
                     Container(
                       decoration: BoxDecoration(
                         color: AppColors.colorEDF2F4,
