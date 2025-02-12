@@ -1,4 +1,5 @@
 import 'package:event_sharing/utils/app_colors.dart';
+import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/bottom_menu..dart';
 import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:event_sharing/views/screen/MyEvent/history/my_history_event_screen.dart';
@@ -52,8 +53,7 @@ class _MyEventScreenState extends State<MyEventScreen>
               Get.back();
             },
           ),
-          title: Text('Event',
-              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
+          title: Text('Event', style:AppStyles.fontSize18(fontWeight: FontWeight.w600)),
           centerTitle: true,
           bottom: TabBar(
             controller: _tabController,

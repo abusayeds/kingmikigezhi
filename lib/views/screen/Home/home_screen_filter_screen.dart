@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../../utils/app_icons.dart';
 import '../../../utils/app_strings.dart';
+import '../../base/custom_dropdown.dart';
 import '../../base/custom_text.dart';
 
 class FilterScreen extends StatefulWidget {
@@ -21,6 +22,7 @@ class _FilterScreenState extends State<FilterScreen> {
   final List<String> _program = ['Concert', 'Sports', 'Show', 'Olympic game'];
   final List<String> _type = ['Onsite', 'Online', 'Hybrid'];
   final List<String> _category = ['6 Year - 10 Year', '11 Year - 16 Year', '17 Year+'];
+
   RangeValues _currentRangeValues = RangeValues(50, 80);
   String? _selectedProgram;
   String? _selectedType;
