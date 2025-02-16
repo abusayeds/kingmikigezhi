@@ -240,7 +240,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                 Row(
                                   children: [
                                     Text(
-                                      '7.00 AM',
+                                      'Primary Round',
                                       style: TextStyle(
                                         color: Colors.grey.shade600,
                                       ),
@@ -353,8 +353,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                       children: [
                                         SvgPicture.asset(AppIcons.dotIconForFamily),
                                         SizedBox(width: 5.w),
-                                        Text(
-                                          'Cost',style: AppStyles.fontSize12(fontWeight: FontWeight.w600)
+                                        Text('Late Fee',style: AppStyles.fontSize12(fontWeight: FontWeight.w600)
                                         ),
                                       ],
                                     ),
@@ -382,26 +381,24 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                             ),
 
                           ],
-                            ),)
+                        ),)
                           ],
-
-
                   )
                 ],
               ),
 
 
               //=======================> description Event Section <============================
-              SizedBox(height: 16.h),
-
-               Text(AppStrings.description,style: AppStyles.fontSize12(fontWeight: FontWeight.w600)),
-               SizedBox(height: 8.h),
+              SizedBox(height: 20.h),
+              Text(AppStrings.description,style: AppStyles.fontSize12(fontWeight: FontWeight.w600)),
+              SizedBox(height: 8.h),
               Text( 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable.',
                 maxLines: 20,
                 textAlign: TextAlign.start,
                 style: AppStyles.fontSize14(color: AppColors.color414141),
               ),
               SizedBox(height: 16.w),
+
               // Note
               Text(AppStrings.note,style: AppStyles.fontSize12(fontWeight: FontWeight.w600)),
               SizedBox(height: 8.h),
