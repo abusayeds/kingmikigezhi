@@ -246,7 +246,7 @@ class _CreateEventOneState extends State<CreateEventOne> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CustomText(text: "This is a shared community. All events are public",color: AppColors.colorD9A951),
+          Text( "This is a shared community. All events are public",style: AppStyles.fontSize12(color:AppColors.colorD9A951)),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: CustomText(text: "Step 1: Basic",fontsize: 20,fontWeight: FontWeight.w600,),
