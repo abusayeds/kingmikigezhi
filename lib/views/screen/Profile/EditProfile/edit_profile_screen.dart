@@ -116,7 +116,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 4.h),
-                    child: Text('Account ID', style:  AppStyles.fontSize16(fontWeight: FontWeight.w600 )),
+                    child: Text('Account ID', style:  AppStyles.fontSize16(fontWeight: FontWeight.w600)),
                   ),
                   CustomTextField(
                     controller: _nameController,
@@ -224,7 +224,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 4.h),
-                    child: Text('Phone Number', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                    child: Text('Phone Number', style:  AppStyles.fontSize16(fontWeight: FontWeight.w600)),
                   ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -423,7 +423,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: 8.h),
                             child: CustomButton(
-                                color: AppColors.buttonColor,
+                                color: AppColors.buttonA47059,
                                 borderColor: Colors.white,
                                 onTap: (){},
                                 text: "Add",
@@ -475,7 +475,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
                   SizedBox(height: 10),
                   CustomButton(
-                    color: AppColors.buttonColor,
+                    color: AppColors.buttonA47059,
                     borderColor: Colors.white,
                     onTap: (){},
                     text: "Update Profile",

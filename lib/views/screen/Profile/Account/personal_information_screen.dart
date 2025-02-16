@@ -169,6 +169,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
+                    height: 57.h,
                     decoration: BoxDecoration(
                         color: AppColors.fillColor,
                         border: Border.all(
@@ -194,7 +195,10 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                         ),
                         Padding(
                             padding: EdgeInsets.only(right: 5.w),
-                            child: Icon(Icons.arrow_drop_down_sharp)
+                            child:  SvgPicture.asset(
+                              AppIcons.downArrowIcon,
+                              width: 16.w,
+                            )
                         )
                       ],
                     ),
