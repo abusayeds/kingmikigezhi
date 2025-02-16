@@ -142,7 +142,8 @@ class _StepFiveFormState extends State<StepFiveForm> {
                     onTap: (){},
                     text: 'Add',
                     textColor: AppColors.textColor,
-                    borderColor: AppColors.buttonColor,
+                    borderColor: AppColors.buttonA47059,
+                    color: AppColors.buttonA47059,
                   ),
                 ),
               ],
@@ -292,7 +293,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
                     Expanded(
                       child: Text(
                         'This is a shared community. All events are public',
-                        style: AppStyles.fontSize14(color: AppColors.hintColor)
+                        style: AppStyles.fontSize12(color: AppColors.hintColor)
                       ),
                     ),
                   ],
@@ -312,7 +313,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
                     SizedBox(width: 10),
                     Text(
                       'User agreement',
-                        style: AppStyles.fontSize14(color: AppColors.hintColor)
+                        style: AppStyles.fontSize12(color: AppColors.hintColor)
                     ),
                   ],
                 ),

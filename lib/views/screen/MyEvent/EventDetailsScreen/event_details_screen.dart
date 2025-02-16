@@ -143,7 +143,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                   children: [
                                     SvgPicture.asset(AppIcons.dotIconForFamily),
                                     SizedBox(width: 5),
-                                    Text('Program', style: TextStyle(fontWeight: FontWeight.bold,)),
+                                    Text('Program', style: AppStyles.fontSize12(fontWeight: FontWeight.w600)),
                                   ],
                                 ),
                                 SizedBox(height: 5),
@@ -159,7 +159,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                   children: [
                                     SvgPicture.asset(AppIcons.dotIconForFamily),
                                     SizedBox(width: 5.w),
-                                    Text('Type', style: TextStyle(fontWeight: FontWeight.bold,)),
+                                    Text('Type', style: AppStyles.fontSize12(fontWeight: FontWeight.w600)),
                                   ],
                                 ),
                                 SizedBox(height: 5.w),
@@ -174,7 +174,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                   children: [
                                     SvgPicture.asset(AppIcons.dotIconForFamily),
                                     SizedBox(width: 5),
-                                    Text('Location', style: TextStyle(fontWeight: FontWeight.bold,)),
+                                    Text('Location',style: AppStyles.fontSize12(fontWeight: FontWeight.w600)),
                                   ],
                                 ),
                                 SizedBox(height: 5),
@@ -189,7 +189,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                   children: [
                                     SvgPicture.asset(AppIcons.dotIconForFamily),
                                     SizedBox(width: 5.w),
-                                    Text('Deadline', style: TextStyle(fontWeight: FontWeight.bold,)),
+                                    Text('Deadline', style: AppStyles.fontSize12(fontWeight: FontWeight.w600)),
 
                                   ],
                                 ),
@@ -211,7 +211,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                   children: [
                                     SvgPicture.asset(AppIcons.dotIconForFamily),
                                     SizedBox(width: 5),
-                                    Text('Final Deadline', style: TextStyle(fontWeight: FontWeight.bold,)),
+                                    Text('Final Deadline', style: AppStyles.fontSize12(fontWeight: FontWeight.w600)),
                                   ],
                                 ),
                                 SizedBox(height: 5),
@@ -233,8 +233,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                   children: [
                                     SvgPicture.asset(AppIcons.dotIconForFamily),
                                     SizedBox(width: 5.w),
-                                    Text('Competition Level',
-                                        style: TextStyle(fontWeight: FontWeight.bold)),
+                                    Text('Competition Level', style: AppStyles.fontSize12(fontWeight: FontWeight.w600)),
                                   ],
                                 ),
                                 SizedBox(height: 5.h),
@@ -258,8 +257,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                   children: [
                                     SvgPicture.asset(AppIcons.dotIconForFamily),
                                     SizedBox(width: 5.w),
-                                    Text('Registration Open',
-                                        style: TextStyle(fontWeight: FontWeight.w600)),
+                                    Text('Registration Open', style: AppStyles.fontSize12(fontWeight: FontWeight.w600)),
                                   ],
                                 ),
                                 SizedBox(height: 5.h),
@@ -290,8 +288,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                   children: [
                                     SvgPicture.asset(AppIcons.dotIconForFamily),
                                     SizedBox(width: 5.w),
-                                    Text('Repeat Function',
-                                        style: TextStyle(fontWeight: FontWeight.w600)),
+                                    Text('Repeat Function', style: AppStyles.fontSize12(fontWeight: FontWeight.w600)),
                                   ],
                                 ),
                                 SizedBox(height: 5.h),
@@ -357,10 +354,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                         SvgPicture.asset(AppIcons.dotIconForFamily),
                                         SizedBox(width: 5.w),
                                         Text(
-                                          'Cost',
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                                          'Cost',style: AppStyles.fontSize12(fontWeight: FontWeight.w600)
                                         ),
                                       ],
                                     ),
@@ -400,7 +394,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
               //=======================> description Event Section <============================
               SizedBox(height: 16.h),
 
-               Text(AppStrings.description,style: AppStyles.fontSize16(fontWeight: FontWeight.w600)),
+               Text(AppStrings.description,style: AppStyles.fontSize12(fontWeight: FontWeight.w600)),
                SizedBox(height: 8.h),
               Text( 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable.',
                 maxLines: 20,
@@ -409,7 +403,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
               ),
               SizedBox(height: 16.w),
               // Note
-              Text(AppStrings.note,style: AppStyles.fontSize16(fontWeight: FontWeight.w600)),
+              Text(AppStrings.note,style: AppStyles.fontSize12(fontWeight: FontWeight.w600)),
               SizedBox(height: 8.h),
               Text( 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable.',
                 maxLines: 20,
@@ -472,7 +466,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                     children: [
                       SvgPicture.asset(AppIcons.myEventIcon,color: AppColors.primaryColor,),
                       SizedBox(width: 8.w),
-                        Text('Preliminary',style: AppStyles.fontSize16()),
+                        Text('Preliminary',style: AppStyles.fontSize12(fontWeight: FontWeight.w600)),
                     ],
                   ),
                   SizedBox(height: 15.h),
@@ -553,7 +547,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                     children: [
                       SvgPicture.asset(AppIcons.myEventIcon,color: AppColors.primaryColor,),
                       SizedBox(width: 8.w),
-                      Text('Semi Final', style: TextStyle(fontSize: 16.sp),
+                      Text('Semi Final',style: AppStyles.fontSize12(fontWeight: FontWeight.w600)
                       ),
                     ],
                   ),
@@ -634,7 +628,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                     children: [
                       SvgPicture.asset(AppIcons.myEventIcon,color: AppColors.primaryColor,),
                       SizedBox(width: 8.w),
-                      Text('Final',style: AppStyles.fontSize16()
+                      Text('Final',style: AppStyles.fontSize12(fontWeight: FontWeight.w600)
                       ),
                     ],
                   ),
@@ -711,7 +705,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // History Section
-                    Text('Preliminary',style: AppStyles.fontSize16()),
+                    Text('Preliminary',style: AppStyles.fontSize12(fontWeight: FontWeight.w600)),
                   SizedBox(height: 8.h),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
