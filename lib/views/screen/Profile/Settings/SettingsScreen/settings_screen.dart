@@ -22,7 +22,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   final List<String> _currency = ['USD', 'EURO', 'TAKA'];
   final List<String> _notification = ['ON', 'OFF'];
   final List<String> _timeZone = ['Dhaka(+6)', 'Canada(-6)'];
-  final List<String> _updateOption = ['Option 1', 'Option 2'];
+
 
 
   String? _selectedlanguage;
@@ -58,265 +58,267 @@ class _SettingsScreenState extends State<SettingsScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               //=================================> Language Section <=======================
-              CustomText(
-                text: 'Display language',
-                fontWeight: FontWeight.w500,
-                fontsize: 16.sp,
-                bottom: 8.h,
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 8.h),
+                child: Text('Display language',style: AppStyles.fontSize16()),
               ),
-              InputDecorator(
-                decoration: InputDecoration(
-                  fillColor: AppColors.fillColor,
-                  filled: true,
-                  // labelText: 'Select',
-                  border: OutlineInputBorder(
-                    borderSide:
-                    BorderSide(color: AppColors.primaryColor, width: 1.w),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide:
-                    BorderSide(color: AppColors.primaryColor, width: 1.w),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide:
-                    BorderSide(color: AppColors.primaryColor, width: 1.w),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
-                ),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton<String>(
-                    //focusColor:  AppColors.primaryColor,
-                    iconDisabledColor: AppColors.primaryColor,
-                    iconEnabledColor: AppColors.primaryColor,
-                    icon: SvgPicture.asset(AppIcons.downArrowIcon,color: AppColors.primaryColor),
-                    isExpanded: true,
-                    value: _selectedlanguage,
-                    hint: CustomText(text: 'Select language',fontsize: 14.sp,color: AppColors.color666666),
-                    items: _language.map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        _selectedlanguage = newValue;
-                      });
-                    },
-                  ),
-                ),
-              ),
-              SizedBox(height: 16.h),
-              //=================================> Date time format Section <=======================
-              CustomText(
-                text: 'Date time format',
-                fontWeight: FontWeight.w500,
-                fontsize: 16.sp,
-                bottom: 8.h,
-              ),
-              InputDecorator(
-                decoration: InputDecoration(
-                  fillColor: AppColors.fillColor,
-                  filled: true,
-                  // labelText: 'Select',
-                  border: OutlineInputBorder(
-                    borderSide:
-                    BorderSide(color: AppColors.primaryColor, width: 1.w),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide:
-                    BorderSide(color: AppColors.primaryColor, width: 1.w),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide:
-                    BorderSide(color: AppColors.primaryColor, width: 1.w),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
-                ),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton<String>(
-                    //focusColor:  AppColors.primaryColor,
-                    iconDisabledColor: AppColors.primaryColor,
-                    iconEnabledColor: AppColors.primaryColor,
-                    icon: SvgPicture.asset(AppIcons.downArrowIcon,color: AppColors.primaryColor),
-                    isExpanded: true,
-                    value: _selectedlanguage,
-                    hint: CustomText(text: 'Select Date Time', fontsize: 14.sp,color: AppColors.color666666),
-                    items: _language.map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        _selectedlanguage = newValue;
-                      });
-                    },
-                  ),
-                ),
-              ),
-              SizedBox(height: 16.h),
-              //=================================> Time zone Section <=======================
-              CustomText(
-                text: 'Time zone',
-                fontWeight: FontWeight.w500,
-                fontsize: 16.sp,
-                bottom: 8.h,
-              ),
-              InputDecorator(
-                decoration: InputDecoration(
-                  fillColor: AppColors.fillColor,
-                  filled: true,
-                  // labelText: 'Select',
-                  border: OutlineInputBorder(
-                    borderSide:
-                    BorderSide(color: AppColors.primaryColor, width: 1.w),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide:
-                    BorderSide(color: AppColors.primaryColor, width: 1.w),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide:
-                    BorderSide(color: AppColors.primaryColor, width: 1.w),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
-                ),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton<String>(
-                    //focusColor:  AppColors.primaryColor,
-                    iconDisabledColor: AppColors.primaryColor,
-                    iconEnabledColor: AppColors.primaryColor,
-                    icon: SvgPicture.asset(AppIcons.downArrowIcon,color: AppColors.primaryColor),
-                    isExpanded: true,
-                    value: _selectedTimeZone,
-                    hint: CustomText(text: 'Select Time Zone', fontsize: 14.sp,color: AppColors.color666666),
-                    items: _timeZone.map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        _selectedTimeZone = newValue;
-                      });
-                    },
-                  ),
-                ),
-              ),
-              SizedBox(height: 16.h),
-              //=================================> Currency Section <=======================
-              CustomText(
-                text: 'Currency',
-                fontWeight: FontWeight.w500,
-                fontsize: 16.sp,
-                bottom: 8.h,
-              ),
-              InputDecorator(
-                decoration: InputDecoration(
-                  fillColor: AppColors.fillColor,
-                  filled: true,
-                  // labelText: 'Select',
-                  border: OutlineInputBorder(
-                    borderSide:
-                    BorderSide(color: AppColors.primaryColor, width: 1.w),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide:
-                    BorderSide(color: AppColors.primaryColor, width: 1.w),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide:
-                    BorderSide(color: AppColors.primaryColor, width: 1.w),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
-                ),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton<String>(
-                    //focusColor:  AppColors.primaryColor,
-                    iconDisabledColor: AppColors.primaryColor,
-                    iconEnabledColor: AppColors.primaryColor,
-                    icon: SvgPicture.asset(AppIcons.downArrowIcon,color: AppColors.primaryColor),
-                    isExpanded: true,
-                    value: _selectedCurrency,
-                    hint: CustomText(text: 'Select Currency', fontsize: 14.sp, color: AppColors.color666666 ,
+              Container(
+                height: 60.h,
+                child: InputDecorator(
+                  decoration: InputDecoration(
+                    fillColor: AppColors.fillColor,
+                    filled: true,
+                    // labelText: 'Select',
+                    border: OutlineInputBorder(
+                      borderSide:
+                      BorderSide(color: AppColors.primaryColor, width: 1.w),
+                      borderRadius: BorderRadius.circular(8.r),
                     ),
-                    items: _currency.map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        _selectedCurrency = newValue;
-                      });
-                    },
+                    enabledBorder: OutlineInputBorder(
+                      borderSide:
+                      BorderSide(color: AppColors.primaryColor, width: 1.w),
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide:
+                      BorderSide(color: AppColors.primaryColor, width: 1.w),
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
+                  ),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      //focusColor:  AppColors.primaryColor,
+                      iconDisabledColor: AppColors.primaryColor,
+                      iconEnabledColor: AppColors.primaryColor,
+                      icon: SvgPicture.asset(AppIcons.downArrowIcon,color: AppColors.primaryColor),
+                      isExpanded: true,
+                      value: _selectedlanguage,
+                      hint: CustomText(text: 'Select language',fontsize: 14.sp,color: AppColors.color666666),
+                      items: _language.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _selectedlanguage = newValue;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+              ),
+              //=================================> Date time format Section <=======================
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 8.h),
+                child: Text('Date time format',style: AppStyles.fontSize16()),
+              ),
+              Container(
+                height: 60.h,
+                child: InputDecorator(
+                  decoration: InputDecoration(
+                    fillColor: AppColors.fillColor,
+                    filled: true,
+                    // labelText: 'Select',
+                    border: OutlineInputBorder(
+                      borderSide:
+                      BorderSide(color: AppColors.primaryColor, width: 1.w),
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide:
+                      BorderSide(color: AppColors.primaryColor, width: 1.w),
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide:
+                      BorderSide(color: AppColors.primaryColor, width: 1.w),
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
+                  ),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      //focusColor:  AppColors.primaryColor,
+                      iconDisabledColor: AppColors.primaryColor,
+                      iconEnabledColor: AppColors.primaryColor,
+                      icon: SvgPicture.asset(AppIcons.downArrowIcon,color: AppColors.primaryColor),
+                      isExpanded: true,
+                      value: _selectedlanguage,
+                      hint: CustomText(text: 'Select Date Time', fontsize: 14.sp,color: AppColors.color666666),
+                      items: _language.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _selectedlanguage = newValue;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+              ),
+              //=================================> Time zone Section <=======================
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 8.h),
+                child: Text('Time zone',style: AppStyles.fontSize16()),
+              ),
+              Container(
+                height: 60.h,
+                child: InputDecorator(
+                  decoration: InputDecoration(
+                    fillColor: AppColors.fillColor,
+                    filled: true,
+                    // labelText: 'Select',
+                    border: OutlineInputBorder(
+                      borderSide:
+                      BorderSide(color: AppColors.primaryColor, width: 1.w),
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide:
+                      BorderSide(color: AppColors.primaryColor, width: 1.w),
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide:
+                      BorderSide(color: AppColors.primaryColor, width: 1.w),
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
+                  ),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      //focusColor:  AppColors.primaryColor,
+                      iconDisabledColor: AppColors.primaryColor,
+                      iconEnabledColor: AppColors.primaryColor,
+                      icon: SvgPicture.asset(AppIcons.downArrowIcon,color: AppColors.primaryColor),
+                      isExpanded: true,
+                      value: _selectedTimeZone,
+                      hint: CustomText(text: 'Select Time Zone', fontsize: 14.sp,color: AppColors.color666666),
+                      items: _timeZone.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _selectedTimeZone = newValue;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+              ),
+              //=================================> Currency Section <=======================
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 8.h),
+                child: Text('Currency',style: AppStyles.fontSize16()),
+              ),
+              Container(
+                height: 60.h,
+                child: InputDecorator(
+                  decoration: InputDecoration(
+                    fillColor: AppColors.fillColor,
+                    filled: true,
+                    // labelText: 'Select',
+                    border: OutlineInputBorder(
+                      borderSide:
+                      BorderSide(color: AppColors.primaryColor, width: 1.w),
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide:
+                      BorderSide(color: AppColors.primaryColor, width: 1.w),
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide:
+                      BorderSide(color: AppColors.primaryColor, width: 1.w),
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
+                  ),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      //focusColor:  AppColors.primaryColor,
+                      iconDisabledColor: AppColors.primaryColor,
+                      iconEnabledColor: AppColors.primaryColor,
+                      icon: SvgPicture.asset(AppIcons.downArrowIcon,color: AppColors.primaryColor),
+                      isExpanded: true,
+                      value: _selectedCurrency,
+                      hint: CustomText(text: 'Select Currency', fontsize: 14.sp, color: AppColors.color666666 ,
+                      ),
+                      items: _currency.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _selectedCurrency = newValue;
+                        });
+                      },
+                    ),
                   ),
                 ),
               ),
               SizedBox(height: 16.h),
               Divider(thickness: .5,color: AppColors.color808080),
               //=================================> Notifications Section <=======================
-              CustomText(
-                text: 'Notifications',
-                fontWeight: FontWeight.w500,
-                fontsize: 16.sp,
-                bottom: 8.h,
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 8.h),
+                child: Text('Notifications',style: AppStyles.fontSize16()),
               ),
-              InputDecorator(
-                decoration: InputDecoration(
-                  fillColor: AppColors.fillColor,
-                  filled: true,
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
-                ),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton<String>(
-                    icon: SvgPicture.asset(AppIcons.downArrowIcon,color: AppColors.primaryColor),
-                    isExpanded: true,
-                    value: _selectedNotification,
-                    hint: CustomText(
-                      text: 'Select Notifications',
-                      color: AppColors.color666666 ,
-                      fontsize: 14.sp,
+              Container(
+               height: 60.h,
+                child: InputDecorator(
+                  decoration: InputDecoration(
+                    fillColor: AppColors.fillColor,
+                    filled: true,
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
+                      borderRadius: BorderRadius.circular(8.r),
                     ),
-                    items: _notification.map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        _selectedNotification = newValue;
-                      });
-                    },
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
+                  ),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      icon: SvgPicture.asset(AppIcons.downArrowIcon,color: AppColors.primaryColor),
+                      isExpanded: true,
+                      value: _selectedNotification,
+                      hint: CustomText(
+                        text: 'Select Notifications',
+                        color: AppColors.color666666 ,
+                        fontsize: 14.sp,
+                      ),
+                      items: _notification.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _selectedNotification = newValue;
+                        });
+                      },
+                    ),
                   ),
                 ),
               ),
@@ -325,8 +327,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Event Share Section
-                  Text('Event Share', style: AppStyles.fontSize18()),
-                  SizedBox(height: 8.h),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 8.h),
+                    child: Text('Event Share',style: AppStyles.fontSize16()),
+                  ),
                   Row(
                     children: [
                       Expanded(
@@ -336,19 +340,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           children: [
                             Text(
                               'Email',
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.blackColor,
-                              ),
+                              style: AppStyles.fontSize16()
                             ),
                             SizedBox(height: 8.h),
                             Container(
                               height: 52.h,
-                              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
                               decoration: BoxDecoration(
                                 border: Border.all(color:AppColors.borderColor),
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(8.r),
                                 color: AppColors.fillColor,
                               ),
                               child: DropdownButton<String>(
@@ -372,7 +372,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           ],
                         ),
                       ),
-                      SizedBox(width: 16),
+                      SizedBox(width: 16.w),
                       Expanded(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -380,11 +380,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           children: [
                             Text(
                               'SMS',
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.blackColor,
-                              ),
+                              style: AppStyles.fontSize16()
                             ),
                             SizedBox(height: 8.h),
                             Container(
@@ -420,7 +416,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                   SizedBox(height: 8.h),
                   // Applied Event Update Section
-                  Text('Applied Event Update',  style: AppStyles.fontSize18()),
+
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 8.w),
+                    child: Text('Applied Event Update',style: AppStyles.fontSize16()),
+                  ),
                   SizedBox(height: 8.h),
                   Row(
                     children: [
@@ -431,16 +431,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           children: [
                             Text(
                               'Email',
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.blackColor,
-                              ),
+                              style: AppStyles.fontSize16()
                             ),
                             SizedBox(height: 8.h),
                             Container(
                               height: 52.h,
-                              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
                               decoration: BoxDecoration(
                                 border: Border.all(color:AppColors.borderColor),
                                 borderRadius: BorderRadius.circular(8),
@@ -475,11 +471,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           children: [
                             Text(
                               'SMS',
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.blackColor,
-                              ),
+                              style: AppStyles.fontSize16()
                             ),
                             SizedBox(height: 8.h),
                             Container(

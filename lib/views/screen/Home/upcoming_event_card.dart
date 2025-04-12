@@ -65,11 +65,7 @@ class EventCard extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        CustomText(
-                          text: 'Snowboard Festival',
-                          fontsize: 16.sp,
-                          fontWeight: FontWeight.w600,
-                        ),
+                        Text('Snowboard Festival', style: AppStyles.fontSize18(fontWeight: FontWeight.w500)),
                         SvgPicture.asset(
                           AppIcons.share,
                           color: AppColors.primaryColor,
@@ -86,10 +82,9 @@ class EventCard extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              Icon(Icons.circle,
-                                  color: AppColors.primaryColor, size: 12.w),
+                              Icon(Icons.circle, color: AppColors.primaryColor, size: 12.w),
                               SizedBox(width: 4.w),
-                              Text('Onsite Event',style: AppStyles.fontSize12(color: AppColors.color414141),)
+                              Text('Onsite Event',style: AppStyles.fontSize12(color: AppColors.color414141))
                             ],
                           ),
                           Row(
