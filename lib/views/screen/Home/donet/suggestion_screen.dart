@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../../utils/style.dart';
+
 class SuggestionScreen extends StatelessWidget {
   final TextEditingController _describtionCTRL = TextEditingController();
   @override
@@ -28,21 +30,20 @@ class SuggestionScreen extends StatelessWidget {
         centerTitle: true,
       ),
       body: Padding(
-        padding:  EdgeInsets.symmetric(horizontal: 24.w),
+        padding:  EdgeInsets.symmetric(horizontal: 24.w,vertical: 16.h),
         child: Column(
           children: [
            CustomTextField(
              controller: _describtionCTRL,
              hintText: 'Share your suggestion',
              maxLines: 15,
-
            ),
             SizedBox(height: 59.h),
            // Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                // Cancel Button (Outlined)
+
                 Expanded(
                   child: OutlinedButton(
                     onPressed: () {
@@ -56,12 +57,9 @@ class SuggestionScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8.r),
                       ),
                     ),
-                    child: const Text(
+                    child: Text(
                       'Cancel',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: AppStyles.fontSize16(color: AppColors.blackColor,fontWeight: FontWeight.w500),
                     ),
                   ),
                 ),
@@ -76,12 +74,9 @@ class SuggestionScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8.r),
                       ),
                     ),
-                    child: const Text(
+                    child:  Text(
                       'Commit',
-                      style: TextStyle(
-                        color: Colors.white, // Text color
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: AppStyles.fontSize16(color: AppColors.white,fontWeight: FontWeight.w500),
                     ),
                   ),
                 ),

@@ -1,3 +1,4 @@
+import 'package:event_sharing/utils/style.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -101,9 +102,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                       borderRadius: BorderRadius.circular(8.r),
                       hint: Row(
                         children: [
-                          SvgPicture.asset(AppIcons.singlePerson,color: AppColors.primaryColor),
-                          SizedBox(width: 8.w),
-                          Text("Select your Gender", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500),),
+                          Text("Select your Gender", style: AppStyles.fontSize16()),
                         ],
                       ),
                       icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,

@@ -225,20 +225,19 @@ class _CreateEventOneState extends State<CreateEventOne> {
               if (_activeStepIndex == 0)
                 _buildStepOneContent()
               else if (_activeStepIndex == 1)
-                StepTwoForm()
+                const StepTwoForm()
               else if (_activeStepIndex == 2)
-                  StepThreeForm()
+                const StepThreeForm()
                 else if (_activeStepIndex == 3)
-                  StepFourForm()
+                  const StepFourForm()
                   else if (_activeStepIndex == 4)
-                  StepFiveForm()
+                    const StepFiveForm()
             ],
           ),
         ),
       ),
     );
   }
-
   // Step 1 Content
   Widget _buildStepOneContent() {
     return Padding(
@@ -247,7 +246,7 @@ class _CreateEventOneState extends State<CreateEventOne> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CustomText(text: "This is a shared community. All events are public",color: AppColors.colorD9A951),
+          Text( "This is a shared community. All events are public",style: AppStyles.fontSize12(color:AppColors.colorD9A951)),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: CustomText(text: "Step 1: Basic",fontsize: 20,fontWeight: FontWeight.w600,),

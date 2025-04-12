@@ -32,17 +32,13 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
             Get.back();
           },
         ),
-        title: CustomText(
-          text: 'Event Details',
-          fontWeight: FontWeight.bold,
-          fontsize: 18.sp,
-        ),
+        title: Text('Event Details',style: AppStyles.fontSize18(fontWeight: FontWeight.w500)),
         centerTitle: true,
       ),
       //=======================> Body Section <============================
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -100,7 +96,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                               child: SvgPicture.asset(AppIcons.editIcon)),
                         ),
                       ),
-                      SizedBox(width: 10), // Spacing between icons
+                      SizedBox(width: 10.w),
                       Container(
                         width: 40.w,height: 40.h,
                         decoration: BoxDecoration(
@@ -147,7 +143,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                   children: [
                                     SvgPicture.asset(AppIcons.dotIconForFamily),
                                     SizedBox(width: 5),
-                                    Text('Program', style: TextStyle(fontWeight: FontWeight.bold,)),
+                                    Text('Program', style: AppStyles.fontSize12(fontWeight: FontWeight.w600)),
                                   ],
                                 ),
                                 SizedBox(height: 5),
@@ -162,11 +158,11 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                 Row(
                                   children: [
                                     SvgPicture.asset(AppIcons.dotIconForFamily),
-                                    SizedBox(width: 5),
-                                    Text('Type', style: TextStyle(fontWeight: FontWeight.bold,)),
+                                    SizedBox(width: 5.w),
+                                    Text('Type', style: AppStyles.fontSize12(fontWeight: FontWeight.w600)),
                                   ],
                                 ),
-                                SizedBox(height: 5),
+                                SizedBox(height: 5.w),
                                 Text('Onsite Event', style: TextStyle(color: Colors.grey.shade600)),
                               ],
                             ),
@@ -178,7 +174,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                   children: [
                                     SvgPicture.asset(AppIcons.dotIconForFamily),
                                     SizedBox(width: 5),
-                                    Text('Location', style: TextStyle(fontWeight: FontWeight.bold,)),
+                                    Text('Location',style: AppStyles.fontSize12(fontWeight: FontWeight.w600)),
                                   ],
                                 ),
                                 SizedBox(height: 5),
@@ -193,7 +189,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                   children: [
                                     SvgPicture.asset(AppIcons.dotIconForFamily),
                                     SizedBox(width: 5.w),
-                                    Text('Deadline', style: TextStyle(fontWeight: FontWeight.bold,)),
+                                    Text('Deadline', style: AppStyles.fontSize12(fontWeight: FontWeight.w600)),
 
                                   ],
                                 ),
@@ -215,7 +211,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                   children: [
                                     SvgPicture.asset(AppIcons.dotIconForFamily),
                                     SizedBox(width: 5),
-                                    Text('Final Deadline', style: TextStyle(fontWeight: FontWeight.bold,)),
+                                    Text('Final Deadline', style: AppStyles.fontSize12(fontWeight: FontWeight.w600)),
                                   ],
                                 ),
                                 SizedBox(height: 5),
@@ -237,15 +233,14 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                   children: [
                                     SvgPicture.asset(AppIcons.dotIconForFamily),
                                     SizedBox(width: 5.w),
-                                    Text('Competition Level',
-                                        style: TextStyle(fontWeight: FontWeight.bold)),
+                                    Text('Competition Level', style: AppStyles.fontSize12(fontWeight: FontWeight.w600)),
                                   ],
                                 ),
                                 SizedBox(height: 5.h),
                                 Row(
                                   children: [
                                     Text(
-                                      '7.00 AM',
+                                      'Primary Round',
                                       style: TextStyle(
                                         color: Colors.grey.shade600,
                                       ),
@@ -262,8 +257,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                   children: [
                                     SvgPicture.asset(AppIcons.dotIconForFamily),
                                     SizedBox(width: 5.w),
-                                    Text('Registration Open',
-                                        style: TextStyle(fontWeight: FontWeight.w600)),
+                                    Text('Registration Open', style: AppStyles.fontSize12(fontWeight: FontWeight.w600)),
                                   ],
                                 ),
                                 SizedBox(height: 5.h),
@@ -294,8 +288,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                   children: [
                                     SvgPicture.asset(AppIcons.dotIconForFamily),
                                     SizedBox(width: 5.w),
-                                    Text('Repeat Function',
-                                        style: TextStyle(fontWeight: FontWeight.w600)),
+                                    Text('Repeat Function', style: AppStyles.fontSize12(fontWeight: FontWeight.w600)),
                                   ],
                                 ),
                                 SizedBox(height: 5.h),
@@ -310,7 +303,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Keeps the layout structured
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     // Empty space for alignment
                                     Row(
@@ -329,7 +322,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                       decoration: BoxDecoration(
                                         color: Colors.blueGrey,
                                         shape: BoxShape.rectangle,
-                                        borderRadius: BorderRadius.circular(4),
+                                        borderRadius: BorderRadius.circular(4.r),
                                       ),
                                       child: Icon(
                                         Icons.check,
@@ -353,18 +346,14 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Keeps the layout structured
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     // Empty space for alignment
                                     Row(
                                       children: [
                                         SvgPicture.asset(AppIcons.dotIconForFamily),
                                         SizedBox(width: 5.w),
-                                        Text(
-                                          'Cost',
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                                        Text('Late Fee',style: AppStyles.fontSize12(fontWeight: FontWeight.w600)
                                         ),
                                       ],
                                     ),
@@ -392,35 +381,26 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                             ),
 
                           ],
-                            ),)
+                        ),)
                           ],
-
-
                   )
                 ],
               ),
 
 
               //=======================> description Event Section <============================
-              SizedBox(height: 16.h),
-              CustomText(
-                text: AppStrings.description,
-                fontsize: 16.sp,
-                fontWeight: FontWeight.w600,
-              ),
-               SizedBox(height: 8.h),
+              SizedBox(height: 20.h),
+              Text(AppStrings.description,style: AppStyles.fontSize12(fontWeight: FontWeight.w600)),
+              SizedBox(height: 8.h),
               Text( 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable.',
                 maxLines: 20,
                 textAlign: TextAlign.start,
                 style: AppStyles.fontSize14(color: AppColors.color414141),
               ),
               SizedBox(height: 16.w),
-              //Note
-              CustomText(
-                text: AppStrings.note,
-                fontsize: 16.sp,
-                fontWeight: FontWeight.w600,
-              ),
+
+              // Note
+              Text(AppStrings.note,style: AppStyles.fontSize12(fontWeight: FontWeight.w600)),
               SizedBox(height: 8.h),
               Text( 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable.',
                 maxLines: 20,
@@ -474,7 +454,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 16),
+              SizedBox(height: 16.h),
               // Preliminary section
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -482,12 +462,11 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                   Row(
                     children: [
                       SvgPicture.asset(AppIcons.myEventIcon,color: AppColors.primaryColor,),
-                      SizedBox(width: 8),
-                      Text('Preliminary', style: TextStyle(fontSize: 16),
-                      ),
+                      SizedBox(width: 8.w),
+                        Text('Preliminary',style: AppStyles.fontSize12(fontWeight: FontWeight.w600)),
                     ],
                   ),
-                  SizedBox(height: 15),
+                  SizedBox(height: 15.h),
 
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -544,7 +523,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                         children: [
                           SvgPicture.asset(AppIcons.dotIconForFamily),
                           SizedBox(width: 5.w),
-                          Text('Description: ', style: TextStyle(fontWeight: FontWeight.w600)),
+                          Text('Description: ',style: AppStyles.fontSize10(fontWeight: FontWeight.w600)),
                           Expanded(
                             child: Text(
                               'The point of using Lorem Ipsum is that it has a more or less normal',style: TextStyle(color: AppColors.color414141)),
@@ -565,7 +544,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                     children: [
                       SvgPicture.asset(AppIcons.myEventIcon,color: AppColors.primaryColor,),
                       SizedBox(width: 8.w),
-                      Text('Semi Final', style: TextStyle(fontSize: 16.sp),
+                      Text('Semi Final',style: AppStyles.fontSize12(fontWeight: FontWeight.w600)
                       ),
                     ],
                   ),
@@ -646,10 +625,11 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                     children: [
                       SvgPicture.asset(AppIcons.myEventIcon,color: AppColors.primaryColor,),
                       SizedBox(width: 8.w),
-                      Text('Final', style: TextStyle(fontSize: 16),
+                      Text('Final',style: AppStyles.fontSize12(fontWeight: FontWeight.w600)
                       ),
                     ],
                   ),
+
                   SizedBox(height: 16.h),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -660,7 +640,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                           Row(
                             children: [
                               SvgPicture.asset(AppIcons.dotIconForFamily),
-                              SizedBox(width: 5),
+                              SizedBox(width: 5.w),
                               Text('Deadline: ', style: TextStyle(fontWeight: FontWeight.w600)),
                             ],
                           ),
@@ -668,9 +648,8 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                           Row(
                             children: [
                               SvgPicture.asset(AppIcons.dotIconForFamily),
-                              SizedBox(width: 5),
-                              Text('Cost: ', style: TextStyle(fontWeight: FontWeight.w600),
-                              ),
+                              SizedBox(width: 5.w),
+                              Text('Cost: ', style: TextStyle(fontWeight: FontWeight.w600)),
                               Text('\$100'),
                               SizedBox(width: 10),
                             ],
@@ -679,27 +658,27 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                             decoration: BoxDecoration(
                               color: Colors.blueGrey,
                               shape: BoxShape.rectangle,
-                              borderRadius: BorderRadius.circular(4),
+                              borderRadius: BorderRadius.circular(4.r),
                             ),
                             child: Icon(
                               Icons.check,
                               color: Colors.white,
-                              size: 10,
+                              size: 10.sp,
                             ),
                             padding: EdgeInsets.all(4),
                           ),
                         ],
                       ),
-                      SizedBox(height: 8),
+                      SizedBox(height: 8.h),
                       Row(
                         children: [
                           SvgPicture.asset(AppIcons.dotIconForFamily),
-                          SizedBox(width: 5),
+                          SizedBox(width: 5.w),
                           Text('Type: ', style: TextStyle(fontWeight: FontWeight.w600)),
                           Text('Onsite Event',style: TextStyle(color: AppColors.color414141)),
                         ],
                       ),
-                      SizedBox(height: 8),
+                      SizedBox(height: 8.h),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -723,13 +702,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // History Section
-                  Text(
-                    'History :',
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                    Text('Preliminary',style: AppStyles.fontSize12(fontWeight: FontWeight.w600)),
                   SizedBox(height: 8.h),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -737,8 +710,8 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                       Row(
                         children: [
                           Container(
-                            width: 6,
-                            height: 6,
+                            width: 6.w,
+                            height: 6.h,
                             decoration: BoxDecoration(
                               color: Colors.blueGrey,
                               shape: BoxShape.circle,
@@ -752,14 +725,14 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                       Row(
                         children: [
                           Container(
-                            width: 6,
-                            height: 6,
+                            width: 6.w,
+                            height: 6.h,
                             decoration: BoxDecoration(
                               color: Colors.blueGrey,
                               shape: BoxShape.circle,
                             ),
                           ),
-                          SizedBox(width: 8),
+                          SizedBox(width: 8.w),
                           Text('2022 - 2nd place winner',style: TextStyle(color: AppColors.color414141)),
                         ],
                       ),
@@ -767,14 +740,14 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                       Row(
                         children: [
                           Container(
-                            width: 6,
-                            height: 6,
+                            width: 6.w,
+                            height: 6.h,
                             decoration: BoxDecoration(
                               color: Colors.blueGrey,
                               shape: BoxShape.circle,
                             ),
                           ),
-                          SizedBox(width: 8),
+                          SizedBox(width: 8.w),
                           Text('2023 - 1st place winner',style: TextStyle(color: AppColors.color414141)),
                         ],
                       ),
@@ -785,10 +758,10 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                   Align(
                     alignment: Alignment.centerRight,
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
                       decoration: BoxDecoration(
                         color: Colors.grey.shade200,
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(8.r),
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -840,34 +813,34 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                       Transform.translate(
                         offset: Offset(0, 0),
                         child: CircleAvatar(
-                          radius: 12,
-                          backgroundColor: AppColors.colorE5CCFF,
+                          radius: 25.r,
+                          backgroundImage: NetworkImage('https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg'), // Placeholder image
                         ),
                       ),
                       Transform.translate(
-                        offset: Offset(-4, 0),
+                        offset: Offset(-15, 0),
                         child: CircleAvatar(
-                          radius: 12,
-                          backgroundColor:AppColors.colorCCFFE6,
+                          radius: 25.r,
+                          backgroundImage: NetworkImage('https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=400'), // Placeholder image
                         ),
                       ),
                       Transform.translate(
-                        offset: Offset(-6, 0),
+                        offset: Offset(-30, 0),
                         child: CircleAvatar(
-                          radius: 12,
-                          backgroundColor: AppColors.colorFFF2CC,
+                          radius: 25.r,
+                          backgroundImage: NetworkImage('https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'), // Placeholder image
                         ),
                       ),
                       Transform.translate(
-                        offset: Offset(-8, 0),
+                        offset: Offset(-50, 0),
                         child: CircleAvatar(
-                          radius: 12,
-                          backgroundColor: AppColors.colorD9A951,
+                          radius: 25.r,
+                          backgroundImage: NetworkImage('https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&w=400'), // Placeholder image
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 10.h),
                   // Latest active info
                   Text(
                     'Latest active 3 days ago',
@@ -876,8 +849,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                       color: AppColors.color414141,
                     ),
                   ),
-                  SizedBox(height: 20),
-
+                  SizedBox(height: 20.h),
                   // Buttons Row
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -45,7 +45,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              padding: EdgeInsets.symmetric(vertical: 8.h),
               child: CustomText(
                 text: "Step 5: Own History",
                 fontsize: 20,
@@ -91,7 +91,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
                 ),
               ),
             ),
-            SizedBox(height: 8),
+            SizedBox(height: 8.h),
             Padding(
               padding: const EdgeInsets.all(4),
               child: Text('Record',
@@ -142,7 +142,8 @@ class _StepFiveFormState extends State<StepFiveForm> {
                     onTap: (){},
                     text: 'Add',
                     textColor: AppColors.textColor,
-                    borderColor: AppColors.buttonColor,
+                    borderColor: AppColors.buttonA47059,
+                    color: AppColors.buttonA47059,
                   ),
                 ),
               ],
@@ -150,7 +151,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
 
             SizedBox(height: 8),
             Padding(
-              padding: const EdgeInsets.all(4),
+              padding: EdgeInsets.all(4.r),
               child: Text('History',
                   style: AppStyles.fontSize16(fontWeight: FontWeight.w500)),
             ),
@@ -158,7 +159,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
               decoration: BoxDecoration(
                 color: AppColors.colorEDF2F4,
                 borderRadius: BorderRadius.all(Radius.circular(8)),
-                border: Border.all(color: AppColors.primaryColor, width: 1),
+                border: Border.all(color: AppColors.primaryColor, width: 1.w),
               ),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -166,7 +167,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                      padding: EdgeInsets.symmetric(horizontal: 8.w),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -187,7 +188,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
                                     Get.back();
                                   },
                                   child: SvgPicture.asset(AppIcons.editIcon)),
-                              SizedBox(width: 4),
+                              SizedBox(width: 4.w),
                               InkWell(
                                   onTap: () {
                                     Get.back();
@@ -199,7 +200,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                      padding: EdgeInsets.symmetric(horizontal: 8.w,vertical: 8.w),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -292,7 +293,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
                     Expanded(
                       child: Text(
                         'This is a shared community. All events are public',
-                        style: AppStyles.fontSize14(color: AppColors.hintColor)
+                        style: AppStyles.fontSize12(color: AppColors.hintColor)
                       ),
                     ),
                   ],
@@ -312,7 +313,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
                     SizedBox(width: 10),
                     Text(
                       'User agreement',
-                        style: AppStyles.fontSize14(color: AppColors.hintColor)
+                        style: AppStyles.fontSize12(color: AppColors.hintColor)
                     ),
                   ],
                 ),

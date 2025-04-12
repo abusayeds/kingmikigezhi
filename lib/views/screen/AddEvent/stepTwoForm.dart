@@ -47,8 +47,8 @@ class _StepTwoFormState extends State<StepTwoForm> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: CustomText(text: "Step 2: Details",fontsize: 20,fontWeight: FontWeight.w600,),
+          padding: EdgeInsets.symmetric(vertical: 8.h),
+          child: CustomText(text: "Step 2: Details",fontsize: 20.sp,fontWeight: FontWeight.w600,),
         ),
         //organization Name
         CustomText(text: 'Competition Level',fontsize: 16,fontWeight: FontWeight.w600,),
@@ -58,7 +58,7 @@ class _StepTwoFormState extends State<StepTwoForm> {
           decoration: BoxDecoration(
             color: AppColors.fillColor,
             borderRadius: BorderRadius.circular(8.r),
-            border: Border.all(color: AppColors.primaryColor, width: 1),
+            border: Border.all(color: AppColors.primaryColor, width: 1.w),
           ),
           child: DropdownButtonHideUnderline(
             child: DropdownButton<String>(
