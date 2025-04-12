@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:event_sharing/utils/style.dart';
+import 'package:event_sharing/views/base/skillItem.dart';
 import 'package:event_sharing/views/screen/AddEvent/InnerWidget/dotted_border_container.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -470,7 +471,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
 
                           SizedBox(height: 10.h),
                           CustomButton(
-                            color: AppColors.buttonColor,
+                            color: AppColors.buttonA47059,
                             borderColor: Colors.white,
                             onTap: (){},
                             text: "Add",
@@ -485,132 +486,32 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                           Container(
                             decoration: BoxDecoration(
                               color:AppColors.colorEDF2F4,
-                              borderRadius: BorderRadius.all(Radius.circular(8)),
-                              border: Border.all(color: AppColors.primaryColor, width: 1),
+                              borderRadius: BorderRadius.all(Radius.circular(8.r)),
+                              border: Border.all(color: AppColors.primaryColor, width: 1.w),
                             ),
                             child: Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: EdgeInsets.all(8.r),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Padding(
-                                    padding:  EdgeInsets.symmetric(horizontal: 8.0),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text.rich(
-                                          TextSpan(
-                                            children: [
-                                              TextSpan(
-                                                text: '\u2022 ',
-                                                style: TextStyle(color: AppColors.primaryColor),
-                                              ),
-                                              TextSpan(
-                                                text: 'Chess since 2020',
-                                                  style: AppStyles.fontSize14(color: AppColors.color414141)
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Row(
-                                          children: [
-                                            InkWell(
-                                                onTap: (){
-                                                  Get.back();
-                                                },
-                                                child: SvgPicture.asset(AppIcons.editIcon)
-                                            ),
-                                            SizedBox(width: 4),
-                                            InkWell(
-                                                onTap: (){
-                                                  Get.back();
-                                                },
-                                                child: SvgPicture.asset(AppIcons.trashIcon)
-                                            )
-                                          ],
-                                        ),
-
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding:  EdgeInsets.symmetric(horizontal: 8.0),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text.rich(
-                                          TextSpan(
-                                            children: [
-                                              TextSpan(
-                                                text: '\u2022 ',
-                                                style: TextStyle(color: AppColors.primaryColor),
-                                              ),
-                                              TextSpan(
-                                                text: 'Math since 2021',
-                                                style: AppStyles.fontSize14(color: AppColors.color414141)
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Row(
-                                          children: [
-                                            InkWell(
-                                                onTap: (){
-                                                  Get.back();
-                                                },
-                                                child: SvgPicture.asset(AppIcons.editIcon)
-                                            ),
-                                            SizedBox(width: 4),
-                                            InkWell(
-                                                onTap: (){
-                                                  Get.back();
-                                                },
-                                                child: SvgPicture.asset(AppIcons.trashIcon)
-                                            )
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding:  EdgeInsets.symmetric(horizontal: 8.0),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text.rich(
-                                          TextSpan(
-                                            children: [
-                                              TextSpan(
-                                                text: '\u2022 ',
-                                                style: TextStyle(color: AppColors.primaryColor),
-                                              ),
-                                              TextSpan(
-                                                text: 'Piano since 2023',
-                                                  style: AppStyles.fontSize14(color: AppColors.color414141)
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Row(
-                                          children: [
-                                            InkWell(
-                                                onTap: (){
-                                                  Get.back();
-                                                },
-                                                child: SvgPicture.asset(AppIcons.editIcon)
-                                            ),
-                                            SizedBox(width: 4),
-                                            InkWell(
-                                                onTap: (){
-                                                  Get.back();
-                                                },
-                                                child: SvgPicture.asset(AppIcons.trashIcon)
-                                            )
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                                  SkillRowWidget(
+                                      leadingText: 'Chess since 2020',
+                                      editIconPath: '${AppIcons.editIcon}',
+                                      deleteIconPath: '${AppIcons.trashIcon}',
+                                      onEditTap: () {},
+                                      onDeleteTap: () {}),
+                                  SkillRowWidget(
+                                      leadingText: 'Math since 2021',
+                                      editIconPath: '${AppIcons.editIcon}',
+                                      deleteIconPath: '${AppIcons.trashIcon}',
+                                      onEditTap: () {},
+                                      onDeleteTap: () {}),
+                                  SkillRowWidget(
+                                      leadingText: 'Piano since 2023',
+                                      editIconPath: '${AppIcons.editIcon}',
+                                      deleteIconPath: '${AppIcons.trashIcon}',
+                                      onEditTap: () {},
+                                      onDeleteTap: () {}),
                                 ],
                               ),
                             ),
@@ -699,7 +600,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                   ),
                   SizedBox(height: 10),
                   CustomButton(
-                    color: AppColors.buttonColor,
+                    color: AppColors.buttonA47059,
                     borderColor: Colors.white,
                     onTap: (){},
                     text: "Update Profile",

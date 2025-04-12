@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:event_sharing/utils/style.dart';
+import 'package:event_sharing/views/base/skillItem.dart';
 import 'package:event_sharing/views/screen/AddEvent/InnerWidget/dotted_border_container.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -29,18 +31,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Uint8List? _image;
   File? selectedIMage;
 
-  /*@override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    setState(() {
-      _nameController.text =
-      parameter['name']! == "null" ? "" : parameter['name']!;
-      _emailController.text = parameter['email']!;
-      _phoneNumberController.text =
-      parameter['phone']! == 'null' ? "" : parameter['phone']!;
-    });
-  }*/
   final TextEditingController birthDayYearController = TextEditingController();
   final TextEditingController birthDayMonthController = TextEditingController();
   final TextEditingController birthDayDayController = TextEditingController();
@@ -51,6 +41,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final TextEditingController phoneNumberController = TextEditingController();
 
   String selectedCountryCodes = '+880';
+  final List<Map<String, String>> skills = [
+    {'name': 'Chess since 2020'},
+    {'name': 'Math  since 2021',},
+    {'name': 'Piano since 2022',},
+  ];
+
 
   @override
   Widget build(BuildContext context) {
@@ -118,46 +114,54 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 12.h),
-                  Text('Account ID',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 4.h),
+                    child: Text('Account ID', style:  AppStyles.fontSize16(fontWeight: FontWeight.w600)),
+                  ),
                   CustomTextField(
                     controller: _nameController,
                     hintText: '20103200',
                   ),
-                  SizedBox(height: 8.h),
-                  Text('Full Name',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 4.h),
+                    child: Text('Full Name', style: AppStyles.fontSize16(fontWeight: FontWeight.w600 )),
+                  ),
                   CustomTextField(
                     controller: _nameController,
                     hintText: 'Mahafujer',
                   ),
-                  SizedBox(height: 8.h),
-                  Text('Last Name',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 4.h),
+                    child: Text('Last Name', style:  AppStyles.fontSize16(fontWeight: FontWeight.w600 )),
+                  ),
                   CustomTextField(
                     controller: _emailController,
                     hintText: 'Rahman',
                   ),
                   //=======================>>> Public display name <<====================
-                  SizedBox(height: 8.h),
-                  Text('Public display name',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 4.h),
+                    child: Text('Public display name', style: AppStyles.fontSize16(fontWeight: FontWeight.w600 )),
+                  ),
                   CustomTextField(
                     controller: _addressController,
                     hintText: 'Public',
                   ),
                   //=======================>>> Gender <<====================
-                  SizedBox(height: 8.h),
-                  Text('Gender',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 4.h),
+                    child: Text('Gender', style:  AppStyles.fontSize16(fontWeight: FontWeight.w600 )),
+                  ),
                   CustomTextField(
                     controller: _addressController,
                     hintText: 'Male',
                   ),
-                  SizedBox(height: 8.h),
-                  Text('Birthday',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 4.h),
+                    child: Text('Birthday',style:  AppStyles.fontSize16(fontWeight: FontWeight.w600 )),
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -209,9 +213,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     ],
                   ),
                   //====================>>  Email <<===================================
-                  SizedBox(height: 8.h),
-                  Text('Email',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  Padding(
+                      padding: EdgeInsets.symmetric(vertical: 4.h),
+                      child: Text('Email', style:  AppStyles.fontSize16(fontWeight: FontWeight.w600 ))),
                   CustomTextField(
                     keyboardType: TextInputType.text,
                     controller: _emailController,
@@ -219,9 +223,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     prifixicon: _prefixIcon(AppIcons.mailIcon),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(4),
-                    child: Text('Phone Number',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                    padding: EdgeInsets.symmetric(vertical: 4.h),
+                    child: Text('Phone Number', style:  AppStyles.fontSize16(fontWeight: FontWeight.w600)),
                   ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -236,19 +239,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            CountryCodePicker(
-                              showFlag: false,
-                              showFlagDialog: true,
-                              onChanged: (countryCode) {
-                                setState(() {
-                                  selectedCountryCodes = countryCode.dialCode!;
-                                });
-                              },
-                              initialSelection: 'BD',
-                              favorite: ['+880', 'BD'],
-                              showCountryOnly: false,
-                              showOnlyCountryWhenClosed: false,
-                              alignLeft: false,
+                            SizedBox(
+                              height: 55.h,
+                              child: CountryCodePicker(
+                                showFlag: false,
+                                showFlagDialog: true,
+                                onChanged: (countryCode) {
+                                  setState(() {
+                                    selectedCountryCodes = countryCode.dialCode!;
+                                  });
+                                },
+                                initialSelection: 'BD',
+                                favorite: ['+880', 'BD'],
+                                showCountryOnly: false,
+                                showOnlyCountryWhenClosed: false,
+                                alignLeft: false,
+                              ),
                             ),
                             Padding(
                                 padding: EdgeInsets.only(right: 5.w),
@@ -268,8 +274,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ),
                   //====================>>  Location <<===================================
                   SizedBox(height: 8.h),
-                  Text('Location',
-                      style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600)),
+                  Text('Location', style: AppStyles.fontSize16(fontWeight: FontWeight.w600)),
+                  SizedBox(height: 8.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -328,9 +334,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           Padding(
                             padding:  EdgeInsets.only(bottom: 8.h),
                             child: Text(
-                              'Skill',
-                              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
-                            ),
+                              'Skill', style: AppStyles.fontSize16(fontWeight: FontWeight.w600 )),
                           ),
                           Row(
                             children: [
@@ -341,11 +345,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   children: [
                                     Text(
                                       'Start Year',
-                                      style: TextStyle(
-                                        fontSize: 16.sp,
-                                        fontWeight: FontWeight.w600,
-                                        color: AppColors.blackColor,
-                                      ),
+                                      style:  AppStyles.fontSize16(fontWeight: FontWeight.w600),
                                     ),
                                     SizedBox(height: 8.h),
                                     Container(
@@ -385,11 +385,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   children: [
                                     Text(
                                       'Program',
-                                      style: TextStyle(
-                                        fontSize: 16.sp,
-                                        fontWeight: FontWeight.w600,
-                                        color: AppColors.blackColor,
-                                      ),
+                                      style:  AppStyles.fontSize16(fontWeight: FontWeight.w600 ),
                                     ),
                                     SizedBox(height: 8.h),
                                     Container(
@@ -423,149 +419,50 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               ),
                             ],
                           ),
-                          SizedBox(height: 10),
-                          CustomButton(
-                              color: AppColors.buttonColor,
-                              borderColor: Colors.white,
-                              onTap: (){},
-                              text: "Add",
-                            textColor:Colors.white,
+                          SizedBox(height: 10.h),
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 8.h),
+                            child: CustomButton(
+                                color: AppColors.buttonA47059,
+                                borderColor: Colors.white,
+                                onTap: (){},
+                                text: "Add",
+                              textColor:Colors.white,
+                            ),
                           ),
                           SizedBox(height: 8.h),
-                          Text(
-                            'Added Skill',
-                            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
-                          ),
+
+                          Text('Added Skill', style: AppStyles.fontSize16(fontWeight: FontWeight.w600)),
                           SizedBox(height: 8.h),
                           Container(
                             decoration: BoxDecoration(
                               color:AppColors.colorEDF2F4,
-                              borderRadius: BorderRadius.all(Radius.circular(8)),
-                              border: Border.all(color: AppColors.primaryColor, width: 1),
+                              borderRadius: BorderRadius.all(Radius.circular(8.r)),
+                              border: Border.all(color: AppColors.primaryColor, width: 1.w),
                             ),
                             child: Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: EdgeInsets.all(8.r),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Padding(
-                                    padding:  EdgeInsets.symmetric(horizontal: 8.0),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text.rich(
-                                          TextSpan(
-                                            children: [
-                                              TextSpan(
-                                                text: '\u2022 ',
-                                                style: TextStyle(color: AppColors.primaryColor),
-                                              ),
-                                              TextSpan(
-                                                text: 'Chess since 2020',
-                                                style: TextStyle(color: Colors.black),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Row(
-                                          children: [
-                                            InkWell(
-                                                onTap: (){
-                                                  Get.back();
-                                                },
-                                                child: SvgPicture.asset(AppIcons.editIcon)
-                                            ),
-                                            SizedBox(width: 4),
-                                            InkWell(
-                                                onTap: (){
-                                                  Get.back();
-                                                },
-                                                child: SvgPicture.asset(AppIcons.trashIcon)
-                                            )
-                                          ],
-                                        ),
-
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding:  EdgeInsets.symmetric(horizontal: 8.0),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text.rich(
-                                          TextSpan(
-                                            children: [
-                                              TextSpan(
-                                                text: '\u2022 ',
-                                                style: TextStyle(color: AppColors.primaryColor),
-                                              ),
-                                              TextSpan(
-                                                text: 'Math since 2021',
-                                                style: TextStyle(color: Colors.black),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Row(
-                                          children: [
-                                            InkWell(
-                                                onTap: (){
-                                                  Get.back();
-                                                },
-                                                child: SvgPicture.asset(AppIcons.editIcon)
-                                            ),
-                                            SizedBox(width: 4),
-                                            InkWell(
-                                                onTap: (){
-                                                  Get.back();
-                                                },
-                                                child: SvgPicture.asset(AppIcons.trashIcon)
-                                            )
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding:  EdgeInsets.symmetric(horizontal: 8.0),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text.rich(
-                                          TextSpan(
-                                            children: [
-                                              TextSpan(
-                                                text: '\u2022 ',
-                                                style: TextStyle(color: AppColors.primaryColor),
-                                              ),
-                                              TextSpan(
-                                                text: 'Piano since 2023',
-                                                style: TextStyle(color: Colors.black),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Row(
-                                          children: [
-                                            InkWell(
-                                                onTap: (){
-                                                  Get.back();
-                                                },
-                                                child: SvgPicture.asset(AppIcons.editIcon)
-                                            ),
-                                            SizedBox(width: 4),
-                                            InkWell(
-                                                onTap: (){
-                                                  Get.back();
-                                                },
-                                                child: SvgPicture.asset(AppIcons.trashIcon)
-                                            )
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                                  SkillRowWidget(
+                                      leadingText: 'Chess since 2020',
+                                      editIconPath: '${AppIcons.editIcon}',
+                                      deleteIconPath: '${AppIcons.trashIcon}',
+                                      onEditTap: () {},
+                                      onDeleteTap: () {}),
+                                  SkillRowWidget(
+                                    leadingText: 'Math since 2021',
+                                    editIconPath: '${AppIcons.editIcon}',
+                                    deleteIconPath: '${AppIcons.trashIcon}',
+                                    onEditTap: () {},
+                                    onDeleteTap: () {}),
+                                  SkillRowWidget(
+                                      leadingText: 'Piano since 2023',
+                                      editIconPath: '${AppIcons.editIcon}',
+                                      deleteIconPath: '${AppIcons.trashIcon}',
+                                      onEditTap: () {},
+                                      onDeleteTap: () {}),
                                 ],
                               ),
                             ),
@@ -578,7 +475,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
                   SizedBox(height: 10),
                   CustomButton(
-                    color: AppColors.buttonColor,
+                    color: AppColors.buttonA47059,
                     borderColor: Colors.white,
                     onTap: (){},
                     text: "Update Profile",

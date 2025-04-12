@@ -11,7 +11,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
-
 class AppliedSearchEventListScreen extends StatefulWidget {
   AppliedSearchEventListScreen({super.key});
 
@@ -21,19 +20,6 @@ class AppliedSearchEventListScreen extends StatefulWidget {
 
 class _AppliedSearchEventListScreenState extends State<AppliedSearchEventListScreen> {
   final List<Map<String, String>> events = [
-
-    {
-      "imageUrl": "assets/images/music.png",
-      "title": "Bangla Music",
-      "location": "Dhaka, Bangladesh",
-      "time": "10:00 AM",
-    },
-    {
-      "imageUrl": "assets/images/music.png",
-      "title": "Bangla Music",
-      "location": "Dhaka, Bangladesh",
-      "time": "10:00 AM",
-    },
     {
       "imageUrl": "assets/images/music.png",
       "title": "Bangla Music",
@@ -83,7 +69,7 @@ class _AppliedSearchEventListScreenState extends State<AppliedSearchEventListScr
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('Total Event :',style: AppStyles.fontSize16(fontWeight: FontWeight.w600)),
-                        Text('500'),
+                        Text('500',style: AppStyles.fontSize12()),
                       ],
                     ),
                   ),
@@ -92,7 +78,7 @@ class _AppliedSearchEventListScreenState extends State<AppliedSearchEventListScr
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('Total Cost :',style: AppStyles.fontSize16(fontWeight: FontWeight.w600)),
-                        Text('200'),
+                        Text('200',style: AppStyles.fontSize12()),
                       ],
                     ),
                   ),
@@ -103,10 +89,9 @@ class _AppliedSearchEventListScreenState extends State<AppliedSearchEventListScr
             //=================================> Event List view <========================
             Expanded(
               child: ListView.builder(
-                itemCount: events.length,
+                itemCount: 2,
                 itemBuilder: (context, index) {
                   final event = events[index];
-
                   return GestureDetector(
                       onTap: () {
                         Get.toNamed(AppRoutes.eventDetailsScreen);
@@ -250,38 +235,55 @@ class _AppliedSearchEventListScreenState extends State<AppliedSearchEventListScr
   //============================> Search Bar Section <=================================
   _searchBar() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        SizedBox(
-          width: 271.w,
-          child: CustomTextField(
+        Expanded(
+          child: TextFormField(
             controller: _searchController,
-            contenpaddingHorizontal: 12.w,
-            contenpaddingVertical: 12.h,
-            hintText: "Search Event",
-            sufixicons: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.w),
-              child: SvgPicture.asset(
-                AppIcons.search,
-                width: 24.w,
-                height: 24.h,
-                color: AppColors.primaryColor,
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: AppColors.fillColor,
+              contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
+              hintText: "Search Event",
+              hintStyle: AppStyles.fontSize14(color: AppColors.greyColor),
+              suffixIcon: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8.w),
+                child: SvgPicture.asset(
+                  AppIcons.search,
+                  width: 24.w,
+                  height: 24.h,
+                ),
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.r),
+                borderSide: BorderSide(color: AppColors.primaryColor),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.r),
+                borderSide: BorderSide(color: AppColors.primaryColor),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.r),
+                borderSide: BorderSide(color: AppColors.primaryColor, width: 2.w),
               ),
             ),
           ),
         ),
+        SizedBox(width: 18.w),
         GestureDetector(
           onTap: () {
-            Get.toNamed(AppRoutes.myEventFilterScreen);
+            Get.toNamed(AppRoutes.filterScreen);
           },
           child: Container(
+            height: 53.h,
+            width: 53.h,
             decoration: BoxDecoration(
               color: AppColors.fillColor,
               borderRadius: BorderRadius.circular(10.r),
               border: Border.all(width: 1.w, color: AppColors.primaryColor),
             ),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
+            child: Center(
               child: SvgPicture.asset(
                 AppIcons.filterIcon,
                 width: 24.w,
@@ -289,7 +291,7 @@ class _AppliedSearchEventListScreenState extends State<AppliedSearchEventListScr
               ),
             ),
           ),
-        )
+        ),
       ],
     );
   }
