@@ -249,7 +249,8 @@ class _CreateEventOneState extends State<CreateEventOne> {
           Text( "This is a shared community. All events are public",style: AppStyles.fontSize12(color:AppColors.colorD9A951)),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: CustomText(text: "Step 1: Basic",fontsize: 20,fontWeight: FontWeight.w600,),
+            child:
+            Text('Step 1: Basic',style: AppStyles.fontSize20(fontWeight: FontWeight.bold)),
           ),
           // Cover Image Section
           DottedBorderContainer(
@@ -268,8 +269,7 @@ class _CreateEventOneState extends State<CreateEventOne> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CustomText(text: 'Session Number', fontWeight: FontWeight.w700, fontsize: 16.sp, bottom: 8.h,
-                  ),
+                  Text('Session Number',style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 20.w),
                     decoration: BoxDecoration(
@@ -310,7 +310,7 @@ class _CreateEventOneState extends State<CreateEventOne> {
                         padding: const EdgeInsets.all(4),
                         child: Text(
                           'Year',
-                          style: AppStyles.fontSize16(color: AppColors.blackColor,fontWeight: FontWeight.w600),
+                          style: AppStyles.fontSize16(color: AppColors.blackColor,fontWeight: FontWeight.bold),
                         ),
                       ),
                       SizedBox(width: 120.w),
@@ -406,7 +406,8 @@ class _CreateEventOneState extends State<CreateEventOne> {
             ),
           ),
           SizedBox(height: 16.h),
-          CustomText(text: 'Program',fontsize: 16,fontWeight: FontWeight.w600,),
+
+          Text('Program',style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
           SizedBox(height: 12.h),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -444,7 +445,8 @@ class _CreateEventOneState extends State<CreateEventOne> {
           ),
           //organization Name
           SizedBox(height: 16.h),
-          CustomText(text: 'Organizer',fontsize: 16,fontWeight: FontWeight.w600,),
+
+          Text('Organizer',style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
           SizedBox(height: 12.h),
           CustomTextField(
             controller: organizerController,
@@ -456,7 +458,7 @@ class _CreateEventOneState extends State<CreateEventOne> {
           ),
           //organization Name
           SizedBox(height: 16.h),
-          CustomText(text: 'Event Name',fontsize: 16,fontWeight: FontWeight.w600,),
+          Text('Event Name',style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
           SizedBox(height: 12.h),
           CustomTextField(
             controller: eventName,
@@ -468,7 +470,7 @@ class _CreateEventOneState extends State<CreateEventOne> {
           ),
           //event portal Name
           SizedBox(height: 16.h),
-          CustomText(text: 'Event Portal',fontsize: 16,fontWeight: FontWeight.w600,),
+          Text('Event Portal',style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
           SizedBox(height: 12.h),
           CustomTextField(
             controller: eventPortal,
@@ -480,7 +482,7 @@ class _CreateEventOneState extends State<CreateEventOne> {
           ),
           //registartion portal Name
           SizedBox(height: 16.h),
-          CustomText(text: 'Registartion Portal',fontsize: 16,fontWeight: FontWeight.w600,),
+          Text('Registartion Portal',style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
           SizedBox(height: 12.h),
           CustomTextField(
             controller: registrationPortal,
@@ -493,7 +495,7 @@ class _CreateEventOneState extends State<CreateEventOne> {
 
           //description portal Name
           SizedBox(height: 16.h),
-          CustomText(text: 'Description',fontsize: 16,fontWeight: FontWeight.w600,),
+          Text('Description',style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
           SizedBox(height: 12.h),
           CustomTextField(
             maxLines: 3,
@@ -507,7 +509,7 @@ class _CreateEventOneState extends State<CreateEventOne> {
 
           //note portal Name
           SizedBox(height: 16.h),
-          CustomText(text: 'Note',fontsize: 16,fontWeight: FontWeight.w600,),
+          Text('Note',style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
           SizedBox(height: 12.h),
           CustomTextField(
             maxLines: 3,
