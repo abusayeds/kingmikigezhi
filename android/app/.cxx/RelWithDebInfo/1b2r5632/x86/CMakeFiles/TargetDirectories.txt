@@ -1,0 +1,2 @@
+D:/office_project/event-sharing/android/app/.cxx/RelWithDebInfo/1b2r5632/x86/CMakeFiles/edit_cache.dir
+D:/office_project/event-sharing/android/app/.cxx/RelWithDebInfo/1b2r5632/x86/CMakeFiles/rebuild_cache.dir
