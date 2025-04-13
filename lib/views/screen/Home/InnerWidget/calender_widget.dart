@@ -1,5 +1,6 @@
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_icons.dart';
+import 'package:event_sharing/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -54,7 +55,7 @@ class _CalendarWithDropdownState extends State<CalendarWithDropdown> {
               items: _months.map<DropdownMenuItem<String>>((String month) {
                 return DropdownMenuItem<String>(
                   value: "$month ${_focusedDay.year}",
-                  child: Text("$month ${_focusedDay.year}", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                  child: Text("$month ${_focusedDay.year}", style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
                 );
               }).toList(),
             ),
