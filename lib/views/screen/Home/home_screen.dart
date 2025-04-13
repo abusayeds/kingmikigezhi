@@ -21,13 +21,6 @@ class HomeScreen extends StatefulWidget {
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
-// Dummy data for appointments
-final Map<DateTime, List<String>> appointmentDates = {
-  DateTime.utc(2024, 10, 16): ['Meeting with team', 'Doctor appointment'],
-  DateTime.utc(2024, 10, 18): ['Project deadline'],
-  DateTime.utc(2024, 10, 20): ['Lunch with client', 'Gym session'],
-  DateTime.utc(2024, 10, 22): ['Webinar'],
-};
 
 class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _searchController = TextEditingController();
@@ -69,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            padding: EdgeInsets.symmetric(horizontal: 8.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -105,15 +98,12 @@ class _HomeScreenState extends State<HomeScreen> {
                             'Child Stephanie',
                             'Child Sophia',
                           ].map<Widget>((String value) {
-                            return Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 8.w),
-                              child: Center(
-                                child: Text(
-                                  value,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12.sp,
-                                  ),
+                            return Center(
+                              child: Text(
+                                value,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12.sp,
                                 ),
                               ),
                             );
@@ -168,12 +158,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         }).toList(),
                       ),
                     ),
-                    IconButton(
-                      icon: const Icon(Icons.add),
-                      padding: EdgeInsets.zero,
-                      onPressed: () {
-                        HomePageAddBottomSheetWidget.addBottomSheet(context);
-                      },
+                    Padding(
+                      padding:  EdgeInsets.only(left: 10),
+                      child: IconButton(
+                        icon:  Icon(Icons.add,size: 30),
+                        onPressed: () {
+                          HomePageAddBottomSheetWidget.addBottomSheet(context);
+                        },
+                      ),
                     ),
                   ],
                   ),
