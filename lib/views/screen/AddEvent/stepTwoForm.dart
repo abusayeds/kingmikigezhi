@@ -48,10 +48,11 @@ class _StepTwoFormState extends State<StepTwoForm> {
       children: [
         Padding(
           padding: EdgeInsets.symmetric(vertical: 8.h),
-          child: CustomText(text: "Step 2: Details",fontsize: 20.sp,fontWeight: FontWeight.w600,),
+          child:
+          Text('Step 2: Details',style: AppStyles.fontSize20(fontWeight: FontWeight.bold)),
         ),
         //organization Name
-        CustomText(text: 'Competition Level',fontsize: 16,fontWeight: FontWeight.w600,),
+        Text('Competition Level',style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
         SizedBox(height: 12.h),
         Container(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -90,7 +91,7 @@ class _StepTwoFormState extends State<StepTwoForm> {
         //type
         //organization Name
         SizedBox(height: 16.h),
-        CustomText(text: 'Type',fontsize: 16,fontWeight: FontWeight.w600,),
+        Text('Type',style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
         SizedBox(height: 12.h),
         Container(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -128,7 +129,7 @@ class _StepTwoFormState extends State<StepTwoForm> {
         ),
         SizedBox(height: 12.h),
         //registration date
-        CustomText(text: 'Registration Open',fontsize: 16,fontWeight: FontWeight.w600,),
+        Text('Registration Open',style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
         SizedBox(height: 12.h),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -172,7 +173,8 @@ class _StepTwoFormState extends State<StepTwoForm> {
 
         SizedBox(height: 12.h),
         //============================>> Deadline Date
-        CustomText(text: 'Deadline ',fontsize: 16,fontWeight: FontWeight.w600,),
+        Text('Deadline',style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
+
         SizedBox(height: 12.h),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -213,7 +215,7 @@ class _StepTwoFormState extends State<StepTwoForm> {
         ),
         //=============================Cost
         SizedBox(height: 12.h),
-        CustomText(text: 'Cost ',fontsize: 16,fontWeight: FontWeight.w600,),
+        Text('Cost',style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
         SizedBox(height: 12.h),
         CustomTextField(
           controller: costCRTL,
@@ -258,7 +260,7 @@ class _StepTwoFormState extends State<StepTwoForm> {
 
         //final date
         SizedBox(height: 12.h),
-        CustomText(text: 'Final Deadline',fontsize: 16,fontWeight: FontWeight.w600,),
+        Text('Final Deadline',style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
         SizedBox(height: 12.h),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -316,7 +318,7 @@ class _StepTwoFormState extends State<StepTwoForm> {
           ],
         ),
         SizedBox(height: 16.h),
-        CustomText(text: 'Late fee',fontsize: 16,fontWeight: FontWeight.w600,),
+        Text('Late fee',style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
         SizedBox(height: 12.h),
         CustomTextField(
           controller: lateFeeCRTL,
