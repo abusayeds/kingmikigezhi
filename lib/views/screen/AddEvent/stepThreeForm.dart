@@ -47,12 +47,13 @@ class _StepThreeFormState extends State<StepThreeForm> {
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child:   Text('Step 3: Group/Category',style: AppStyles.fontSize20(fontWeight: FontWeight.w600)),
+              child:
+              Text('Step 3: Group/Category',style: AppStyles.fontSize20(fontWeight: FontWeight.bold)),
             ),
             //registration date
             SizedBox(height: 12.h),
             //registration date
-            Text('Define Group/Category',style: AppStyles.fontSize14(fontWeight: FontWeight.w600)),
+            Text('Define Group/Category',style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
             SizedBox(height: 12.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -119,7 +120,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 4),
               child:
-              Text('Added Group/Category',style: AppStyles.fontSize14(fontWeight: FontWeight.w600)),
+              Text('Added Group/Category',style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
             ),
             SizedBox(height: 8.h),
             Container(
@@ -219,7 +220,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Defile Round',style: AppStyles.fontSize14(fontWeight: FontWeight.w600)),
+                    Text('Defile Round',style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
                     SizedBox(height: 8.h),
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -257,7 +258,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
                     ),
                     SizedBox(height: 12.h),
                     //deadline date
-                    Text("Deadline", style: AppStyles.fontSize14(fontWeight: FontWeight.w600)),
+                    Text("Deadline", style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
                     SizedBox(height: 12.h),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -303,7 +304,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
                     ),
                     //cost
                     SizedBox(height: 12.h),
-                    Text("Cost", style: AppStyles.fontSize14(fontWeight: FontWeight.w600)),
+                    Text("Cost", style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
                     SizedBox(height: 12.h),
                     CustomTextField(
                       controller: dateController,
@@ -346,7 +347,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
                     ),
                     //final date
                     SizedBox(height: 12.h),
-                    Text("Final Deadline", style: AppStyles.fontSize14(fontWeight: FontWeight.w600)),
+                    Text("Final Deadline", style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
                     SizedBox(height: 12.h),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -402,7 +403,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
                       ],
                     ),
                     SizedBox(height: 16.h),
-                    Text("Late fee", style: AppStyles.fontSize14(fontWeight: FontWeight.w600)),
+                    Text("Late fee", style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
                     SizedBox(height: 12.h),
                     CustomTextField(
                       controller: lateFee,
@@ -410,7 +411,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
                       hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
                     ),
                     SizedBox(height: 12.h),
-                    Text("Type", style: AppStyles.fontSize14(fontWeight: FontWeight.w600)),
+                    Text("Type", style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
                     SizedBox(height: 12.h),
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -448,7 +449,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
                       ),
                     ),
                     SizedBox(height: 12.h),
-                    Text("Description", style: AppStyles.fontSize14(fontWeight: FontWeight.w600)),
+                    Text("Description", style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
                     SizedBox(height: 12.h),
                     CustomTextField(
                       controller: lateFee,
@@ -465,7 +466,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
                       textColor: Colors.white,
                     ),
                     SizedBox(height: 10.h),
-                    Text("Added Round", style: AppStyles.fontSize14(fontWeight: FontWeight.w600)),
+                    Text("Added Round", style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
                     SizedBox(height: 8.h),
                     Container(
                       decoration: BoxDecoration(

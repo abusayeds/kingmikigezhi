@@ -45,8 +45,7 @@ class OnboardScreen extends StatelessWidget {
                   bottom: 16.h,
                 ),
                 CustomText(
-                  text:
-                      'This is a first platform for parents to manage and share activities and events for their families:',
+                  text: 'This is a first platform for parents to manage and share activities and events for their families:',
                   maxline: 15,
                   fontWeight: FontWeight.w500,
                   textAlign: TextAlign.center,
