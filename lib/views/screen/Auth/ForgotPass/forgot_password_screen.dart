@@ -50,7 +50,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     fontsize: 22.sp,
                     bottom: 8.h,
                   ),
-                  CustomText(
+                  const CustomText(
                     text: 'We just send you authentication code',
                     maxline: 2,
                   ),
@@ -63,10 +63,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   SizedBox(height: 80.h),
                   //==============================> Pin Code Text Field <=====================
                   const CustomPinCodeTextField(),
-                  CustomText(
+                  const CustomText(
                     text: 'Code Time',
                   ),
-                  CustomText(
+                  const CustomText(
                     text: '00.60s',
                   ),
                   //================================> Resend code Button <======================================
