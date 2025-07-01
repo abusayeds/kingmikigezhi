@@ -429,7 +429,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
           },
           child: CustomText(
             text: 'Sign In',
-            fontWeight: FontWeight.w700,
+            fontWeight: FontWeight.w900,
             color: AppColors.primaryColor,
           ),
         ),
