@@ -41,7 +41,7 @@ class OnboardScreen extends StatelessWidget {
                   text: 'What is Dai Wa Bu Yi?',
                   color: Colors.white,
                   fontsize: 22.sp,
-                  fontWeight: FontWeight.w700,
+                  fontWeight: FontWeight.w900,
                   bottom: 16.h,
                 ),
                 CustomText(
