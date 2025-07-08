@@ -8,16 +8,16 @@ import '../../utils/app_colors.dart';
 class CustomButton extends StatelessWidget {
   const CustomButton(
       {super.key,
-      this.color,
-      this.borderColor,
-      this.textStyle,
-      this.padding = EdgeInsets.zero,
-      required this.onTap,
-      required this.text,
-      this.loading = false,
-      this.width,
-      this.height,
-      this.textColor});
+        this.color,
+        this.borderColor,
+        this.textStyle,
+        this.padding = EdgeInsets.zero,
+        required this.onTap,
+        required this.text,
+        this.loading = false,
+        this.width,
+        this.height,
+        this.textColor});
   final Function() onTap;
   final String text;
   final bool loading;
@@ -31,30 +31,33 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Determine the final border color based on your logic
+    final finalBorderColor = borderColor ?? (color ?? AppColors.buttonColor);
+
     return Padding(
         padding: padding,
         child: ElevatedButton(
           onPressed: loading ? () {} : onTap,
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
-                side: BorderSide(width: 1.w, color: borderColor ?? AppColors.bottomBarColor),
+                side: BorderSide(width: 1.w, color: finalBorderColor),
                 borderRadius: BorderRadius.circular(8.r)),
             backgroundColor: color ?? AppColors.buttonColor,
-            minimumSize: Size(width ?? Get.width, height ?? 53.h),
+            minimumSize: Size(width ?? Get.width, height ?? 56.h),
           ),
           child: loading
               ? SizedBox(
-                  height: 20.h,
-                  width: 20.h,
-                  child: const CircularProgressIndicator(
-                    color: Colors.white,
-                  ),
-                )
+            height: 20.h,
+            width: 20.h,
+            child: const CircularProgressIndicator(
+              color: Colors.white,
+            ),
+          )
               : CustomText(
-                  text: text,
-                  fontWeight: FontWeight.bold,
-                  fontsize: 16.sp,
-                  color: textColor ?? Colors.black),
+              text: text,
+              fontWeight: FontWeight.w500,
+              fontsize: 16.sp,
+              color: textColor ?? Colors.black),
         ));
   }
 }

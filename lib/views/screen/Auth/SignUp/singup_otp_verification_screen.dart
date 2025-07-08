@@ -35,20 +35,23 @@ class _SignUpOtpVerificationScreenState extends State<SignUpOtpVerificationScree
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.w),
+          padding: EdgeInsets.symmetric(horizontal: 28.h),
           child: Form(
             key: _formKey,
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(height: 64.h),
+                  //SizedBox(height: 64.h),
                   //================================> Forgot Password Text Section <========================
                   CustomText(
                     text: 'Sign Up',
                     fontWeight: FontWeight.w600,
                     fontsize: 22.sp,
-                    bottom: 8.h,
+
+                  ),
+                  SizedBox(
+                    height: 8.h,
                   ),
                   CustomText(
                     text: 'We just send you authentication code',
@@ -60,9 +63,10 @@ class _SignUpOtpVerificationScreenState extends State<SignUpOtpVerificationScree
                     fontsize: 16.sp,
                     color: const Color(0xff20353F),
                   ),
-                  SizedBox(height: 80.h),
+                  SizedBox(height: 53.h),
                   //==============================> Pin Code Text Field <=====================
                   const CustomPinCodeTextField(),
+                  SizedBox(height: 48.h),
                   CustomText(
                     text: 'Code Time',
                   ),
@@ -87,9 +91,10 @@ class _SignUpOtpVerificationScreenState extends State<SignUpOtpVerificationScree
                     },
                     text: 'Verify',
                     textColor: Colors.white,
-                    color: AppColors.buttonColor,
+                    borderColor:AppColors.buttonColor,
+                    //color: AppColors.buttonColor,
                   ),
-                  SizedBox(height: 32.h),
+                  SizedBox(height: 12.h),
                   _alreadyHaveAccountText()
                 ],
               ),
@@ -108,6 +113,7 @@ class _SignUpOtpVerificationScreenState extends State<SignUpOtpVerificationScree
         CustomText(
           text: AppStrings.alreadyHaveAccount,
           fontWeight: FontWeight.w600,
+          fontsize: 12.sp,
         ),
         TextButton(
           onPressed: () {
@@ -115,9 +121,11 @@ class _SignUpOtpVerificationScreenState extends State<SignUpOtpVerificationScree
           },
           child: CustomText(
             text: "Sign In",
-            fontWeight: FontWeight.w700,
+            fontsize: 12.sp,
+            fontWeight: FontWeight.w900,
             color: AppColors.primaryColor,
             decoration: TextDecoration.underline,
+            lineHeight: 4.h,
           ),
         ),
       ],

@@ -35,14 +35,15 @@ class _ForgetPasswordOtpScreenState extends State<ForgetPasswordOtpScreen> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.w),
+          padding: EdgeInsets.symmetric(horizontal: 28.h),
           child: Form(
             key: _formKey,
-            child: Center(
+            child: Align(
+              alignment: Alignment.topCenter,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(height: 150.h),
+                  // SizedBox(height: 150.h),
                   //================================> Sign Up  Text Section <========================
                   CustomText(
                     text: 'Forget Password',

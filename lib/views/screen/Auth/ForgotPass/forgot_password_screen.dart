@@ -42,12 +42,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(height: 64.h),
+
                   //================================> Forgot Password Text Section <========================
                   CustomText(
                     text: 'Forget Password?',
                     fontWeight: FontWeight.w600,
-                    fontsize: 22.sp,
+                    fontsize: 12.sp,
                     bottom: 8.h,
                   ),
                   const CustomText(
