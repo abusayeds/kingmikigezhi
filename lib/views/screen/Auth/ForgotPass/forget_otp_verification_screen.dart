@@ -51,7 +51,7 @@ class _ForgetPasswordOtpScreenState extends State<ForgetPasswordOtpScreen> {
                     fontsize: 22.sp,
                     bottom: 8.h,
                   ),
-                  SizedBox(height: 56.h),
+                  SizedBox(height: 74.h),
                   //=================================> Email Text Field <=========================
                   CustomTextField(
                     controller: emailCTRl,
@@ -70,7 +70,7 @@ class _ForgetPasswordOtpScreenState extends State<ForgetPasswordOtpScreen> {
                       return null;
                     },
                   ),
-                  SizedBox(height: 16.h),
+
 
                   //================================> Continue Button <======================================
                   SizedBox(height: 24.h),
