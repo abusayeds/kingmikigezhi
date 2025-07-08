@@ -1,4 +1,4 @@
- import 'package:event_sharing/helpers/route.dart';
+import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_images.dart';
 import 'package:event_sharing/utils/style.dart';
@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../../utils/app_icons.dart';
 import '../../base/bottom_menu..dart';
 import 'upcoming_event_card.dart';
@@ -58,64 +59,47 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // appBar: PreferredSize(
+      //   preferredSize: Size.fromHeight(40.h), // Adjust height as needed
+      //   child: Container(
+      //     padding: EdgeInsets.only(
+      //       top: MediaQuery.of(context).padding.top,
+      //       left: 24.w,
+      //       right: 24.w,
+      //     ),
+      //     child: HomeAppBar(),
+      //   ),
+      // ),
+       appBar: customHomeAppBar(),
       bottomNavigationBar: const BottomMenu(0),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                HomeAppBar(),
-                SizedBox(height: 20.h),
-                 _searchBar(),
-                  Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Container(
-                      height: 35.h,
-                      padding: EdgeInsets.symmetric(horizontal: 8.h),
-                      decoration: BoxDecoration(
-                        color: AppColors.primaryColor,
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                      child: DropdownButton<String>(
-                        value: dropdownValue,
-                        padding: EdgeInsets.zero,
-                        underline: const SizedBox(),
-                        icon: SvgPicture.asset(AppIcons.down_ArrowIcon),
-                        dropdownColor: Colors.white,
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            dropdownValue = newValue!;
-                          });
-                        },
-                        selectedItemBuilder: (BuildContext context) {
-                          return <String>[
-                            'All',
-                            'Self',
-                            'Spouse',
-                            'Child Stephanie',
-                            'Child Sophia',
-                          ].map<Widget>((String value) {
-                            return Center(
-                              child: Text(
-                                value,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12.sp,
-                                ),
-                              ),
-                            );
-                          }).toList();
-                        },
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: 20.h),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24.h),
+              child: _searchBar(),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24.h),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      // Show dropdown menu
+                      showMenu<String>(
+                        context: context,
+                        position: RelativeRect.fromLTRB(100, 100, 0, 0),
+                        // Adjust position as needed
                         items: <String>[
                           'All',
                           'Self',
                           'Spouse',
                           'Child Stephanie',
                           'Child Sophia',
-                        ].map<DropdownMenuItem<String>>((String value) {
+                        ].map<PopupMenuEntry<String>>((String value) {
                           Color backgroundColor;
                           switch (value) {
                             case 'Self':
@@ -133,98 +117,151 @@ class _HomeScreenState extends State<HomeScreen> {
                             default:
                               backgroundColor = Colors.white;
                           }
-                          return DropdownMenuItem<String>(
+                          return PopupMenuItem<String>(
                             value: value,
-                            child: Padding(
-                              padding: EdgeInsets.all(4.r),
-                              child: Container(
-                                alignment: Alignment.centerLeft,
-                                decoration: BoxDecoration(
-                                  color: backgroundColor,
-                                ),
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 8.w),
-                                  child: Text(
-                                    value,
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12.sp,
-                                    ),
-                                  ),
+                            child: Container(
+                              width: double.infinity,
+                              color: backgroundColor,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 8.w, vertical: 4.h),
+                              child: Text(
+                                value,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 12.sp,
                                 ),
                               ),
                             ),
                           );
                         }).toList(),
-                      ),
-                    ),
-                    Padding(
-                      padding:  EdgeInsets.only(left: 10),
-                      child: IconButton(
-                        icon:  Icon(Icons.add,size: 30),
-                        onPressed: () {
-                          HomePageAddBottomSheetWidget.addBottomSheet(context);
-                        },
-                      ),
-                    ),
-                  ],
-                  ),
-               // _tableCalendar(),
-                CalendarWithDropdown(),
-                SizedBox(height: 16.h),
-                //gray color event
-                EventCardWidget(
-                  eventTitle: 'Piano Song Event',
-                  imagePath: AppImages.logoCard,
-                  backgroundColor: Color(0xffAAAFAE),
-                  name: 'Piano',
-                  eventType: 'Online',
-                  address: 'Dhaka, Bangladesh',
-                  time: '7:00 AM - 8:00 PM',
-                  history: '2023-1st winner',
-                ),
-                SizedBox(height: 16.h),
-                //gray color event
-                _pianoList(),
-                SizedBox(height: 16.h),
-
-
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8.w),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Upcoming Event', style: AppStyles.fontSize18(fontWeight: FontWeight.w500)),
-                      InkWell(
-                          onTap: () {
-                            Get.toNamed(AppRoutes.upcomingEventScreen);
-                          },
-                          child: Text('More',style: AppStyles.fontSize14(fontWeight: FontWeight.w500))),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 320.h,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 3,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          Get.toNamed(AppRoutes.eventDetailsScreen);
-                        },
-                        child: SizedBox(
-                          width: 350.w,
-                          child: EventCard(),
-                        ),
-                      );
+                      ).then((String? selectedValue) {
+                        if (selectedValue != null) {
+                          setState(() {
+                            dropdownValue = selectedValue;
+                          });
+                        }
+                      });
                     },
+                    child: Container(
+                      height: 23.h,
+                      padding: EdgeInsets.symmetric(horizontal: 6.w),
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryColor,
+                        borderRadius: BorderRadius.circular(6.r),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            dropdownValue,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 10.sp,
+                            ),
+                          ),
+                          SizedBox(width: 20.w),
+                          // Small space between text and icon
+                          SvgPicture.asset(AppIcons.down_ArrowIcon),
+                        ],
+                      ),
+                    ),
                   ),
-                )
-
-              ],
+                  Padding(
+                    padding: EdgeInsets.only(left: 10),
+                    child: IconButton(
+                      icon: Icon(Icons.add, size: 30),
+                      onPressed: () {
+                        HomePageAddBottomSheetWidget.addBottomSheet(context);
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
+
+            // _tableCalendar(),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24.h),
+              child: CalendarWithDropdown(),
+            ),
+            SizedBox(height: 16.h),
+            //gray color event
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24.h),
+              child: EventCardWidget(
+                eventTitle: 'Piano Song Event',
+                imagePath: AppImages.logoCard,
+                backgroundColor: Color(0xffAAAFAE),
+                name: 'Piano',
+                eventType: 'Online',
+                address: 'Dhaka, Bangladesh',
+                time: '7:00 AM - 8:00 PM',
+                history: '2023-1st winner',
+              ),
+            ),
+            SizedBox(height: 16.h),
+            //gray color event
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 6.h),
+              child: _pianoList(),
+            ),
+
+            SizedBox(height: 16.h),
+
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24.h),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Upcoming Event',
+                    style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 20.sp,
+                      color: Color(0xFF20353F),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Get.toNamed(AppRoutes.upcomingEventScreen);
+                    },
+                    child: Text(
+                      'More',
+                      style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 12.sp,
+                        color: Color(0xFF414141),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 6.w, right: 6.w),
+              child: SizedBox(
+                height: 275.h,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 3,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        Get.toNamed(AppRoutes.eventDetailsScreen);
+                      },
+                      child: SizedBox(
+                        width: 369.w,
+                        child: EventCard(),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 30.h,
+            )
+          ],
         ),
       ),
     );
@@ -242,7 +279,8 @@ class _HomeScreenState extends State<HomeScreen> {
             decoration: InputDecoration(
               filled: true,
               fillColor: AppColors.fillColor,
-              contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
               hintText: "Search Event",
               hintStyle: AppStyles.fontSize14(color: AppColors.greyColor),
               suffixIcon: Padding(
@@ -263,7 +301,8 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8.r),
-                borderSide: BorderSide(color: AppColors.primaryColor, width: 2.w),
+                borderSide:
+                    BorderSide(color: AppColors.primaryColor, width: 2.w),
               ),
             ),
           ),
@@ -294,9 +333,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-
-
-
   //============================> Piano Event List View <=================================
   _pianoList() {
     return Container(
@@ -323,8 +359,4 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
 }
-
-
-
