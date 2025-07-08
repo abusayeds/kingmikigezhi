@@ -121,7 +121,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       CustomText(
                         fontsize: 12.sp,
                         text: 'Already has an account ?',
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w400,
                         lineHeight: 1.5.h,
                       ),
                       GestureDetector(
@@ -131,7 +131,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         },
                         child: Text(' Sign In',style: GoogleFonts.poppins(
                           fontSize: 12.sp,
-                          fontWeight: FontWeight.w900,
+                          fontWeight: FontWeight.w500,
                           height: 1.5.h,
                           color: AppColors.primaryColor
                         ),),
