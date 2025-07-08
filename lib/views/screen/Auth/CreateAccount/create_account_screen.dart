@@ -686,7 +686,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
 
         // If all validations pass, proceed with sign up
         print('All validations passed, proceeding with sign up...');
-        Get.toNamed(AppRoutes.verificationCodeScreen);
+        Get.toNamed(AppRoutes.homeScreen);
       },
       color: AppColors.buttonColor,
       text: AppStrings.signUp,
