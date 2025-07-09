@@ -63,35 +63,26 @@ class _CategoriesSearchAppliedScreenState
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               //=======================> Event Image Section <============================
-              Stack(
-                children: [
-                  Image.asset('assets/images/upcoming.png'),
-                  Positioned(
-                    right: -5.w,
-                    top: 5.h,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: AppColors.primaryColor,
-                        border: Border.all(width: 1.w, color: Colors.white),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 16.w, vertical: 16.h),
-                        child: CustomText(
-                          text: '20 Feb',
-                          fontsize: 10.sp,
-                          color: AppColors.white,
-                        ),
-                      ),
-                    ),
+
+              Container(
+                height: 180.h,
+                width: 345.w,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16.r),
+                  color: Colors.transparent,
+                  image: const DecorationImage(
+                   // image: NetworkImage('https://static.gltjp.com/glt/data/directory/13000/12058/20210822_040201_6908e9ec_w1920.webp'),
+                    image: AssetImage('assets/images/concert.jpg'),
+                    fit: BoxFit.cover,
                   ),
-                ],
+                ),
               ),
               SizedBox(height: 16.h),
               CustomText(
-                text: 'Total 50 Events', fontsize: 18.sp, color: AppColors.blackColor,fontWeight: FontWeight.w600),
+                text: 'Total 50 Events', fontsize: 20.sp, color: AppColors.blackColor,fontWeight: FontWeight.w500),
               //=======================> Event Name Section <============================
+
+              SizedBox(height: 8.h,),
               ListView.builder(
                 itemCount: events.length,
                 shrinkWrap: true, // Prevent ListView from taking infinite height

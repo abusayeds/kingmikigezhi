@@ -4,6 +4,7 @@ import 'package:event_sharing/views/base/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../../utils/app_icons.dart';
 import '../../../utils/app_strings.dart';
 import '../../base/custom_dropdown.dart';
@@ -78,6 +79,7 @@ class _FilterScreenState extends State<FilterScreen> {
                 decoration: InputDecoration(
                   fillColor: AppColors.fillColor,
                   filled: true,
+
                   border: OutlineInputBorder(
                     borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
                     borderRadius: BorderRadius.circular(8.r),
@@ -94,6 +96,7 @@ class _FilterScreenState extends State<FilterScreen> {
                 ),
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
+                    padding: EdgeInsets.symmetric(vertical: 5.w),
                     //focusColor:  AppColors.primaryColor,
                     iconDisabledColor: AppColors.primaryColor,
                     icon: SvgPicture.asset(AppIcons.down_ArrowIcon,color: AppColors.primaryColor,height:8.h,),
@@ -143,6 +146,8 @@ class _FilterScreenState extends State<FilterScreen> {
                 ),
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
+                    padding: EdgeInsets.symmetric(vertical: 5.w),
+
                     //focusColor:  AppColors.primaryColor,
                     iconDisabledColor: AppColors.primaryColor,
                     iconEnabledColor: AppColors.primaryColor,
@@ -213,6 +218,8 @@ class _FilterScreenState extends State<FilterScreen> {
                 ),
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
+                    padding: EdgeInsets.symmetric(vertical: 5.w),
+
                     //focusColor:  AppColors.primaryColor,
                     iconDisabledColor: AppColors.primaryColor,
                     iconEnabledColor: AppColors.primaryColor,
@@ -247,7 +254,7 @@ class _FilterScreenState extends State<FilterScreen> {
                   CustomText(
                     text: '\$20-\$4K',
                     fontWeight: FontWeight.w500,
-                    fontsize: 16.sp,
+                    fontsize: 8.sp,
                     bottom: 16.h,
                   ),
                 ],
@@ -275,8 +282,18 @@ class _FilterScreenState extends State<FilterScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CustomText(text: '\$${_currentRangeValues.start.round()}'),
-                    CustomText(text: '\$${_currentRangeValues.end.round()}'),
+                    Text('\$${_currentRangeValues.start.round()}',style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 8.sp,
+                      color: Color(0xFF20353F)
+                    ),),
+                    //CustomText(text: '\$${_currentRangeValues.start.round()}'),
+                    //CustomText(text: '\$${_currentRangeValues.end.round()}'),
+                    Text('\$${_currentRangeValues.end.round()}',style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 8.sp,
+                        color: Color(0xFF20353F)
+                    ),),
                   ],
                 ),
               ),
@@ -289,6 +306,7 @@ class _FilterScreenState extends State<FilterScreen> {
                   Expanded(
                     child: CustomButton(
                       onTap: () {},
+                      borderColor: AppColors.buttonColor,
                       text: "Reset",
                       color: AppColors.colorEDF2F4,
                       textColor: Colors.black,

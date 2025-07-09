@@ -36,6 +36,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     return Scaffold(
       bottomNavigationBar: const BottomMenu(1),
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         title: CustomText(
           text: 'Categories',
           fontsize: 18.sp,
