@@ -39,307 +39,313 @@ class _StepFiveFormState extends State<StepFiveForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 8.h),
-              child: Text("Step 5: Own History", style: AppStyles.fontSize20(fontWeight: FontWeight.bold)),
-            ),
-            //registration date
-            SizedBox(height: 12.h),
-           Text('Session', style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
-            SizedBox(height: 12.h),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
-              decoration: BoxDecoration(
-                color: AppColors.fillColor,
-                borderRadius: BorderRadius.circular(8.r),
-                border: Border.all(color: AppColors.primaryColor, width: 1),
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 24.w),
+      child: Column(children: [
+        SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 8.h),
+                child: Text("Step 5: Own History", style: AppStyles.fontSize20(fontWeight: FontWeight.bold)),
               ),
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton<String>(
-                  value: _selectedType,
-                  dropdownColor: AppColors.fillColor,
-                  menuWidth: 240.w,
+              //registration date
+              SizedBox(height: 12.h),
+             Text('Session', style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
+              SizedBox(height: 12.h),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                decoration: BoxDecoration(
+                  color: AppColors.fillColor,
                   borderRadius: BorderRadius.circular(8.r),
-                  hint: Text("Type Session", style: AppStyles.fontSize14(color: AppColors.color414141)),
-                  icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
-                  ),
-                  isExpanded: true,
-                  items:typeSession.map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(
-                        value,
-                        style: const TextStyle(color: Colors.black),
-                      ),
-                    );
-                  }).toList(),
-                  onChanged: (newValue) {
-                    setState(() {
-                      _selectedType = newValue;
-                    });
-                  },
+                  border: Border.all(color: AppColors.primaryColor, width: 1),
                 ),
-              ),
-            ),
-            SizedBox(height: 8.h),
-            Padding(
-              padding: const EdgeInsets.all(4),
-              child: Text('Record', style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 18.w),
-                    decoration: BoxDecoration(
-                      color: AppColors.fillColor,
-                      borderRadius: BorderRadius.circular(8.r),
-                      border: Border.all(color: AppColors.primaryColor, width: 1),
-                    ),
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton<String>(
-                        value: _selectedRound,
-                        dropdownColor: AppColors.fillColor,
-                        menuWidth: 240.w,
-                        borderRadius: BorderRadius.circular(8.r),
-                        hint: Text("Type Score",style: AppStyles.fontSize14(color: AppColors.color414141)),
-                        icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
-                        ),
-                        isExpanded: true,
-                        items: roundList.map((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(
-                              value,
-                              style: const TextStyle(color: Colors.black),
-                            ),
-                          );
-                        }).toList(),
-                        onChanged: (newValue) {
-                          setState(() {
-                            _selectedRound = newValue;
-                          });
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(width: 15.w),
-                Expanded(
-                  child: CustomButton(
-                    onTap: (){},
-                    text: 'Add',
-                    textColor: AppColors.textColor,
-                    borderColor: AppColors.buttonA47059,
-                    color: AppColors.buttonA47059,
-                  ),
-                ),
-              ],
-            ),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                    padding: EdgeInsets.symmetric(vertical: 5.w),
 
-            SizedBox(height: 8),
-            Padding(
-              padding: EdgeInsets.all(4.r),
-              child: Text('History', style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                color: AppColors.colorEDF2F4,
-                borderRadius: BorderRadius.all(Radius.circular(8)),
-                border: Border.all(color: AppColors.primaryColor, width: 1.w),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8.w),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              SvgPicture.asset(AppIcons.dotIconForFamily),
-                              SizedBox(width: 4.w),
-                              CustomText(
-                                text: '2021 - 1st place winner',
-                                color: AppColors.color414141,
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              InkWell(
-                                  onTap: () {
-                                    Get.back();
-                                  },
-                                  child: SvgPicture.asset(AppIcons.editIcon)),
-                              SizedBox(width: 4.w),
-                              InkWell(
-                                  onTap: () {
-                                    Get.back();
-                                  },
-                                  child: SvgPicture.asset(AppIcons.trashIcon))
-                            ],
-                          ),
-                        ],
-                      ),
+                    value: _selectedType,
+                    dropdownColor: AppColors.fillColor,
+                    menuWidth: 240.w,
+                    borderRadius: BorderRadius.circular(8.r),
+                    hint: Text("Type Session", style: AppStyles.fontSize14(color: AppColors.color414141)),
+                    icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
                     ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8.w,vertical: 8.w),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              SvgPicture.asset(AppIcons.dotIconForFamily),
-                              SizedBox(width: 4.w),
-                              CustomText(
-                                text: '2022 - 1st place winner',
-                                color: AppColors.color414141,
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              InkWell(
-                                  onTap: () {
-                                    Get.back();
-                                  },
-                                  child: SvgPicture.asset(AppIcons.editIcon)),
-                              SizedBox(width: 4),
-                              InkWell(
-                                  onTap: () {
-                                    Get.back();
-                                  },
-                                  child: SvgPicture.asset(AppIcons.trashIcon))
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              SvgPicture.asset(AppIcons.dotIconForFamily),
-                              SizedBox(width: 4.w),
-                              CustomText(
-                                text: '2023 - 1st place winner',
-                                color: AppColors.color414141,
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              InkWell(
-                                  onTap: () {
-                                    //  Get.back();
-                                  },
-                                  child: SvgPicture.asset(AppIcons.editIcon)),
-                              SizedBox(width: 4),
-                              InkWell(
-                                  onTap: () {
-                                    //Get.back();
-                                  },
-                                  child: SvgPicture.asset(AppIcons.trashIcon))
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 16.h),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.blueGrey,
-                        shape: BoxShape.rectangle,
-                        borderRadius: BorderRadius.circular(4.r),
-                      ),
-                      padding: EdgeInsets.all(4),
-                      child: Icon(
-                        Icons.check,
-                        color: Colors.white,
-                        size: 16.sp,
-                      ),
-                    ),
-                    SizedBox(width: 10.w),
-                    Expanded(
-                      child: Text(
-                        'This is a shared community. All events are public',
-                        style: AppStyles.fontSize12(color: AppColors.hintColor)
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 16.h),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: 20.w,
-                      height: 20.h,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.blueGrey),
-                        borderRadius: BorderRadius.circular(4.r),
-                      ),
-                    ),
-                    SizedBox(width: 10),
-                    Text(
-                      'User agreement',
-                        style: AppStyles.fontSize12(color: AppColors.hintColor)
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            SizedBox(height: 50.h),
-            Row(
-              children: [
-                Expanded(
-                  child: CustomButton(
-                    onTap: () {},
-                    text: "Back",
-                    borderColor: AppColors.buttonColor,
-                    color: AppColors.fillColor,
-                    textColor: Colors.black,
+                    isExpanded: true,
+                    items:typeSession.map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(
+                          value,
+                          style: const TextStyle(color: Colors.black),
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (newValue) {
+                      setState(() {
+                        _selectedType = newValue;
+                      });
+                    },
                   ),
                 ),
-                SizedBox(width: 10.w),
-                Expanded(
-                  child: CustomButton(
-                    onTap: () {},
-                    text: "Add & Share",
-                    textColor: Colors.white,
-                    borderColor: AppColors.buttonColor,
-                    color: AppColors.buttonColor,
+              ),
+              SizedBox(height: 8.h),
+              Padding(
+                padding: const EdgeInsets.all(4),
+                child: Text('Record', style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 18.w),
+                      decoration: BoxDecoration(
+                        color: AppColors.fillColor,
+                        borderRadius: BorderRadius.circular(8.r),
+                        border: Border.all(color: AppColors.primaryColor, width: 1),
+                      ),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          padding: EdgeInsets.symmetric(vertical: 5.w),
+                          value: _selectedRound,
+                          dropdownColor: AppColors.fillColor,
+                          menuWidth: 240.w,
+                          borderRadius: BorderRadius.circular(8.r),
+                          hint: Text("Type Score",style: AppStyles.fontSize14(color: AppColors.color414141)),
+                          icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
+                          ),
+                          isExpanded: true,
+                          items: roundList.map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(
+                                value,
+                                style: const TextStyle(color: Colors.black),
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (newValue) {
+                            setState(() {
+                              _selectedRound = newValue;
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 15.w),
+                  Expanded(
+                    child: CustomButton(
+                      onTap: (){},
+                      text: 'Add',
+                      textColor: AppColors.textColor,
+                      borderColor: AppColors.buttonA47059,
+                      color: AppColors.buttonA47059,
+                    ),
+                  ),
+                ],
+              ),
+
+              SizedBox(height: 8),
+              Padding(
+                padding: EdgeInsets.all(4.r),
+                child: Text('History', style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  color: AppColors.colorEDF2F4,
+                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                  border: Border.all(color: AppColors.primaryColor, width: 1.w),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 8.w),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                SvgPicture.asset(AppIcons.dotIconForFamily),
+                                SizedBox(width: 4.w),
+                                CustomText(
+                                  text: '2021 - 1st place winner',
+                                  color: AppColors.color414141,
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                InkWell(
+                                    onTap: () {
+                                      Get.back();
+                                    },
+                                    child: SvgPicture.asset(AppIcons.editIcon)),
+                                SizedBox(width: 4.w),
+                                InkWell(
+                                    onTap: () {
+                                      Get.back();
+                                    },
+                                    child: SvgPicture.asset(AppIcons.trashIcon))
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 8.w,vertical: 8.w),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                SvgPicture.asset(AppIcons.dotIconForFamily),
+                                SizedBox(width: 4.w),
+                                CustomText(
+                                  text: '2022 - 1st place winner',
+                                  color: AppColors.color414141,
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                InkWell(
+                                    onTap: () {
+                                      Get.back();
+                                    },
+                                    child: SvgPicture.asset(AppIcons.editIcon)),
+                                SizedBox(width: 4),
+                                InkWell(
+                                    onTap: () {
+                                      Get.back();
+                                    },
+                                    child: SvgPicture.asset(AppIcons.trashIcon))
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                SvgPicture.asset(AppIcons.dotIconForFamily),
+                                SizedBox(width: 4.w),
+                                CustomText(
+                                  text: '2023 - 1st place winner',
+                                  color: AppColors.color414141,
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                InkWell(
+                                    onTap: () {
+                                      //  Get.back();
+                                    },
+                                    child: SvgPicture.asset(AppIcons.editIcon)),
+                                SizedBox(width: 4),
+                                InkWell(
+                                    onTap: () {
+                                      //Get.back();
+                                    },
+                                    child: SvgPicture.asset(AppIcons.trashIcon))
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
-            SizedBox(height: 10.h),
-          ],
-        ),
-      )
-    ]);
+              ),
+              SizedBox(height: 16.h),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.blueGrey,
+                          shape: BoxShape.rectangle,
+                          borderRadius: BorderRadius.circular(4.r),
+                        ),
+                        padding: EdgeInsets.all(4),
+                        child: Icon(
+                          Icons.check,
+                          color: Colors.white,
+                          size: 16.sp,
+                        ),
+                      ),
+                      SizedBox(width: 10.w),
+                      Expanded(
+                        child: Text(
+                          'This is a shared community. All events are public',
+                          style: AppStyles.fontSize12(color: AppColors.hintColor)
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 16.h),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 20.w,
+                        height: 20.h,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.blueGrey),
+                          borderRadius: BorderRadius.circular(4.r),
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        'User agreement',
+                          style: AppStyles.fontSize12(color: AppColors.hintColor)
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              SizedBox(height: 50.h),
+              Row(
+                children: [
+                  Expanded(
+                    child: CustomButton(
+                      onTap: () {},
+                      text: "Back",
+                      borderColor: AppColors.buttonColor,
+                      color: AppColors.fillColor,
+                      textColor: Colors.black,
+                    ),
+                  ),
+                  SizedBox(width: 10.w),
+                  Expanded(
+                    child: CustomButton(
+                      onTap: () {},
+                      text: "Add & Share",
+                      textColor: Colors.white,
+                      borderColor: AppColors.buttonColor,
+                      color: AppColors.buttonColor,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10.h),
+            ],
+          ),
+        )
+      ]),
+    );
   }
 }

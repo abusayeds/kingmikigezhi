@@ -56,10 +56,16 @@ class _MyEventScreenState extends State<MyEventScreen>
           title: Text('Event', style:AppStyles.fontSize18(fontWeight: FontWeight.w600)),
           centerTitle: true,
           bottom: TabBar(
+            padding: EdgeInsets.symmetric(horizontal: 6.h),
             controller: _tabController,
             indicatorColor: Colors.transparent,
             labelColor: Colors.black,
             unselectedLabelColor: Colors.grey,
+            indicatorWeight: 1,
+
+            //dividerColor: Color(0xFFFFFFFF),
+            dividerColor: Color(0xFFC8D7DE),
+            //tabAlignment: TabAlignment.fill,
             tabs: [
               //========================> Tab 01  <====================
               Tab(
@@ -80,11 +86,15 @@ class _MyEventScreenState extends State<MyEventScreen>
                       color: _tabController.index == 0
                           ? Colors.white
                           : Colors.black,
+                      fontWeight: FontWeight.w500,
+                      fontsize: 14.sp,
+
                     ),
                   ),
                 ),
               ),
               //========================> Tab 02  <====================
+
               Tab(
                 child: Container(
                   decoration: BoxDecoration(
@@ -103,6 +113,8 @@ class _MyEventScreenState extends State<MyEventScreen>
                       color: _tabController.index == 1
                           ? Colors.white
                           : Colors.black,
+                      fontWeight: FontWeight.w500,
+                      fontsize: 14.sp,
                     ),
                   ),
                 ),
@@ -126,6 +138,8 @@ class _MyEventScreenState extends State<MyEventScreen>
                       color: _tabController.index == 2
                           ? Colors.white
                           : Colors.black,
+                      fontWeight: FontWeight.w500,
+                      fontsize: 14.sp,
                     ),
                   ),
                 ),
