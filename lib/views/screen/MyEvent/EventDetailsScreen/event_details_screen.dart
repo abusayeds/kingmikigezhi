@@ -10,6 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class EventDetailsScreen extends StatefulWidget {
   @override
@@ -25,66 +26,91 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
     return Scaffold(
       //=======================> App Bar Section <============================
       appBar: AppBar(
-        leading:  IconButton(
-          icon: Icon(Icons.arrow_back_ios,
-              color: Colors.black, size: 18.w),
-          onPressed: () {
-            Get.back();
-          },
+        scrolledUnderElevation: 0,
+        leading:  Padding(
+          padding:  EdgeInsets.only(left: 8.w),
+          child: IconButton(
+            icon: Icon(Icons.arrow_back_ios,
+                color: Colors.black, size: 18.w),
+            onPressed: () {
+              Get.back();
+            },
+          ),
         ),
-        title: Text('Event Details',style: AppStyles.fontSize18(fontWeight: FontWeight.w500)),
+        title: Text('Event Details',style: GoogleFonts.poppins(
+          fontSize: 18.sp,
+          fontWeight: FontWeight.w500,
+          color: AppColors.blackColor
+        )),
         centerTitle: true,
       ),
       //=======================> Body Section <============================
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+          padding: EdgeInsets.symmetric(horizontal: 24.h, vertical: 16.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               //=======================> Event Image Section <============================
               Stack(
                 children: [
-                  Image.asset('assets/images/upcoming.png'),
-                  Positioned(
-                    right: -5.w,
-                    top: 5.h,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: AppColors.primaryColor,
-                        border: Border.all(width: 1.w, color: Colors.white),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 16.w, vertical: 16.h),
-                        child: CustomText(
-                          text: '20 Feb',
-                          fontsize: 10.sp,
-                          color: AppColors.white,
-                        ),
+                  Container(
+                    height: 180.h,
+                    width: 345.w,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16.r),
+                      color: Colors.transparent,
+                      image: const DecorationImage(
+                        // image: NetworkImage('https://static.gltjp.com/glt/data/directory/13000/12058/20210822_040201_6908e9ec_w1920.webp'),
+                        image: AssetImage('assets/images/concert.jpg'),
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ),
+                  // Positioned(
+                  //   right: -5.w,
+                  //   top: 5.h,
+                  //   child: Container(
+                  //     decoration: BoxDecoration(
+                  //       color: AppColors.primaryColor,
+                  //       border: Border.all(width: 1.w, color: Colors.white),
+                  //       shape: BoxShape.circle,
+                  //     ),
+                  //     child: Padding(
+                  //       padding: EdgeInsets.symmetric(
+                  //           horizontal: 16.w, vertical: 16.h),
+                  //       child: CustomText(
+                  //         text: '20 Feb',
+                  //         fontsize: 10.sp,
+                  //         color: AppColors.white,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
               SizedBox(height: 16.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                   Text(
-                    'Piano Star Event',
-                    style: AppStyles.fontSize16(fontWeight: FontWeight.w600)
+                  Text(
+                      'Piano Star Event',
+                      style: AppStyles.fontSize16(fontWeight: FontWeight.w600).copyWith(
+                        decoration: TextDecoration.underline,
+                        decorationColor: Colors.black, // Color of the underline
+                        decorationThickness: 1.0, // Thickness of the underline
+                      )
                   ),
                 ],
               ),
+              SizedBox(height: 16.h,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(
                     children: [
                       Container(
-                        width: 40.w,height: 40.h,
+                        width: 32.w,height: 32.w,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: AppColors.colorEDF2F4,
@@ -98,13 +124,16 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                       ),
                       SizedBox(width: 10.w),
                       Container(
-                        width: 40.w,height: 40.h,
+                        width: 32.w,height: 32.w,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: AppColors.colorEDF2F4,
                         ),
                         child: IconButton(
-                          icon: Icon(Icons.done,color: AppColors.primaryColor),
+                          icon: Icon(
+                            size: 20,
+
+                            Icons.done,color: AppColors.primaryColor,),
                           onPressed: () {
                             // Edit action
                           },
@@ -113,7 +142,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                     ],
                   ),
                   Container(
-                    width: 40.w,height: 40.h,
+                    width: 32.w,height: 32.w,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: AppColors.colorEDF2F4,
@@ -141,7 +170,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                               children: [
                                 Row(
                                   children: [
-                                    SvgPicture.asset(AppIcons.dotIconForFamily),
+                                    SvgPicture.asset(AppIcons.dotIconForFamily,height: 12.h,width: 12.h,),
                                     SizedBox(width: 5),
                                     Text('Program', style: AppStyles.fontSize12(fontWeight: FontWeight.w600)),
                                   ],
@@ -157,7 +186,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                               children: [
                                 Row(
                                   children: [
-                                    SvgPicture.asset(AppIcons.dotIconForFamily),
+                                    SvgPicture.asset(AppIcons.dotIconForFamily,height: 12.h,width: 12.h,),
                                     SizedBox(width: 5.w),
                                     Text('Type', style: AppStyles.fontSize12(fontWeight: FontWeight.w600)),
                                   ],
@@ -172,7 +201,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                               children: [
                                 Row(
                                   children: [
-                                    SvgPicture.asset(AppIcons.dotIconForFamily),
+                                    SvgPicture.asset(AppIcons.dotIconForFamily,height: 12.h,width: 12.h,),
                                     SizedBox(width: 5),
                                     Text('Location',style: AppStyles.fontSize12(fontWeight: FontWeight.w600)),
                                   ],
@@ -187,7 +216,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                               children: [
                                 Row(
                                   children: [
-                                    SvgPicture.asset(AppIcons.dotIconForFamily),
+                                    SvgPicture.asset(AppIcons.dotIconForFamily,height: 12.h,width: 12.h,),
                                     SizedBox(width: 5.w),
                                     Text('Deadline', style: AppStyles.fontSize12(fontWeight: FontWeight.w600)),
 
@@ -209,7 +238,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                               children: [
                                 Row(
                                   children: [
-                                    SvgPicture.asset(AppIcons.dotIconForFamily),
+                                    SvgPicture.asset(AppIcons.dotIconForFamily,height: 12.h,width: 12.h,),
                                     SizedBox(width: 5),
                                     Text('Final Deadline', style: AppStyles.fontSize12(fontWeight: FontWeight.w600)),
                                   ],
@@ -231,7 +260,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                               children: [
                                 Row(
                                   children: [
-                                    SvgPicture.asset(AppIcons.dotIconForFamily),
+                                    SvgPicture.asset(AppIcons.dotIconForFamily,height: 12.h,width: 12.h,),
                                     SizedBox(width: 5.w),
                                     Text('Competition Level', style: AppStyles.fontSize12(fontWeight: FontWeight.w600)),
                                   ],
@@ -255,7 +284,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                               children: [
                                 Row(
                                   children: [
-                                    SvgPicture.asset(AppIcons.dotIconForFamily),
+                                    SvgPicture.asset(AppIcons.dotIconForFamily,height: 12.h,width: 12.h,),
                                     SizedBox(width: 5.w),
                                     Text('Registration Open', style: AppStyles.fontSize12(fontWeight: FontWeight.w600)),
                                   ],
@@ -286,7 +315,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                               children: [
                                 Row(
                                   children: [
-                                    SvgPicture.asset(AppIcons.dotIconForFamily),
+                                    SvgPicture.asset(AppIcons.dotIconForFamily,height: 12.h,width: 12.h,),
                                     SizedBox(width: 5.w),
                                     Text('Repeat Function', style: AppStyles.fontSize12(fontWeight: FontWeight.w600)),
                                   ],
@@ -308,7 +337,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                     // Empty space for alignment
                                     Row(
                                       children: [
-                                        SvgPicture.asset(AppIcons.dotIconForFamily),
+                                        SvgPicture.asset(AppIcons.dotIconForFamily,height: 12.h,width: 12.h,),
                                         SizedBox(width: 5.w),
                                         Text(
                                           'Cost',
@@ -327,7 +356,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                       child: Icon(
                                         Icons.check,
                                         color: Colors.white,
-                                        size: 10,
+                                        size: 12,
                                       ),
                                       padding: EdgeInsets.all(4),
                                     ),
@@ -351,7 +380,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                     // Empty space for alignment
                                     Row(
                                       children: [
-                                        SvgPicture.asset(AppIcons.dotIconForFamily),
+                                        SvgPicture.asset(AppIcons.dotIconForFamily,height: 12.h,width: 12.h,),
                                         SizedBox(width: 5.w),
                                         Text('Late Fee',style: AppStyles.fontSize12(fontWeight: FontWeight.w600)
                                         ),
@@ -361,12 +390,12 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                       decoration: BoxDecoration(
                                         color: Colors.blueGrey,
                                         shape: BoxShape.rectangle,
-                                        borderRadius: BorderRadius.circular(4),
+                                        borderRadius: BorderRadius.circular(4.r),
                                       ),
                                       child: Icon(
                                         Icons.check,
                                         color: Colors.white,
-                                        size: 10,
+                                        size: 12,
                                       ),
                                       padding: EdgeInsets.all(4),
                                     ),
@@ -389,23 +418,27 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
 
 
               //=======================> Description Event Section <============================
-              SizedBox(height: 20.h),
-              Text(AppStrings.description,style: AppStyles.fontSize16(fontWeight: FontWeight.w600)),
+              SizedBox(height: 24.h),
+              Text(AppStrings.description,style: AppStyles.fontSize16(fontWeight: FontWeight.w500)),
               SizedBox(height: 8.h),
               Text( 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable.',
                 maxLines: 20,
                 textAlign: TextAlign.start,
-                style: AppStyles.fontSize14(color: AppColors.color414141),
+                style: AppStyles.fontSize14(color: AppColors.color414141,).copyWith(
+                  fontSize: 12.sp,
+                ),
               ),
               SizedBox(height: 16.w),
 
               // Note
-              Text(AppStrings.note,style: AppStyles.fontSize16(fontWeight: FontWeight.w600)),
+              Text(AppStrings.note,style: AppStyles.fontSize16(fontWeight: FontWeight.w500)),
               SizedBox(height: 8.h),
               Text( 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable.',
                 maxLines: 20,
                 textAlign: TextAlign.start,
-                style: AppStyles.fontSize14(color: AppColors.color414141),
+                style: AppStyles.fontSize14(color: AppColors.color414141).copyWith(
+                  fontSize: 12.sp,
+                ),
               ),
              SizedBox(height: 16.h),
               //=======================> Age up to 10 years old Section <============================
@@ -415,30 +448,31 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                   // labelText: 'Select',
                   border: OutlineInputBorder(
                     borderSide:
-                    BorderSide(color: AppColors.primaryColor, width: 1.w),
+                    BorderSide(color: AppColors.buttonColor, width: 1.w),
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderSide:
-                    BorderSide(color: AppColors.primaryColor, width: 1.w),
+                    BorderSide(color: AppColors.buttonColor, width: 1.w),
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderSide:
-                    BorderSide(color: AppColors.primaryColor, width: 1.w),
+                    BorderSide(color: AppColors.buttonColor, width: 1.w),
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                   contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
                 ),
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
-                    //focusColor:  AppColors.primaryColor,
+                    padding: EdgeInsets.symmetric(vertical: 5.w),
+                   // focusColor:  AppColors.primaryColor,
                     iconDisabledColor: AppColors.primaryColor,
                     iconEnabledColor: AppColors.primaryColor,
                     isExpanded: true,
-                    value: _selectedAge,style: AppStyles.fontSize18(color: AppColors.blackColor,fontWeight: FontWeight.w600),
+                    value: _selectedAge,style: AppStyles.fontSize18(color: AppColors.blackColor,fontWeight: FontWeight.w500),
                     hint: CustomText(text: 'Select Ages', fontsize: 14.sp),
-                    icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,),
+                    icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.blackColor,),
                     items: _agesList.map((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
@@ -752,23 +786,25 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                     ],
                   ),
                   SizedBox(height: 16.h),
-                  Divider(thickness: 1,color: Colors.grey),
+                  const Divider(thickness: 1,color: Colors.grey),
                   Align(
                     alignment: Alignment.centerRight,
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+                      padding: EdgeInsets.symmetric(horizontal: 12.h, vertical: 8.w),
                       decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
-                        borderRadius: BorderRadius.circular(8.r),
+                        color: AppColors.fillColor,
+                        borderRadius: BorderRadius.circular(4.r),
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
                             'Estimation Total Cost: 400',
-                          style: AppStyles.fontSize14(color: AppColors.color414141,fontWeight: FontWeight.w600)),
+                          style: AppStyles.fontSize14(color: AppColors.color414141,fontWeight: FontWeight.w500,).copyWith(
+                            fontSize: 10.sp,
+                          )),
                           SizedBox(width: 8.w),
-                          SvgPicture.asset(AppIcons.editIcon),
+                          SvgPicture.asset(AppIcons.editIcon,height: 12.w,width: 12.w,),
                         ],
                       ),
                     ),
@@ -781,7 +817,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                     children: [
                       Row(
                         children: [
-                          Text('Created By',style: AppStyles.fontSize14(color: AppColors.color414141,fontWeight: FontWeight.w600)),
+                          Text('Created By',style: AppStyles.fontSize14(color: AppColors.color414141,fontWeight: FontWeight.w500)),
                           SizedBox(width: 8.w),
                           CircleAvatar(
                             radius: 30.r,
@@ -853,15 +889,16 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SizedBox(
-                          width: 166.w,
+                          width: 164.w,
                           child: CustomButton(
+                            borderColor: AppColors.buttonColor,
                             onTap: () {},
                             text: "Edit & Verify",
                             color: AppColors.fillColor,
                             textColor: Colors.black,
                           )),
                       SizedBox(
-                          width: 166.w,
+                          width: 164.w,
                           child: CustomButton(
                             onTap: () {
                               Get.toNamed(AppRoutes.appliedSearchEventListScreen);
