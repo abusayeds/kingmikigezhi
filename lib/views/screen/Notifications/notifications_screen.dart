@@ -21,6 +21,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       //================================> App bar section <=======================
       appBar: AppBar(
         automaticallyImplyLeading: false,
+        scrolledUnderElevation: 0,
         title: Row(
           children: [
             IconButton(
@@ -38,7 +39,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 child: CustomText(
                   text: 'Notification(20)',
                   fontsize: 18.sp,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ),
@@ -49,8 +50,9 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
 
       //================================> Body section <=======================
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.h),
+        padding: EdgeInsets.symmetric(horizontal: 24.h),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             //================================> Notification section <=======================
 
@@ -65,243 +67,246 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                       color: AppColors.primaryColor,
                       decoration: TextDecoration.underline,
                       fontWeight: FontWeight.w600,
+                      fontSize: 14.sp,
                     ),
                   )
                 ],
               ),
             ),
+            ListView.builder(
+              itemCount: 2,
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding:  EdgeInsets.symmetric(vertical: 10.w),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: AppColors.colorD9A951,
+                    ),
+                    child: _notification(
+                      'Account Setup Successful!',
+                      DateTime.now(),
+                      'Your account creation is successful, you can now experience our services.',
+                    ),
+                  ),
+                );
+              },
+            ),
             //========================> Details Card
             Container(
-             margin: EdgeInsets.symmetric(vertical: 8.h),
+              margin: EdgeInsets.symmetric(vertical: 8.h),
               decoration: BoxDecoration(
                 color: const Color(0xffedf2f4),
                 borderRadius: BorderRadius.circular(15.r),
                 border: Border.all(color: AppColors.primaryColor, width: .5),
               ),
               child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  //=====================> Event Image Section <=========================
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(10.r),
-                    child: Image.asset(
-                      'assets/images/shoot.png',
-                      height: 75.0.h,
-                      width: 75.0.w,
-                      fit: BoxFit.cover,
+                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    //=====================> Event Image Section <=========================
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10.r),
+                      child: Image.asset(
+                        'assets/images/shoot.png',
+                        height: 75.0.h,
+                        width: 75.0.w,
+                        fit: BoxFit.cover,
+                      ),
                     ),
-                  ),
-                  SizedBox(width: 12.w),
-                  //=====================> Event Details Section <=========================
-                  Expanded(
-                    child: Container(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Title and Share Icon Row
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  'Tom Alax shared Akcent Music',
-                                  style: TextStyle(
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
+                    SizedBox(width: 12.w),
+                    //=====================> Event Details Section <=========================
+                    Expanded(
+                      child: Container(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Title and Share Icon Row
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    'Tom Alax shared Akcent Music',
+                                    style: TextStyle(
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Icon(Icons.share, color: Colors.blueGrey, size: 16.sp), // Share Icon
-                            ],
-                          ),
-                          SizedBox(height: 8.h),
-
-                          //=====================> Event Info Section <=========================
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Icon(Icons.circle, size: 8.sp, color: Colors.blueGrey),
-                                      SizedBox(width: 4.w),
-                                      Text(
-                                        'Onsite Event',
-                                        style: TextStyle(fontSize: 10.sp, color: Colors.grey[800]),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 4.h),
-                                  Row(
-                                    children: [
-                                      Icon(Icons.circle, size: 8.sp, color: Colors.blueGrey),
-                                      SizedBox(width: 4.w),
-                                      Text(
-                                        'Dhaka Bangladesh',
-                                        style: TextStyle(fontSize: 10.sp, color: Colors.grey[800]),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Icon(Icons.circle, size: 8.sp, color: Colors.blueGrey),
-                                      SizedBox(width: 4.w),
-                                      Text(
-                                        'Cost: \$100',
-                                        style: TextStyle(fontSize: 10.sp, color: Colors.grey[800]),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 4.h),
-                                  Row(
-                                    children: [
-                                      Icon(Icons.circle, size: 8.sp, color: Colors.blueGrey),
-                                      SizedBox(width: 4.w),
-                                      Text(
-                                        'Deadline: 1-6-2025',
-                                        style: TextStyle(fontSize: 10.sp, color: Colors.grey[800]),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-
-                          //=====================> More Options Icon at the Bottom Right <=========================
-                          Align(
-                            alignment: Alignment.bottomRight,
-                            child: Padding(
-                              padding: EdgeInsets.only(top: 8.h),
-                              child: Icon(Icons.more_horiz, color: AppColors.color87A9B8, size: 20.sp),
+                                Icon(Icons.share, color: Colors.blueGrey, size: 16.sp), // Share Icon
+                              ],
                             ),
-                          ),
-                        ],
+                            SizedBox(height: 8.h),
+
+                            //=====================> Event Info Section <=========================
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Icon(Icons.circle, size: 8.sp, color: Colors.blueGrey),
+                                        SizedBox(width: 4.w),
+                                        Text(
+                                          'Onsite Event',
+                                          style: TextStyle(fontSize: 10.sp, color: Colors.grey[800]),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 4.h),
+                                    Row(
+                                      children: [
+                                        Icon(Icons.circle, size: 8.sp, color: Colors.blueGrey),
+                                        SizedBox(width: 4.w),
+                                        Text(
+                                          'Dhaka Bangladesh',
+                                          style: TextStyle(fontSize: 10.sp, color: Colors.grey[800]),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Icon(Icons.circle, size: 8.sp, color: Colors.blueGrey),
+                                        SizedBox(width: 4.w),
+                                        Text(
+                                          'Cost: \$100',
+                                          style: TextStyle(fontSize: 10.sp, color: Colors.grey[800]),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 4.h),
+                                    Row(
+                                      children: [
+                                        Icon(Icons.circle, size: 8.sp, color: Colors.blueGrey),
+                                        SizedBox(width: 4.w),
+                                        Text(
+                                          'Deadline: 1-6-2025',
+                                          style: TextStyle(fontSize: 10.sp, color: Colors.grey[800]),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+
+                            //=====================> More Options Icon at the Bottom Right <=========================
+                            Align(
+                              alignment: Alignment.bottomRight,
+                              child: Padding(
+                                padding: EdgeInsets.only(top: 8.h),
+                                child: Icon(Icons.more_horiz, color: AppColors.color87A9B8, size: 20.sp),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            //========================> Request Card
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 8.h),
+              decoration: BoxDecoration(
+                color: AppColors.colorEDF2F4,
+                borderRadius: BorderRadius.circular(12.r),
+                border: Border.all(color: AppColors.primaryColor, width: .5),
+              ),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        //=====================> Image Section <=========================
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(50.r),
+                          child: Image.asset(
+                            'assets/images/shoot.png',
+                            height: 59.0.h,
+                            width: 59.0.w,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        SizedBox(width: 12.w),
+                        //=====================> Details Section <=========================
+                        Expanded(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Sophia',
+                                style: AppStyles.fontSize14(fontWeight: FontWeight.w500),
+                                textAlign: TextAlign.start,
+                              ),
+                              Text(
+                                'requested to join your family',
+                                style: AppStyles.fontSize12(fontWeight: FontWeight.w400), // Adjusted style for subtitle
+                                textAlign: TextAlign.start,
+                              ),
+                              SizedBox(height: 8.h),
+                              //=====================> Event Info Section <=========================
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(Icons.circle, size: 8.sp, color: Colors.blueGrey), // Dot icon
+                                      SizedBox(width: 4.w),
+                                      Text(
+                                        'Account ID: 102',
+                                        style: TextStyle(fontSize: 10.sp, color: Colors.grey[800]), // Style adjustment
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(width: 20.w),
+                                  Row(
+                                    children: [
+                                      Icon(Icons.circle, size: 8.sp, color: Colors.blueGrey), // Dot icon
+                                      SizedBox(width: 4.w),
+                                      Text(
+                                        'Contribution: 100',
+                                        style: TextStyle(fontSize: 10.sp, color: Colors.grey[800]), // Style adjustment
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        //=====================> More Options Icon <=========================
+
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding:  EdgeInsets.only(right: 12.w),
+                    child: Align(
+                      alignment: Alignment.bottomRight,
+                      child: Icon(Icons.more_horiz, color: AppColors.color87A9B8, size: 20.sp),
                     ),
                   ),
                 ],
               ),
             ),
-                        ),
-
-          //========================> Request Card
-        Container(
-          margin: EdgeInsets.symmetric(vertical: 8.h),
-          decoration: BoxDecoration(
-            color: AppColors.colorEDF2F4,
-            borderRadius: BorderRadius.circular(12.r),
-            border: Border.all(color: AppColors.primaryColor, width: .5),
-          ),
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    //=====================> Image Section <=========================
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(50.r),
-                      child: Image.asset(
-                        'assets/images/shoot.png',
-                        height: 59.0.h,
-                        width: 59.0.w,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    SizedBox(width: 12.w),
-                    //=====================> Details Section <=========================
-                    Expanded(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Sophia',
-                            style: AppStyles.fontSize14(fontWeight: FontWeight.w500),
-                            textAlign: TextAlign.start,
-                          ),
-                          Text(
-                            'requested to join your family',
-                            style: AppStyles.fontSize12(fontWeight: FontWeight.w400), // Adjusted style for subtitle
-                            textAlign: TextAlign.start,
-                          ),
-                          SizedBox(height: 8.h),
-                          //=====================> Event Info Section <=========================
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(Icons.circle, size: 8.sp, color: Colors.blueGrey), // Dot icon
-                                  SizedBox(width: 4.w),
-                                  Text(
-                                    'Account ID: 102',
-                                    style: TextStyle(fontSize: 10.sp, color: Colors.grey[800]), // Style adjustment
-                                  ),
-                                ],
-                              ),
-                              SizedBox(width: 20.w),
-                              Row(
-                                children: [
-                                  Icon(Icons.circle, size: 8.sp, color: Colors.blueGrey), // Dot icon
-                                  SizedBox(width: 4.w),
-                                  Text(
-                                    'Contribution: 100',
-                                    style: TextStyle(fontSize: 10.sp, color: Colors.grey[800]), // Style adjustment
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    //=====================> More Options Icon <=========================
-                    Align(
-                      alignment: Alignment.bottomRight,
-                      child: Icon(Icons.more_horiz, color: AppColors.color87A9B8, size: 20.sp),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: 2,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: AppColors.colorD9A951,
-                      ),
-                      child: _notification(
-                        'Account Setup Successful!',
-                        DateTime.now(),
-                        'Your account creation is successful, you can now experience our services.',
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-
-
           ],
         ),
       ),
@@ -318,7 +323,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       direction: DismissDirection.endToStart,
       background: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12.r),
+          borderRadius: BorderRadius.circular(20.r),
           color: AppColors.colorD9A951,
         ),
         alignment: Alignment.centerRight,
@@ -329,7 +334,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12.r),
+          borderRadius: BorderRadius.circular(17.7.r),
           color: AppColors.colorEDF2F4
         ),
         child: Column(
@@ -349,7 +354,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                           text: title,
                           fontsize: 18.h,
                           color: AppColors.color414141,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w500,
                         ),
                         Align(
                           alignment: Alignment.centerLeft,
