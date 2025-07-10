@@ -581,7 +581,13 @@ class _StepThreeFormState extends State<StepThreeForm> {
                   Expanded(
                     child: CustomButton(
                       onTap: () {
-                        Get.back();
+                        setState(() {
+                          if (addeventcontroller.activeStepIndex.value == 2) {
+                            addeventcontroller.activeStepIndex.value--;
+                            //StepThreeForm();
+
+                          } // In create_event_one.dart, modify the step widgets to pass the activeStepIndex and update function:
+                        });
                       },
                       text: "Back",
                       color: AppColors.fillColor,
@@ -609,7 +615,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
                   ),
                 ],
               ),
-              SizedBox(height: 10.h),
+              SizedBox(height: 25.h),
             ],
           ),
         )

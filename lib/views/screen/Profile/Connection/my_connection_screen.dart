@@ -57,6 +57,9 @@ class _MyConnectionScreenState extends State<MyConnectionScreen>
             indicatorColor: Colors.transparent,
             labelColor: Colors.black,
             unselectedLabelColor: Colors.grey,
+            indicatorWeight: 1,
+            //dividerColor: Color(0xFFFFFFFF),
+            dividerColor: Color(0xFFC8D7DE),
             tabs: [
               //========================> Tab 01  <====================
               Tab(
