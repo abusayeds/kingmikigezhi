@@ -24,7 +24,10 @@ class TopProfileCard extends StatelessWidget {
         color: AppColors.primaryColor,
         borderRadius: BorderRadius.vertical(
             bottom: Radius.elliptical(
-                MediaQuery.of(context).size.width, 40.w)),
+                MediaQuery.of(context).size.width, 40.w),
+
+        ),
+
     /*    image: DecorationImage(
             image: AssetImage(AppImages.profileContainer), fit: BoxFit.-cover),*/
         ),

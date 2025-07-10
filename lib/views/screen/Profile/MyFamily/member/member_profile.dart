@@ -31,23 +31,26 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
         child: Column(
           children: [
             //========================> Top action button <=====================
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Container(
-                  height: 36.h,
-                  width: 36.w,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(30.r)),
-                    color: AppColors.buttonColor,
+            Padding(
+              padding: EdgeInsets.only(right: 8.w),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    height: 36.h,
+                    width: 36.w,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(30.r)),
+                      color: AppColors.buttonColor,
+                    ),
+                    child: InkWell(
+                      onTap: (){
+                        Get.toNamed(AppRoutes.createMemberProfileScreen);
+                      },
+                        child: const Icon(Icons.add, color: Colors.white)),
                   ),
-                  child: InkWell(
-                    onTap: (){
-                      Get.toNamed(AppRoutes.createMemberProfileScreen);
-                    },
-                      child: const Icon(Icons.add, color: Colors.white)),
-                ),
-              ],
+                ],
+              ),
             ),
             SizedBox(height: 16.h),
             //========================> Search bar <=========================

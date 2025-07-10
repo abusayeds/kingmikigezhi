@@ -42,7 +42,7 @@ class _AddedConneectionScreenState extends State<AddedConneectionScreen> {
       body: Column(
         children: [
           Padding(
-            padding:  EdgeInsets.symmetric(horizontal: 8.w,vertical: 8.h),
+            padding:  EdgeInsets.symmetric(horizontal: 15.h,vertical: 8.w),
             child: CustomTextField(
               controller: _searchController,
               contenpaddingHorizontal: 12.w,
@@ -65,7 +65,7 @@ class _AddedConneectionScreenState extends State<AddedConneectionScreen> {
               itemBuilder: (context, index) {
                 final invitation = invitations[index];
                 return Padding(
-                  padding:  EdgeInsets.symmetric(vertical: 8.h),
+                  padding:  EdgeInsets.symmetric(vertical: 8.h,horizontal: 4.h),
                   child: Container(
                     padding: EdgeInsets.all(12..r),
                     decoration: BoxDecoration(

@@ -37,6 +37,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       resizeToAvoidBottomInset: false,
       extendBody: true,
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         leading:  IconButton(
           icon: Icon(Icons.arrow_back_ios,
               color: Colors.black, size: 18.w),
