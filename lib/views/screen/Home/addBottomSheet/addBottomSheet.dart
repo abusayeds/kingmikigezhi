@@ -6,6 +6,7 @@ import 'package:event_sharing/views/base/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 
 
 class HomePageAddBottomSheetWidget extends StatefulWidget {
@@ -34,11 +35,11 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
   final TextEditingController _startsTimeCTRL = TextEditingController();
   final TextEditingController _endsDateCTRL = TextEditingController();
   final TextEditingController _endsTimeCTRL = TextEditingController();
+
   String? _selectedMember;
   String? _selectedRepeat;
   final List<String> _member = ['Family', 'Member', 'Owner'];
   final List<String> _repeat = ['Never', 'One', 'Two'];
-
   @override
   Widget build(BuildContext context) {
     double sheetHeight = MediaQuery
@@ -63,8 +64,8 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
             children: [
               // Type Section
               CustomText(text: 'Title',
-                  fontWeight: FontWeight.w600,
-                  fontsize: 16,
+                  fontWeight: FontWeight.w500,
+                  fontsize: 16.sp,
                   bottom: 8),
               CustomTextField(
                 controller: _typeCTRL,
@@ -73,16 +74,17 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
               SizedBox(height: 8.h),
               // Location
               CustomText(text: 'Location',
-                  fontWeight: FontWeight.w600,
-                  fontsize: 16,
+                  fontWeight: FontWeight.w500,
+                  fontsize: 16.sp,
                   bottom: 8),
               CustomTextField(
+                contenpaddingVertical: 16.w,
                 controller: _typeCTRL,
                 hintText: 'Type Location',
               ),
               SizedBox(height: 8.h),
               // Member
-              CustomText(text: 'Member', fontWeight: FontWeight.w600, fontsize: 16, bottom: 8),
+              CustomText(text: 'Member', fontWeight: FontWeight.w500, fontsize: 16.sp, bottom: 8),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 20.w),
                 decoration: BoxDecoration(
@@ -93,6 +95,7 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
                     value: _selectedMember,
+                    padding: EdgeInsets.symmetric(vertical: 5.w),
                     dropdownColor: AppColors.fillColor,
                     menuWidth: 240.w,
                     borderRadius: BorderRadius.circular(8.r),
@@ -119,18 +122,21 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
               ),
               SizedBox(height: 8.h),
               // Status
+              // Starts
               CustomText(
-                  text: 'Status', fontsize: 16, fontWeight: FontWeight.w600),
+                  text: 'Starts', fontsize: 16.sp, fontWeight: FontWeight.w500),
               SizedBox(height: 8.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
                     child: CustomTextField(
-                      prifixicon: IconButton(onPressed: () {},
+                      prifixicon: IconButton(
+                          onPressed: () => _selectDate(context, _startsDateCTRL),
                           icon: Icon(Icons.calendar_today_rounded)),
                       controller: _startsDateCTRL,
                       hintText: 'Date',
+                      readOnly: true,
                       sufixicons: Padding(
                         padding: EdgeInsets.only(right: 12.w),
                       ),
@@ -139,10 +145,12 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
                   SizedBox(width: 15.w),
                   Expanded(
                     child: CustomTextField(
-                      prifixicon: IconButton(onPressed: () {},
+                      prifixicon: IconButton(
+                          onPressed: () => _selectTime(context, _startsTimeCTRL),
                           icon: Icon(Icons.watch_later_rounded)),
                       controller: _startsTimeCTRL,
                       hintText: 'Time',
+                      readOnly: true,
                       sufixicons: Padding(
                         padding: EdgeInsets.only(right: 12.w),
                       ),
@@ -152,17 +160,20 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
               ),
               SizedBox(height: 8.h),
               // ends
-              CustomText(text: 'Ends', fontsize: 16, fontWeight: FontWeight.w600),
+              // Ends
+              CustomText(text: 'Ends', fontsize: 16.sp, fontWeight: FontWeight.w500),
               SizedBox(height: 8.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
                     child: CustomTextField(
-                      prifixicon: IconButton(onPressed: () {},
+                      prifixicon: IconButton(
+                          onPressed: () => _selectDate(context, _endsDateCTRL),
                           icon: Icon(Icons.calendar_today_rounded)),
                       controller: _endsDateCTRL,
                       hintText: 'Date',
+                      readOnly: true,
                       sufixicons: Padding(
                         padding: EdgeInsets.only(right: 12.w),
                       ),
@@ -171,10 +182,12 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
                   SizedBox(width: 15.w),
                   Expanded(
                     child: CustomTextField(
-                      prifixicon: IconButton(onPressed: () {},
+                      prifixicon: IconButton(
+                          onPressed: () => _selectTime(context, _endsTimeCTRL),
                           icon: Icon(Icons.watch_later_rounded)),
                       controller: _endsTimeCTRL,
                       hintText: 'Time',
+                      readOnly: true,
                       sufixicons: Padding(
                         padding: EdgeInsets.only(right: 12.w),
                       ),
@@ -184,9 +197,9 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
               ),
               SizedBox(height: 8.h),
               // Repeat Function
-              CustomText(text: 'Repeat Function', fontWeight: FontWeight.w600, fontsize: 16, bottom: 8),
+              CustomText(text: 'Repeat Function', fontWeight: FontWeight.w500, fontsize: 16.sp, bottom: 8),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                padding: EdgeInsets.symmetric(horizontal: 20.h),
                 decoration: BoxDecoration(
                   color: AppColors.fillColor,
                   borderRadius: BorderRadius.circular(8.r),
@@ -194,6 +207,7 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
                 ),
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
+                    padding: EdgeInsets.symmetric(vertical: 5.w),
                     value: _selectedRepeat,
                     dropdownColor: AppColors.fillColor,
                     menuWidth: 240.w,
@@ -221,8 +235,8 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
               SizedBox(height: 8.h),
               //Url
               CustomText(text: 'URL',
-                  fontWeight: FontWeight.w600,
-                  fontsize: 16,
+                  fontWeight: FontWeight.w500,
+                  fontsize: 16.sp,
                   bottom: 8),
               CustomTextField(
                 controller: _typeCTRL,
@@ -231,21 +245,22 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
               SizedBox(height: 8.h),
               // Note
               CustomText(text: 'Note',
-                  fontWeight: FontWeight.w600,
-                  fontsize: 16,
+                  fontWeight: FontWeight.w500,
+                  fontsize: 16.sp,
                   bottom: 8),
               CustomTextField(
                 controller: _typeCTRL,
                 maxLines: 2,
                 hintText: 'Type Note',
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 24.h),
               // Row for buttons
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
                     child: CustomButton(
+                      borderColor: AppColors.buttonColor,
                       onTap: () {},
                       text: "Cancel",
                       color: AppColors.colorEDF2F4,
@@ -269,5 +284,63 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
         ),
       ),
     );
+  }
+}
+Future<void> _selectDate(BuildContext context, TextEditingController controller) async {
+  final DateTime? picked = await showDatePicker(
+    context: context,
+    initialDate: DateTime.now(),
+    firstDate: DateTime(2023),
+    lastDate: DateTime(2101),
+    builder: (context, child) {
+      return Theme(
+        data: Theme.of(context).copyWith(
+          colorScheme: ColorScheme.light(
+            primary: AppColors.buttonColor, // header & OK/Cancel button color
+            onPrimary: Colors.white, // text color on header
+            onSurface: Colors.black, // body text color
+          ),
+          textButtonTheme: TextButtonThemeData(
+            style: TextButton.styleFrom(
+              foregroundColor: AppColors.buttonColor, // button text color
+            ),
+          ),
+        ),
+        child: child!,
+      );
+    },
+  );
+  if (picked != null) {
+    controller.text = DateFormat('yyyy-MM-dd').format(picked);
+  }
+}
+
+
+Future<void> _selectTime(BuildContext context, TextEditingController controller) async {
+  final TimeOfDay? picked = await showTimePicker(
+    context: context,
+    initialTime: TimeOfDay.now(),
+    builder: (context, child) {
+      return Theme(
+        data: Theme.of(context).copyWith(
+          colorScheme: ColorScheme.light(
+            primary: AppColors.buttonColor,
+            onPrimary: Colors.white,
+            onSurface: Colors.black,
+          ),
+          textButtonTheme: TextButtonThemeData(
+            style: TextButton.styleFrom(
+              foregroundColor: AppColors.buttonColor,
+            ),
+          ),
+        ),
+        child: child!,
+      );
+    },
+  );
+  if (picked != null) {
+    final now = DateTime.now();
+    final dateTime = DateTime(now.year, now.month, now.day, picked.hour, picked.minute);
+    controller.text = DateFormat('hh:mm a').format(dateTime);
   }
 }

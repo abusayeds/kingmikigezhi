@@ -29,14 +29,14 @@ class _SignInScreenState extends State<SignInScreen> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.w,vertical: 24.h),
+          padding: EdgeInsets.symmetric(horizontal: 24.h,vertical: 24.w),
           child: Form(
             key: _formKey,
             child: Center(
               child: Column(
 
                 children: [
-                  SizedBox(height: 150.h),
+                  SizedBox(height: 108.h),
                   //================================> Log In Text Section <========================
                   CustomText(
                     text: 'Sign In',
@@ -44,7 +44,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     fontsize: 22.sp,
                     bottom: 8.h,
                   ),
-                  SizedBox(height: 56.h),
+                  SizedBox(height: 117.h),
                   //=================================> Email Text Field <=========================
                   CustomTextField(
                     controller: emailCTRl,
@@ -63,7 +63,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       return null;
                     },
                   ),
-                  SizedBox(height: 16.h),
+                  SizedBox(height: 19.h),
                   //=================================> Password Text Field <=========================
                   CustomTextField(
                     controller: passwordCTRl,
@@ -95,55 +95,83 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                   SizedBox(height: 16.h),
                   //=======================================> CheckBox Section <==============================
+
+
                   Row(
                     mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Row(
-                        children: [
-                          Checkbox(
-
-                            checkColor: Colors.white,
-                            activeColor: AppColors.primaryColor,
-                            focusColor: AppColors.greyColor,
-                            value: isChecked,
-                            onChanged: (bool? value) {
-                              setState(() {
-                                isChecked = value ?? false;
-                              });
-                            },
-                            side: BorderSide(
-                              color: isChecked ? AppColors.primaryColor : AppColors.primaryColor,
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            isChecked = !isChecked;
+                          });
+                        },
+                        child: Container(
+                          width: 20.w,
+                          height: 20.w,
+                          decoration: BoxDecoration(
+                            color: isChecked ? AppColors.primaryColor : Colors.transparent,
+                            border: Border.all(
+                              color: AppColors.primaryColor,
                               width: 1.w,
                             ),
+                            borderRadius: BorderRadius.circular(4.r),
                           ),
-                          CustomText(
-                            text: AppStrings.rememberMe,
-                            fontsize: 12.sp,
-                          ),
-                        ],
+                          child: isChecked
+                              ? Icon(
+                            Icons.check,
+                            color: Colors.white,
+                            size: 14.sp,
+                          )
+                              : null,
+                        ),
                       ),
-                      //=================================> Forgot Password Button <================================
-                      TextButton(
-                        onPressed: () {
+                      SizedBox(width: 8.w),
+                      CustomText(
+                        text: AppStrings.rememberMe,
+                        fontsize: 12.sp,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      const Spacer(),
+                      GestureDetector(
+                        onDoubleTap: (){
                           Get.toNamed(AppRoutes.forgetPasswordOtpScreen);
                         },
                         child: CustomText(
-                          fontWeight: FontWeight.bold,
-                          text: AppStrings.forgotPassword,
-                          color: AppColors.primaryColor,
+                          text: 'Forgot Password?',
+                          fontWeight: FontWeight.w600,
                           fontsize: 12.sp,
+                          lineHeight: 1.5,
+                          color: AppColors.primaryColor,
+
                         ),
-                      ),
+                      )
+                      // TextButton(
+                      //   onPressed: () {
+                      //     Get.toNamed(AppRoutes.forgetPasswordOtpScreen);
+                      //   },
+                      //   child: CustomText(
+                      //     fontWeight: FontWeight.bold,
+                      //     text: AppStrings.forgotPassword,
+                      //     color: AppColors.primaryColor,
+                      //     fontsize: 12.sp,
+                      //   ),
+                      // ),
                     ],
                   ),
+                      //=================================> Forgot Password Button <================================
 
-                  SizedBox(height: 2.h),
+
+
+
+                  SizedBox(height: 32.h),
                   //========================================> Don't have an account text <============================
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CustomText(
+                        fontsize: 12.sp,
                         text: AppStrings.doNotHaveAccount,
                         fontWeight: FontWeight.w400,
                       ),
@@ -152,10 +180,12 @@ class _SignInScreenState extends State<SignInScreen> {
                             Get.toNamed(AppRoutes.signUpScreen);
                           },
                           child: CustomText(
+                            fontsize: 12.sp,
                             text: AppStrings.signUp,
                             color: AppColors.primaryColor,
-                            fontWeight: FontWeight.w900,
+                            fontWeight: FontWeight.w700,
                             decoration:TextDecoration.underline,
+                            lineHeight: 1.5.h,
                           ))
                     ],
                   )

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../utils/app_colors.dart';
 import '../../../utils/app_images.dart';
 
 class OnboardScreen extends StatelessWidget {
@@ -144,6 +145,7 @@ class OnboardScreen extends StatelessWidget {
                   },
                   text: AppStrings.getStart,
                   color: Colors.white,
+                  borderColor: AppColors.buttonColor,
                 )
               ],
             ),

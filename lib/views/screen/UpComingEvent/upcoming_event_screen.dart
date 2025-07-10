@@ -23,29 +23,21 @@ class _UpcomingEventScreenState extends State<UpcomingEventScreen> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Row(
-          children: [
-            IconButton(
-              icon: Icon(
-                Icons.arrow_back_ios,
-                color: Colors.black,
-                size: 20.sp,
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            Expanded(
-              child: Align(
-                alignment: Alignment.center,
-                child: CustomText(
-                  text: AppStrings.upcomingEvent,
-                  fontsize: 18.sp,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ],
+        scrolledUnderElevation: 0,
+        leading:  IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+            size: 20.sp,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title:  CustomText(
+          text: AppStrings.upcomingEvent,
+          fontsize: 18.sp,
+          fontWeight: FontWeight.w600,
         ),
         centerTitle: true,
       ),

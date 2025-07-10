@@ -141,7 +141,7 @@ class AppRoutes{
     GetPage(name:signInScreen, page: ()=>const SignInScreen()),
     GetPage(name:signUpScreen, page: ()=>const SignUpScreen()),
     GetPage(name:forgotPasswordScreen, page: ()=>const ForgotPasswordScreen()),
-    //GetPage(name:verificationCodeScreen, page: ()=>const VerificationCodeScreen()),
+    GetPage(name:verificationCodeScreen, page: ()=>const VerificationCodeScreen()),
     GetPage(name:resetPasswordScreen, page: ()=>const ResetPasswordScreen()),
     GetPage(name:personalInformationScreen, page: ()=> PersonalInformationScreen()),
     GetPage(name:editProfileScreen, page: ()=>const EditProfileScreen()),

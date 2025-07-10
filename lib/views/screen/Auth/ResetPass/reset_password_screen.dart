@@ -45,14 +45,14 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.w),
+          padding: EdgeInsets.symmetric(horizontal: 24.h),
           child: Form(
             key: _formKey,
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(height: 64.h),
+
                   //================================> Reset Password Text Section <========================
                   CustomText(
                     text: AppStrings.resetPassword,
@@ -60,7 +60,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     fontsize: 22.sp,
                     bottom: 8.h,
                   ),
-                  SizedBox(height: 68.h),
+                  SizedBox(height: 94.h),
                   //=================================> Password Text Field <=========================
                   CustomTextField(
                     controller: passwordCTRl,
