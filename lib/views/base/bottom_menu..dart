@@ -22,22 +22,25 @@ class BottomMenu extends StatelessWidget {
           padding: const EdgeInsets.only(top: 4),
           child: SvgPicture.asset(
             image,
-            height: 24.0.h,
-            width: 24.0.w,
+            height: 22.0.h,
+            width: 22.0.w,
           ),
         ));
   }
 
   Widget getAddItem() {
-    return Container(
-      width: 60.w,
-      height: 60.h,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: Colors.white, //
-      ),
-      child: Center(
-        child:Icon(Icons.add,color: AppColors.primaryColor,size: 35,)
+    return Padding(
+      padding:  EdgeInsets.only(top: 4.h),
+      child: Container(
+        width: 58.h,
+        height: 58.h,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.white, //
+        ),
+        child: Center(
+          child:Icon(Icons.add,color: AppColors.primaryColor,size: 32,)
+        ),
       ),
     );
   }
@@ -64,11 +67,19 @@ class BottomMenu extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.only(
             topRight: Radius.circular(20.r), topLeft: Radius.circular(20.r)),
-        child: BottomNavigationBar(
+        child:BottomNavigationBar(
           backgroundColor: AppColors.primaryColor,
           type: BottomNavigationBarType.fixed,
           selectedItemColor: AppColors.white,
           unselectedItemColor: AppColors.white,
+          selectedLabelStyle: TextStyle(
+            fontSize: 12.sp,
+            fontWeight: FontWeight.w600,
+          ),
+          unselectedLabelStyle: TextStyle(
+            fontSize: 12.sp,
+            fontWeight: FontWeight.w400,
+          ),
           currentIndex: menuIndex,
           onTap: (value) {
             switch (value) {
@@ -90,7 +101,8 @@ class BottomMenu extends StatelessWidget {
             }
           },
           items: menuItems,
-        ),
+        )
+
       ),
     );
   }

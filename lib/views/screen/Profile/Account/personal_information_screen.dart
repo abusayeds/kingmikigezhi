@@ -38,6 +38,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         leading:  IconButton(
           icon: Icon(Icons.arrow_back_ios,
               color: Colors.black, size: 18.w),
@@ -47,7 +48,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
         ),
         title: CustomText(
           text: AppStrings.account,
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.w500,
           fontsize: 18.sp,
         ),
         centerTitle: true,

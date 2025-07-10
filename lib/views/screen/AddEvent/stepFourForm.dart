@@ -9,6 +9,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../../../../utils/app_colors.dart';
+import 'controller/addEventController.dart';
 
 class StepFourForm extends StatefulWidget {
   const StepFourForm({Key? key}) : super(key: key);
@@ -19,81 +20,101 @@ class StepFourForm extends StatefulWidget {
 
 class _StepFourFormState extends State<StepFourForm> {
   TextEditingController relationShipController = TextEditingController();
+  final Addeventcontroller addeventcontroller = Get.find<Addeventcontroller>();
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding:  EdgeInsets.symmetric(vertical: 8.h),
-                child:Text("Step 4: Configuration", style: AppStyles.fontSize20(fontWeight: FontWeight.bold)),
-              ),
-              SizedBox(height: 22.h),
-              Padding(
-                padding: EdgeInsets.all(4.r),
-                child: Text("Repeat Function", style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
-              ),
-              Container(
-                height: 60.h,
-                padding: EdgeInsets.symmetric(horizontal: 20.w),
-                decoration: BoxDecoration(
-                  color: AppColors.fillColor,
-                  borderRadius: BorderRadius.circular(8.r),
-                  border: Border.all(color: AppColors.primaryColor, width: 1),
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 24.w),
+      child: Column(
+        children: [
+          SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding:  EdgeInsets.symmetric(vertical: 8.h),
+                  child:Text("Step 4: Configuration", style: AppStyles.fontSize20(fontWeight: FontWeight.bold)),
                 ),
-                child: GestureDetector(
-                  onTap: () {
-                    showRepeatPopup(context);
-                  },
-                  child: InputDecorator(
-                    decoration: InputDecoration.collapsed(hintText: null),
-                    child: Center( // Center the content
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('Function Type', style: AppStyles.fontSize16(color: AppColors.color414141)),
-                          SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
-                          ),
-                        ],
+                SizedBox(height: 22.h),
+                Padding(
+                  padding: EdgeInsets.all(4.r),
+                  child: Text("Repeat Function", style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
+                ),
+                Container(
+                  height: 60.h,
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  decoration: BoxDecoration(
+                    color: AppColors.fillColor,
+                    borderRadius: BorderRadius.circular(8.r),
+                    border: Border.all(color: AppColors.primaryColor, width: 1),
+                  ),
+                  child: GestureDetector(
+                    onTap: () {
+                      showRepeatPopup(context);
+                    },
+                    child: InputDecorator(
+                      decoration: InputDecoration.collapsed(hintText: null),
+                      child: Center( // Center the content
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('Function Type', style: AppStyles.fontSize16(color: AppColors.color414141)),
+                            SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              SizedBox(height: 350.h),
-              Align(
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: CustomButton(
-                        onTap: () {},
-                        text: "Back",
-                        color: AppColors.fillColor,
-                        textColor: Colors.black,
-                        borderColor: AppColors.buttonColor,
+                SizedBox(height: 350.h),
+                Align(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: CustomButton(
+                          onTap: () {
+                            setState(() {
+                              if (addeventcontroller.activeStepIndex.value == 3) {
+                                addeventcontroller.activeStepIndex.value--;
+                                //StepThreeForm();
+
+                              } // In create_event_one.dart, modify the step widgets to pass the activeStepIndex and update function:
+                            });
+                          },
+                          text: "Back",
+                          color: AppColors.fillColor,
+                          textColor: Colors.black,
+                          borderColor: AppColors.buttonColor,
+                        ),
                       ),
-                    ),
-                    SizedBox(width: 10.w),
-                    Expanded(
-                      child: CustomButton(
-                        onTap: () {},
-                        text: "Next",
-                        textColor: Colors.white,
-                        color: AppColors.buttonColor,
-                        borderColor: AppColors.buttonColor,
+                      SizedBox(width: 10.w),
+                      Expanded(
+                        child: CustomButton(
+                          onTap: () {
+                            setState(() {
+                              if (addeventcontroller.activeStepIndex.value == 3) {
+                                addeventcontroller.activeStepIndex.value++;
+                                //StepThreeForm();
+
+                              } // In create_event_one.dart, modify the step widgets to pass the activeStepIndex and update function:
+                            });
+                          },
+                          text: "Next",
+                          textColor: Colors.white,
+                          color: AppColors.buttonColor,
+                          borderColor: AppColors.buttonColor,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -239,6 +260,7 @@ class _StepFourFormState extends State<StepFourForm> {
                       ),
                     ],
                   ),
+
                 ],
               ),
             );
