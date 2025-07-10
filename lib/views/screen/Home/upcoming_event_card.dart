@@ -12,6 +12,7 @@ class EventCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+
       color: const Color(0xffedf2f4),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(24.r),
@@ -104,7 +105,7 @@ class EventCard extends StatelessWidget {
                           ),
                         ],
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -125,10 +126,10 @@ class EventCard extends StatelessWidget {
                           ),
                         ],
                       ),
-                      Spacer()
+                      const Spacer()
                     ],
                   ),
-                  SizedBox(height: 8.h),
+                  //SizedBox(height: 8.h),
                    Align(
                       alignment: Alignment.bottomRight,
                       child: Icon(

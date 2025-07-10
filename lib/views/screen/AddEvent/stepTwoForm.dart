@@ -358,9 +358,11 @@ class _StepTwoFormState extends State<StepTwoForm> {
                       // if (_activeStepIndex == 1)
                       //const StepThreeForm();
                       setState(() {
-                        if (addeventcontroller.activeStepIndex.value > 0) {
-                          _activeStepIndex++;
-                        }
+                        if (addeventcontroller.activeStepIndex.value == 1) {
+                          addeventcontroller.activeStepIndex.value--;
+                          //StepThreeForm();
+
+                        } // In create_event_one.dart, modify the step widgets to pass the activeStepIndex and update function:
                       });
                     });
                   },
@@ -391,7 +393,7 @@ class _StepTwoFormState extends State<StepTwoForm> {
               ),
             ],
           ),
-          SizedBox(height: 12.h),
+          SizedBox(height: 25.h),
 
           // if (_activeStepIndex == 2) const StepThreeForm()
         ],

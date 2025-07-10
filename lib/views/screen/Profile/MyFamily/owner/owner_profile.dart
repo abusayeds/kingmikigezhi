@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:timeago/timeago.dart' as TimeAgo;
+
+import '../../../../base/custom_text.dart';
 
 class OwnerMemberAddScreen extends StatefulWidget {
   const OwnerMemberAddScreen({super.key});
@@ -87,13 +90,14 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
                   padding: const EdgeInsets.all(8.0),
                   child: Dismissible(
                     key: Key(member['name']!),
+
                     background: Container(
                       decoration: BoxDecoration(
                         color: AppColors.colorD9A951,
-                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                        borderRadius: BorderRadius.all(Radius.circular(20.r)),
                       ),
                       alignment: Alignment.centerRight,
-                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      padding: EdgeInsets.symmetric(horizontal: 20.h),
                       child: SvgPicture.asset(AppIcons.deleteIcon),
                     ),
                     direction: DismissDirection.endToStart,
@@ -106,7 +110,7 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
                     child: Container(
                       decoration: BoxDecoration(
                         color: AppColors.colorEDF2F4,
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(20.r),
                         border: Border.all(color: Colors.black12, width: 1.0),
                       ),
                       padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
@@ -157,9 +161,11 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
                         ],
                       ),
                     ),
+
                   )
 
                 );
+
               },
             ),
           ],
@@ -173,15 +179,15 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
       context: context,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
-          top: Radius.circular(20.r),
+          top: Radius.circular(40.r),
         ),
       ),
       builder: (BuildContext context) {
         return Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20.r),
-              topRight: Radius.circular(20.r),
+              topLeft: Radius.circular(40.r),
+              topRight: Radius.circular(40.r),
             ),
             color: AppColors.backgroundColor,
           ),
@@ -189,8 +195,12 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
           padding: EdgeInsets.all(16),
           child: Column(
             children: [
-              SizedBox(height: 20.h),
-              Divider(thickness: 1, color: AppColors.greyColor),
+
+              Container(height: 3.h,width: 38.w,color: Color(0xFF4C7E95),),
+              SizedBox(
+                height: 16.h,
+              ),
+              Divider(thickness: 1, color: AppColors.primaryColor),
               SizedBox(height: 20.h),
               Text("Delete", style: AppStyles.fontSize20(color: AppColors.primaryColor, fontWeight: FontWeight.w600)),
               Text("Are you sure to delete this?",
@@ -333,4 +343,74 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
       },
     );
   }
+  //
+  // _notification(
+  //     String name,
+  //     DateTime time,
+  //     String shorDescription,
+  //     ) {
+  //   return Dismissible(
+  //     key: Key(name),
+  //     direction: DismissDirection.endToStart,
+  //     background: Container(
+  //       decoration: BoxDecoration(
+  //         borderRadius: BorderRadius.circular(20.r),
+  //         color: AppColors.colorD9A951,
+  //       ),
+  //       alignment: Alignment.centerRight,
+  //       padding: EdgeInsets.only(right: 26.w),
+  //       child: SvgPicture.asset(AppIcons.deleteIcon),
+  //     ),
+  //     onDismissed: (direction) async {
+  //
+  //       final bool? result = await _showCustomBottomSheet(context, name!);
+  //       shouldRemove = result ?? false;
+  //       return shouldRemove;
+  //     },
+  //     child: Container(
+  //       padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
+  //       decoration: BoxDecoration(
+  //           borderRadius: BorderRadius.circular(17.7.r),
+  //           color: AppColors.colorEDF2F4
+  //       ),
+  //       child: Column(
+  //         children: [
+  //           Padding(
+  //             padding: const EdgeInsets.all(8.0),
+  //             child: Row(
+  //               mainAxisAlignment: MainAxisAlignment.start,
+  //               children: [
+  //                 Expanded(
+  //                   child: Column(
+  //                     mainAxisSize: MainAxisSize.min,
+  //                     crossAxisAlignment: CrossAxisAlignment.start,
+  //                     children: [
+  //                       // Title
+  //                       CustomText(
+  //                         text: title,
+  //                         fontsize: 18.h,
+  //                         color: AppColors.color414141,
+  //                         fontWeight: FontWeight.w500,
+  //                       ),
+  //                       Align(
+  //                         alignment: Alignment.centerLeft,
+  //                         child: CustomText(
+  //                           top: 2.h,
+  //                           text: TimeAgo.format(time),
+  //                           fontsize: 14.sp,
+  //                           fontWeight: FontWeight.w400,
+  //                           color: AppColors.color414141,
+  //                         ),
+  //                       ),
+  //                     ],
+  //                   ),
+  //                 ),
+  //               ],
+  //             ),
+  //           ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 }
