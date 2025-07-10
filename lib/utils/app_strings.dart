@@ -31,7 +31,7 @@ class AppStrings{
   static String confirmPassword = "Confirm Password";
   static String byCreatingAccount = "By creating an account, I accept the";
   static String termsAndConditions = "Terms & Conditions";
-  static String alreadyHaveAccount = "Already have an account?";
+  static String alreadyHaveAccount = "Already have an account ?";
 
 //================> Forgot Password Screen <====================
   static String forgotPasswords = "Forgot Password";

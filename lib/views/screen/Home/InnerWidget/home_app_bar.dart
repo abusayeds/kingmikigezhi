@@ -9,86 +9,80 @@ import '../../../../utils/app_icons.dart';
 import '../../../../utils/app_images.dart';
 import '../../../base/custom_text.dart';
 
-class HomeAppBar extends StatelessWidget {
-  HomeAppBar({super.key});
-
-  //final HomeController _homeController = Get.put(HomeController());
-  //final ProfileController _profileController = Get.put(ProfileController());
-  // final dataController = Get.put(DataController());
-
-  @override
-  Widget build(BuildContext context) {
-    //_profileController.getProfileData();
-//_profileController.getProfileData();
-    return Row(
-      children: [
-        //==========================> Profile image <=============================
-        // _profileController.profileModel.value.data?.attributes?.image?.publicFileUrl == null?
-        Expanded(
-          child: GestureDetector(
-            onTap: () {
-           //   Get.toNamed(AppRoutes.mapScreen);
-            },
-            child: Row(
-              children: [
-                Image.asset(AppImages.logo, width: 42.w,height: 42.h),
-                SizedBox(width: 6.w),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        SvgPicture.asset(
-                          AppIcons.locationIcon,
-                          height: 20.h,
-                          width: 22.w,
-                          color: AppColors.primaryColor,
-                        ),
-                        SizedBox(
-                          width: 5.w,
-                        ),
-                        CustomText(
-                          text: 'Dhaka',
-                          fontsize: 14.h,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        SvgPicture.asset(
-                          AppIcons.downArrowIcon,
-                          width: 20.w,
-                          height: 22.h,
-                        )
-                      ],
-                    ),
-                    CustomText(
-                      text: 'Banasree, Rampura',
-                      //"${_profileController.profileModel.value.data?.attributes?.name}" ?? '',
-                    )
-                  ],
-                ),
-              ],
+PreferredSize customHomeAppBar() {
+  return PreferredSize(
+    preferredSize: Size.fromHeight(50.h), // Adjust height as needed
+    child: AppBar(
+      automaticallyImplyLeading: false,
+     // backgroundColor: Colors.white,
+      elevation: 0,
+      scrolledUnderElevation: 0,
+      titleSpacing: 20.w,
+      title: Row(
+        children: [
+          //==========================> Profile image <=============================
+          Expanded(
+            child: GestureDetector(
+              onTap: () {
+                 Get.toNamed(AppRoutes.mapScreen);
+              },
+              child: Row(
+                children: [
+                  Image.asset(AppImages.logo, width: 42.h, height: 42.h),
+                  SizedBox(width: 6.w),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          SvgPicture.asset(
+                            AppIcons.locationIcon,
+                            height: 20.h,
+                            width: 20.w,
+                            color: AppColors.primaryColor,
+                          ),
+                          SizedBox(width: 5.w),
+                          CustomText(
+                            text: 'Dhaka',
+                            fontsize: 14.h,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          SvgPicture.asset(
+                            AppIcons.downArrowIcon,
+                            width: 20.w,
+                            height: 22.h,
+                          )
+                        ],
+                      ),
+                      CustomText(
+                        text: 'Banasree, Rampura',
+                      )
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-        SizedBox(width: 10.w),
-        //=======================> Heart Button <=======================
-        GestureDetector(
-          onTap: () {
-            Get.toNamed(AppRoutes.suggestionDonationPage);
-          },
-          child: SvgPicture.asset(
-            AppIcons.heart,
-            color: AppColors.colorD9A951,
-            height: 28.h,
-            width: 32.w,
+          SizedBox(width: 10.w),
+          //=======================> Heart Button <=======================
+          GestureDetector(
+            onTap: () {
+              Get.toNamed(AppRoutes.suggestionDonationPage);
+            },
+            child: SvgPicture.asset(
+              AppIcons.heart,
+              color: AppColors.colorD9A951,
+              height: 28.h,
+              width: 32.w,
+            ),
           ),
-        ),
-        SizedBox(width: 10.w),
-        //=======================> Notifications Button <=======================
-        GestureDetector(
-          onTap: () {
-            Get.toNamed(AppRoutes.notificationsScreen);
-          },
-          child: Badge(
+          SizedBox(width: 10.w),
+          //=======================> Notifications Button <=======================
+          GestureDetector(
+            onTap: () {
+              Get.toNamed(AppRoutes.notificationsScreen);
+            },
+            child: Badge(
               backgroundColor: Colors.red,
               smallSize: 10,
               child: SvgPicture.asset(
@@ -96,21 +90,22 @@ class HomeAppBar extends StatelessWidget {
                 color: AppColors.primaryColor,
                 height: 28.h,
                 width: 32.w,
-              )),
-        ),
-        SizedBox(width: 13.w),
-        //=======================> Profile Icon <=======================
-        InkWell(
-          onTap: (){
-            Get.toNamed(AppRoutes.personalInformationScreen);
-          },
-          child: CircleAvatar(
+              ),
+            ),
+          ),
+          SizedBox(width: 13.w),
+          //=======================> Profile Icon <=======================
+          InkWell(
+            onTap: () {
+              Get.toNamed(AppRoutes.personalInformationScreen);
+            },
+            child: CircleAvatar(
               radius: 20.r,
               backgroundImage: AssetImage('assets/images/ownerImage.png'),
-            //  NetworkImage("https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg")
+            ),
           ),
-        ),
-      ],
-    );
-  }
+        ],
+      ),
+    ),
+  );
 }

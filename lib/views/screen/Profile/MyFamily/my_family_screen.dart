@@ -58,6 +58,9 @@ class _MyFamilyScreenState extends State<MyFamilyScreen>
             indicatorColor: Colors.transparent,
             labelColor: Colors.black,
             unselectedLabelColor: Colors.grey,
+            indicatorWeight: 1,
+            //dividerColor: Color(0xFFFFFFFF),
+            dividerColor: Color(0xFFC8D7DE),
             tabs: [
               //========================> Tab 01  <====================
               Tab(
@@ -110,7 +113,7 @@ class _MyFamilyScreenState extends State<MyFamilyScreen>
           ),
         ),
         body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 8.h),
+          padding: EdgeInsets.symmetric(horizontal: 10.h, vertical: 8.w),
           child: TabBarView(
             controller: _tabController,
             children: const [

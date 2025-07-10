@@ -4,6 +4,7 @@ import 'package:event_sharing/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -55,7 +56,11 @@ class _CalendarWithDropdownState extends State<CalendarWithDropdown> {
               items: _months.map<DropdownMenuItem<String>>((String month) {
                 return DropdownMenuItem<String>(
                   value: "$month ${_focusedDay.year}",
-                  child: Text("$month ${_focusedDay.year}", style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
+                  child: Text("$month ${_focusedDay.year}", style: GoogleFonts.poppins(
+                    fontSize: 22.sp,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF202020)
+                  )),
                 );
               }).toList(),
             ),
@@ -124,8 +129,9 @@ class _CalendarWithDropdownState extends State<CalendarWithDropdown> {
                           child: Text(
                             '${day.day}',
                             style: TextStyle(
+                              fontSize: 14.sp,
                               color: isSameDay(day, _selectedDay) ? Colors.white : Colors.black,
-                              fontWeight: isSameDay(day, _selectedDay) ? FontWeight.bold : FontWeight.normal,
+                              fontWeight: isSameDay(day, _selectedDay) ? FontWeight.w600 : FontWeight.w600,
                             ),
                           ),
                         ),

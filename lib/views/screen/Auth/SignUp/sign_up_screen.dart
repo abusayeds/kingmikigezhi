@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../../../utils/app_colors.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -33,15 +34,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(height: 150.h),
+                  SizedBox(height: 108.h),
                   //================================> Sign Up  Text Section <========================
                   CustomText(
                     text: 'Sign Up ',
                     fontWeight: FontWeight.w600,
                     fontsize: 22.sp,
-                    bottom: 8.h,
+
                   ),
-                  SizedBox(height: 56.h),
+                  SizedBox(height: 74.h),
                   //=================================> Email Text Field <=========================
                   CustomTextField(
                     controller: emailCTRl,
@@ -60,32 +61,46 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       return null;
                     },
                   ),
-                  SizedBox(height: 16.h),
+                  SizedBox(height: 24.h),
                   //=======================================> CheckBox Section <==============================
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.max,
                     children: [
-                      Checkbox(
-                        checkColor: Colors.white,
-                        activeColor: AppColors.primaryColor,
-                        focusColor: AppColors.greyColor,
-                        value: isChecked,
-                        onChanged: (bool? value) {
+                      GestureDetector(
+                        onTap: () {
                           setState(() {
-                            isChecked = value ?? false;
+                            isChecked = !isChecked;
                           });
                         },
-                        side: BorderSide(
-                          color: isChecked
-                              ? AppColors.primaryColor
-                              : AppColors.primaryColor,
-                          width: 1.w,
+                        child: Container(
+                          width: 20.w,
+                          height: 20.w,
+                          decoration: BoxDecoration(
+                            color: isChecked ? AppColors.primaryColor : Colors.transparent,
+                            border: Border.all(
+                              color: AppColors.primaryColor,
+                              width: 1.w,
+                            ),
+                            borderRadius: BorderRadius.circular(4.r),
+                          ),
+                          child: isChecked
+                              ? Icon(
+                            Icons.check,
+                            color: Colors.white,
+                            size: 14.sp,
+                          )
+                              : null,
                         ),
                       ),
-                      Text('User agreement',style: TextStyle(fontSize: 14.sp),)
+                      SizedBox(width: 8.w),
+                      CustomText(
+                        text: "User agreement",
+                        fontsize: 12.sp,
+                        fontWeight: FontWeight.w400,
+                      ),
                     ],
                   ),
+
                   //================================> Continue Button <======================================
                   SizedBox(height: 24.h),
                   CustomButton(
@@ -94,28 +109,45 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     },
                     text: 'Continue',
                     color: AppColors.buttonColor,
+                    borderColor: AppColors.buttonColor,
                     textColor: Colors.white,
                     textStyle: TextStyle(fontSize: 12.sp),
                   ),
-                  SizedBox(height: 2.h),
+                  SizedBox(height: 32.h),
                   //========================================> Already has an account text <============================
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CustomText(
-                        text: 'Already has an account?',
-                        fontWeight: FontWeight.w700,
+                        fontsize: 12.sp,
+                        text: 'Already has an account ?',
+                        fontWeight: FontWeight.w400,
+                        lineHeight: 1.5.h,
                       ),
-                      TextButton(
-                          onPressed: () {
-                            Get.toNamed(AppRoutes.signInScreen);
-                          },
-                          child: CustomText(
-                            text: 'Sign In',
-                            color: AppColors.primaryColor,
-                            fontWeight: FontWeight.w700,
-                            decoration:TextDecoration.underline,
-                          ))
+                      GestureDetector(
+                        onDoubleTap: (){
+                                Get.toNamed(AppRoutes.signInScreen);
+
+                        },
+                        child: Text(' Sign In',style: GoogleFonts.poppins(
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w500,
+                          height: 1.5.h,
+                          color: AppColors.primaryColor
+                        ),),
+                      )
+                      // TextButton(
+                      //     onPressed: () {
+                      //       Get.toNamed(AppRoutes.signInScreen);
+                      //     },
+                      //     child: CustomText(
+                      //       fontsize: 12.sp,
+                      //       lineHeight: 1.5.h,
+                      //       text: 'Sign In',
+                      //       color: AppColors.primaryColor,
+                      //       fontWeight: FontWeight.w900,
+                      //       decoration:TextDecoration.underline,
+                      //     ))
                     ],
                   )
                 ],

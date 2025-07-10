@@ -35,14 +35,15 @@ class _ForgetPasswordOtpScreenState extends State<ForgetPasswordOtpScreen> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.w),
+          padding: EdgeInsets.symmetric(horizontal: 28.h),
           child: Form(
             key: _formKey,
-            child: Center(
+            child: Align(
+              alignment: Alignment.topCenter,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(height: 150.h),
+                  // SizedBox(height: 150.h),
                   //================================> Sign Up  Text Section <========================
                   CustomText(
                     text: 'Forget Password',
@@ -50,7 +51,7 @@ class _ForgetPasswordOtpScreenState extends State<ForgetPasswordOtpScreen> {
                     fontsize: 22.sp,
                     bottom: 8.h,
                   ),
-                  SizedBox(height: 56.h),
+                  SizedBox(height: 74.h),
                   //=================================> Email Text Field <=========================
                   CustomTextField(
                     controller: emailCTRl,
@@ -69,7 +70,7 @@ class _ForgetPasswordOtpScreenState extends State<ForgetPasswordOtpScreen> {
                       return null;
                     },
                   ),
-                  SizedBox(height: 16.h),
+
 
                   //================================> Continue Button <======================================
                   SizedBox(height: 24.h),

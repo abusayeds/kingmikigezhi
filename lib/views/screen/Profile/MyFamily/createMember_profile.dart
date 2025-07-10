@@ -59,6 +59,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         title: CustomText(
           text: AppStrings.createProfile.tr,
           fontWeight: FontWeight.w500,
@@ -472,7 +473,8 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                           SizedBox(height: 10.h),
                           CustomButton(
                             color: AppColors.buttonA47059,
-                            borderColor: Colors.white,
+
+                            borderColor: AppColors.buttonA47059,
                             onTap: (){},
                             text: "Add",
                             textColor:Colors.white,
@@ -531,7 +533,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                         children: [
                           CustomButton(
                             color: AppColors.borderColor,
-                            borderColor: Colors.white,
+                            borderColor: AppColors.borderColor,
                             onTap: (){},
                             text: "Active a separate family account",
                             textColor: AppColors.white,
@@ -601,7 +603,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                   SizedBox(height: 10),
                   CustomButton(
                     color: AppColors.buttonA47059,
-                    borderColor: Colors.white,
+                    borderColor:    AppColors.buttonA47059,
                     onTap: (){},
                     text: "Update Profile",
                     textColor:Colors.white,

@@ -136,27 +136,32 @@ class ProfileScreen extends StatelessWidget {
   void _showCustomBottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
+        //isScrollControlled: true,
+      enableDrag: true,
+
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
-          top: Radius.circular(20.r),
+          top: Radius.circular(40.r),
         ),
       ),
       builder: (BuildContext context) {
         return Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20.r),
-              topRight: Radius.circular(20.r),
+              topLeft: Radius.circular(40.r),
+              topRight: Radius.circular(40.r),
             ),
             color: AppColors.backgroundColor,
           ),
-          height: 265,
+          height: 265.h,
           padding: EdgeInsets.all(16),
           child: Column(
             children: [
-              SizedBox(height: 20.h),
-              Divider(thickness: 1, color: AppColors.greyColor),
-              SizedBox(height: 20.h),
+
+              Container(height: 3.h,width: 38.w,color: Color(0xFF4C7E95),),
+              SizedBox(height: 16.h),
+              Divider(thickness: 1, color: AppColors.primaryColor),
+              SizedBox(height: 16.h),
               Text("Logout", style: AppStyles.fontSize20(color: AppColors.primaryColor,fontWeight: FontWeight.w600),),
               Text("Are you sure you want to log out ?",
                 style: AppStyles.fontSize18(color: AppColors.borderColor),
