@@ -15,33 +15,33 @@ import '../../../base/custom_text.dart';
 import '../../../base/custom_list_tile.dart';
 
 class PersonalInformationScreen extends StatefulWidget {
-   PersonalInformationScreen({super.key});
+  PersonalInformationScreen({super.key});
 
   @override
-  State<PersonalInformationScreen> createState() => _PersonalInformationScreenState();
+  State<PersonalInformationScreen> createState() =>
+      _PersonalInformationScreenState();
 }
 
 class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
-
   final TextEditingController birthDayYearController = TextEditingController();
   final TextEditingController birthDayMonthController = TextEditingController();
   final TextEditingController birthDayDayController = TextEditingController();
 
-   final TextEditingController locationCountryController = TextEditingController();
-   final TextEditingController locationStateController = TextEditingController();
-   final TextEditingController locationCityController = TextEditingController();
-   final TextEditingController phoneNumberController = TextEditingController();
+  final TextEditingController locationCountryController =
+      TextEditingController();
+  final TextEditingController locationStateController = TextEditingController();
+  final TextEditingController locationCityController = TextEditingController();
+  final TextEditingController phoneNumberController = TextEditingController();
 
-   String selectedCountryCodes = '+880';
+  String selectedCountryCodes = '+880';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         scrolledUnderElevation: 0,
-        leading:  IconButton(
-          icon: Icon(Icons.arrow_back_ios,
-              color: Colors.black, size: 18.w),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: Colors.black, size: 18.w),
           onPressed: () {
             Get.back();
           },
@@ -62,39 +62,60 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
               TopProfileSection(),
               SizedBox(height: 24.h),
               //=================================> Profile Name <==========================
-             Padding(
-               padding: EdgeInsets.all(4.r),
-               child: Text('Account ID',style: AppStyles.fontSize16(fontWeight: FontWeight.w600 )),
-             ),
-              CustomListTile(
-                title: '20103200'?? '' ,backgroundColor: AppColors.colorEDF2F4,titleColor: AppColors.color414141),
-              //=================================> Email Name <==========================
-              Padding( padding: const EdgeInsets.all(4),
-                child: Text('First Name',style:  AppStyles.fontSize16(fontWeight: FontWeight.w600 )),
+              Padding(
+                padding: EdgeInsets.all(4.r),
+                child: Text('Account ID',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
               ),
-              CustomListTile(title: 'Bashar Islam'?? '',  backgroundColor: AppColors.colorEDF2F4,titleColor: AppColors.color414141),
+              CustomListTile(
+                  title: '20103200' ?? '',
+                  backgroundColor: AppColors.colorEDF2F4,
+                  titleColor: AppColors.color414141),
+              //=================================> Email Name <==========================
+              Padding(
+                padding: const EdgeInsets.all(4),
+                child: Text('First Name',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+              ),
+              CustomListTile(
+                  title: 'Bashar Islam' ?? '',
+                  backgroundColor: AppColors.colorEDF2F4,
+                  titleColor: AppColors.color414141),
               //=================================> Phone Number <========================
               Padding(
                 padding: EdgeInsets.all(4),
-                child: Text('Last Name',style:  AppStyles.fontSize16(fontWeight: FontWeight.w600 )),
+                child: Text('Last Name',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
               ),
-              CustomListTile(title:'Rahman'??'',backgroundColor: AppColors.colorEDF2F4,titleColor: AppColors.color414141),
+              CustomListTile(
+                  title: 'Rahman' ?? '',
+                  backgroundColor: AppColors.colorEDF2F4,
+                  titleColor: AppColors.color414141),
               //=================================> Address Number <========================
               Padding(
                 padding: const EdgeInsets.all(4),
-                child: Text('Public Display Name',style: AppStyles.fontSize16(fontWeight: FontWeight.w600 )),
+                child: Text('Public Display Name',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
               ),
-              CustomListTile(title: 'Dhaka'??'', backgroundColor: AppColors.colorEDF2F4,titleColor: AppColors.color414141),
+              CustomListTile(
+                  title: 'Dhaka' ?? '',
+                  backgroundColor: AppColors.colorEDF2F4,
+                  titleColor: AppColors.color414141),
               //=================================> Gender <========================
               Padding(
                 padding: const EdgeInsets.all(4),
-                child: Text('Gender',style:  AppStyles.fontSize16(fontWeight: FontWeight.w600 )),
+                child: Text('Gender',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
               ),
-              CustomListTile(title: 'Male'??'',backgroundColor: AppColors.colorEDF2F4,titleColor: AppColors.color414141),
+              CustomListTile(
+                  title: 'Male' ?? '',
+                  backgroundColor: AppColors.colorEDF2F4,
+                  titleColor: AppColors.color414141),
               //==========================> Birth Date Text Field Row <=======================
               Padding(
                 padding: const EdgeInsets.all(4),
-                child: Text('Birthday',style:  AppStyles.fontSize16(fontWeight: FontWeight.w600 )),
+                child: Text('Birthday',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -104,7 +125,8 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                     child: CustomTextField(
                       controller: birthDayYearController,
                       hintText: 'Day',
-                      hintTextStyle: TextStyle(color: AppColors.color414141,fontSize: 14.sp),
+                      hintTextStyle: TextStyle(
+                          color: AppColors.color414141, fontSize: 14.sp),
                       sufixicons: Padding(
                         padding: EdgeInsets.only(right: 12.w),
                         child: SvgPicture.asset(
@@ -113,7 +135,6 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                           color: AppColors.primaryColor,
                         ),
                       ),
-
                     ),
                   ),
                   SizedBox(
@@ -121,7 +142,8 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                     child: CustomTextField(
                       controller: birthDayMonthController,
                       hintText: 'Month',
-                      hintTextStyle: TextStyle(color: AppColors.color414141,fontSize: 14.sp),
+                      hintTextStyle: TextStyle(
+                          color: AppColors.color414141, fontSize: 14.sp),
                       sufixicons: Padding(
                         padding: EdgeInsets.only(right: 12.w),
                         child: SvgPicture.asset(
@@ -130,7 +152,6 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                           color: AppColors.primaryColor,
                         ),
                       ),
-
                     ),
                   ),
                   SizedBox(
@@ -138,7 +159,8 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                     child: CustomTextField(
                       controller: birthDayYearController,
                       hintText: 'Year',
-                      hintTextStyle: TextStyle(color: AppColors.color414141,fontSize: 14.sp),
+                      hintTextStyle: TextStyle(
+                          color: AppColors.color414141, fontSize: 14.sp),
                       sufixicons: Padding(
                         padding: EdgeInsets.only(right: 12.w),
                         child: SvgPicture.asset(
@@ -154,72 +176,95 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
               SizedBox(height: 8.h),
               //=================================> Email <========================
               Padding(
-                padding:EdgeInsets.all(4.r),
-                child: Text('Email',style:  AppStyles.fontSize16(fontWeight: FontWeight.w600 )),
+                padding: EdgeInsets.all(4.r),
+                child: Text('Email',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
               ),
               CustomListTile(
-                prefixIcon: Icon(Icons.email_rounded,color: AppColors.primaryColor),
-                title: 'email@gmail.com'??'',backgroundColor: AppColors.colorEDF2F4,),
+                prefixIcon:
+                    Icon(Icons.email_rounded, color: AppColors.primaryColor),
+                title: 'email@gmail.com' ?? '',
+                backgroundColor: AppColors.colorEDF2F4,
+              ),
               //=======================> Phone Number Text Field <======================
               Padding(
                 padding: EdgeInsets.all(4.r),
-                child: Text('Phone Number',style: AppStyles.fontSize16(fontWeight: FontWeight.w600 )),
+                child: Text('Phone Number',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
               ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    height: 57.h,
-                    decoration: BoxDecoration(
-                        color: AppColors.fillColor,
-                        border: Border.all(
-                            width: 1.w, color: AppColors.primaryColor),
-                        borderRadius: BorderRadius.circular(8.r)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        //=================================> Country Code Picker Widget <============================
-                        CountryCodePicker(
-                          showFlag: false,
-                          showFlagDialog: true,
-                          onChanged: (countryCode) {
-                            setState(() {
-                              selectedCountryCodes = countryCode.dialCode!;
-                            });
-                          },
-                          initialSelection: 'BD',
-                          favorite: ['+880', 'BD'],
-                          showCountryOnly: false,
-                          showOnlyCountryWhenClosed: false,
-                          alignLeft: false,
+              SizedBox(
+                // Solution 7: MediaQuery-based responsive height with constraints
+                height: _getResponsiveHeight(context),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // Country Code Container with fixed aspect ratio
+                    AspectRatio(
+                      aspectRatio: 2.2, // Maintains consistent proportions
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: AppColors.fillColor,
+                          border: Border.all(
+                            width: 1.0,
+                            color: AppColors.primaryColor,
+                          ),
+                          borderRadius: BorderRadius.circular(8.0),
                         ),
-                        Padding(
-                            padding: EdgeInsets.only(right: 5.w),
-                            child:  SvgPicture.asset(
-                              AppIcons.downArrowIcon,
-                              width: 16.w,
-                            )
-                        )
-                      ],
-                    ),
-                  ),
-                  SizedBox(width: 10.w),
-                  Expanded(
-                    child: CustomTextField(
-                      controller: phoneNumberController,
-                      keyboardType: TextInputType.phone,
-                      hintText: AppStrings.phoneNumberHintText,
-                      hintTextStyle: TextStyle(color: AppColors.color414141,fontSize: 14.sp),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Flexible(
+                              child: CountryCodePicker(
+                                padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                                showFlag: false,
+                                showFlagDialog: true,
+                                onChanged: (countryCode) {
+                                  setState(() {
+                                    selectedCountryCodes = countryCode.dialCode!;
+                                  });
+                                },
+                                initialSelection: 'BD',
+                                favorite: const ['+880', 'BD'],
+                                showCountryOnly: false,
+                                showOnlyCountryWhenClosed: false,
+                                alignLeft: false,
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: SvgPicture.asset(
+                                AppIcons.downArrowIcon,
+                                width: 16.0,
+                                height: 16.0,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                ],
+
+                     SizedBox(width: 10.w),
+
+                    Expanded(
+                      child: CustomTextField(
+                        controller: phoneNumberController,
+                        keyboardType: TextInputType.phone,
+                        hintText: AppStrings.phoneNumberHintText,
+                        hintTextStyle: TextStyle(
+                          color: AppColors.color414141,
+                          fontSize: 14.sp,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
               SizedBox(height: 8.h),
               //=================================> Location <========================
               Padding(
                 padding: const EdgeInsets.all(4),
-                child: Text('Location',style:  AppStyles.fontSize16(fontWeight: FontWeight.w600 )),
+                child: Text('Location',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -229,7 +274,8 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                     child: CustomTextField(
                       controller: locationCountryController,
                       hintText: 'Country',
-                      hintTextStyle: TextStyle(color: AppColors.color414141,fontSize: 14.sp),
+                      hintTextStyle: TextStyle(
+                          color: AppColors.color414141, fontSize: 14.sp),
                       sufixicons: Padding(
                         padding: EdgeInsets.only(right: 12.w),
                         child: SvgPicture.asset(
@@ -244,7 +290,8 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                     child: CustomTextField(
                       controller: locationStateController,
                       hintText: 'State',
-                      hintTextStyle: TextStyle(color: AppColors.color414141,fontSize: 14.sp),
+                      hintTextStyle: TextStyle(
+                          color: AppColors.color414141, fontSize: 14.sp),
                       sufixicons: Padding(
                         padding: EdgeInsets.only(right: 12.w),
                         child: SvgPicture.asset(
@@ -252,7 +299,6 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                           width: 16.w,
                         ),
                       ),
-
                     ),
                   ),
                   SizedBox(
@@ -260,7 +306,8 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                     child: CustomTextField(
                       controller: locationCityController,
                       hintText: 'City',
-                      hintTextStyle: TextStyle(color: AppColors.color414141,fontSize: 14.sp),
+                      hintTextStyle: TextStyle(
+                          color: AppColors.color414141, fontSize: 14.sp),
                       sufixicons: Padding(
                         padding: EdgeInsets.only(right: 12.w),
                         child: SvgPicture.asset(
@@ -276,111 +323,123 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
               //=================================> Skill <========================
               Padding(
                 padding: const EdgeInsets.all(4),
-                child: Text('Skill',style: AppStyles.fontSize16(fontWeight: FontWeight.w600 )),
+                child: Text('Skill',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
               ),
-          Container(
-            decoration: BoxDecoration(
-              color:AppColors.colorEDF2F4,
-              borderRadius: BorderRadius.all(Radius.circular(8.r)),
-              border: Border.all(color: AppColors.primaryColor, width: 1.w),
-            ),
-            child: Padding(
-              padding:  EdgeInsets.symmetric(vertical: 16.h),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8.w),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text.rich(
-                          TextSpan(
-                            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: AppColors.colorEDF2F4,
+                  borderRadius: BorderRadius.all(Radius.circular(8.r)),
+                  border: Border.all(color: AppColors.primaryColor, width: 1.w),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 16.h),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 8.w),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text.rich(
                               TextSpan(
-                                text: '\u2022 ',
-                                style: TextStyle(color: AppColors.primaryColor),
+                                children: [
+                                  TextSpan(
+                                    text: '\u2022 ',
+                                    style: TextStyle(
+                                        color: AppColors.primaryColor),
+                                  ),
+                                  TextSpan(
+                                      text: 'Chess since 2020',
+                                      style: AppStyles.fontSize14(
+                                          color: AppColors.color414141)),
+                                ],
                               ),
-                              TextSpan(
-                                text: 'Chess since 2020',
-                                style: AppStyles.fontSize14(color: AppColors.color414141)
-                              ),
-                            ],
-                          ),
+                            ),
+                            InkWell(
+                                onTap: () {
+                                  Get.back();
+                                },
+                                child: SvgPicture.asset(AppIcons.editIcon,color: AppColors.buttonColor))
+                          ],
                         ),
-                        InkWell(
-                            onTap: (){
-                              Get.back();
-                            },
-                            child: SvgPicture.asset(AppIcons.editIcon)
-                        )
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding:  EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text.rich(
-                          TextSpan(
-                            children: [
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text.rich(
                               TextSpan(
-                                text: '\u2022 ',
-                                style: TextStyle(color: AppColors.primaryColor),
+                                children: [
+                                  TextSpan(
+                                    text: '\u2022 ',
+                                    style: TextStyle(
+                                        color: AppColors.primaryColor),
+                                  ),
+                                  TextSpan(
+                                      text: 'Math since 2021',
+                                      style: AppStyles.fontSize14(
+                                          color: AppColors.color414141)),
+                                ],
                               ),
-                              TextSpan(
-                                text: 'Math since 2021',
-                                style: AppStyles.fontSize14(color: AppColors.color414141)
-                              ),
-                            ],
-                          ),
+                            ),
+                            InkWell(
+                                onTap: () {
+                                  Get.back();
+                                },
+                                child: SvgPicture.asset(AppIcons.editIcon,color: AppColors.buttonColor))
+                          ],
                         ),
-                        InkWell(
-                            onTap: (){
-                              Get.back();
-                            },
-                            child: SvgPicture.asset(AppIcons.editIcon)
-                        )
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding:  EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text.rich(
-                          TextSpan(
-                            children: [
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text.rich(
                               TextSpan(
-                                text: '\u2022 ',
-                                style: TextStyle(color: AppColors.primaryColor),
+                                children: [
+                                  TextSpan(
+                                    text: '\u2022 ',
+                                    style: TextStyle(
+                                        color: AppColors.primaryColor),
+                                  ),
+                                  TextSpan(
+                                      text: 'Piano since 2023',
+                                      style: AppStyles.fontSize14(
+                                          color: AppColors.color414141)),
+                                ],
                               ),
-                              TextSpan(
-                                text: 'Piano since 2023',
-                                style: AppStyles.fontSize14(color: AppColors.color414141)
-                              ),
-                            ],
-                          ),
+                            ),
+                            InkWell(
+                                onTap: () {
+                                  Get.back();
+                                },
+                                child: SvgPicture.asset(AppIcons.editIcon,color: AppColors.buttonColor,))
+                          ],
                         ),
-                        InkWell(
-                            onTap: (){
-                              Get.back();
-                            },
-                            child: SvgPicture.asset(AppIcons.editIcon)
-                        )
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
-          ),
             ],
           ),
         ),
       ),
     );
+  }
+  double _getResponsiveHeight(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    // Base height with controlled scaling
+    if (screenHeight < 600) {
+      return 48.h; // Smaller screens
+    } else if (screenHeight > 800) {
+      return 50; // Larger screens
+    }
+    return 53.h; // Default
   }
 }
