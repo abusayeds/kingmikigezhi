@@ -29,6 +29,7 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // backgroundColor: AppColors.redColor,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -63,7 +64,7 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
                 height: 50,
                 decoration: BoxDecoration(
                   color: AppColors.colorEDF2F4,
-                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                  borderRadius: BorderRadius.all(Radius.circular(8.r)),
                   border: Border.all(color:AppColors.primaryColor, width: 1.0),
                 ),
                 child: Padding(
@@ -80,92 +81,32 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
               ),
             ),
             // Family members list
+
+
+
+            // this is the new one. i want the
             ListView.builder(
+              itemCount: familyMembers.length,
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
-              itemCount: familyMembers.length,
               itemBuilder: (context, index) {
                 final member = familyMembers[index];
                 return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Dismissible(
-                    key: Key(member['name']!),
-
-                    background: Container(
-                      decoration: BoxDecoration(
-                        color: AppColors.colorD9A951,
-                        borderRadius: BorderRadius.all(Radius.circular(20.r)),
-                      ),
-                      alignment: Alignment.centerRight,
-                      padding: EdgeInsets.symmetric(horizontal: 20.h),
-                      child: SvgPicture.asset(AppIcons.deleteIcon),
+                  padding:  EdgeInsets.symmetric(vertical: 8.h,horizontal: 8.w),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: AppColors.colorD9A951,
                     ),
-                    direction: DismissDirection.endToStart,
-                    confirmDismiss: (direction) async {
-
-                      final bool? result = await _showCustomBottomSheet(context, member['name']!);
-                      shouldRemove = result ?? false;
-                      return shouldRemove;
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: AppColors.colorEDF2F4,
-                        borderRadius: BorderRadius.circular(20.r),
-                        border: Border.all(color: Colors.black12, width: 1.0),
-                      ),
-                      padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
-                      child: Stack(
-                        children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              CircleAvatar(
-                                backgroundImage: AssetImage(member['image']!),
-                                radius: 30.r,
-                              ),
-                              SizedBox(width: 12.w),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      member['name']!,
-                                      style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16.sp),
-                                    ),
-                                    SizedBox(height: 4.h),
-                                    Row(
-                                      children: [
-                                        SvgPicture.asset(AppIcons.dotIconForFamily, width: 5.w, height: 5.h),
-                                        SizedBox(width: 4.w),
-                                        Text('Phone : ${member['number']}',
-                                          style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12.sp),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 4.h),
-                                    Row(
-                                      children: [
-                                        SvgPicture.asset(AppIcons.dotIconForFamily, width: 5.w, height: 5.h),
-                                        SizedBox(width: 4.w),
-                                        Text(
-                                          'Email : abac@gmail.com',
-                                          style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12.sp),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                    child: _notification(
+                      member['name']!,
+                        member['number']!,
+                      DateTime.now(),
+                member['image']!,
+                      'Your account creation is successful, you can now experience our services.',
                     ),
-
-                  )
-
+                  ),
                 );
-
               },
             ),
           ],
@@ -184,6 +125,7 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
       ),
       builder: (BuildContext context) {
         return Container(
+          height: 282.h,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(40.r),
@@ -191,71 +133,167 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
             ),
             color: AppColors.backgroundColor,
           ),
-          height: 265,
-          padding: EdgeInsets.all(16),
-          child: Column(
-            children: [
 
-              Container(height: 3.h,width: 38.w,color: Color(0xFF4C7E95),),
-              SizedBox(
-                height: 16.h,
-              ),
-              Divider(thickness: 1, color: AppColors.primaryColor),
-              SizedBox(height: 20.h),
-              Text("Delete", style: AppStyles.fontSize20(color: AppColors.primaryColor, fontWeight: FontWeight.w600)),
-              Text("Are you sure to delete this?",
-                style: AppStyles.fontSize18(color: AppColors.borderColor),
-              ),
-              SizedBox(height: 20.h),
-              Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Get.back();
-                      },
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: Size(double.infinity, 58),
-                        backgroundColor: AppColors.colorEDF2F4,
-                        side: BorderSide(
-                            width: 1,
-                            color: AppColors.greyColor),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(100),
+          // padding: EdgeInsets.all(16),
+          child: Padding(
+            padding:  EdgeInsets.symmetric(horizontal: 24.w,vertical: 10.w),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 16.h,
+                ),
+                Container(height: 3.h,width: 38.w,color: Color(0xFF4C7E95),),
+                SizedBox(
+                  height: 16.h,
+                ),
+                Divider(thickness: 1.w, color: AppColors.primaryColor),
+                SizedBox(height: 20.h),
+                Text("Delete", style: AppStyles.fontSize20(color: AppColors.blackColor, fontWeight: FontWeight.w600)),
+                Text("Are you sure to delete this?",
+                  style: AppStyles.fontSize18(color: AppColors.borderColor),
+                ),
+                SizedBox(height: 20.h),
+                Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Get.back();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size(double.infinity, 58),
+                          backgroundColor: AppColors.colorEDF2F4,
+                          side: BorderSide(
+                              width: 1,
+                              color: AppColors.primaryColor),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(100),
+                          ),
                         ),
-                      ),
-                      child: Text('Cancel',
-                        style: AppStyles.fontSize16(color: AppColors.primaryColor),
+                        child: Text('Cancel',
+                          style: AppStyles.fontSize16(color: AppColors.primaryColor),
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(width: 16.w),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pop(true);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: Size(double.infinity, 58),
-                        backgroundColor: AppColors.primaryColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(100.r),
+                    SizedBox(width: 16.w),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).pop(true);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size(double.infinity, 58),
+                          backgroundColor: AppColors.primaryColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(100.r),
+                          ),
+                        ),
+                        child: Text('Yes',
+                          style: AppStyles.fontSize16(color: AppColors.backgroundColor),
                         ),
                       ),
-                      child: Text('Yes',
-                        style: AppStyles.fontSize16(color: AppColors.backgroundColor),
-                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+  _notification(
+      String title,
+      String phone,
+      DateTime time,
+      String imageUrl,
+      String email,
+      ) {
+    return Dismissible(
+      key: Key(title),
+      direction: DismissDirection.endToStart,
+      background: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(21.r),
+          color: AppColors.colorD9A951,
+        ),
+        alignment: Alignment.centerRight,
+        padding: EdgeInsets.only(right: 26.w),
+        child: SvgPicture.asset(AppIcons.deleteIcon),
+      ),
+      // Use confirmDismiss to show confirmation dialog
+      confirmDismiss: (direction) async {
+        final bool? result = await _showCustomBottomSheet(context, title);
+        return result ?? false; // Return true to dismiss, false to cancel
+      },
+      // onDismissed is called only when the item is actually dismissed
+      onDismissed: (direction) {
+        // Handle the actual dismissal here (e.g., remove from list)
+        setState(() {
+          familyMembers.removeWhere((member) => member['name'] == title);
+        });
+      },
+      child: GestureDetector(
+        onTap: (){
+          Get.toNamed(AppRoutes.ownerProfileDetailsScreen);
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            color: AppColors.colorEDF2F4,
+            borderRadius: BorderRadius.circular(17.r),
+            border: Border.all(color: Colors.black12, width: 1.0),
+          ),
+          padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),
+          child: Stack(
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  CircleAvatar(
+                    backgroundImage: AssetImage(imageUrl),
+                    radius: 30.r,
+                  ),
+                  SizedBox(width: 12.w),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          title,
+                          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16.sp),
+                        ),
+                        SizedBox(height: 4.h),
+                        Row(
+                          children: [
+                            SvgPicture.asset(AppIcons.dotIconForFamily, width: 5.w, height: 5.h),
+                            SizedBox(width: 4.w),
+                            Text('Phone: $phone',
+                              style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12.sp),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 4.h),
+                        Row(
+                          children: [
+                            SvgPicture.asset(AppIcons.dotIconForFamily, width: 5.w, height: 5.h),
+                            SizedBox(width: 4.w),
+                            Text(
+                              'Email : abac@gmail.com',
+                              style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12.sp),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
             ],
           ),
-        );
-      },
+        ),
+      ),
     );
   }
-
   //profile view
   void _showViewModeBottomSheet(BuildContext context) {
     showModalBottomSheet(

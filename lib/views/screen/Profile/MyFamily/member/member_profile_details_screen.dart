@@ -30,6 +30,8 @@ class _MemberProfileDetailsScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
+        scrolledUnderElevation: 0,
         title: CustomText(
           text: AppStrings.memberProfile,
           fontWeight: FontWeight.w500,
