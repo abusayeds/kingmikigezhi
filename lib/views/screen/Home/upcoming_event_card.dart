@@ -9,18 +9,25 @@ import '../../../utils/app_colors.dart';
 import '../../../utils/app_icons.dart';
 
 class EventCard extends StatelessWidget {
+  const EventCard({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Card(
-
       color: const Color(0xffedf2f4),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(24.r),
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 10.h),
+        padding: EdgeInsets.only(
+            left: 8.w,
+            right: 8.w,
+            top: 10.h,
+            bottom: 4.h  // Reduced bottom padding of the main card
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,  // This ensures the column takes minimum space
           children: [
             Stack(
               children: [
@@ -41,8 +48,8 @@ class EventCard extends StatelessWidget {
                         color: AppColors.primaryColor,
                         border: Border.all(width: 1.w, color: Colors.white),
                         shape: BoxShape.circle
-                        // borderRadius: BorderRadius.circular(20.r),
-                        ),
+                      // borderRadius: BorderRadius.circular(20.r),
+                    ),
                     child: Padding(
                       padding: EdgeInsets.symmetric(
                           horizontal: 16.w, vertical: 16.h),
@@ -57,10 +64,15 @@ class EventCard extends StatelessWidget {
               ],
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 10.h),
+              padding: EdgeInsets.only(
+                  left: 4.w,
+                  right: 4.w,
+                  top: 8.h,
+                  bottom: 0.h  // Removed bottom padding completely
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.min,  // Column takes minimum space
                 children: [
                   SizedBox(
                     width: double.infinity,
@@ -68,9 +80,9 @@ class EventCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('Snowboard Festival', style: GoogleFonts.poppins(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14.sp,
-                          color: const Color(0xFF111111)
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14.sp,
+                            color: const Color(0xFF111111)
                         )),
                         SvgPicture.asset(
                           AppIcons.share,
@@ -129,12 +141,15 @@ class EventCard extends StatelessWidget {
                       const Spacer()
                     ],
                   ),
-                  //SizedBox(height: 8.h),
-                   Align(
+                  SizedBox(height: 2.h), // Very minimal spacing before the icon
+                  Align(
                       alignment: Alignment.bottomRight,
-                      child: Icon(
-                        Icons.more_horiz_outlined,
-                        color: AppColors.greyColor,
+                      child: Padding(
+                        padding: EdgeInsets.only(bottom: 2.h), // Small padding to prevent touching the edge
+                        child: Icon(
+                          Icons.more_horiz_outlined,
+                          color: AppColors.greyColor,
+                        ),
                       ))
                 ],
               ),

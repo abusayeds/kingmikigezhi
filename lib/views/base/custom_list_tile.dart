@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/app_colors.dart';
 import 'custom_text.dart';
 
-
 class CustomListTile extends StatelessWidget {
   final String title;
   final Widget? prefixIcon;
@@ -13,6 +12,7 @@ class CustomListTile extends StatelessWidget {
   final Color? titleColor;
   final VoidCallback? onTap;
   final Color? backgroundColor;
+
   CustomListTile({
     super.key,
     required this.title,
@@ -31,25 +31,52 @@ class CustomListTile extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         child: Container(
+          height: 56.h, // Fixed max height
           clipBehavior: Clip.antiAlias,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8.r),
-              color:backgroundColor,
+              color: backgroundColor,
               border: Border.all(
-                  width: 1.w, color: borderColor ?? AppColors.borderColor)),
-          child: ListTile(
-            leading: prefixIcon,
-            trailing: suffixIcon,
-            horizontalTitleGap: 16.w,
-            dense: true,
-            title: Text(
-              title,style: TextStyle(
-                color: titleColor ?? AppColors.blackColor ,
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w400),
-              textAlign: TextAlign.left,
-              maxLines: 2,
-            )
+                  width: 1.w,
+                  color: borderColor ?? AppColors.borderColor
+              )
+          ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            child: Row(
+              children: [
+                // Prefix Icon
+                if (prefixIcon != null) ...[
+                  prefixIcon!,
+                  SizedBox(width: 12.w),
+                ],
+
+                // Title Text
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      title,
+                      style: TextStyle(
+                        color: titleColor ?? AppColors.blackColor,
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w400,
+                        height: 1.2,
+                      ),
+                      textAlign: TextAlign.left,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ),
+
+                // Suffix Icon
+                if (suffixIcon != null) ...[
+                  SizedBox(width: 12.w),
+                  suffixIcon!,
+                ],
+              ],
+            ),
           ),
         ),
       ),

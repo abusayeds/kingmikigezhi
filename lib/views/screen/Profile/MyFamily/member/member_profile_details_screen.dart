@@ -30,6 +30,8 @@ class _MemberProfileDetailsScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
+        scrolledUnderElevation: 0,
         title: CustomText(
           text: AppStrings.memberProfile,
           fontWeight: FontWeight.w500,
@@ -164,16 +166,7 @@ class _MemberProfileDetailsScreenState
               ),
 
               //==========================> Birth Date Text Field Row <=======================
-              Padding(
-                padding: const EdgeInsets.all(4),
-                child: Text('Location',
-                    style:
-                    TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-              ),
-              CustomListTile(
-                title: 'Ulon , Rampura' ?? '',
-                backgroundColor: AppColors.colorEDF2F4,
-              ),
+
               //=================================> Email <========================
               Padding(
                 padding: const EdgeInsets.all(4),
@@ -198,6 +191,16 @@ class _MemberProfileDetailsScreenState
                 prefixIcon:
                 Icon(Icons.email_rounded, color: AppColors.primaryColor),
                 title: '+88111111188888' ?? '',
+                backgroundColor: AppColors.colorEDF2F4,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(4),
+                child: Text('Location',
+                    style:
+                    TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+              ),
+              CustomListTile(
+                title: 'Ulon , Rampura' ?? '',
                 backgroundColor: AppColors.colorEDF2F4,
               ),
               //=================================> Skill <========================
@@ -233,7 +236,12 @@ class _MemberProfileDetailsScreenState
                                   ),
                                   TextSpan(
                                     text: 'Chess since 2020',
-                                    style: TextStyle(color: Colors.black),
+                                    style: TextStyle(
+                                color: Colors.black,
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w400,
+                                      height: 1.2,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -256,7 +264,12 @@ class _MemberProfileDetailsScreenState
                                   ),
                                   TextSpan(
                                     text: 'Math since 2021',
-                                    style: TextStyle(color: Colors.black),
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w400,
+                                      height: 1.2,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -279,7 +292,12 @@ class _MemberProfileDetailsScreenState
                                   ),
                                   TextSpan(
                                     text: 'Piano since 2023',
-                                    style: TextStyle(color: Colors.black),
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w400,
+                                      height: 1.2,
+                                    ),
                                   ),
                                 ],
                               ),
