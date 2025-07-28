@@ -42,7 +42,7 @@ class _StepFourFormState extends State<StepFourForm> {
                   child: Text("Repeat Function", style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
                 ),
                 Container(
-                  height: 60.h,
+                  height: 53.h,
                   padding: EdgeInsets.symmetric(horizontal: 20.w),
                   decoration: BoxDecoration(
                     color: AppColors.fillColor,
