@@ -7,6 +7,7 @@ import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MyInvitationPage extends StatefulWidget {
   @override
@@ -19,31 +20,31 @@ class _MyInvitationPageState extends State<MyInvitationPage> {
     {
       'name': 'Bashar Iskam',
       'location': 'Canada, Elm St',
-      'avatarColor': Colors.teal,
+      'avatarColor': AppColors.color67AB9F,
       'checked': false
     },
     {
       'name': 'Iskam',
       'location': 'Canada, Elm St',
-      'avatarColor': Colors.purpleAccent,
+      'avatarColor': AppColors.colorE5CCFF,
       'checked': false
     },
     {
       'name': 'Alax Tom',
       'location': 'Canada, Elm St',
-      'avatarColor': Colors.lightGreenAccent,
+      'avatarColor':AppColors.colorCCFFE6,
       'checked': false
     },
     {
       'name': 'Jihon',
       'location': 'Canada, Elm St',
-      'avatarColor': Colors.amberAccent,
+      'avatarColor': AppColors.colorFFF2CC,
       'checked': false
     },
     {
       'name': 'Bashar Iskam',
       'location': 'Canada, Elm St',
-      'avatarColor': Colors.grey,
+      'avatarColor': Color(0xFFd9d9d9),
       'checked': false
     },
   ];
@@ -58,16 +59,19 @@ class _MyInvitationPageState extends State<MyInvitationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading:  IconButton(
-          icon: Icon(Icons.arrow_back_ios,
-              color: Colors.black, size: 18.w),
-          onPressed: () {
-            Get.back();
-          },
+        leading:  Padding(
+          padding:  EdgeInsets.only(left: 24.w),
+          child: IconButton(
+            icon: Icon(Icons.arrow_back_ios,
+                color: Colors.black, size: 18.w),
+            onPressed: () {
+              Get.back();
+            },
+          ),
         ),
         title: CustomText(
           text: 'Invitation',
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.w500,
           fontsize: 18.sp,
         ),
         centerTitle: true,
@@ -78,27 +82,72 @@ class _MyInvitationPageState extends State<MyInvitationPage> {
           children: [
             Expanded(
               child: ListView.builder(
+                padding: const EdgeInsetsGeometry.all(0),
                 itemCount: invitees.length,
                 itemBuilder: (context, index) {
                   final invitee = invitees[index];
-                  return ListTile(
-                    leading: CircleAvatar(
-                      radius: 24,
-                      backgroundColor: invitee['avatarColor'],
-                    ),
-                    title: Text(
-                      invitee['name'],
-                    style: AppStyles.fontSize16(color: AppColors.color414141,fontWeight: FontWeight.w600),
-                    ),
-                    subtitle: Text(invitee['location'],
-                      style: AppStyles.fontSize14(color: AppColors.color414141),
-                    ),
-                    trailing: Checkbox(
-                      activeColor: AppColors.primaryColor,
-                      value: invitee['checked'],
-                      onChanged: (bool? value) {
-                        _toggleCheckbox(index, value);
-                      },
+                  return Container(
+                    padding: EdgeInsets.symmetric( vertical: 8.h),
+                    child: Row(
+                      children: [
+                        // Leading - CircleAvatar
+                        // CircleAvatar(
+                        //   radius: 64,
+                        //   backgroundColor: invitee['avatarColor'],
+                        // ),
+                        Container(
+                          height: 64.w,
+                          width: 64.w,
+                          decoration: BoxDecoration(
+                            color: invitee['avatarColor'],
+                            borderRadius: BorderRadius.circular(100.r),
+
+                          ),
+                        ),
+                        SizedBox(width: 16.w), // Space between avatar and text
+
+                        // Title and Subtitle - Expanded to take available space
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              // Title
+                              Text(
+                                invitee['name'],
+                                style: AppStyles.fontSize14(
+                                  color: AppColors.color414141,
+                                  fontWeight: FontWeight.w500,
+                                ).copyWith(fontSize: 15.sp),
+                              ),
+                              SizedBox(height: 4.h), // Small space between title and subtitle
+
+                              // Subtitle
+                              Text(
+                                invitee['location'],
+                                style: GoogleFonts.poppins(
+                                    fontSize: 9.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: AppColors.color414141
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        // Trailing - Checkbox
+                        Checkbox(
+                          activeColor: AppColors.primaryColor,
+                          side: BorderSide(
+                            color: AppColors.primaryColor,
+                            width: 1.w,
+                          ),
+                          value: invitee['checked'],
+                          onChanged: (bool? value) {
+                            _toggleCheckbox(index, value);
+                          },
+                        ),
+                      ],
                     ),
                   );
                 },
@@ -108,7 +157,7 @@ class _MyInvitationPageState extends State<MyInvitationPage> {
            onTap: (){
              Get.toNamed(AppRoutes.shareInvitationPage);
            },
-           text: 'Invitation',
+           text: 'Share',
            borderColor: AppColors.buttonA47059,
            color: AppColors.buttonA47059,
            textColor: AppColors.textColor,

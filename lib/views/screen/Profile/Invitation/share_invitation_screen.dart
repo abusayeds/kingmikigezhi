@@ -22,16 +22,20 @@ class _ShareInvitationPageState extends State<ShareInvitationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading:  IconButton(
-          icon: Icon(Icons.arrow_back_ios,
-              color: Colors.black, size: 18.w),
-          onPressed: () {
-            Get.back();
-          },
+        leading: Padding(
+          padding:  EdgeInsets.only(left: 12.w),
+          child: IconButton(
+            icon: Icon(Icons.arrow_back_ios,
+                color: Colors.black, size: 18.w),
+            onPressed: () {
+              Get.back();
+            },
+          ),
         ),
+
         title: CustomText(
           text: 'Invitation',
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.w500,
           fontsize: 18.sp,
         ),
         centerTitle: true,
@@ -43,7 +47,7 @@ class _ShareInvitationPageState extends State<ShareInvitationPage> {
             CustomTextField(
                 controller: messageController,
               hintText: 'Message (60 words)',
-              maxLines: 5,
+              maxLines: 8,
             ),
             SizedBox(height: 24.h),
             // Row for the social media icons
@@ -58,6 +62,7 @@ class _ShareInvitationPageState extends State<ShareInvitationPage> {
             ),
             SizedBox(height: 24.h),
             CustomTextField(
+              borderColor: AppColors.buttonColor,
                 controller: urlController,
               hintText: 'https://www.event.org',
             ),
