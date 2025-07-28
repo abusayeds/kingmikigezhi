@@ -115,12 +115,15 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                           shape: BoxShape.circle,
                           color: AppColors.colorEDF2F4,
                         ),
-                        child: Center(
+                        child: Align(
+                          alignment: Alignment.center,
                           child: IconButton(
-                            icon: Icon(
-                              size: 20,
-                              Icons.done,
-                              color: AppColors.primaryColor,
+                            icon: Center(
+                              child: Icon(
+                                size: 20,
+                                Icons.done,
+                                color: AppColors.primaryColor,
+                              ),
                             ),
                             onPressed: () {
                               // Edit action
@@ -148,387 +151,47 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
               ),
               Column(
                 children: [
+
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      //left side
+                      // Left Column
                       Expanded(
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(height: 16.h),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SvgPicture.asset(
-                                      AppIcons.dotIconForFamily,
-                                      height: 12.h,
-                                      width: 12.h,
-                                    ),
-                                    SizedBox(width: 5.w),
-                                    Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text('Program',
-                                            style: AppStyles.fontSize10(
-                                                fontWeight: FontWeight.w500,
-                                                color: AppColors.blackColor)),
-                                        SizedBox(height: 5.h),
-                                        Text('Piano',
-                                            style: TextStyle(
-                                                color: Colors.grey.shade600)),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            //type
-                            SizedBox(height: 16.h),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SvgPicture.asset(
-                                      AppIcons.dotIconForFamily,
-                                      height: 12.h,
-                                      width: 12.h,
-                                    ),
-                                    SizedBox(width: 5.w),
-                                    Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text('Type',
-                                            style: AppStyles.fontSize10(
-                                                fontWeight: FontWeight.w500,
-                                                color: AppColors.blackColor)),
-                                        SizedBox(height: 5.h),
-                                        Text('Onsite Event',
-                                            style: TextStyle(
-                                                color: Colors.grey.shade600)),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 16.h),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SvgPicture.asset(
-                                      AppIcons.dotIconForFamily,
-                                      height: 12.h,
-                                      width: 12.h,
-                                    ),
-                                    SizedBox(width: 5.w),
-                                    Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text('Location',
-                                            style: AppStyles.fontSize10(
-                                                fontWeight: FontWeight.w500,
-                                                color: AppColors.blackColor)),
-                                        SizedBox(height: 5.h),
-                                        Text('Dhaka Bangladesh',
-                                            style: TextStyle(
-                                                color: Colors.grey.shade600)),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 16.h),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SvgPicture.asset(
-                                      AppIcons.dotIconForFamily,
-                                      height: 12.h,
-                                      width: 12.h,
-                                    ),
-                                    SizedBox(width: 5.w),
-                                    Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text('Deadline',
-                                            style: AppStyles.fontSize10(
-                                                fontWeight: FontWeight.w500,
-                                                color: AppColors.blackColor)),
-                                        SizedBox(height: 5.h),
-                                        Row(
-                                          children: [
-                                            Text('1-5-2025',
-                                                style: TextStyle(
-                                                    color: Colors.grey.shade600)),
-                                            SizedBox(width: 5.w),
-                                            Text('7:00 PM',
-                                                style: TextStyle(
-                                                    color: Colors.grey.shade600)),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 16.h),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SvgPicture.asset(
-                                      AppIcons.dotIconForFamily,
-                                      height: 12.h,
-                                      width: 12.h,
-                                    ),
-                                    SizedBox(width: 5.w),
-                                    Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text('Final Deadline',
-                                            style: AppStyles.fontSize10(
-                                                fontWeight: FontWeight.w500,
-                                                color: AppColors.blackColor)),
-                                        SizedBox(height: 5.h),
-                                        Text('1-5-2025',
-                                            style: TextStyle(
-                                                color: Colors.grey.shade600)),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                            SizedBox(height: 12.h),
+                            _buildInfoRow('Program', 'Piano'),
+                            SizedBox(height: 17.h),
+                            _buildInfoRow('Type', 'Onsite Event'),
+                            SizedBox(height: 17.h),
+                            _buildInfoRow('Location', 'Dhaka Bangladesh'),
+                            SizedBox(height: 18.h),
+                            _buildInfoRowWithDateTime('Deadline', '1-5-2025', '7:00 PM'),
+                            SizedBox(height: 18.h),
+                            _buildInfoRow('Final Deadline', '1-5-2025'),
                           ],
                         ),
                       ),
-                      //right side
+                      // Right Column
                       Expanded(
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(height: 16.h),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SvgPicture.asset(
-                                      AppIcons.dotIconForFamily,
-                                      height: 12.h,
-                                      width: 12.h,
-                                    ),
-                                    SizedBox(width: 5.w),
-                                    Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text('Competition Level',
-                                            style: AppStyles.fontSize10(
-                                                fontWeight: FontWeight.w500,
-                                                color: AppColors.blackColor)),
-                                        SizedBox(height: 5.h),
-                                        Text('Primary Round',
-                                            style: TextStyle(
-                                                color: Colors.grey.shade600)),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 16.h),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SvgPicture.asset(
-                                      AppIcons.dotIconForFamily,
-                                      height: 12.h,
-                                      width: 12.h,
-                                    ),
-                                    SizedBox(width: 5.w),
-                                    Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text('Registration Open',
-                                            style: AppStyles.fontSize10(
-                                                fontWeight: FontWeight.w500,
-                                                color: AppColors.blackColor)),
-                                        SizedBox(height: 5.h),
-                                        Row(
-                                          children: [
-                                            Text('1-1-2025',
-                                                style: TextStyle(
-                                                    color: Colors.grey.shade600)),
-                                            SizedBox(width: 5.w),
-                                            Text('7.00 AM',
-                                                style: TextStyle(
-                                                    color: Colors.grey.shade600)),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 16.h),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SvgPicture.asset(
-                                      AppIcons.dotIconForFamily,
-                                      height: 12.h,
-                                      width: 12.h,
-                                    ),
-                                    SizedBox(width: 5.w),
-                                    Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text('Repeat Function',
-                                            style: AppStyles.fontSize10(
-                                                fontWeight: FontWeight.w500,
-                                                color: AppColors.blackColor)),
-                                        SizedBox(height: 5.h),
-                                        Text('Never',
-                                            style: TextStyle(
-                                                color: Colors.grey.shade600)),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            //cost
-                            SizedBox(height: 16.h),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        SvgPicture.asset(
-                                          AppIcons.dotIconForFamily,
-                                          height: 12.h,
-                                          width: 12.h,
-                                        ),
-                                        SizedBox(width: 5.w),
-                                        Text('Cost',
-                                            style: AppStyles.fontSize10(
-                                                fontWeight: FontWeight.w500,
-                                                color: AppColors.blackColor)),
-                                      ],
-                                    ),
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.blueGrey,
-                                        shape: BoxShape.rectangle,
-                                        borderRadius: BorderRadius.circular(4.r),
-                                      ),
-                                      padding: EdgeInsets.all(4),
-                                      child: Icon(
-                                        Icons.check,
-                                        color: Colors.white,
-                                        size: 12,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 5.h),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 17.w), // 12.w (icon) + 5.w (spacing)
-                                  child: Text('\$100',
-                                      style: TextStyle(
-                                          color: Colors.grey.shade600)),
-                                ),
-                              ],
-                            ),
-                            //late fee
-                            SizedBox(height: 16.h),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        SvgPicture.asset(
-                                          AppIcons.dotIconForFamily,
-                                          height: 12.h,
-                                          width: 12.h,
-                                        ),
-                                        SizedBox(width: 5.w),
-                                        Text('Late Fee',
-                                            style: AppStyles.fontSize10(
-                                                fontWeight: FontWeight.w500,
-                                                color: AppColors.blackColor)),
-                                      ],
-                                    ),
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.blueGrey,
-                                        shape: BoxShape.rectangle,
-                                        borderRadius: BorderRadius.circular(4.r),
-                                      ),
-                                      padding: EdgeInsets.all(4),
-                                      child: Icon(
-                                        Icons.check,
-                                        color: Colors.white,
-                                        size: 12,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 5.h),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 17.w), // 12.w (icon) + 5.w (spacing)
-                                  child: Text('\$100',
-                                      style: TextStyle(
-                                          color: Colors.grey.shade600)),
-                                ),
-                              ],
-                            ),
+                            SizedBox(height: 12.h),
+                            _buildInfoRow('Competition Level', 'Primary Round'),
+                            SizedBox(height: 17.h),
+                            _buildInfoRowWithDateTime('Registration Open', '1-1-2025', '7.00 AM'),
+                            SizedBox(height: 17.h),
+                            _buildInfoRow('Repeat Function', 'Never'),
+                            SizedBox(height: 18.h),
+                            _buildInfoRowWithCheck('Cost', '\$100'),
+                            SizedBox(height: 18.h),
+                            _buildInfoRowWithCheck('Late Fee', '\$100'),
                           ],
                         ),
-                      )
+                      ),
                     ],
                   )
                 ],
@@ -1128,6 +791,151 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
           ),
         ),
       ),
+    );
+  }
+  // Helper methods to ensure consistent alignment
+  Widget _buildInfoRow(String label, String value) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+       Column(
+         children: [
+           SizedBox(
+             height: 4.h,
+           ),
+           SvgPicture.asset(
+             AppIcons.dotIconForFamily,
+             height: 12.h,
+             width: 12.h,
+           )
+         ],
+       )
+        ,
+        SizedBox(width: 5.w),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                label,
+                style: AppStyles.fontSize16(fontWeight: FontWeight.w500),
+              ),
+              SizedBox(height: 5.h),
+              Text(
+                value,
+                style: TextStyle(color: Colors.grey.shade600),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildInfoRowWithDateTime(String label, String date, String time) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Column(
+          children: [
+            SizedBox(
+              height: 4.h,
+            ),
+            SvgPicture.asset(
+              AppIcons.dotIconForFamily,
+              height: 12.h,
+              width: 12.h,
+            )
+          ],
+        )
+        ,
+        SizedBox(width: 5.w),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                label,
+                  style: AppStyles.fontSize16(fontWeight: FontWeight.w500),
+              ),
+              SizedBox(height: 5.h),
+              Row(
+                children: [
+                  Text(
+                    date,
+                    style: TextStyle(color: Colors.grey.shade600),
+                  ),
+                  SizedBox(width: 5.w),
+                  Text(
+                    time,
+                    style: TextStyle(color: Colors.grey.shade600),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildInfoRowWithCheck(String label, String value) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Column(
+              children: [
+                SizedBox(
+                  height: 4.h,
+                ),
+                SvgPicture.asset(
+                  AppIcons.dotIconForFamily,
+                  height: 12.h,
+                  width: 12.h,
+                )
+              ],
+            )
+            ,
+            SizedBox(width: 5.w),
+            Expanded(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    label,
+                    style: AppStyles.fontSize16(fontWeight: FontWeight.w500),
+                  ),
+                  Container(
+                    height: 20.h,
+                    width: 20.h,
+                    decoration: BoxDecoration(
+                      color: Colors.blueGrey,
+                      borderRadius: BorderRadius.circular(4.r),
+                    ),
+                    child: Icon(
+                      Icons.check,
+                      color: Colors.white,
+                      size: 12,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 5.h),
+        Padding(
+          padding: EdgeInsets.only(left: 17.w), // 12.w (icon) + 5.w (spacing)
+          child: Text(
+            value,
+            style: TextStyle(color: Colors.grey.shade600),
+          ),
+        ),
+      ],
     );
   }
 }
