@@ -22,13 +22,15 @@ class _StepThreeFormState extends State<StepThreeForm> {
   final List<String> costList = ['Has Final Deadline', 'Has Late Fee'];
   final List<String> typeList = ['First', 'Second'];
 
-
   final TextEditingController dateController = TextEditingController();
   final TextEditingController timeController = TextEditingController();
 
-  final TextEditingController finalDatelineMonthController = TextEditingController();
-  final TextEditingController finalDatelineDayController = TextEditingController();
-  final TextEditingController finalDatelineYearController = TextEditingController();
+  final TextEditingController finalDatelineMonthController =
+      TextEditingController();
+  final TextEditingController finalDatelineDayController =
+      TextEditingController();
+  final TextEditingController finalDatelineYearController =
+      TextEditingController();
 
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController deadLineDateController = TextEditingController();
@@ -51,13 +53,14 @@ class _StepThreeFormState extends State<StepThreeForm> {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child:
-                Text('Step 3: Group/Category',style: AppStyles.fontSize20(fontWeight: FontWeight.bold)),
+                child: Text('Step 3: Group/Category',
+                    style: AppStyles.fontSize20(fontWeight: FontWeight.bold)),
               ),
               //registration date
               SizedBox(height: 12.h),
               //registration date
-              Text('Define Group/Category',style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
+              Text('Define Group/Category',
+                  style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
               SizedBox(height: 12.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -66,7 +69,8 @@ class _StepThreeFormState extends State<StepThreeForm> {
                     child: CustomTextField(
                       controller: dateController,
                       hintText: 'Group/Category',
-                      hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
+                      hintTextStyle:
+                          AppStyles.fontSize14(color: AppColors.color414141),
                       sufixicons: Padding(
                         padding: EdgeInsets.only(right: 12.w),
                         child: SvgPicture.asset(
@@ -82,7 +86,8 @@ class _StepThreeFormState extends State<StepThreeForm> {
                     child: CustomTextField(
                       controller: dateController,
                       hintText: 'Condition',
-                      hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
+                      hintTextStyle:
+                          AppStyles.fontSize14(color: AppColors.color414141),
                       sufixicons: Padding(
                         padding: EdgeInsets.only(right: 12.w),
                         child: SvgPicture.asset(
@@ -95,22 +100,28 @@ class _StepThreeFormState extends State<StepThreeForm> {
                   ),
                 ],
               ),
-              SizedBox(height: 8.h),
+              SizedBox(height: 16.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
                     child: CustomTextField(
+
+                      // Fixed height - won't change with device height
                       controller: payment,
                       hintText: '\$',
-                      hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
+                      hintTextStyle:
+                          AppStyles.fontSize14(color: AppColors.color414141),
                     ),
                   ),
-                  SizedBox(width: 12.w),
+                  SizedBox(width: 15.w),
+                  // Width-based spacing (scales with width, not height)
                   SizedBox(
-                    height: 60.h,
-                    width: 90.w,
+                    width: 90.w, // Width-based sizing
                     child: CustomButton(
+                      height: 48.5,
+                      // Fixed height - won't change with device height
+                      width: 90.w,
                       color: AppColors.buttonA47059,
                       borderColor: Colors.transparent,
                       onTap: () {},
@@ -123,8 +134,8 @@ class _StepThreeFormState extends State<StepThreeForm> {
               SizedBox(height: 8.h),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 4),
-                child:
-                Text('Added Group/Category',style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
+                child: Text('Added Group / Category',
+                    style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
               ),
               SizedBox(height: 8.h),
               Container(
@@ -134,17 +145,18 @@ class _StepThreeFormState extends State<StepThreeForm> {
                   border: Border.all(color: AppColors.primaryColor, width: 1),
                 ),
                 child: Padding(
-                  padding:  EdgeInsets.symmetric(vertical: 8.w,horizontal: 8.w),
+                  padding: EdgeInsets.symmetric(vertical: 8.w, horizontal: 8.w),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8.0),
+                        padding: EdgeInsets.symmetric(horizontal: 8.w),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('1 Age up to 10 years old',style: AppStyles.fontSize14(color: AppColors.color414141)),
-
+                            Text('1 Age up to 10 years old',
+                                style: AppStyles.fontSize14(
+                                    color: AppColors.color414141)),
                             Row(
                               children: [
                                 InkWell(
@@ -163,13 +175,17 @@ class _StepThreeFormState extends State<StepThreeForm> {
                           ],
                         ),
                       ),
+                      SizedBox(
+                        height: 2.h,
+                      ),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8.0),
+                        padding: EdgeInsets.symmetric(horizontal: 8.w),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('2 Age up to 15 years old',style: AppStyles.fontSize14(color: AppColors.color414141)),
-
+                            Text('2 Age up to 15 years old',
+                                style: AppStyles.fontSize14(
+                                    color: AppColors.color414141)),
                             Row(
                               children: [
                                 InkWell(
@@ -188,17 +204,22 @@ class _StepThreeFormState extends State<StepThreeForm> {
                           ],
                         ),
                       ),
+                      SizedBox(
+                        height: 2.h,
+                      ),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8.0),
+                        padding: EdgeInsets.symmetric(horizontal: 8.w),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('3 Age up to 18 years old',style: AppStyles.fontSize14(color: AppColors.color414141)),
+                            Text('3 Age up to 18 years old',
+                                style: AppStyles.fontSize14(
+                                    color: AppColors.color414141)),
                             Row(
                               children: [
                                 InkWell(
                                     onTap: () {
-                                    //  Get.back();
+                                      //  Get.back();
                                     },
                                     child: SvgPicture.asset(AppIcons.editIcon)),
                                 SizedBox(width: 4),
@@ -224,14 +245,17 @@ class _StepThreeFormState extends State<StepThreeForm> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Defile Round',style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
+                      Text('Defile Round',
+                          style: AppStyles.fontSize16(
+                              fontWeight: FontWeight.bold)),
                       SizedBox(height: 8.h),
                       Container(
-                        padding: EdgeInsets.symmetric(horizontal: 20.w),
+                        padding: EdgeInsets.symmetric(horizontal: 20.w,vertical: 0.w),
                         decoration: BoxDecoration(
                           color: AppColors.fillColor,
                           borderRadius: BorderRadius.circular(8.r),
-                          border: Border.all(color: AppColors.primaryColor, width: 1),
+                          border: Border.all(
+                              color: AppColors.primaryColor, width: 1),
                         ),
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
@@ -239,11 +263,16 @@ class _StepThreeFormState extends State<StepThreeForm> {
                             dropdownColor: AppColors.fillColor,
                             menuWidth: 240.w,
                             borderRadius: BorderRadius.circular(8.r),
-                            hint: Text("Select Round", style: AppStyles.fontSize14(color: AppColors.color414141)),
-                            icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
+                            hint: Text("Select Round",
+                                style: AppStyles.fontSize14(
+                                    color: AppColors.color414141)),
+                            icon: SvgPicture.asset(
+                              AppIcons.downArrowIcon,
+                              width: 16.w,
+                              color: AppColors.primaryColor,
                             ),
                             isExpanded: true,
-                            items:typeList.map((String value) {
+                            items: typeList.map((String value) {
                               return DropdownMenuItem<String>(
                                 value: value,
                                 child: Text(
@@ -262,7 +291,9 @@ class _StepThreeFormState extends State<StepThreeForm> {
                       ),
                       SizedBox(height: 12.h),
                       //deadline date
-                      Text("Deadline", style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
+                      Text("Deadline",
+                          style: AppStyles.fontSize16(
+                              fontWeight: FontWeight.bold)),
                       SizedBox(height: 12.h),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -274,7 +305,8 @@ class _StepThreeFormState extends State<StepThreeForm> {
                                   icon: Icon(Icons.calendar_today_rounded)),
                               controller: deadLineDateController,
                               hintText: 'Date',
-                              hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
+                              hintTextStyle: AppStyles.fontSize14(
+                                  color: AppColors.color414141),
                               sufixicons: Padding(
                                 padding: EdgeInsets.only(right: 12.w),
                                 child: SvgPicture.asset(
@@ -293,7 +325,8 @@ class _StepThreeFormState extends State<StepThreeForm> {
                                   icon: Icon(Icons.watch_later_rounded)),
                               controller: deadLineTimeController,
                               hintText: 'Time',
-                              hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
+                              hintTextStyle: AppStyles.fontSize14(
+                                  color: AppColors.color414141),
                               sufixicons: Padding(
                                 padding: EdgeInsets.only(right: 12.w),
                                 child: SvgPicture.asset(
@@ -308,7 +341,9 @@ class _StepThreeFormState extends State<StepThreeForm> {
                       ),
                       //cost
                       SizedBox(height: 12.h),
-                      Text("Cost", style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
+                      Text("Cost",
+                          style: AppStyles.fontSize16(
+                              fontWeight: FontWeight.bold)),
                       SizedBox(height: 12.h),
                       CustomTextField(
                         controller: dateController,
@@ -320,19 +355,29 @@ class _StepThreeFormState extends State<StepThreeForm> {
                         decoration: BoxDecoration(
                           color: AppColors.fillColor,
                           borderRadius: BorderRadius.circular(8.r),
-                          border: Border.all(color: AppColors.primaryColor, width: 1),
+                          border: Border.all(
+                              color: AppColors.primaryColor, width: 1),
                         ),
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
+                            padding: EdgeInsets.symmetric(vertical: 0.w,),                    //focusColor:  AppColors.primaryColor,
+
                             value: _selectedCost,
                             dropdownColor: AppColors.fillColor,
                             menuWidth: 240.w,
                             borderRadius: BorderRadius.circular(8.r),
-                            hint: Text("Select Cost", style: AppStyles.fontSize14(color: AppColors.color414141),),
-                            icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
+                            hint: Text(
+                              "Select Cost",
+                              style: AppStyles.fontSize14(
+                                  color: AppColors.color414141),
+                            ),
+                            icon: SvgPicture.asset(
+                              AppIcons.downArrowIcon,
+                              width: 16.w,
+                              color: AppColors.primaryColor,
                             ),
                             isExpanded: true,
-                            items:costList.map((String value) {
+                            items: costList.map((String value) {
                               return DropdownMenuItem<String>(
                                 value: value,
                                 child: Text(
@@ -351,7 +396,9 @@ class _StepThreeFormState extends State<StepThreeForm> {
                       ),
                       //final date
                       SizedBox(height: 12.h),
-                      Text("Final Deadline", style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
+                      Text("Final Deadline",
+                          style: AppStyles.fontSize16(
+                              fontWeight: FontWeight.bold)),
                       SizedBox(height: 12.h),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -361,7 +408,8 @@ class _StepThreeFormState extends State<StepThreeForm> {
                             child: CustomTextField(
                               controller: finalDatelineYearController,
                               hintText: 'Year',
-                              hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
+                              hintTextStyle: AppStyles.fontSize14(
+                                  color: AppColors.color414141),
                               sufixicons: Padding(
                                 padding: EdgeInsets.only(right: 12.w),
                                 child: SvgPicture.asset(
@@ -377,7 +425,8 @@ class _StepThreeFormState extends State<StepThreeForm> {
                             child: CustomTextField(
                               controller: finalDatelineMonthController,
                               hintText: 'Month',
-                              hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
+                              hintTextStyle: AppStyles.fontSize14(
+                                  color: AppColors.color414141),
                               sufixicons: Padding(
                                 padding: EdgeInsets.only(right: 12.w),
                                 child: SvgPicture.asset(
@@ -393,7 +442,8 @@ class _StepThreeFormState extends State<StepThreeForm> {
                             child: CustomTextField(
                               controller: finalDatelineDayController,
                               hintText: 'Day',
-                              hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
+                              hintTextStyle: AppStyles.fontSize14(
+                                  color: AppColors.color414141),
                               sufixicons: Padding(
                                 padding: EdgeInsets.only(right: 12.w),
                                 child: SvgPicture.asset(
@@ -407,35 +457,49 @@ class _StepThreeFormState extends State<StepThreeForm> {
                         ],
                       ),
                       SizedBox(height: 16.h),
-                      Text("Late fee", style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
+                      Text("Late fee",
+                          style: AppStyles.fontSize16(
+                              fontWeight: FontWeight.bold)),
                       SizedBox(height: 12.h),
                       CustomTextField(
                         controller: lateFee,
                         hintText: '\$',
-                        hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
+                        hintTextStyle:
+                            AppStyles.fontSize14(color: AppColors.color414141),
                       ),
                       SizedBox(height: 12.h),
-                      Text("Type", style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
+                      Text("Type",
+                          style: AppStyles.fontSize16(
+                              fontWeight: FontWeight.bold)),
                       SizedBox(height: 12.h),
                       Container(
                         padding: EdgeInsets.symmetric(horizontal: 20.w),
                         decoration: BoxDecoration(
                           color: AppColors.fillColor,
                           borderRadius: BorderRadius.circular(8.r),
-                          border: Border.all(color: AppColors.primaryColor, width: 1),
+                          border: Border.all(
+                              color: AppColors.primaryColor, width: 1),
                         ),
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
+                            padding: EdgeInsets.symmetric(vertical: 0.w,),                    //focusColor:  AppColors.primaryColor,
+
                             value: _selectedType,
                             dropdownColor: AppColors.fillColor,
                             menuWidth: 240.w,
                             borderRadius: BorderRadius.circular(8.r),
-
-                            hint: Text("Select Type", style: AppStyles.fontSize14(color: AppColors.color414141),),
-                            icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
+                            hint: Text(
+                              "Select Type",
+                              style: AppStyles.fontSize14(
+                                  color: AppColors.color414141),
+                            ),
+                            icon: SvgPicture.asset(
+                              AppIcons.downArrowIcon,
+                              width: 16.w,
+                              color: AppColors.primaryColor,
                             ),
                             isExpanded: true,
-                            items:typeList.map((String value) {
+                            items: typeList.map((String value) {
                               return DropdownMenuItem<String>(
                                 value: value,
                                 child: Text(
@@ -453,15 +517,18 @@ class _StepThreeFormState extends State<StepThreeForm> {
                         ),
                       ),
                       SizedBox(height: 12.h),
-                      Text("Description", style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
+                      Text("Description",
+                          style: AppStyles.fontSize16(
+                              fontWeight: FontWeight.bold)),
                       SizedBox(height: 12.h),
                       CustomTextField(
                         controller: lateFee,
                         hintText: 'Type your Description...',
-                        hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
+                        hintTextStyle:
+                            AppStyles.fontSize14(color: AppColors.color414141),
                       ),
 
-                      SizedBox(height: 10),
+                      SizedBox(height: 10.h),
                       CustomButton(
                         color: AppColors.buttonA47059,
                         borderColor: Colors.white,
@@ -470,13 +537,16 @@ class _StepThreeFormState extends State<StepThreeForm> {
                         textColor: Colors.white,
                       ),
                       SizedBox(height: 10.h),
-                      Text("Added Round", style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
+                      Text("Added Round",
+                          style: AppStyles.fontSize16(
+                              fontWeight: FontWeight.bold)),
                       SizedBox(height: 8.h),
                       Container(
                         decoration: BoxDecoration(
                           color: AppColors.colorEDF2F4,
                           borderRadius: BorderRadius.all(Radius.circular(8)),
-                          border: Border.all(color: AppColors.primaryColor, width: 1),
+                          border: Border.all(
+                              color: AppColors.primaryColor, width: 1),
                         ),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -484,9 +554,10 @@ class _StepThreeFormState extends State<StepThreeForm> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                padding: EdgeInsets.symmetric(horizontal: 8..w,vertical: 0.h),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     CustomText(
                                       text: '1. Bangla',
@@ -499,13 +570,15 @@ class _StepThreeFormState extends State<StepThreeForm> {
                                             onTap: () {
                                               Get.back();
                                             },
-                                            child: SvgPicture.asset(AppIcons.editIcon)),
+                                            child: SvgPicture.asset(
+                                                AppIcons.editIcon)),
                                         SizedBox(width: 4),
                                         InkWell(
                                             onTap: () {
                                               Get.back();
                                             },
-                                            child: SvgPicture.asset(AppIcons.trashIcon))
+                                            child: SvgPicture.asset(
+                                                AppIcons.trashIcon))
                                       ],
                                     ),
                                   ],
@@ -514,7 +587,8 @@ class _StepThreeFormState extends State<StepThreeForm> {
                               Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 8.0),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     CustomText(
                                       text: '2. English',
@@ -527,13 +601,15 @@ class _StepThreeFormState extends State<StepThreeForm> {
                                             onTap: () {
                                               Get.back();
                                             },
-                                            child: SvgPicture.asset(AppIcons.editIcon)),
+                                            child: SvgPicture.asset(
+                                                AppIcons.editIcon)),
                                         SizedBox(width: 4),
                                         InkWell(
                                             onTap: () {
                                               Get.back();
                                             },
-                                            child: SvgPicture.asset(AppIcons.trashIcon))
+                                            child: SvgPicture.asset(
+                                                AppIcons.trashIcon))
                                       ],
                                     ),
                                   ],
@@ -542,7 +618,8 @@ class _StepThreeFormState extends State<StepThreeForm> {
                               Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 8.0),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     CustomText(
                                       text: '3. Math',
@@ -555,13 +632,15 @@ class _StepThreeFormState extends State<StepThreeForm> {
                                             onTap: () {
                                               //  Get.back();
                                             },
-                                            child: SvgPicture.asset(AppIcons.editIcon)),
-                                        SizedBox(width: 4),
+                                            child: SvgPicture.asset(
+                                                AppIcons.editIcon)),
+                                        SizedBox(width: 4.w),
                                         InkWell(
                                             onTap: () {
                                               //Get.back();
                                             },
-                                            child: SvgPicture.asset(AppIcons.trashIcon))
+                                            child: SvgPicture.asset(
+                                                AppIcons.trashIcon))
                                       ],
                                     ),
                                   ],
@@ -575,7 +654,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
                   ),
                 ),
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 10.h),
               Row(
                 children: [
                   Expanded(
@@ -585,7 +664,6 @@ class _StepThreeFormState extends State<StepThreeForm> {
                           if (addeventcontroller.activeStepIndex.value == 2) {
                             addeventcontroller.activeStepIndex.value--;
                             //StepThreeForm();
-
                           } // In create_event_one.dart, modify the step widgets to pass the activeStepIndex and update function:
                         });
                       },
@@ -603,7 +681,6 @@ class _StepThreeFormState extends State<StepThreeForm> {
                           if (addeventcontroller.activeStepIndex.value == 2) {
                             addeventcontroller.activeStepIndex.value++;
                             //StepThreeForm();
-
                           } // In create_event_one.dart, modify the step widgets to pass the activeStepIndex and update function:
                         });
                       },

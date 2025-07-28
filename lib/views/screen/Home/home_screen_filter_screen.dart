@@ -35,29 +35,23 @@ class _FilterScreenState extends State<FilterScreen> {
       //=======================> App Bar Section <============================
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Row(
-          children: [
-            IconButton(
-              icon: Icon(
-                Icons.arrow_back_ios,
-                color: Colors.black,
-                size: 20.sp,
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            Expanded(
-              child: Align(
-                alignment: Alignment.center, // Center the text
-                child: CustomText(
-                  text: AppStrings.filter,
-                  fontsize: 18.sp,
-                  fontWeight: FontWeight.w600,
+        title: CustomText(
+          text: AppStrings.filter,
+          fontsize: 18.sp,
+          fontWeight: FontWeight.w500,
+        ),
+        leading:  Padding(
+          padding:  EdgeInsets.only(left:20.w),
+          child: IconButton(
+                icon: Icon(
+                  Icons.arrow_back_ios,
+                  color: Colors.black,
+                  size: 20.sp,
                 ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
               ),
-            ),
-          ],
         ),
         centerTitle: true,
       ),
@@ -96,8 +90,7 @@ class _FilterScreenState extends State<FilterScreen> {
                 ),
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
-                    padding: EdgeInsets.symmetric(vertical: 5.w),
-                    //focusColor:  AppColors.primaryColor,
+                    padding: EdgeInsets.symmetric(vertical: 0.w,),                    //focusColor:  AppColors.primaryColor,
                     iconDisabledColor: AppColors.primaryColor,
                     icon: SvgPicture.asset(AppIcons.down_ArrowIcon,color: AppColors.primaryColor,height:8.h,),
                     iconEnabledColor: AppColors.primaryColor,
@@ -128,6 +121,7 @@ class _FilterScreenState extends State<FilterScreen> {
               ),
               InputDecorator(
                 decoration: InputDecoration(
+
                   fillColor: AppColors.fillColor, // Replace with your desired color
                   filled: true,
                   border: OutlineInputBorder(
@@ -145,8 +139,9 @@ class _FilterScreenState extends State<FilterScreen> {
                   contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
                 ),
                 child: DropdownButtonHideUnderline(
+
                   child: DropdownButton<String>(
-                    padding: EdgeInsets.symmetric(vertical: 5.w),
+                    padding: EdgeInsets.symmetric(vertical: 0.w,),
 
                     //focusColor:  AppColors.primaryColor,
                     iconDisabledColor: AppColors.primaryColor,
@@ -178,6 +173,7 @@ class _FilterScreenState extends State<FilterScreen> {
                 bottom: 8.h,
               ),
               CustomTextField(
+
                 controller: _locationCTRL,
                 hintText: 'Type here',
                 sufixicons: Padding(
@@ -218,8 +214,7 @@ class _FilterScreenState extends State<FilterScreen> {
                 ),
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
-                    padding: EdgeInsets.symmetric(vertical: 5.w),
-
+                    padding: EdgeInsets.symmetric(vertical: 0.w,),
                     //focusColor:  AppColors.primaryColor,
                     iconDisabledColor: AppColors.primaryColor,
                     iconEnabledColor: AppColors.primaryColor,
