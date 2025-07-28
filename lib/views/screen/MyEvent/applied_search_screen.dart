@@ -60,30 +60,48 @@ class _AppliedSearchEventListScreenState extends State<AppliedSearchEventListScr
             //==============================> Create Event Button <=======================
             _searchBar(),
             SizedBox(height: 16.h),
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Total Event :',style: AppStyles.fontSize16(fontWeight: FontWeight.w600)),
-                        Text('500',style: AppStyles.fontSize12()),
-                      ],
-                    ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Column(
+
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text('Total Event :',style: AppStyles.fontSize16(fontWeight: FontWeight.w600)),
+                          Padding(
+                            padding:   EdgeInsets.only(top: 1.8.h),
+                            child: Text('  500',style: AppStyles.fontSize12()),
+                          ),
+                        ],
+                      ),
+
+                    ],
                   ),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Total Cost :',style: AppStyles.fontSize16(fontWeight: FontWeight.w600)),
-                        Text('200',style: AppStyles.fontSize12()),
-                      ],
-                    ),
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Text('Total Cost :',style: AppStyles.fontSize16(fontWeight: FontWeight.w600)),
+                          Padding(
+                            padding:   EdgeInsets.only(top: 1.8.h),
+                            child: Text('  200',style: AppStyles.fontSize12()),
+                          ),
+
+                        ],
+                      ),
+
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
 
             //=================================> Event List view <========================
