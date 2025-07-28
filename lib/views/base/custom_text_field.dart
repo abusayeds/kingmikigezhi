@@ -25,6 +25,7 @@ class CustomTextField extends StatefulWidget {
   final bool? isEmail;
   final bool? readOnly;
   final TextStyle? hintTextStyle;
+  final Color? borderColor; // Added border color parameter
 
   const CustomTextField({
     super.key,
@@ -46,6 +47,7 @@ class CustomTextField extends StatefulWidget {
     this.readOnly = false,
     this.onTab,
     this.hintTextStyle,
+    this.borderColor, // Added to constructor
   });
 
   @override
@@ -178,7 +180,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       borderRadius: BorderRadius.circular(8.0), // Fixed border radius
       borderSide: BorderSide(
         width: 1.0, // Fixed border width
-        color: AppColors.primaryColor,
+        color: widget.borderColor ?? AppColors.primaryColor, // Use custom border color or fallback to primary color
       ),
     );
   }
