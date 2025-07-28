@@ -1,4 +1,3 @@
-
 import 'package:event_sharing/views/base/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -46,13 +45,13 @@ class _MyContributionScreenState extends State<MyContributionScreen> {
     return Scaffold(
       appBar: AppBar(
         title:  Text('Total 1000 Contribution',style: TextStyle(fontSize: 18.sp,fontWeight: FontWeight.bold),),
-       leading: IconButton(
-         icon: Icon(Icons.arrow_back_ios,
-             color: Colors.black, size: 18.w),
-         onPressed: () {
-           Get.back();
-         },
-       ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios,
+              color: Colors.black, size: 18.w),
+          onPressed: () {
+            Get.back();
+          },
+        ),
         centerTitle: true,
       ),
       body: Padding(
@@ -75,11 +74,15 @@ class _MyContributionScreenState extends State<MyContributionScreen> {
                     onTap: () {
                       Get.toNamed(AppRoutes.eventDetailsScreen);
                     },
-                    child: Card(
+                    child: Container(
                       margin: EdgeInsets.symmetric(vertical: 8.h),
-                      color: const Color(0xffedf2f4),
-                      shape: RoundedRectangleBorder(
+                      decoration: BoxDecoration(
+                        color: const Color(0xffedf2f4),
                         borderRadius: BorderRadius.circular(16.r),
+                        border: Border.all(
+                          color: AppColors.colorC8D7DE,
+                          width: 1.0,
+                        ),
                       ),
                       child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
@@ -107,10 +110,11 @@ class _MyContributionScreenState extends State<MyContributionScreen> {
                                     fontsize: 16.sp,
                                     fontWeight: FontWeight.bold,
                                   ),
-                                  SizedBox(height: 8.h),
+                                  SizedBox(height: 10.h),
                                   //=====================> Event Info Section <=========================
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -122,12 +126,18 @@ class _MyContributionScreenState extends State<MyContributionScreen> {
                                               Text('Onsite Event',style: TextStyle(fontSize: 8.sp),),
                                             ],
                                           ),
+                                          SizedBox(
+                                            height: 6.h,
+                                          ),
                                           Row(
                                             children: [
                                               SvgPicture.asset(AppIcons.dotIconForFamily),
                                               SizedBox(width: 4.w),
                                               Text('Dhaka Bangladesh',style: TextStyle(fontSize: 8.sp),),
                                             ],
+                                          ),
+                                          SizedBox(
+                                            height: 6.h,
                                           ),
                                           Row(
                                             children: [
@@ -140,6 +150,7 @@ class _MyContributionScreenState extends State<MyContributionScreen> {
                                       ),
                                       Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.start,
                                         children: [
                                           Row(
                                             children: [
@@ -147,6 +158,9 @@ class _MyContributionScreenState extends State<MyContributionScreen> {
                                               SizedBox(width: 4.w),
                                               Text('Cost : \$100',style: TextStyle(fontSize: 8.sp),),
                                             ],
+                                          ),
+                                          SizedBox(
+                                            height: 6.h,
                                           ),
                                           Row(
                                             children: [
@@ -159,6 +173,26 @@ class _MyContributionScreenState extends State<MyContributionScreen> {
                                       ),
                                     ],
                                   ),
+
+                                ],
+                              ),
+                            ),
+                            //=====================> Share Icon <=========================
+                            Padding(
+                              padding: EdgeInsets.only(top: 8.h),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  SvgPicture.asset(
+                                    AppIcons.share, // Share icon
+                                    width: 16.w,
+                                    height: 16.h,
+                                    color: Colors.blueGrey,
+                                  ),
+                                  SizedBox(
+                                    height: 48.h,
+                                  ),
                                   const Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     mainAxisSize: MainAxisSize.max,
@@ -167,19 +201,6 @@ class _MyContributionScreenState extends State<MyContributionScreen> {
                                     ],
                                   )
                                 ],
-
-                              ),
-
-                            ),
-
-                            //=====================> Share Icon <=========================
-                            Padding(
-                              padding: EdgeInsets.only(top: 8.h),
-                              child: SvgPicture.asset(
-                                AppIcons.share, // Share icon
-                                width: 16.w,
-                                height: 16.h,
-                                color: Colors.blueGrey,
                               ),
                             ),
                           ],

@@ -31,6 +31,7 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
         child: Column(
           children: [
             //========================> Top action button <=====================
+            SizedBox(height: 11.h),
             Padding(
               padding: EdgeInsets.only(right: 8.w),
               child: Row(
@@ -38,7 +39,7 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                 children: [
                   Container(
                     height: 36.h,
-                    width: 36.w,
+                    width: 36.h,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(30.r)),
                       color: AppColors.buttonColor,
@@ -52,7 +53,7 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                 ],
               ),
             ),
-            SizedBox(height: 16.h),
+            SizedBox(height: 14.h),
             //========================> Search bar <=========================
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -77,111 +78,33 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
               ),
             ),
             // Family members list
+
             ListView.builder(
-              shrinkWrap: true,
-             // physics: NeverScrollableScrollPhysics(), // Disable inner scroll
               itemCount: familyMembers.length,
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
                 final member = familyMembers[index];
                 return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Dismissible(
-                    key: Key(member['name']!),
-                    background: Container(
-                      decoration: BoxDecoration(
-                        color: AppColors.colorD9A951,
-                        borderRadius: BorderRadius.all(Radius.circular(8)),
-                      ),
-                      alignment: Alignment.centerRight,
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      child: SvgPicture.asset(AppIcons.deleteIcon),
+                  padding:  EdgeInsets.symmetric(vertical: 8.h,horizontal: 8.w),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: AppColors.colorD9A951,
                     ),
-                    direction: DismissDirection.endToStart,
-                    confirmDismiss: (direction) async {
-                      final bool? result = await _showCustomBottomSheet(context, member['name']!);
-                      shouldRemove = result ?? false;
-                      return shouldRemove;
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(),
-                      child: Dismissible(
-                        key: Key(member['name']!),
-                        background: Container(
-                          decoration: BoxDecoration(
-                            color: AppColors.colorEDF2F4,
-                            borderRadius: BorderRadius.all(Radius.circular(8)),
-                            border: Border.all(color: Colors.black12, width: 1.0),
-                          ),
-                          alignment: Alignment.centerRight,
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          child: SvgPicture.asset(AppIcons.deleteIcon),
-                        ),
-                        direction: DismissDirection.endToStart,
-                        confirmDismiss: (direction) async {
-                          final bool? result = await _showCustomBottomSheet(context, member['name']!);
-                          shouldRemove = result ?? false;
-                          return shouldRemove;
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: AppColors.colorEDF2F4,
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: Colors.black12, width: 1.0),
-                          ),
-                          padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
-                          child: Stack(
-                            children: [
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  CircleAvatar(
-                                    backgroundImage: AssetImage(member['image']!),
-                                    radius: 30.r,
-                                  ),
-                                  SizedBox(width: 12.w),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          member['name']!,
-                                          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16.sp),
-                                        ),
-                                        SizedBox(height: 4.h),
-                                        Row(
-                                          children: [
-                                            SvgPicture.asset(AppIcons.dotIconForFamily, width: 5.w, height: 5.h),
-                                            SizedBox(width: 4.w),
-                                            Text(
-                                              member['relation']!,
-                                              style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12.sp),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Positioned(
-                                bottom: -5,
-                                right: 0,
-                                child: InkWell(
-                                  onTap: () {
-                                    _showViewModeBottomSheet(context);
-                                  },
-                                  child: Icon(Icons.more_horiz, color: AppColors.color8C8C8C, size: 20.sp),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                    child: _notification(
+                      member['name']!,
+
+                      DateTime.now(),
+                      member['image']!,
+                        member['relation']!,
+
                     ),
-                  )
+                  ),
                 );
               },
             ),
+
           ],
         ),
       ),
@@ -229,7 +152,7 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                         backgroundColor: AppColors.colorEDF2F4,
                         side: BorderSide(
                             width: 1,
-                            color: AppColors.greyColor),
+                            color: AppColors.primaryColor),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(100),
                         ),
@@ -266,7 +189,107 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
     );
   }
 
+  _notification(
+      String title,
 
+      DateTime time,
+      String imageUrl,
+      String relation,
+      ) {
+    return Dismissible(
+      key: Key(title),
+      direction: DismissDirection.endToStart,
+      background: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(21.r),
+          color: AppColors.colorD9A951,
+        ),
+        alignment: Alignment.centerRight,
+        padding: EdgeInsets.only(right: 26.w),
+        child: SvgPicture.asset(AppIcons.deleteIcon),
+      ),
+      // Use confirmDismiss to show confirmation dialog
+      confirmDismiss: (direction) async {
+        final bool? result = await _showCustomBottomSheet(context, title);
+        return result ?? false; // Return true to dismiss, false to cancel
+      },
+      // onDismissed is called only when the item is actually dismissed
+      onDismissed: (direction) {
+        // Handle the actual dismissal here (e.g., remove from list)
+        setState(() {
+          familyMembers.removeWhere((member) => member['name'] == title);
+        });
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppColors.colorEDF2F4,
+          borderRadius: BorderRadius.circular(17.r),
+          border: Border.all(color: Colors.black12, width: 1.0),
+        ),
+        padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),
+        child: Stack(
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                CircleAvatar(
+                  backgroundImage: AssetImage(imageUrl),
+                  radius: 30.r,
+                ),
+                SizedBox(width: 12.w),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16.sp),
+                      ),
+                      SizedBox(height: 4.h),
+                      // Row(
+                      //   children: [
+                      //     SvgPicture.asset(AppIcons.dotIconForFamily, width: 5.w, height: 5.h),
+                      //     SizedBox(width: 4.w),
+                      //     Text('Phone: $phone',
+                      //       style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12.sp),
+                      //     ),
+                      //   ],
+                      // ),
+                      SizedBox(height: 4.h),
+                      Row(
+                        children: [
+                          SvgPicture.asset(AppIcons.dotIconForFamily, width: 5.w, height: 5.h),
+                          SizedBox(width: 4.w),
+                          Text(
+                            relation,
+                            style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12.sp),
+                          ),
+
+                        ],
+                      ),
+
+                    ],
+                  ),
+                ),
+
+
+              ],
+            ),
+            Positioned(
+              bottom: -5,
+              right: 0,
+              child: InkWell(
+                onTap: () {
+                  _showViewModeBottomSheet(context);
+                },
+                child: Icon(Icons.more_horiz, color: AppColors.color8C8C8C, size: 20.sp),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
   //profile view
   void _showViewModeBottomSheet(BuildContext context) {
     showModalBottomSheet(

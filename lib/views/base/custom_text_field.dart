@@ -1,4 +1,3 @@
-
 import 'package:event_sharing/utils/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -26,6 +25,7 @@ class CustomTextField extends StatefulWidget {
   final bool? isEmail;
   final bool? readOnly;
   final TextStyle? hintTextStyle;
+  final Color? borderColor; // Added border color parameter
 
   const CustomTextField({
     super.key,
@@ -41,12 +41,13 @@ class CustomTextField extends StatefulWidget {
     this.isObscureText = false,
     this.obscureCharacrter = '*',
     this.filColor,
-    this.maxLines= 1,
+    this.maxLines = 1,
     this.labelText,
     this.isPassword = false,
     this.readOnly = false,
     this.onTab,
     this.hintTextStyle,
+    this.borderColor, // Added to constructor
   });
 
   @override
@@ -65,43 +66,32 @@ class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-
       maxLines: widget.maxLines,
       onTap: widget.onTab,
-      readOnly: widget.readOnly!,
+      readOnly: widget.readOnly ?? false,
       controller: widget.controller,
       keyboardType: widget.keyboardType,
-      obscuringCharacter: widget.obscureCharacrter!,
-      validator: widget.validator ??
-              (value) {
-            if (widget.isEmail == null) {
-              if (value!.isEmpty) {
-                return "Please enter ${widget.hintText!.toLowerCase()}";
-              } else if (widget.isPassword) {
-                bool data = AppConstants.passwordValidator.hasMatch(value);
-                if (value.isEmpty) {
-                  return "Please enter ${widget.hintText!.toLowerCase()}";
-                } else if (!data) {
-                  return "Insecure password detected.";
-                }
-              }
-            } else {
-              bool data = AppConstants.emailValidator.hasMatch(value!);
-              if (value.isEmpty) {
-                return "Please enter ${widget.hintText!.toLowerCase()}";
-              } else if (!data) {
-                return "Please check your email!";
-              }
-            }
-            return null;
-          },
+      obscuringCharacter: widget.obscureCharacrter ?? '*',
+      validator: widget.validator ?? _defaultValidator,
       cursorColor: AppColors.primaryColor,
       obscureText: widget.isPassword ? obscureText : false,
-      style: const TextStyle(color: Colors.black),
+      style: const TextStyle(
+        color: Colors.black,
+        height: 1.0, // Add line height for proper vertical centering
+      ),
       decoration: InputDecoration(
+        // Solution 1: Use fixed values with minimal responsive scaling
         contentPadding: EdgeInsets.symmetric(
-            horizontal: widget.contenpaddingHorizontal ?? 12.h,
-            vertical: widget.contenpaddingVertical ?? 16.w),
+          horizontal: widget.contenpaddingHorizontal ?? 16.0, // Fixed value
+          vertical: widget.contenpaddingVertical ?? 12.0,     // Reduced for better centering
+        ),
+
+        // Alternative Solution 2: Use clamped responsive values with better centering
+        // contentPadding: EdgeInsets.symmetric(
+        //   horizontal: widget.contenpaddingHorizontal ?? (12.w).clamp(12.0, 20.0),
+        //   vertical: widget.contenpaddingVertical ?? (12.h).clamp(10.0, 16.0),
+        // ),
+
         filled: true,
         fillColor: widget.filColor ?? AppColors.fillColor,
         prefixIcon: widget.prifixicon,
@@ -111,21 +101,33 @@ class _CustomTextFieldState extends State<CustomTextField> {
           child: _suffixIcon(obscureText ? AppIcons.eyeOffIcon : AppIcons.eyeIcon),
         )
             : widget.sufixicons,
-        prefixIconConstraints: BoxConstraints(minHeight: 24.h, minWidth: 24.w),
-        suffixIconConstraints: BoxConstraints(minHeight: 24.h, minWidth: 24.w),
+
+        // Solution 3: Fixed icon constraints to prevent excessive scaling
+        prefixIconConstraints: const BoxConstraints(
+          minHeight: 24.0,
+          minWidth: 48.0,  // Increased for better touch target
+          maxHeight: 32.0, // Prevents excessive growth
+          maxWidth: 56.0,
+        ),
+        suffixIconConstraints: const BoxConstraints(
+          minHeight: 24.0,
+          minWidth: 48.0,
+          maxHeight: 32.0,
+          maxWidth: 56.0,
+        ),
+
         errorStyle: const TextStyle(color: Colors.red),
         suffixIconColor: AppColors.primaryColor,
         prefixIconColor: AppColors.primaryColor,
         labelText: widget.labelText,
         hintText: widget.hintText,
-        hintStyle: widget.hintTextStyle ?? TextStyle(color: AppColors.hintColor, fontFamily: 'Poppins', fontSize: 14.sp),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8.r),
-          borderSide: BorderSide(
-            width: 1.w,
-            color: AppColors.primaryColor,
-          ),
-        ),
+        hintStyle: widget.hintTextStyle ??
+            TextStyle(
+              color: AppColors.hintColor,
+              fontFamily: 'Poppins',
+              fontSize: 14.0, // Fixed font size for consistency
+            ),
+        border: _buildOutlineInputBorder(),
         errorBorder: _buildOutlineInputBorder(),
         focusedBorder: _buildOutlineInputBorder(),
         enabledBorder: _buildOutlineInputBorder(),
@@ -134,22 +136,51 @@ class _CustomTextFieldState extends State<CustomTextField> {
     );
   }
 
-  _suffixIcon(String icon) {
-    return Padding(
-      padding: EdgeInsets.only(right: 15.w),
+  String? _defaultValidator(String? value) {
+    if (widget.isEmail == null) {
+      if (value?.isEmpty ?? true) {
+        return "Please enter ${widget.hintText?.toLowerCase() ?? 'value'}";
+      } else if (widget.isPassword) {
+        bool data = AppConstants.passwordValidator.hasMatch(value!);
+        if (value.isEmpty) {
+          return "Please enter ${widget.hintText?.toLowerCase() ?? 'password'}";
+        } else if (!data) {
+          return "Insecure password detected.";
+        }
+      }
+    } else {
+      bool data = AppConstants.emailValidator.hasMatch(value ?? '');
+      if (value?.isEmpty ?? true) {
+        return "Please enter ${widget.hintText?.toLowerCase() ?? 'email'}";
+      } else if (!data) {
+        return "Please check your email!";
+      }
+    }
+    return null;
+  }
+
+  Widget _suffixIcon(String icon) {
+    return Container(
+      // Solution 4: Fixed container size for suffix icon
+      width: 48.0,
+      height: 32.0,
+      alignment: Alignment.centerRight, // Changed from center to centerRight
+      padding: const EdgeInsets.only(right: 12.0), // Added right padding
       child: SvgPicture.asset(
-        color: AppColors.primaryColor,
         icon,
+        color: AppColors.primaryColor,
+        width: 20.0,  // Fixed icon size
+        height: 20.0,
       ),
     );
   }
 
-  _buildOutlineInputBorder() {
+  OutlineInputBorder _buildOutlineInputBorder() {
     return OutlineInputBorder(
-      borderRadius: BorderRadius.circular(8.r),
+      borderRadius: BorderRadius.circular(8.0), // Fixed border radius
       borderSide: BorderSide(
-        width: 1.w,
-        color: AppColors.primaryColor,
+        width: 1.0, // Fixed border width
+        color: widget.borderColor ?? AppColors.primaryColor, // Use custom border color or fallback to primary color
       ),
     );
   }
