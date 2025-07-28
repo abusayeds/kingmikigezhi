@@ -76,7 +76,8 @@ class _StepTwoFormState extends State<StepTwoForm> {
             ),
             child: DropdownButtonHideUnderline(
               child: DropdownButton<String>(
-                padding: EdgeInsets.symmetric(vertical: 5.w),
+                padding: EdgeInsets.symmetric(vertical: 0.w,),                    //focusColor:  AppColors.primaryColor,
+
                 value: _selectedCompetitionLevel,
                 dropdownColor: AppColors.fillColor,
                 menuWidth: 240.w,
@@ -120,7 +121,8 @@ class _StepTwoFormState extends State<StepTwoForm> {
             ),
             child: DropdownButtonHideUnderline(
               child: DropdownButton<String>(
-                padding: EdgeInsets.symmetric(vertical: 5.w),
+                padding: EdgeInsets.symmetric(vertical: 0.w,),                    //focusColor:  AppColors.primaryColor,
+
                 value: _selectedType,
                 dropdownColor: AppColors.fillColor,
                 menuWidth: 240.w,
@@ -245,7 +247,8 @@ class _StepTwoFormState extends State<StepTwoForm> {
             ),
             child: DropdownButtonHideUnderline(
               child: DropdownButton<String>(
-                padding: EdgeInsets.symmetric(vertical: 5.w),
+                padding: EdgeInsets.symmetric(vertical: 0.w,),                    //focusColor:  AppColors.primaryColor,
+
                 value: _selectedCost,
                 dropdownColor: AppColors.fillColor,
                 menuWidth: 240.w,

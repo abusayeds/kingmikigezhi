@@ -94,7 +94,8 @@ class _SteponeformState extends State<Steponeform> {
                     ),
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton<String>(
-                        padding: EdgeInsets.symmetric(vertical: 5.w),
+                        padding: EdgeInsets.symmetric(vertical: 0.w,),                    //focusColor:  AppColors.primaryColor,
+
                         value: _selectedNumber,
                         dropdownColor: AppColors.fillColor,
                         menuWidth: 240.w,
@@ -158,7 +159,8 @@ class _SteponeformState extends State<Steponeform> {
                           ),
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton<String>(
-                              padding: EdgeInsets.symmetric(vertical: 5.w),
+                              padding: EdgeInsets.symmetric(vertical: 0.w,),                    //focusColor:  AppColors.primaryColor,
+
                               value: _selectedYear,
                               dropdownColor: AppColors.fillColor,
                               menuWidth: 240.w,
@@ -200,7 +202,8 @@ class _SteponeformState extends State<Steponeform> {
                           ),
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton<String>(
-                              padding: EdgeInsets.symmetric(vertical: 5.w),
+                              padding: EdgeInsets.symmetric(vertical: 0.w,),                    //focusColor:  AppColors.primaryColor,
+
                               value: _selectedSession,
                               dropdownColor: AppColors.fillColor,
                               menuWidth: 240.w,
@@ -250,7 +253,8 @@ class _SteponeformState extends State<Steponeform> {
             ),
             child: DropdownButtonHideUnderline(
               child: DropdownButton<String>(
-                padding: EdgeInsets.symmetric(vertical: 5.w),
+                padding: EdgeInsets.symmetric(vertical: 0.w,),                    //focusColor:  AppColors.primaryColor,
+
                 value: _selectedProgram,
                 dropdownColor: AppColors.fillColor,
                 menuWidth: 240.w,
@@ -286,6 +290,7 @@ class _SteponeformState extends State<Steponeform> {
           Text('Organizer', style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
           SizedBox(height: 12.h),
           CustomTextField(
+
             controller: organizerController,
             hintText: 'Type Organizer',
             hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),

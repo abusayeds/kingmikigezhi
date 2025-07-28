@@ -47,7 +47,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
         title: CustomText(
           text: 'Settings',
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.w500,
           fontsize: 18.sp,
         ),
         centerTitle: true,
@@ -60,10 +60,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
             children: [
               //=================================> Language Section <=======================
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 8.h),
-                child: Text('Display language',style: AppStyles.fontSize16()),
+                padding: EdgeInsets.symmetric(vertical: 6.h),
+                child: Text('Display language',style: AppStyles.fontSize16(fontWeight: FontWeight.w600)),
               ),
-              Container(
+              SizedBox(
                 height: 60.h,
                 child: InputDecorator(
                   decoration: InputDecoration(
@@ -88,7 +88,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
                   ),
                   child: DropdownButtonHideUnderline(
+
                     child: DropdownButton<String>(
+                      padding: EdgeInsets.symmetric(vertical: 5.h),
                       //focusColor:  AppColors.primaryColor,
                       iconDisabledColor: AppColors.primaryColor,
                       iconEnabledColor: AppColors.primaryColor,
@@ -113,10 +115,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               //=================================> Date time format Section <=======================
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 8.h),
-                child: Text('Date time format',style: AppStyles.fontSize16()),
+                padding: EdgeInsets.symmetric(vertical: 6.h),
+                child: Text('Date time format',style: AppStyles.fontSize16(fontWeight: FontWeight.w600)),
               ),
-              Container(
+              SizedBox(
                 height: 60.h,
                 child: InputDecorator(
                   decoration: InputDecoration(
@@ -142,6 +144,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
+                      padding: EdgeInsets.symmetric(vertical: 5.h),
                       //focusColor:  AppColors.primaryColor,
                       iconDisabledColor: AppColors.primaryColor,
                       iconEnabledColor: AppColors.primaryColor,
@@ -166,10 +169,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               //=================================> Time zone Section <=======================
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 8.h),
-                child: Text('Time zone',style: AppStyles.fontSize16()),
+                padding: EdgeInsets.symmetric(vertical: 6.h),
+                child: Text('Time zone',style: AppStyles.fontSize16(fontWeight: FontWeight.w600)),
               ),
-              Container(
+              SizedBox(
                 height: 60.h,
                 child: InputDecorator(
                   decoration: InputDecoration(
@@ -195,6 +198,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
+                      padding: EdgeInsets.symmetric(vertical: 5.h),
                       //focusColor:  AppColors.primaryColor,
                       iconDisabledColor: AppColors.primaryColor,
                       iconEnabledColor: AppColors.primaryColor,
@@ -219,10 +223,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               //=================================> Currency Section <=======================
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 8.h),
-                child: Text('Currency',style: AppStyles.fontSize16()),
+                padding: EdgeInsets.symmetric(vertical: 6.h),
+                child: Text('Currency',style: AppStyles.fontSize16(fontWeight: FontWeight.w600)),
               ),
-              Container(
+              SizedBox(
                 height: 60.h,
                 child: InputDecorator(
                   decoration: InputDecoration(
@@ -248,6 +252,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
+                      padding: EdgeInsets.symmetric(vertical: 5.h),
                       //focusColor:  AppColors.primaryColor,
                       iconDisabledColor: AppColors.primaryColor,
                       iconEnabledColor: AppColors.primaryColor,
@@ -271,14 +276,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 16.h),
+              SizedBox(height: 14.h),
               Divider(thickness: .5,color: AppColors.color808080),
               //=================================> Notifications Section <=======================
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 8.h),
-                child: Text('Notifications',style: AppStyles.fontSize16()),
+                padding: EdgeInsets.symmetric(vertical: 6.h),
+                child: Text('Notifications',style: AppStyles.fontSize16(fontWeight: FontWeight.w600)),
               ),
-              Container(
+              SizedBox(
                height: 60.h,
                 child: InputDecorator(
                   decoration: InputDecoration(
@@ -300,6 +305,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
+                      padding: EdgeInsets.symmetric(vertical: 5.h),
                       icon: SvgPicture.asset(AppIcons.downArrowIcon,color: AppColors.primaryColor),
                       isExpanded: true,
                       value: _selectedNotification,
@@ -323,14 +329,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 16.h),
+              SizedBox(height: 14.h),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Event Share Section
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 8.h),
-                    child: Text('Event Share',style: AppStyles.fontSize16()),
+                    child: Text('Event Share',style: AppStyles.fontSize16(fontWeight: FontWeight.w600)),
                   ),
                   Row(
                     children: [
@@ -341,18 +347,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           children: [
                             Text(
                               'Email',
-                              style: AppStyles.fontSize16()
+                              style: AppStyles.fontSize14()
                             ),
                             SizedBox(height: 8.h),
                             Container(
                               height: 52.h,
-                              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+                              padding: EdgeInsets.symmetric(horizontal: 12.w, ),
                               decoration: BoxDecoration(
                                 border: Border.all(color:AppColors.borderColor),
                                 borderRadius: BorderRadius.circular(8.r),
                                 color: AppColors.fillColor,
                               ),
                               child: DropdownButton<String>(
+                                padding: EdgeInsets.symmetric(vertical: 5.h),
                                 icon: SvgPicture.asset(
                                   AppIcons.downArrowIcon,
                                   color: AppColors.primaryColor,
@@ -381,18 +388,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           children: [
                             Text(
                               'SMS',
-                              style: AppStyles.fontSize16()
+                                style: AppStyles.fontSize14()
                             ),
                             SizedBox(height: 8.h),
                             Container(
                               height: 52.h,
-                              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 5.h),
                               decoration: BoxDecoration(
                                 border: Border.all(color: AppColors.borderColor),
                                 borderRadius: BorderRadius.circular(8),
                                 color: AppColors.fillColor,
                               ),
                               child: DropdownButton<String>(
+                                padding: EdgeInsets.symmetric(vertical: 5.h),
                                 icon: SvgPicture.asset(
                                   AppIcons.downArrowIcon,
                                   color: AppColors.primaryColor,
@@ -432,7 +440,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           children: [
                             Text(
                               'Email',
-                              style: AppStyles.fontSize16()
+                                style: AppStyles.fontSize14()
                             ),
                             SizedBox(height: 8.h),
                             Container(
@@ -444,6 +452,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 color: AppColors.fillColor,
                               ),
                               child: DropdownButton<String>(
+                                padding: EdgeInsets.symmetric(vertical: 5.h),
                                 icon: SvgPicture.asset(
                                   AppIcons.downArrowIcon,
                                   color: AppColors.primaryColor,
@@ -472,7 +481,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           children: [
                             Text(
                               'SMS',
-                              style: AppStyles.fontSize16()
+                                style: AppStyles.fontSize14()
                             ),
                             SizedBox(height: 8.h),
                             Container(
@@ -484,6 +493,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 color: AppColors.fillColor,
                               ),
                               child: DropdownButton<String>(
+                                padding: EdgeInsets.symmetric(vertical: 5.h),
+
                                 icon: SvgPicture.asset(
                                   AppIcons.downArrowIcon,
                                   color: AppColors.primaryColor,
