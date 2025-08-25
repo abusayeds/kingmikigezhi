@@ -84,7 +84,7 @@ class _SteponeformState extends State<Steponeform> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('Session Number',
-                      style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
+                      style: AppStyles.fieldTitle()),
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 20.w),
                     decoration: BoxDecoration(
@@ -94,8 +94,7 @@ class _SteponeformState extends State<Steponeform> {
                     ),
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton<String>(
-                        padding: EdgeInsets.symmetric(vertical: 0.w,),                    //focusColor:  AppColors.primaryColor,
-
+                        padding: EdgeInsets.symmetric(vertical: 0.w),
                         value: _selectedNumber,
                         dropdownColor: AppColors.fillColor,
                         menuWidth: 240.w,
@@ -131,8 +130,8 @@ class _SteponeformState extends State<Steponeform> {
                         padding: const EdgeInsets.all(4),
                         child: Text(
                           'Year',
-                          style: AppStyles.fontSize16(
-                              color: AppColors.blackColor, fontWeight: FontWeight.bold),
+                          style: AppStyles.fieldTitle(
+                              color: AppColors.blackColor),
                         ),
                       ),
                       SizedBox(width: 120.w),
@@ -140,8 +139,8 @@ class _SteponeformState extends State<Steponeform> {
                         padding: const EdgeInsets.all(4),
                         child: Text(
                           'Session',
-                          style: AppStyles.fontSize16(
-                              color: AppColors.blackColor, fontWeight: FontWeight.w600),
+                          style: AppStyles.fieldTitle(
+                              color: AppColors.blackColor),
                         ),
                       ),
                     ],
@@ -159,8 +158,7 @@ class _SteponeformState extends State<Steponeform> {
                           ),
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton<String>(
-                              padding: EdgeInsets.symmetric(vertical: 0.w,),                    //focusColor:  AppColors.primaryColor,
-
+                              padding: EdgeInsets.symmetric(vertical: 0.w),
                               value: _selectedYear,
                               dropdownColor: AppColors.fillColor,
                               menuWidth: 240.w,
@@ -202,8 +200,7 @@ class _SteponeformState extends State<Steponeform> {
                           ),
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton<String>(
-                              padding: EdgeInsets.symmetric(vertical: 0.w,),                    //focusColor:  AppColors.primaryColor,
-
+                              padding: EdgeInsets.symmetric(vertical: 0.w),
                               value: _selectedSession,
                               dropdownColor: AppColors.fillColor,
                               menuWidth: 240.w,
@@ -242,7 +239,7 @@ class _SteponeformState extends State<Steponeform> {
           ),
           SizedBox(height: 16.h),
 
-          Text('Program', style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
+          Text('Program', style: AppStyles.fieldTitle()),
           SizedBox(height: 12.h),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -253,8 +250,7 @@ class _SteponeformState extends State<Steponeform> {
             ),
             child: DropdownButtonHideUnderline(
               child: DropdownButton<String>(
-                padding: EdgeInsets.symmetric(vertical: 0.w,),                    //focusColor:  AppColors.primaryColor,
-
+                padding: EdgeInsets.symmetric(vertical: 0.w),
                 value: _selectedProgram,
                 dropdownColor: AppColors.fillColor,
                 menuWidth: 240.w,
@@ -284,60 +280,74 @@ class _SteponeformState extends State<Steponeform> {
               ),
             ),
           ),
-          //organization Name
-          SizedBox(height: 16.h),
 
-          Text('Organizer', style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
-          SizedBox(height: 12.h),
-          CustomTextField(
-
-            controller: organizerController,
-            hintText: 'Type Organizer',
-            hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
-            sufixicons: Padding(
-              padding: EdgeInsets.all(16.w),
-            ),
-          ),
-          //organization Name
+          // Organization Name
           SizedBox(height: 16.h),
-          Text('Event Name', style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
+          Text('Organizer', style: AppStyles.fieldTitle()),
           SizedBox(height: 12.h),
-          CustomTextField(
-            controller: eventName,
-            hintText: 'Type Event Name',
-            hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
-            sufixicons: Padding(
-              padding: EdgeInsets.all(16.w),
-            ),
-          ),
-          //event portal Name
-          SizedBox(height: 16.h),
-          Text('Event Portal', style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
-          SizedBox(height: 12.h),
-          CustomTextField(
-            controller: eventPortal,
-            hintText: 'Type Event Portal',
-            hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
-            sufixicons: Padding(
-              padding: EdgeInsets.all(16.w),
-            ),
-          ),
-          //registartion portal Name
-          SizedBox(height: 16.h),
-          Text('Registartion Portal', style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
-          SizedBox(height: 12.h),
-          CustomTextField(
-            controller: registrationPortal,
-            hintText: 'Type Registartion Portal',
-            hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
-            sufixicons: Padding(
-              padding: EdgeInsets.all(16.w),
+          SizedBox(
+            height: 50.h,
+            child: CustomTextField(
+              controller: organizerController,
+              hintText: 'Type Organizer',
+              hintTextStyle: AppStyles.fieldContent(color: AppColors.color414141),
+              sufixicons: Padding(
+                padding: EdgeInsets.all(16.w),
+              ),
             ),
           ),
 
-          //description portal Name
+          // Event Name
           SizedBox(height: 16.h),
-          Text('Description', style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
+          Text('Event Name', style: AppStyles.fieldTitle()),
+          SizedBox(height: 12.h),
+          SizedBox(
+            height: 50.h,
+            child: CustomTextField(
+              controller: eventName,
+              hintText: 'Type Event Name',
+              hintTextStyle: AppStyles.fieldContent(color: AppColors.color414141),
+              sufixicons: Padding(
+                padding: EdgeInsets.all(16.w),
+              ),
+            ),
+          ),
+
+          // Event Portal Name
+          SizedBox(height: 16.h),
+          Text('Event Portal', style: AppStyles.fieldTitle()),
+          SizedBox(height: 12.h),
+          SizedBox(
+            height: 50.h,
+            child: CustomTextField(
+              controller: eventPortal,
+              hintText: 'Type Event Portal',
+              hintTextStyle: AppStyles.fieldContent(color: AppColors.color414141),
+              sufixicons: Padding(
+                padding: EdgeInsets.all(16.w),
+              ),
+            ),
+          ),
+
+          // Registration Portal Name
+          SizedBox(height: 16.h),
+          Text('Registration Portal', style: AppStyles.fieldTitle()),
+          SizedBox(height: 12.h),
+          SizedBox(
+            height: 50.h,
+            child: CustomTextField(
+              controller: registrationPortal,
+              hintText: 'Type Registration Portal',
+              hintTextStyle: AppStyles.fieldContent(color: AppColors.color414141),
+              sufixicons: Padding(
+                padding: EdgeInsets.all(16.w),
+              ),
+            ),
+          ),
+
+          // Description
+          SizedBox(height: 16.h),
+          Text('Description', style: AppStyles.fieldTitle()),
           SizedBox(height: 12.h),
           CustomTextField(
             maxLines: 3,
@@ -349,9 +359,9 @@ class _SteponeformState extends State<Steponeform> {
             ),
           ),
 
-          //note portal Name
+          // Note
           SizedBox(height: 16.h),
-          Text('Note', style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
+          Text('Note', style: AppStyles.fieldTitle()),
           SizedBox(height: 12.h),
           CustomTextField(
             maxLines: 3,

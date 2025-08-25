@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../utils/app_icons.dart';
 import '../../../utils/app_strings.dart';
+import '../../../utils/style.dart';
 import '../../base/custom_dropdown.dart';
 import '../../base/custom_text.dart';
 
@@ -63,11 +64,12 @@ class _FilterScreenState extends State<FilterScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               //==============================> Program Section <=======================
-              CustomText(
-                text: 'Program',
-                fontWeight: FontWeight.w500,
-                fontsize: 16.sp,
-                bottom: 8.h,
+              Padding(
+                padding: EdgeInsets.only(bottom: 8.h),
+                child: Text(
+                  'Program',
+                  style: AppStyles.fieldTitle(),
+                ),
               ),
               InputDecorator(
                 decoration: InputDecoration(
@@ -113,11 +115,12 @@ class _FilterScreenState extends State<FilterScreen> {
               ),
               SizedBox(height: 16.h),
               //==============================> Type Section <=======================
-              CustomText(
-                text: 'Type',
-                fontWeight: FontWeight.w500,
-                fontsize: 16.sp,
-                bottom: 8.h,
+              Padding(
+                padding: EdgeInsets.only(bottom: 8.h),
+                child: Text(
+                  'Type',
+                  style: AppStyles.fieldTitle(),
+                ),
               ),
               InputDecorator(
                 decoration: InputDecoration(
@@ -166,16 +169,19 @@ class _FilterScreenState extends State<FilterScreen> {
               ),
               SizedBox(height: 16.h),
               //==============================> Location Section <=======================
-              CustomText(
-                text: AppStrings.location,
-                fontWeight: FontWeight.w500,
-                fontsize: 16.sp,
-                bottom: 8.h,
+              Padding(
+                padding: EdgeInsets.only(bottom: 8.h),
+                child: Text(
+                  AppStrings.location,
+                  style: AppStyles.fieldTitle(),
+                ),
               ),
               CustomTextField(
-
                 controller: _locationCTRL,
                 hintText: 'Type here',
+                hintTextStyle: AppStyles.fieldContent(
+                  color: AppColors.color414141,
+                ),
                 sufixicons: Padding(
                   padding: EdgeInsets.all(16.w),
                   child: SvgPicture.asset(AppIcons.locationIcon,
@@ -184,11 +190,12 @@ class _FilterScreenState extends State<FilterScreen> {
               ),
               SizedBox(height: 16.h),
               //==============================> Category/Group Section <=======================
-              CustomText(
-                text: 'Category/Group',
-                fontWeight: FontWeight.w500,
-                fontsize: 16.sp,
-                bottom: 8.h,
+              Padding(
+                padding: EdgeInsets.only(bottom: 8.h),
+                child: Text(
+                  'Category/Group',
+                  style: AppStyles.fieldTitle(),
+                ),
               ),
               InputDecorator(
                 decoration: InputDecoration(
@@ -240,11 +247,9 @@ class _FilterScreenState extends State<FilterScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  CustomText(
-                    text: 'Price Range',
-                    fontWeight: FontWeight.w500,
-                    fontsize: 16.sp,
-                    bottom: 16.h,
+                  Text(
+                    'Price Range',
+                    style: AppStyles.fieldTitle(),
                   ),
                   CustomText(
                     text: '\$20-\$4K',
