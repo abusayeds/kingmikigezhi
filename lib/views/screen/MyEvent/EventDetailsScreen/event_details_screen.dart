@@ -77,7 +77,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('Piano Star Event',
-                      style: AppStyles.fontSize16(fontWeight: FontWeight.w600)
+                      style: AppStyles.headTitle()
                           .copyWith(
                         decoration: TextDecoration.underline,
                         decorationColor: Colors.black, // Color of the underline
@@ -200,31 +200,28 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
               //=======================> Description Event Section <============================
               SizedBox(height: 24.h),
               Text(AppStrings.description,
-                  style: AppStyles.fontSize16(fontWeight: FontWeight.w500)),
+                  style: AppStyles.fieldTitle()),
               SizedBox(height: 8.h),
               Text(
                 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable.',
                 maxLines: 20,
                 textAlign: TextAlign.start,
-                style: AppStyles.fontSize14(
+                style: AppStyles.fieldContent(
                   color: AppColors.color414141,
-                ).copyWith(
-                  fontSize: 12.sp,
                 ),
               ),
               SizedBox(height: 16.w),
 
               // Note
               Text(AppStrings.note,
-                  style: AppStyles.fontSize16(fontWeight: FontWeight.w500)),
+                  style: AppStyles.fieldTitle()),
               SizedBox(height: 8.h),
               Text(
                 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable.',
                 maxLines: 20,
                 textAlign: TextAlign.start,
-                style:
-                    AppStyles.fontSize14(color: AppColors.color414141).copyWith(
-                  fontSize: 12.sp,
+                style: AppStyles.fieldContent(
+                  color: AppColors.color414141,
                 ),
               ),
               SizedBox(height: 16.h),
@@ -294,8 +291,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                       ),
                       SizedBox(width: 8.w),
                       Text('Preliminary',
-                          style: AppStyles.fontSize16(
-                              fontWeight: FontWeight.w600)),
+                          style: AppStyles.fieldTitle()),
                     ],
                   ),
                   SizedBox(height: 15.h),
@@ -390,8 +386,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                       ),
                       SizedBox(width: 8.w),
                       Text('Semi Final',
-                          style: AppStyles.fontSize16(
-                              fontWeight: FontWeight.w600)),
+                          style: AppStyles.fieldTitle()),
                     ],
                   ),
                   SizedBox(height: 16.h),
@@ -818,12 +813,12 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
             children: [
               Text(
                 label,
-                style: AppStyles.fontSize16(fontWeight: FontWeight.w500),
+                style: AppStyles.fieldTitle(),
               ),
               SizedBox(height: 5.h),
               Text(
                 value,
-                style: TextStyle(color: Colors.grey.shade600),
+                style: AppStyles.fieldContent(color: Colors.grey.shade600),
               ),
             ],
           ),
@@ -856,19 +851,19 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
             children: [
               Text(
                 label,
-                  style: AppStyles.fontSize16(fontWeight: FontWeight.w500),
+                style: AppStyles.fieldTitle(),
               ),
               SizedBox(height: 5.h),
               Row(
                 children: [
                   Text(
                     date,
-                    style: TextStyle(color: Colors.grey.shade600),
+                    style: AppStyles.fieldContent(color: Colors.grey.shade600),
                   ),
                   SizedBox(width: 5.w),
                   Text(
                     time,
-                    style: TextStyle(color: Colors.grey.shade600),
+                    style: AppStyles.fieldContent(color: Colors.grey.shade600),
                   ),
                 ],
               ),
@@ -907,7 +902,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                 children: [
                   Text(
                     label,
-                    style: AppStyles.fontSize16(fontWeight: FontWeight.w500),
+                    style: AppStyles.fieldTitle(),
                   ),
                   Container(
                     height: 20.h,
@@ -932,7 +927,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
           padding: EdgeInsets.only(left: 17.w), // 12.w (icon) + 5.w (spacing)
           child: Text(
             value,
-            style: TextStyle(color: Colors.grey.shade600),
+            style: AppStyles.fieldContent(color: Colors.grey.shade600),
           ),
         ),
       ],
