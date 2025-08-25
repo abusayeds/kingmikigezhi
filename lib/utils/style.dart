@@ -138,4 +138,7 @@ class AppStyles {
       offset: const Offset(0,0),
       color:Colors.black.withOpacity(0.02),
       spreadRadius:0);
+
+  // Standard UI component height
+  static double get standardHeight => 53.h;
 }
