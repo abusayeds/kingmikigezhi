@@ -55,7 +55,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
              Text('Session', style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
               SizedBox(height: 12.h),
               Container(
-                height: 50.h,
+                height: AppStyles.standardHeight,
                 padding: EdgeInsets.symmetric(horizontal: 20.w),
                 decoration: BoxDecoration(
                   color: AppColors.fillColor,
@@ -100,7 +100,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
                 children: [
                   Expanded(
                     child: Container(
-                      height: 50.h,
+                      height: AppStyles.standardHeight,
                       padding: EdgeInsets.symmetric(horizontal: 18.w),
                       decoration: BoxDecoration(
                         color: AppColors.fillColor,

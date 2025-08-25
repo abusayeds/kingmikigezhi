@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../utils/app_colors.dart';
 import '../../utils/app_icons.dart';
+import '../../utils/style.dart';
 
 class CustomTextField extends StatefulWidget {
   final TextEditingController controller;
@@ -26,6 +27,7 @@ class CustomTextField extends StatefulWidget {
   final bool? readOnly;
   final TextStyle? hintTextStyle;
   final Color? borderColor; // Added border color parameter
+  final double? height; // Standard height parameter
 
   const CustomTextField({
     super.key,
@@ -48,6 +50,7 @@ class CustomTextField extends StatefulWidget {
     this.onTab,
     this.hintTextStyle,
     this.borderColor, // Added to constructor
+    this.height, // Added height parameter
   });
 
   @override
@@ -65,7 +68,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
+    return SizedBox(
+      height: widget.height ?? AppStyles.standardHeight,
+      child: TextFormField(
       maxLines: widget.maxLines,
       onTap: widget.onTab,
       readOnly: widget.readOnly ?? false,
@@ -82,8 +87,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
       decoration: InputDecoration(
         // Solution 1: Use fixed values with minimal responsive scaling
         contentPadding: EdgeInsets.symmetric(
-          horizontal: widget.contenpaddingHorizontal ?? 16.0, // Fixed value
-          vertical: widget.contenpaddingVertical ?? 12.0,     // Reduced for better centering
+          horizontal: widget.contenpaddingHorizontal ?? 16.w, // Fixed value
+          vertical: widget.contenpaddingVertical ?? 12.h,     // Reduced for better centering
         ),
 
         // Alternative Solution 2: Use clamped responsive values with better centering
@@ -103,17 +108,17 @@ class _CustomTextFieldState extends State<CustomTextField> {
             : widget.sufixicons,
 
         // Solution 3: Fixed icon constraints to prevent excessive scaling
-        prefixIconConstraints: const BoxConstraints(
-          minHeight: 24.0,
-          minWidth: 48.0,  // Increased for better touch target
-          maxHeight: 32.0, // Prevents excessive growth
-          maxWidth: 56.0,
+        prefixIconConstraints: BoxConstraints(
+          minHeight: AppStyles.standardHeight,
+          minWidth: 48.w,  // Increased for better touch target
+          maxHeight: AppStyles.standardHeight, // Match field height
+          maxWidth: 56.w,
         ),
-        suffixIconConstraints: const BoxConstraints(
-          minHeight: 24.0,
-          minWidth: 48.0,
-          maxHeight: 32.0,
-          maxWidth: 56.0,
+        suffixIconConstraints: BoxConstraints(
+          minHeight: AppStyles.standardHeight,
+          minWidth: 48.w,  // Increased for better touch target
+          maxHeight: AppStyles.standardHeight, // Match field height
+          maxWidth: 56.w,
         ),
 
         errorStyle: const TextStyle(color: Colors.red),
@@ -125,13 +130,14 @@ class _CustomTextFieldState extends State<CustomTextField> {
             TextStyle(
               color: AppColors.hintColor,
               fontFamily: 'Poppins',
-              fontSize: 14.0, // Fixed font size for consistency
+              fontSize: 14.sp, // Fixed font size for consistency
             ),
         border: _buildOutlineInputBorder(),
         errorBorder: _buildOutlineInputBorder(),
         focusedBorder: _buildOutlineInputBorder(),
         enabledBorder: _buildOutlineInputBorder(),
         disabledBorder: _buildOutlineInputBorder(),
+      ),
       ),
     );
   }
@@ -162,15 +168,15 @@ class _CustomTextFieldState extends State<CustomTextField> {
   Widget _suffixIcon(String icon) {
     return Container(
       // Solution 4: Fixed container size for suffix icon
-      width: 48.0,
-      height: 32.0,
+      width: 48.w,
+      height: 32.h,
       alignment: Alignment.centerRight, // Changed from center to centerRight
       padding: const EdgeInsets.only(right: 12.0), // Added right padding
       child: SvgPicture.asset(
         icon,
         color: AppColors.primaryColor,
-        width: 20.0,  // Fixed icon size
-        height: 20.0,
+        width: 20.w,  // Fixed icon size
+        height: 20.h,
       ),
     );
   }
@@ -179,7 +185,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(8.0), // Fixed border radius
       borderSide: BorderSide(
-        width: 1.0, // Fixed border width
+        width: 1.w, // Fixed border width
         color: widget.borderColor ?? AppColors.primaryColor, // Use custom border color or fallback to primary color
       ),
     );

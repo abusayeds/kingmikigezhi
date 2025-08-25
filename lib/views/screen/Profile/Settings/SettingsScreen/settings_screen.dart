@@ -64,7 +64,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 child: Text('Display language',style: AppStyles.fieldTitle()),
               ),
               SizedBox(
-                height: 60.h,
+                height: AppStyles.standardHeight,
                 child: InputDecorator(
                   decoration: InputDecoration(
                     fillColor: AppColors.fillColor,
@@ -119,7 +119,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 child: Text('Date time format',style: AppStyles.fieldTitle()),
               ),
               SizedBox(
-                height: 60.h,
+                height: AppStyles.standardHeight,
                 child: InputDecorator(
                   decoration: InputDecoration(
                     fillColor: AppColors.fillColor,
@@ -173,7 +173,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 child: Text('Time zone',style: AppStyles.fieldTitle()),
               ),
               SizedBox(
-                height: 60.h,
+                height: AppStyles.standardHeight,
                 child: InputDecorator(
                   decoration: InputDecoration(
                     fillColor: AppColors.fillColor,
@@ -227,7 +227,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 child: Text('Currency',style: AppStyles.fieldTitle()),
               ),
               SizedBox(
-                height: 60.h,
+                height: AppStyles.standardHeight,
                 child: InputDecorator(
                   decoration: InputDecoration(
                     fillColor: AppColors.fillColor,
@@ -284,7 +284,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 child: Text('Notifications',style: AppStyles.fieldTitle()),
               ),
               SizedBox(
-               height: 60.h,
+               height: AppStyles.standardHeight,
                 child: InputDecorator(
                   decoration: InputDecoration(
                     fillColor: AppColors.fillColor,

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../utils/app_colors.dart';
+import '../../utils/style.dart';
 
 
 class CustomButton extends StatelessWidget {
@@ -43,7 +44,7 @@ class CustomButton extends StatelessWidget {
                 side: BorderSide(width: 1.w, color: finalBorderColor),
                 borderRadius: BorderRadius.circular(8.r)),
             backgroundColor: color ?? AppColors.buttonColor,
-            minimumSize: Size(width ?? Get.width, height ?? 50.h),
+            minimumSize: Size(width ?? Get.width, height ?? AppStyles.standardHeight),
           ),
           child: loading
               ? SizedBox(

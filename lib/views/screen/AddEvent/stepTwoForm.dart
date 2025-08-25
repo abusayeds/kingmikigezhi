@@ -162,29 +162,53 @@ class _StepTwoFormState extends State<StepTwoForm> {
             children: [
               Expanded(
                 child: CustomTextField(
-                  prifixicon: IconButton(
+                  prifixicon: Container(
+                    width: 48.w,
+                    height: AppStyles.standardHeight,
+                    alignment: Alignment.center,
+                    child: IconButton(
                       onPressed: () => _selectDate(context, _startsDateCTRL),
-                      icon: Icon(Icons.calendar_today_rounded)),
+                      icon: Icon(
+                        Icons.calendar_today_rounded,
+                        color: AppColors.primaryColor,
+                        size: 20.w,
+                      ),
+                      padding: EdgeInsets.zero,
+                      constraints: BoxConstraints(
+                        minWidth: 24.w,
+                        minHeight: 24.h,
+                      ),
+                    ),
+                  ),
                   controller: _startsDateCTRL,
                   hintText: 'Date',
                   readOnly: true,
-                  sufixicons: Padding(
-                    padding: EdgeInsets.only(right: 12.w),
-                  ),
                 ),
               ),
               SizedBox(width: 15.w),
               Expanded(
                 child: CustomTextField(
-                  prifixicon: IconButton(
+                  prifixicon: Container(
+                    width: 48.w,
+                    height: AppStyles.standardHeight,
+                    alignment: Alignment.center,
+                    child: IconButton(
                       onPressed: () => _selectTime(context, _startsTimeCTRL),
-                      icon: Icon(Icons.watch_later_rounded)),
+                      icon: Icon(
+                        Icons.watch_later_rounded,
+                        color: AppColors.primaryColor,
+                        size: 20.w,
+                      ),
+                      padding: EdgeInsets.zero,
+                      constraints: BoxConstraints(
+                        minWidth: 24.w,
+                        minHeight: 24.h,
+                      ),
+                    ),
+                  ),
                   controller: _startsTimeCTRL,
                   hintText: 'Time',
                   readOnly: true,
-                  sufixicons: Padding(
-                    padding: EdgeInsets.only(right: 12.w),
-                  ),
                 ),
               ),
             ],
@@ -201,29 +225,53 @@ class _StepTwoFormState extends State<StepTwoForm> {
             children: [
               Expanded(
                 child: CustomTextField(
-                  prifixicon: IconButton(
-                      onPressed: () => _selectDate(context, _startsDateCTRL),
-                      icon: Icon(Icons.calendar_today_rounded)),
-                  controller: _startsDateCTRL,
+                  prifixicon: Container(
+                    width: 48.w,
+                    height: AppStyles.standardHeight,
+                    alignment: Alignment.center,
+                    child: IconButton(
+                      onPressed: () => _selectDate(context, _endsDateCTRL),
+                      icon: Icon(
+                        Icons.calendar_today_rounded,
+                        color: AppColors.primaryColor,
+                        size: 20.w,
+                      ),
+                      padding: EdgeInsets.zero,
+                      constraints: BoxConstraints(
+                        minWidth: 24.w,
+                        minHeight: 24.h,
+                      ),
+                    ),
+                  ),
+                  controller: _endsDateCTRL,
                   hintText: 'Date',
                   readOnly: true,
-                  sufixicons: Padding(
-                    padding: EdgeInsets.only(right: 12.w),
-                  ),
                 ),
               ),
               SizedBox(width: 15.w),
               Expanded(
                 child: CustomTextField(
-                  prifixicon: IconButton(
-                      onPressed: () => _selectTime(context, _startsTimeCTRL),
-                      icon: Icon(Icons.watch_later_rounded)),
-                  controller: _startsTimeCTRL,
+                  prifixicon: Container(
+                    width: 48.w,
+                    height: AppStyles.standardHeight,
+                    alignment: Alignment.center,
+                    child: IconButton(
+                      onPressed: () => _selectTime(context, _endsTimeCTRL),
+                      icon: Icon(
+                        Icons.watch_later_rounded,
+                        color: AppColors.primaryColor,
+                        size: 20.w,
+                      ),
+                      padding: EdgeInsets.zero,
+                      constraints: BoxConstraints(
+                        minWidth: 24.w,
+                        minHeight: 24.h,
+                      ),
+                    ),
+                  ),
+                  controller: _endsTimeCTRL,
                   hintText: 'Time',
                   readOnly: true,
-                  sufixicons: Padding(
-                    padding: EdgeInsets.only(right: 12.w),
-                  ),
                 ),
               ),
             ],

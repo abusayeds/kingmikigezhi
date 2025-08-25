@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../utils/app_colors.dart';
+import '../../utils/style.dart';
 import 'custom_text.dart';
 
 class CustomListTile extends StatelessWidget {
@@ -31,7 +32,7 @@ class CustomListTile extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         child: Container(
-          height: 56.h, // Fixed max height
+          height: AppStyles.standardHeight,
           clipBehavior: Clip.antiAlias,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8.r),
