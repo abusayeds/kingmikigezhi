@@ -68,17 +68,17 @@ class _StepTwoFormState extends State<StepTwoForm> {
               style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
           SizedBox(height: 12.h),
           Container(
+            height: AppStyles.standardHeight,
             padding: EdgeInsets.symmetric(horizontal: 20.w),
             decoration: BoxDecoration(
               color: AppColors.fillColor,
               borderRadius: BorderRadius.circular(8.r),
               border: Border.all(color: AppColors.primaryColor, width: 1.w),
             ),
-            child: DropdownButtonHideUnderline(
-              child: DropdownButton<String>(
-                padding: EdgeInsets.symmetric(vertical: 0.w,),                    //focusColor:  AppColors.primaryColor,
-
-                value: _selectedCompetitionLevel,
+            child: Center(
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<String>(
+                  value: _selectedCompetitionLevel,
                 dropdownColor: AppColors.fillColor,
                 menuWidth: 240.w,
                 borderRadius: BorderRadius.circular(8.r),
@@ -99,11 +99,12 @@ class _StepTwoFormState extends State<StepTwoForm> {
                     ),
                   );
                 }).toList(),
-                onChanged: (newValue) {
-                  setState(() {
-                    _selectedCompetitionLevel = newValue;
-                  });
-                },
+                  onChanged: (newValue) {
+                    setState(() {
+                      _selectedCompetitionLevel = newValue;
+                    });
+                  },
+                ),
               ),
             ),
           ),
@@ -113,17 +114,17 @@ class _StepTwoFormState extends State<StepTwoForm> {
           Text('Type', style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
           SizedBox(height: 12.h),
           Container(
+            height: AppStyles.standardHeight,
             padding: EdgeInsets.symmetric(horizontal: 20.w),
             decoration: BoxDecoration(
               color: AppColors.fillColor,
               borderRadius: BorderRadius.circular(8.r),
               border: Border.all(color: AppColors.primaryColor, width: 1),
             ),
-            child: DropdownButtonHideUnderline(
-              child: DropdownButton<String>(
-                padding: EdgeInsets.symmetric(vertical: 0.w,),                    //focusColor:  AppColors.primaryColor,
-
-                value: _selectedType,
+            child: Center(
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<String>(
+                  value: _selectedType,
                 dropdownColor: AppColors.fillColor,
                 menuWidth: 240.w,
                 borderRadius: BorderRadius.circular(8.r),
@@ -144,11 +145,12 @@ class _StepTwoFormState extends State<StepTwoForm> {
                     ),
                   );
                 }).toList(),
-                onChanged: (newValue) {
-                  setState(() {
-                    _selectedType = newValue;
-                  });
-                },
+                  onChanged: (newValue) {
+                    setState(() {
+                      _selectedType = newValue;
+                    });
+                  },
+                ),
               ),
             ),
           ),
@@ -281,23 +283,32 @@ class _StepTwoFormState extends State<StepTwoForm> {
           Text('Cost', style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
           SizedBox(height: 12.h),
           CustomTextField(
+            prifixicon: Container(
+              width: 12.w,
+              height: AppStyles.standardHeight,
+              alignment: Alignment.center,
+              child: SizedBox.shrink()
+            ),
             controller: costCRTL,
             hintText: '\$',
-            hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
+              height: AppStyles.standardHeight,
+              hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
+
           ),
+
           SizedBox(height: 12.h),
           Container(
+            height: AppStyles.standardHeight,
             padding: EdgeInsets.symmetric(horizontal: 20.w),
             decoration: BoxDecoration(
               color: AppColors.fillColor,
               borderRadius: BorderRadius.circular(8.r),
               border: Border.all(color: AppColors.primaryColor, width: 1),
             ),
-            child: DropdownButtonHideUnderline(
-              child: DropdownButton<String>(
-                padding: EdgeInsets.symmetric(vertical: 0.w,),                    //focusColor:  AppColors.primaryColor,
-
-                value: _selectedCost,
+            child: Center(
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<String>(
+                  value: _selectedCost,
                 dropdownColor: AppColors.fillColor,
                 menuWidth: 240.w,
                 borderRadius: BorderRadius.circular(8.r),
@@ -318,11 +329,12 @@ class _StepTwoFormState extends State<StepTwoForm> {
                     ),
                   );
                 }).toList(),
-                onChanged: (newValue) {
-                  setState(() {
-                    _selectedCost = newValue;
-                  });
-                },
+                  onChanged: (newValue) {
+                    setState(() {
+                      _selectedCost = newValue;
+                    });
+                  },
+                ),
               ),
             ),
           ),
@@ -392,10 +404,20 @@ class _StepTwoFormState extends State<StepTwoForm> {
           Text('Late fee',
               style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
           SizedBox(height: 12.h),
+
+
           CustomTextField(
+            prifixicon: Container(
+                width: 12.w,
+                height: AppStyles.standardHeight,
+                alignment: Alignment.center,
+                child: SizedBox.shrink()
+            ),
             controller: lateFeeCRTL,
             hintText: '\$',
+            height: AppStyles.standardHeight,
             hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
+
           ),
           SizedBox(height: 12.h),
           Row(

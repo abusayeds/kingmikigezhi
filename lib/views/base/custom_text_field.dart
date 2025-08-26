@@ -68,9 +68,14 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: widget.height ?? AppStyles.standardHeight,
-      child: TextFormField(
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        minHeight: widget.height ?? AppStyles.standardHeight,
+        maxHeight: widget.height ?? AppStyles.standardHeight,
+      ),
+      child: SizedBox(
+        height: widget.height ?? AppStyles.standardHeight,
+        child: TextFormField(
       maxLines: widget.maxLines,
       onTap: widget.onTab,
       readOnly: widget.readOnly ?? false,
@@ -85,7 +90,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         height: 1.0, // Add line height for proper vertical centering
       ),
       decoration: InputDecoration(
-        // Solution 1: Use fixed values with minimal responsive scaling
+        isDense: false, // Ensure consistent height regardless of icon presence
         contentPadding: EdgeInsets.symmetric(
           horizontal: widget.contenpaddingHorizontal ?? 16.w, // Fixed value
           vertical: widget.contenpaddingVertical ?? 12.h,     // Reduced for better centering
@@ -137,6 +142,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         focusedBorder: _buildOutlineInputBorder(),
         enabledBorder: _buildOutlineInputBorder(),
         disabledBorder: _buildOutlineInputBorder(),
+      ),
       ),
       ),
     );

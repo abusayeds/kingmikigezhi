@@ -480,9 +480,8 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                         color: AppColors.primaryColor,
                       ),
                       SizedBox(width: 8.w),
-                      Text('Final',
-                          style: AppStyles.fontSize12(
-                              fontWeight: FontWeight.w600)),
+                      Text('Final  ',
+                          style:AppStyles.fontSize12(fontWeight: FontWeight.w600,).copyWith(fontSize: 16.sp)),
                     ],
                   ),
                   SizedBox(height: 16.h),
@@ -574,7 +573,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
 
 
                     Text('Preliminary',
-                        style: AppStyles.fontSize12(fontWeight: FontWeight.w600)),
+                        style: AppStyles.fontSize12(fontWeight: FontWeight.w600,).copyWith(fontSize: 16.sp)),
                     SizedBox(height: 8.h),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

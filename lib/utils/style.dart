@@ -140,5 +140,5 @@ class AppStyles {
       spreadRadius:0);
 
   // Standard UI component height
-  static double get standardHeight => 53.h;
+  static double get standardHeight => 54.h;
 }
