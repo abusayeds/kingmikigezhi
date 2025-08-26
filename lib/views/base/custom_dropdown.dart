@@ -22,13 +22,13 @@ class CustomDropdown extends StatelessWidget {
     required this.onChanged,
     required this.fillColor,
     required this.borderColor,
-    this.height = 53, // Default height
+    this.height = 54, // Default height
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: height == 53 ? AppStyles.standardHeight : height.h,
+      height: height == 54 ? AppStyles.standardHeight : height.h,
       child: InputDecorator(
         decoration: InputDecoration(
           fillColor: fillColor,
@@ -88,6 +88,6 @@ _selectedProgram = newValue;
 fillColor: AppColors.fillColor,
 borderColor: AppColors.primaryColor,
 iconPath: AppIcons.down_ArrowIcon,
-height: 53, // You can customize height if needed
+height: 54, // You can customize height if needed
 )
 */
