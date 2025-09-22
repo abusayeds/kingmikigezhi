@@ -34,6 +34,7 @@ class _MemberProfileDetailsScreenState
         scrolledUnderElevation: 0,
         title: CustomText(
           text: AppStrings.memberProfile,
+
           fontWeight: FontWeight.w500,
           fontsize: 18.sp,
         ),
