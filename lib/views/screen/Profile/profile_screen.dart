@@ -75,7 +75,7 @@ class ProfileScreen extends StatelessWidget {
                   //============================> Invitation List Tile <=================
                   ProfileListTile(
                     onTap: () {
-                      Get.toNamed(AppRoutes.myInvitationPage);
+                      Get.toNamed(AppRoutes.invitationListPage);
                     },
                     title:AppStrings.invitation,
                     prefixIcon: SvgPicture.asset(AppIcons.share, color: AppColors.primaryColor),

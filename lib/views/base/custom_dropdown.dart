@@ -1,5 +1,6 @@
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_icons.dart';
+import 'package:event_sharing/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,13 +22,13 @@ class CustomDropdown extends StatelessWidget {
     required this.onChanged,
     required this.fillColor,
     required this.borderColor,
-    this.height = 80, // Default height
+    this.height = 54, // Default height
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: height.h,
+      height: height == 54 ? AppStyles.standardHeight : height.h,
       child: InputDecorator(
         decoration: InputDecoration(
           fillColor: fillColor,
@@ -87,6 +88,6 @@ _selectedProgram = newValue;
 fillColor: AppColors.fillColor,
 borderColor: AppColors.primaryColor,
 iconPath: AppIcons.down_ArrowIcon,
-height: 80, // You can customize height if needed
+height: 54, // You can customize height if needed
 )
 */
