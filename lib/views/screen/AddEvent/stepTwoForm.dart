@@ -68,17 +68,17 @@ class _StepTwoFormState extends State<StepTwoForm> {
               style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
           SizedBox(height: 12.h),
           Container(
+            height: AppStyles.standardHeight,
             padding: EdgeInsets.symmetric(horizontal: 20.w),
             decoration: BoxDecoration(
               color: AppColors.fillColor,
               borderRadius: BorderRadius.circular(8.r),
               border: Border.all(color: AppColors.primaryColor, width: 1.w),
             ),
-            child: DropdownButtonHideUnderline(
-              child: DropdownButton<String>(
-                padding: EdgeInsets.symmetric(vertical: 0.w,),                    //focusColor:  AppColors.primaryColor,
-
-                value: _selectedCompetitionLevel,
+            child: Center(
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<String>(
+                  value: _selectedCompetitionLevel,
                 dropdownColor: AppColors.fillColor,
                 menuWidth: 240.w,
                 borderRadius: BorderRadius.circular(8.r),
@@ -99,11 +99,12 @@ class _StepTwoFormState extends State<StepTwoForm> {
                     ),
                   );
                 }).toList(),
-                onChanged: (newValue) {
-                  setState(() {
-                    _selectedCompetitionLevel = newValue;
-                  });
-                },
+                  onChanged: (newValue) {
+                    setState(() {
+                      _selectedCompetitionLevel = newValue;
+                    });
+                  },
+                ),
               ),
             ),
           ),
@@ -113,17 +114,17 @@ class _StepTwoFormState extends State<StepTwoForm> {
           Text('Type', style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
           SizedBox(height: 12.h),
           Container(
+            height: AppStyles.standardHeight,
             padding: EdgeInsets.symmetric(horizontal: 20.w),
             decoration: BoxDecoration(
               color: AppColors.fillColor,
               borderRadius: BorderRadius.circular(8.r),
               border: Border.all(color: AppColors.primaryColor, width: 1),
             ),
-            child: DropdownButtonHideUnderline(
-              child: DropdownButton<String>(
-                padding: EdgeInsets.symmetric(vertical: 0.w,),                    //focusColor:  AppColors.primaryColor,
-
-                value: _selectedType,
+            child: Center(
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<String>(
+                  value: _selectedType,
                 dropdownColor: AppColors.fillColor,
                 menuWidth: 240.w,
                 borderRadius: BorderRadius.circular(8.r),
@@ -144,11 +145,12 @@ class _StepTwoFormState extends State<StepTwoForm> {
                     ),
                   );
                 }).toList(),
-                onChanged: (newValue) {
-                  setState(() {
-                    _selectedType = newValue;
-                  });
-                },
+                  onChanged: (newValue) {
+                    setState(() {
+                      _selectedType = newValue;
+                    });
+                  },
+                ),
               ),
             ),
           ),
@@ -162,29 +164,53 @@ class _StepTwoFormState extends State<StepTwoForm> {
             children: [
               Expanded(
                 child: CustomTextField(
-                  prifixicon: IconButton(
+                  prifixicon: Container(
+                    width: 48.w,
+                    height: AppStyles.standardHeight,
+                    alignment: Alignment.center,
+                    child: IconButton(
                       onPressed: () => _selectDate(context, _startsDateCTRL),
-                      icon: Icon(Icons.calendar_today_rounded)),
+                      icon: Icon(
+                        Icons.calendar_today_rounded,
+                        color: AppColors.primaryColor,
+                        size: 20.w,
+                      ),
+                      padding: EdgeInsets.zero,
+                      constraints: BoxConstraints(
+                        minWidth: 24.w,
+                        minHeight: 24.h,
+                      ),
+                    ),
+                  ),
                   controller: _startsDateCTRL,
                   hintText: 'Date',
                   readOnly: true,
-                  sufixicons: Padding(
-                    padding: EdgeInsets.only(right: 12.w),
-                  ),
                 ),
               ),
               SizedBox(width: 15.w),
               Expanded(
                 child: CustomTextField(
-                  prifixicon: IconButton(
+                  prifixicon: Container(
+                    width: 48.w,
+                    height: AppStyles.standardHeight,
+                    alignment: Alignment.center,
+                    child: IconButton(
                       onPressed: () => _selectTime(context, _startsTimeCTRL),
-                      icon: Icon(Icons.watch_later_rounded)),
+                      icon: Icon(
+                        Icons.watch_later_rounded,
+                        color: AppColors.primaryColor,
+                        size: 20.w,
+                      ),
+                      padding: EdgeInsets.zero,
+                      constraints: BoxConstraints(
+                        minWidth: 24.w,
+                        minHeight: 24.h,
+                      ),
+                    ),
+                  ),
                   controller: _startsTimeCTRL,
                   hintText: 'Time',
                   readOnly: true,
-                  sufixicons: Padding(
-                    padding: EdgeInsets.only(right: 12.w),
-                  ),
                 ),
               ),
             ],
@@ -201,29 +227,53 @@ class _StepTwoFormState extends State<StepTwoForm> {
             children: [
               Expanded(
                 child: CustomTextField(
-                  prifixicon: IconButton(
-                      onPressed: () => _selectDate(context, _startsDateCTRL),
-                      icon: Icon(Icons.calendar_today_rounded)),
-                  controller: _startsDateCTRL,
+                  prifixicon: Container(
+                    width: 48.w,
+                    height: AppStyles.standardHeight,
+                    alignment: Alignment.center,
+                    child: IconButton(
+                      onPressed: () => _selectDate(context, _endsDateCTRL),
+                      icon: Icon(
+                        Icons.calendar_today_rounded,
+                        color: AppColors.primaryColor,
+                        size: 20.w,
+                      ),
+                      padding: EdgeInsets.zero,
+                      constraints: BoxConstraints(
+                        minWidth: 24.w,
+                        minHeight: 24.h,
+                      ),
+                    ),
+                  ),
+                  controller: _endsDateCTRL,
                   hintText: 'Date',
                   readOnly: true,
-                  sufixicons: Padding(
-                    padding: EdgeInsets.only(right: 12.w),
-                  ),
                 ),
               ),
               SizedBox(width: 15.w),
               Expanded(
                 child: CustomTextField(
-                  prifixicon: IconButton(
-                      onPressed: () => _selectTime(context, _startsTimeCTRL),
-                      icon: Icon(Icons.watch_later_rounded)),
-                  controller: _startsTimeCTRL,
+                  prifixicon: Container(
+                    width: 48.w,
+                    height: AppStyles.standardHeight,
+                    alignment: Alignment.center,
+                    child: IconButton(
+                      onPressed: () => _selectTime(context, _endsTimeCTRL),
+                      icon: Icon(
+                        Icons.watch_later_rounded,
+                        color: AppColors.primaryColor,
+                        size: 20.w,
+                      ),
+                      padding: EdgeInsets.zero,
+                      constraints: BoxConstraints(
+                        minWidth: 24.w,
+                        minHeight: 24.h,
+                      ),
+                    ),
+                  ),
+                  controller: _endsTimeCTRL,
                   hintText: 'Time',
                   readOnly: true,
-                  sufixicons: Padding(
-                    padding: EdgeInsets.only(right: 12.w),
-                  ),
                 ),
               ),
             ],
@@ -233,23 +283,32 @@ class _StepTwoFormState extends State<StepTwoForm> {
           Text('Cost', style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
           SizedBox(height: 12.h),
           CustomTextField(
+            prifixicon: Container(
+              width: 12.w,
+              height: AppStyles.standardHeight,
+              alignment: Alignment.center,
+              child: SizedBox.shrink()
+            ),
             controller: costCRTL,
             hintText: '\$',
-            hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
+              height: AppStyles.standardHeight,
+              hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
+
           ),
+
           SizedBox(height: 12.h),
           Container(
+            height: AppStyles.standardHeight,
             padding: EdgeInsets.symmetric(horizontal: 20.w),
             decoration: BoxDecoration(
               color: AppColors.fillColor,
               borderRadius: BorderRadius.circular(8.r),
               border: Border.all(color: AppColors.primaryColor, width: 1),
             ),
-            child: DropdownButtonHideUnderline(
-              child: DropdownButton<String>(
-                padding: EdgeInsets.symmetric(vertical: 0.w,),                    //focusColor:  AppColors.primaryColor,
-
-                value: _selectedCost,
+            child: Center(
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<String>(
+                  value: _selectedCost,
                 dropdownColor: AppColors.fillColor,
                 menuWidth: 240.w,
                 borderRadius: BorderRadius.circular(8.r),
@@ -270,11 +329,12 @@ class _StepTwoFormState extends State<StepTwoForm> {
                     ),
                   );
                 }).toList(),
-                onChanged: (newValue) {
-                  setState(() {
-                    _selectedCost = newValue;
-                  });
-                },
+                  onChanged: (newValue) {
+                    setState(() {
+                      _selectedCost = newValue;
+                    });
+                  },
+                ),
               ),
             ),
           ),
@@ -344,10 +404,20 @@ class _StepTwoFormState extends State<StepTwoForm> {
           Text('Late fee',
               style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
           SizedBox(height: 12.h),
+
+
           CustomTextField(
+            prifixicon: Container(
+                width: 12.w,
+                height: AppStyles.standardHeight,
+                alignment: Alignment.center,
+                child: SizedBox.shrink()
+            ),
             controller: lateFeeCRTL,
             hintText: '\$',
+            height: AppStyles.standardHeight,
             hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
+
           ),
           SizedBox(height: 12.h),
           Row(
