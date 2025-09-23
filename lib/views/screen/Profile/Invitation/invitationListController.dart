@@ -1,56 +1,117 @@
+import 'dart:ui';
+
 import 'package:get/get.dart';
 
 enum InvitationStatus { pending, accepted, rejected }
 
 class InvitationListController extends GetxController {
-  RxInt cardIndex = 100.obs;
+  // Observable list to track individual invitation statuses
+  RxList<InvitationStatus> invitationStatuses = <InvitationStatus>[].obs;
 
-  // Map to track the status of each invitation by index
-  RxMap<int, InvitationStatus> invitationStatusMap = <int, InvitationStatus>{}.obs;
+  // Observable to track if all invitations have been processed
+  RxBool allAccepted = false.obs;
+  RxBool allRejected = false.obs;
 
   @override
   void onInit() {
     super.onInit();
-    // Initialize all invitations as pending
-    for (int i = 0; i < 6; i++) {
-      invitationStatusMap[i] = InvitationStatus.pending;
+    // Initialize with 6 pending invitations
+    initializeInvitations();
+  }
+
+  void initializeInvitations() {
+    invitationStatuses.value = List.generate(6, (index) => InvitationStatus.pending);
+  }
+
+  // Accept individual invitation
+  void acceptInvitation(int index) {
+    if (index < invitationStatuses.length) {
+      invitationStatuses[index] = InvitationStatus.accepted;
+      invitationStatuses.refresh(); // Trigger UI update
+
+      // Reset global states if individual action is taken
+      allAccepted.value = false;
+      allRejected.value = false;
     }
   }
 
-  // Accept invitation
-  void acceptInvitation(int index) {
-    invitationStatusMap[index] = InvitationStatus.accepted;
-    invitationStatusMap.refresh();
-  }
-
-  // Reject invitation
+  // Reject individual invitation
   void rejectInvitation(int index) {
-    invitationStatusMap[index] = InvitationStatus.rejected;
-    invitationStatusMap.refresh();
+    if (index < invitationStatuses.length) {
+      invitationStatuses[index] = InvitationStatus.rejected;
+      invitationStatuses.refresh(); // Trigger UI update
+
+      // Reset global states if individual action is taken
+      allAccepted.value = false;
+      allRejected.value = false;
+    }
   }
 
   // Accept all invitations
   void acceptAllInvitations() {
-    for (int i = 0; i < 6; i++) {
-      if (invitationStatusMap[i] == InvitationStatus.pending) {
-        invitationStatusMap[i] = InvitationStatus.accepted;
-      }
+    for (int i = 0; i < invitationStatuses.length; i++) {
+      invitationStatuses[i] = InvitationStatus.accepted;
     }
-    invitationStatusMap.refresh();
+    allAccepted.value = true;
+    allRejected.value = false;
+    invitationStatuses.refresh();
   }
 
   // Reject all invitations
   void rejectAllInvitations() {
-    for (int i = 0; i < 6; i++) {
-      if (invitationStatusMap[i] == InvitationStatus.pending) {
-        invitationStatusMap[i] = InvitationStatus.rejected;
-      }
+    for (int i = 0; i < invitationStatuses.length; i++) {
+      invitationStatuses[i] = InvitationStatus.rejected;
     }
-    invitationStatusMap.refresh();
+    allRejected.value = true;
+    allAccepted.value = false;
+    invitationStatuses.refresh();
   }
 
-  // Get invitation status
-  InvitationStatus getInvitationStatus(int index) {
-    return invitationStatusMap[index] ?? InvitationStatus.pending;
+  // Check if individual invitation is pending
+  bool isInvitationPending(int index) {
+    return index < invitationStatuses.length &&
+        invitationStatuses[index] == InvitationStatus.pending;
   }
+
+  // Check if individual invitation is accepted
+  bool isInvitationAccepted(int index) {
+    return index < invitationStatuses.length &&
+        invitationStatuses[index] == InvitationStatus.accepted;
+  }
+
+  // Check if individual invitation is rejected
+  bool isInvitationRejected(int index) {
+    return index < invitationStatuses.length &&
+        invitationStatuses[index] == InvitationStatus.rejected;
+  }
+
+  // Get status text for individual invitations
+  String getStatusText(int index) {
+    if (index >= invitationStatuses.length) return '';
+
+    switch (invitationStatuses[index]) {
+      case InvitationStatus.accepted:
+        return 'Invitation request accepted';
+      case InvitationStatus.rejected:
+        return 'Invitation request rejected';
+      case InvitationStatus.pending:
+      default:
+        return '';
+    }
+  }
+
+  // Get status color for individual invitations
+  // Color getStatusColor(int index) {
+  //   if (index >= invitationStatuses.length) return Colors.black;
+  //
+  //   switch (invitationStatuses[index]) {
+  //     case InvitationStatus.accepted:
+  //       return Color(0xFF28AC4B);
+  //     case InvitationStatus.rejected:
+  //       return Color(0xFFD54444);
+  //     case InvitationStatus.pending:
+  //     default:
+  //       return Colors.black;
+  //   }
+  // }
 }
