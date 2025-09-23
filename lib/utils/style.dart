@@ -4,6 +4,36 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
 class AppStyles {
+  // Head title: the largest front size
+  static TextStyle headTitle(
+      {Color? color, FontWeight? fontWeight, double? letterSpacing}) {
+    return TextStyle(
+        color: color,
+        fontSize: 24.sp,
+        letterSpacing: letterSpacing,
+        fontWeight: fontWeight ?? FontWeight.w600);
+  }
+
+  // Field Title: Smaller size 10-12, bold
+  static TextStyle fieldTitle(
+      {Color? color, FontWeight? fontWeight, double? letterSpacing}) {
+    return TextStyle(
+        color: color,
+        fontSize: 16.sp,
+        letterSpacing: letterSpacing,
+        fontWeight: fontWeight ?? FontWeight.w600);
+  }
+
+  // Field Content: same size as title, but not bold
+  static TextStyle fieldContent(
+      {Color? color, FontWeight? fontWeight, double? letterSpacing}) {
+    return TextStyle(
+        color: color,
+        fontSize: 12.sp,
+        letterSpacing: letterSpacing,
+        fontWeight: fontWeight ?? FontWeight.w400);
+  }
+
   static TextStyle fontSize24(
       {Color? color, FontWeight? fontWeight, double? letterSpacing}) {
     return TextStyle(
@@ -108,4 +138,7 @@ class AppStyles {
       offset: const Offset(0,0),
       color:Colors.black.withOpacity(0.02),
       spreadRadius:0);
+
+  // Standard UI component height
+  static double get standardHeight => 54.h;
 }

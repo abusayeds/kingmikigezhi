@@ -1,6 +1,10 @@
 
 class AppImages{
+  AppImages._();
+
   static String baseUrl="assets/images";
+
+
   static String appLogo="$baseUrl/appLogo.png";
   static String splashBg="$baseUrl/SplashScreenbg.png";
   static String onboardingBg="$baseUrl/OnboardingBg.png";
@@ -18,5 +22,6 @@ class AppImages{
   static String whatsapp = "$baseUrl/whatsapp.png";
   static String email = "$baseUrl/email.png";
   static String instagram = "$baseUrl/instagram.png";
+  static String akash = "$baseUrl/akash.jpg";
 
 }
