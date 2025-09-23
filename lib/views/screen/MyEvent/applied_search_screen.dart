@@ -223,11 +223,16 @@ class _AppliedSearchEventListScreenState extends State<AppliedSearchEventListScr
                                     ),
                                   ),
                                   //=====================> Share Icon <=========================
-                                  SvgPicture.asset(
-                                    AppIcons.share,
-                                    width: 16.w,
-                                    height: 16.h,
-                                    color: Colors.blueGrey,
+                                  GestureDetector(
+                                    onTap: (){
+                                      Get.toNamed(AppRoutes.myInvitationPage);
+                                    },
+                                    child: SvgPicture.asset(
+                                      AppIcons.share,
+                                      width: 16.w,
+                                      height: 16.h,
+                                      color: Colors.blueGrey,
+                                    ),
                                   ),
                                 ],
                               ),
