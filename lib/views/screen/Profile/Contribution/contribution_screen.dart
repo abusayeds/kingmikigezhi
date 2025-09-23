@@ -184,12 +184,17 @@ class _MyContributionScreenState extends State<MyContributionScreen> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
-                                  SvgPicture.asset(
-                                    AppIcons.share, // Share icon
-                                    width: 16.w,
-                                    height: 16.h,
-                                    color: Colors.blueGrey,
-                                  ),
+                                  GestureDetector(
+                                  onTap: (){
+                            Get.toNamed(AppRoutes.myInvitationPage);
+                            },
+                              child: SvgPicture.asset(
+                                AppIcons.share,
+                                width: 16.w,
+                                height: 16.h,
+                                color: Colors.blueGrey,
+                              ),
+                            ),
                                   SizedBox(
                                     height: 48.h,
                                   ),
