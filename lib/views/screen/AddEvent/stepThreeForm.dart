@@ -53,13 +53,13 @@ class _StepThreeFormState extends State<StepThreeForm> {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Text('Step 3: Group/Category',
+                child: Text('Step 3: Group',
                     style: AppStyles.fontSize20(fontWeight: FontWeight.bold)),
               ),
               //registration date
               SizedBox(height: 12.h),
               //registration date
-              Text('Define Group/Category',
+              Text('Define Group',
                   style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
               SizedBox(height: 12.h),
               Row(
@@ -68,7 +68,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
                   Expanded(
                     child: CustomTextField(
                       controller: dateController,
-                      hintText: 'Group/Category',
+                      hintText: 'Group',
                       hintTextStyle:
                           AppStyles.fontSize14(color: AppColors.color414141),
                       sufixicons: Padding(
@@ -134,8 +134,8 @@ class _StepThreeFormState extends State<StepThreeForm> {
               ),
               SizedBox(height: 8.h),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 4),
-                child: Text('Added Group / Category',
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: Text('Added Group',
                     style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
               ),
               SizedBox(height: 8.h),

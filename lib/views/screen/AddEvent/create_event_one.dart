@@ -157,7 +157,7 @@ class _CreateEventOneState extends State<CreateEventOne> {
                       ),
                     ),
                     customTitle: Text(
-                      'Group/Category', style: TextStyle(fontSize: 12.sp),
+                      'Group', style: TextStyle(fontSize: 12.sp),
                       textAlign: TextAlign.center,
                     ),
                   ),
