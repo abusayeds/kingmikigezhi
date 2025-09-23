@@ -103,6 +103,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
               SizedBox(height: 16.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
                     child: CustomTextField(
@@ -300,9 +301,10 @@ class _StepThreeFormState extends State<StepThreeForm> {
                         children: [
                           Expanded(
                             child: CustomTextField(
+                              height: 44.h,
                               prifixicon: IconButton(
                                   onPressed: () {},
-                                  icon: Icon(Icons.calendar_today_rounded)),
+                                  icon: Icon(Icons.calendar_today_rounded, size: 20.sp,)),
                               controller: deadLineDateController,
                               hintText: 'Date',
                               hintTextStyle: AppStyles.fontSize14(
@@ -311,7 +313,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
                                 padding: EdgeInsets.only(right: 12.w),
                                 child: SvgPicture.asset(
                                   AppIcons.downArrowIcon,
-                                  width: 16.w,
+                                  width: 12.w,
                                   color: AppColors.primaryColor,
                                 ),
                               ),
@@ -320,6 +322,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
                           SizedBox(width: 15.w),
                           Expanded(
                             child: CustomTextField(
+                              height: 44.h,
                               prifixicon: IconButton(
                                   onPressed: () {},
                                   icon: Icon(Icons.watch_later_rounded)),
@@ -406,6 +409,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
                           SizedBox(
                             width: 108.w,
                             child: CustomTextField(
+                              height: 44.h,
                               controller: finalDatelineYearController,
                               hintText: 'Year',
                               hintTextStyle: AppStyles.fontSize14(
@@ -423,6 +427,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
                           SizedBox(
                             width: 108.w,
                             child: CustomTextField(
+                              height: 44.h,
                               controller: finalDatelineMonthController,
                               hintText: 'Month',
                               hintTextStyle: AppStyles.fontSize14(
@@ -440,6 +445,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
                           SizedBox(
                             width: 108.w,
                             child: CustomTextField(
+                              height: 44.h,
                               controller: finalDatelineDayController,
                               hintText: 'Day',
                               hintTextStyle: AppStyles.fontSize14(

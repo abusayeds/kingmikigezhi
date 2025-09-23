@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../utils/app_icons.dart';
 import '../../../utils/app_strings.dart';
+import '../../../utils/style.dart';
 import '../../base/custom_dropdown.dart';
 import '../../base/custom_text.dart';
 
@@ -24,7 +25,7 @@ class _FilterScreenState extends State<FilterScreen> {
   final List<String> _type = ['Onsite', 'Online', 'Hybrid'];
   final List<String> _category = ['6 Year - 10 Year', '11 Year - 16 Year', '17 Year+'];
 
-  RangeValues _currentRangeValues = RangeValues(50, 80);
+  RangeValues _currentRangeValues = const RangeValues(50, 80);
   String? _selectedProgram;
   String? _selectedType;
   String? _selectedCategory;
@@ -40,18 +41,18 @@ class _FilterScreenState extends State<FilterScreen> {
           fontsize: 18.sp,
           fontWeight: FontWeight.w500,
         ),
-        leading:  Padding(
-          padding:  EdgeInsets.only(left:20.w),
+        leading: Padding(
+          padding: EdgeInsets.only(left: 20.w),
           child: IconButton(
-                icon: Icon(
-                  Icons.arrow_back_ios,
-                  color: Colors.black,
-                  size: 20.sp,
-                ),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Colors.black,
+              size: 20.sp,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
         ),
         centerTitle: true,
       ),
@@ -69,45 +70,51 @@ class _FilterScreenState extends State<FilterScreen> {
                 fontsize: 13.sp,
                 bottom: 8.h,
               ),
-              InputDecorator(
-                decoration: InputDecoration(
-                  fillColor: AppColors.fillColor,
-                  filled: true,
-
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
-                    borderRadius: BorderRadius.circular(8.r),
+              SizedBox(
+                height: AppStyles.standardHeight,
+                child: InputDecorator(
+                  decoration: InputDecoration(
+                    fillColor: AppColors.fillColor,
+                    filled: true,
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
                   ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
-                ),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton<String>(
-                    padding: EdgeInsets.symmetric(vertical: 0.w,),                    //focusColor:  AppColors.primaryColor,
-                    iconDisabledColor: AppColors.primaryColor,
-                    icon: SvgPicture.asset(AppIcons.down_ArrowIcon,color: AppColors.primaryColor,height:8.h,),
-                    iconEnabledColor: AppColors.primaryColor,
-                    isExpanded: true,
-                    value: _selectedProgram,
-                    hint: CustomText(text: 'Select Program', fontsize: 14.sp),
-                    items: _program.map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        _selectedProgram = newValue;
-                      });
-                    },
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      padding: EdgeInsets.symmetric(vertical: 0.w),
+                      iconDisabledColor: AppColors.primaryColor,
+                      icon: SvgPicture.asset(
+                        AppIcons.down_ArrowIcon,
+                        color: AppColors.primaryColor,
+                        height: 8.h,
+                      ),
+                      iconEnabledColor: AppColors.primaryColor,
+                      isExpanded: true,
+                      value: _selectedProgram,
+                      hint: CustomText(text: 'Select Program', fontsize: 14.sp),
+                      items: _program.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _selectedProgram = newValue;
+                        });
+                      },
+                    ),
                   ),
                 ),
               ),
@@ -121,8 +128,7 @@ class _FilterScreenState extends State<FilterScreen> {
               ),
               InputDecorator(
                 decoration: InputDecoration(
-
-                  fillColor: AppColors.fillColor, // Replace with your desired color
+                  fillColor: AppColors.fillColor,
                   filled: true,
                   border: OutlineInputBorder(
                     borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
@@ -139,14 +145,15 @@ class _FilterScreenState extends State<FilterScreen> {
                   contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
                 ),
                 child: DropdownButtonHideUnderline(
-
                   child: DropdownButton<String>(
-                    padding: EdgeInsets.symmetric(vertical: 0.w,),
-
-                    //focusColor:  AppColors.primaryColor,
+                    padding: EdgeInsets.symmetric(vertical: 0.w),
                     iconDisabledColor: AppColors.primaryColor,
                     iconEnabledColor: AppColors.primaryColor,
-                    icon: SvgPicture.asset(AppIcons.down_ArrowIcon,color: AppColors.primaryColor,height:8.h,),
+                    icon: SvgPicture.asset(
+                      AppIcons.down_ArrowIcon,
+                      color: AppColors.primaryColor,
+                      height: 8.h,
+                    ),
                     isExpanded: true,
                     value: _selectedType,
                     hint: CustomText(text: 'Select Type', fontsize: 14.sp),
@@ -173,13 +180,17 @@ class _FilterScreenState extends State<FilterScreen> {
                 bottom: 8.h,
               ),
               CustomTextField(
-
                 controller: _locationCTRL,
                 hintText: 'Type here',
+                hintTextStyle: AppStyles.fieldContent(
+                  color: AppColors.color414141,
+                ),
                 sufixicons: Padding(
                   padding: EdgeInsets.all(16.w),
-                  child: SvgPicture.asset(AppIcons.locationIcon,
-                      color: AppColors.primaryColor),
+                  child: SvgPicture.asset(
+                    AppIcons.locationIcon,
+                    color: AppColors.primaryColor,
+                  ),
                 ),
               ),
               SizedBox(height: 16.h),
@@ -192,35 +203,34 @@ class _FilterScreenState extends State<FilterScreen> {
               ),
               InputDecorator(
                 decoration: InputDecoration(
-                  fillColor: AppColors.fillColor, // Replace with your desired color
+                  fillColor: AppColors.fillColor,
                   filled: true,
-                  // labelText: 'Select',
                   border: OutlineInputBorder(
-                    borderSide:
-                    BorderSide(color: AppColors.primaryColor, width: 1.w),
+                    borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderSide:
-                    BorderSide(color: AppColors.primaryColor, width: 1.w),
+                    borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide:
-                    BorderSide(color: AppColors.primaryColor, width: 1.w),
+                    borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                   contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
                 ),
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
-                    padding: EdgeInsets.symmetric(vertical: 0.w,),
-                    //focusColor:  AppColors.primaryColor,
+                    padding: EdgeInsets.symmetric(vertical: 0.w),
                     iconDisabledColor: AppColors.primaryColor,
                     iconEnabledColor: AppColors.primaryColor,
                     isExpanded: true,
                     value: _selectedCategory,
-                    icon: SvgPicture.asset(AppIcons.down_ArrowIcon,color: AppColors.primaryColor,height:8.h,),
+                    icon: SvgPicture.asset(
+                      AppIcons.down_ArrowIcon,
+                      color: AppColors.primaryColor,
+                      height: 8.h,
+                    ),
                     hint: CustomText(text: 'Select Category/Group', fontsize: 14.sp),
                     items: _category.map((String value) {
                       return DropdownMenuItem<String>(
@@ -277,30 +287,42 @@ class _FilterScreenState extends State<FilterScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('\$${_currentRangeValues.start.round()}',style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 8.sp,
-                      color: Color(0xFF20353F)
-                    ),),
-                    //CustomText(text: '\$${_currentRangeValues.start.round()}'),
-                    //CustomText(text: '\$${_currentRangeValues.end.round()}'),
-                    Text('\$${_currentRangeValues.end.round()}',style: GoogleFonts.poppins(
+                    Text(
+                      '\$${_currentRangeValues.start.round()}',
+                      style: GoogleFonts.poppins(
                         fontWeight: FontWeight.w400,
                         fontSize: 8.sp,
-                        color: Color(0xFF20353F)
-                    ),),
+                        color: const Color(0xFF20353F),
+                      ),
+                    ),
+                    Text(
+                      '\$${_currentRangeValues.end.round()}',
+                      style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 8.sp,
+                        color: const Color(0xFF20353F),
+                      ),
+                    ),
                   ],
                 ),
               ),
               SizedBox(height: 131.h),
-              // const Spacer(),
               //===========================> Button Section <===============================
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
                     child: CustomButton(
-                      onTap: () {},
+                      onTap: () {
+                        // Reset functionality
+                        setState(() {
+                          _selectedProgram = null;
+                          _selectedType = null;
+                          _selectedCategory = null;
+                          _locationCTRL.clear();
+                          _currentRangeValues = const RangeValues(50, 80);
+                        });
+                      },
                       borderColor: AppColors.buttonColor,
                       text: "Reset",
                       color: AppColors.colorEDF2F4,
@@ -310,7 +332,16 @@ class _FilterScreenState extends State<FilterScreen> {
                   SizedBox(width: 16.w),
                   Expanded(
                     child: CustomButton(
-                      onTap: () {},
+                      onTap: () {
+                        // Apply filters - implement your logic here
+                        Navigator.pop(context, {
+                          'program': _selectedProgram,
+                          'type': _selectedType,
+                          'category': _selectedCategory,
+                          'location': _locationCTRL.text,
+                          'priceRange': _currentRangeValues,
+                        });
+                      },
                       text: "Apply",
                       textColor: Colors.white,
                       color: AppColors.buttonColor,

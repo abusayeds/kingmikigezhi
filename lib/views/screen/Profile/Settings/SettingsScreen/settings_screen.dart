@@ -61,10 +61,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
               //=================================> Language Section <=======================
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 6.h),
-                child: Text('Display language',style: AppStyles.fontSize16(fontWeight: FontWeight.w600)),
+                child: Text('Display language',style: AppStyles.fieldTitle()),
               ),
               SizedBox(
-                height: 60.h,
+                height: AppStyles.standardHeight,
                 child: InputDecorator(
                   decoration: InputDecoration(
                     fillColor: AppColors.fillColor,
@@ -116,10 +116,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
               //=================================> Date time format Section <=======================
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 6.h),
-                child: Text('Date time format',style: AppStyles.fontSize16(fontWeight: FontWeight.w600)),
+                child: Text('Date time format',style: AppStyles.fieldTitle()),
               ),
               SizedBox(
-                height: 60.h,
+                height: AppStyles.standardHeight,
                 child: InputDecorator(
                   decoration: InputDecoration(
                     fillColor: AppColors.fillColor,
@@ -170,10 +170,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
               //=================================> Time zone Section <=======================
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 6.h),
-                child: Text('Time zone',style: AppStyles.fontSize16(fontWeight: FontWeight.w600)),
+                child: Text('Time zone',style: AppStyles.fieldTitle()),
               ),
               SizedBox(
-                height: 60.h,
+                height: AppStyles.standardHeight,
                 child: InputDecorator(
                   decoration: InputDecoration(
                     fillColor: AppColors.fillColor,
@@ -224,10 +224,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
               //=================================> Currency Section <=======================
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 6.h),
-                child: Text('Currency',style: AppStyles.fontSize16(fontWeight: FontWeight.w600)),
+                child: Text('Currency',style: AppStyles.fieldTitle()),
               ),
               SizedBox(
-                height: 60.h,
+                height: AppStyles.standardHeight,
                 child: InputDecorator(
                   decoration: InputDecoration(
                     fillColor: AppColors.fillColor,
@@ -281,10 +281,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
               //=================================> Notifications Section <=======================
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 6.h),
-                child: Text('Notifications',style: AppStyles.fontSize16(fontWeight: FontWeight.w600)),
+                child: Text('Notifications',style: AppStyles.fieldTitle()),
               ),
               SizedBox(
-               height: 60.h,
+               height: AppStyles.standardHeight,
                 child: InputDecorator(
                   decoration: InputDecoration(
                     fillColor: AppColors.fillColor,
@@ -336,7 +336,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   // Event Share Section
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 8.h),
-                    child: Text('Event Share',style: AppStyles.fontSize16(fontWeight: FontWeight.w600)),
+                    child: Text('Event Share',style: AppStyles.fieldTitle()),
                   ),
                   Row(
                     children: [
@@ -428,7 +428,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 8.w),
-                    child: Text('Applied Event Update',style: AppStyles.fontSize16()),
+                    child: Text('Applied Event Update',style: AppStyles.fieldTitle()),
                   ),
                   SizedBox(height: 8.h),
                   Row(
