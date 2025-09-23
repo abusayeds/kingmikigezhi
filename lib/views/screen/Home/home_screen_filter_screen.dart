@@ -64,12 +64,11 @@ class _FilterScreenState extends State<FilterScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               //==============================> Program Section <=======================
-              Padding(
-                padding: EdgeInsets.only(bottom: 8.h),
-                child: Text(
-                  'Program',
-                  style: AppStyles.fieldTitle(),
-                ),
+              CustomText(
+                text: 'Program',
+                fontWeight: FontWeight.w500,
+                fontsize: 13.sp,
+                bottom: 8.h,
               ),
               SizedBox(
                 height: AppStyles.standardHeight,
@@ -121,12 +120,11 @@ class _FilterScreenState extends State<FilterScreen> {
               ),
               SizedBox(height: 16.h),
               //==============================> Type Section <=======================
-              Padding(
-                padding: EdgeInsets.only(bottom: 8.h),
-                child: Text(
-                  'Type',
-                  style: AppStyles.fieldTitle(),
-                ),
+              CustomText(
+                text: 'Type',
+                fontWeight: FontWeight.w500,
+                fontsize: 13.sp,
+                bottom: 8.h,
               ),
               InputDecorator(
                 decoration: InputDecoration(
@@ -175,12 +173,11 @@ class _FilterScreenState extends State<FilterScreen> {
               ),
               SizedBox(height: 16.h),
               //==============================> Location Section <=======================
-              Padding(
-                padding: EdgeInsets.only(bottom: 8.h),
-                child: Text(
-                  AppStrings.location,
-                  style: AppStyles.fieldTitle(),
-                ),
+              CustomText(
+                text: AppStrings.location,
+                fontWeight: FontWeight.w500,
+                fontsize: 13.sp,
+                bottom: 8.h,
               ),
               CustomTextField(
                 controller: _locationCTRL,
@@ -198,12 +195,11 @@ class _FilterScreenState extends State<FilterScreen> {
               ),
               SizedBox(height: 16.h),
               //==============================> Category/Group Section <=======================
-              Padding(
-                padding: EdgeInsets.only(bottom: 8.h),
-                child: Text(
-                  'Category/Group',
-                  style: AppStyles.fieldTitle(),
-                ),
+              CustomText(
+                text: 'Category/Group',
+                fontWeight: FontWeight.w500,
+                fontsize: 13.sp,
+                bottom: 8.h,
               ),
               InputDecorator(
                 decoration: InputDecoration(
@@ -254,14 +250,16 @@ class _FilterScreenState extends State<FilterScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'Price Range',
-                    style: AppStyles.fieldTitle(),
+                  CustomText(
+                    text: 'Price Range',
+                    fontWeight: FontWeight.w500,
+                    fontsize: 13.sp,
+                    bottom: 16.h,
                   ),
                   CustomText(
                     text: '\$20-\$4K',
                     fontWeight: FontWeight.w500,
-                    fontsize: 8.sp,
+                    fontsize: 10.sp,
                     bottom: 16.h,
                   ),
                 ],

@@ -65,7 +65,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
               Padding(
                 padding: EdgeInsets.all(4.r),
                 child: Text('Account ID',
-                    style: AppStyles.fieldTitle()),
+                    style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
               ),
               CustomListTile(
                   title: '20103200' ?? '',
@@ -75,7 +75,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
               Padding(
                 padding: const EdgeInsets.all(4),
                 child: Text('First Name',
-                    style: AppStyles.fieldTitle()),
+                    style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
               ),
               CustomListTile(
                   title: 'Bashar Islam' ?? '',
@@ -85,7 +85,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
               Padding(
                 padding: EdgeInsets.all(4),
                 child: Text('Last Name',
-                    style: AppStyles.fieldTitle()),
+                    style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
               ),
               CustomListTile(
                   title: 'Rahman' ?? '',
@@ -95,7 +95,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
               Padding(
                 padding: const EdgeInsets.all(4),
                 child: Text('Public Display Name',
-                    style: AppStyles.fieldTitle()),
+                    style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
               ),
               CustomListTile(
                   title: 'Dhaka' ?? '',
@@ -105,7 +105,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
               Padding(
                 padding: const EdgeInsets.all(4),
                 child: Text('Gender',
-                    style: AppStyles.fieldTitle()),
+                    style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
               ),
               CustomListTile(
                   title: 'Male' ?? '',
@@ -115,7 +115,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
               Padding(
                 padding: const EdgeInsets.all(4),
                 child: Text('Birthday',
-                    style: AppStyles.fieldTitle()),
+                    style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -178,7 +178,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
               Padding(
                 padding: EdgeInsets.all(4.r),
                 child: Text('Email',
-                    style: AppStyles.fieldTitle()),
+                    style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
               ),
               CustomListTile(
                 prefixIcon:
@@ -190,7 +190,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
               Padding(
                 padding: EdgeInsets.all(4.r),
                 child: Text('Phone Number',
-                    style: AppStyles.fieldTitle()),
+                    style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
               ),
               SizedBox(
                 // Solution 7: MediaQuery-based responsive height with constraints
@@ -264,7 +264,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
               Padding(
                 padding: const EdgeInsets.all(4),
                 child: Text('Location',
-                    style: AppStyles.fieldTitle()),
+                    style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -324,7 +324,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
               Padding(
                 padding: const EdgeInsets.all(4),
                 child: Text('Skill',
-                    style: AppStyles.fieldTitle()),
+                    style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
               ),
               Container(
                 decoration: BoxDecoration(

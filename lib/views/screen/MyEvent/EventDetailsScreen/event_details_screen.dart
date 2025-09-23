@@ -103,7 +103,9 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: InkWell(
-                              onTap: () {},
+                              onTap: () {
+
+                              },
                               child: Center(child: SvgPicture.asset(AppIcons.editIcon))),
                         ),
                       ),
@@ -143,7 +145,9 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            Get.toNamed(AppRoutes.myInvitationPage);
+                          },
                           child: SvgPicture.asset(AppIcons.share)),
                     ),
                   ),
