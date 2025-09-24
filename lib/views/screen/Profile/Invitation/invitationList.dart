@@ -23,6 +23,24 @@ class _InvitationlistState extends State<Invitationlist> {
   final InvitationListController invitationListController =
   Get.find<InvitationListController>();
 
+  final List<Map<String, dynamic>> invitations = [
+    {
+      "name": "Alax Tom",
+      "accountID": 2010,
+      "contribution": 100,
+    },
+    {
+      "name": "Mahafujer",
+      "accountID": 2011,
+      "contribution": 150,
+    },
+    {
+      "name": "Rahman MunnA",
+      "accountID": 2012,
+      "contribution": 200,
+    },
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,209 +63,179 @@ class _InvitationlistState extends State<Invitationlist> {
         ),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 24.w),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            SizedBox(height: 18.h),
-
-            // Header section with global action buttons
-            Obx(() => Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Text(
-                    'All the people who\nhas invited you!',
-                    style: GoogleFonts.poppins(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.primaryColor),
-                  ),
+      body: Stack(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding:   EdgeInsets.symmetric(horizontal: 24.w),
+                child: Text(
+                  'All the people who has invited you!',
+                  style: GoogleFonts.poppins(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.blackColor),
                 ),
-                SizedBox(width: 12.w),
+              ),
+              SizedBox(height: 8.h,),
+              Expanded(
+                child: ListView.builder(
+                  padding: EdgeInsets.all(12.r),
+                  itemCount: invitations.length,
+                  itemBuilder: (context, index) {
+              final invitation = invitations[index];
+              return Container(
+                padding: EdgeInsets.symmetric(vertical: 4.h,horizontal: 8.w),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10.r),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
 
-                // Show global status or buttons
-                if (invitationListController.allRejected.value)
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-                    decoration: BoxDecoration(
-                      color: Color(0xFFD54444).withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(100.r),
-                      border: Border.all(color: Color(0xFFD54444)),
-                    ),
-                    child: Text(
-                      'All Ignored',
-                      style: GoogleFonts.poppins(
-                        fontSize: 10.sp,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xFFD54444),
-                      ),
-                    ),
-                  )
-                else if (invitationListController.allAccepted.value)
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-                    decoration: BoxDecoration(
-                      color: Color(0xFF28AC4B).withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(100.r),
-                      border: Border.all(color: Color(0xFF28AC4B)),
-                    ),
-                    child: Text(
-                      'All Accepted',
-                      style: GoogleFonts.poppins(
-                        fontSize: 10.sp,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xFF28AC4B),
-                      ),
-                    ),
-                  )
-                else
-                  Row(
-                    children: [
-                      _AllButton(
-                        text: 'Ignore All',
-                        onTap: () {
-                          invitationListController.rejectAllInvitations();
-                        },
-                        borderColor: Color(0xFFD54444),
-                        textColor: Color(0xFFD54444),
-                        backgroundColor: Colors.transparent,
-                      ),
-                      SizedBox(width: 8.w),
-                      _AllButton(
-                        text: 'Accept All',
-                        onTap: () {
-                          invitationListController.acceptAllInvitations();
-                        },
-                        borderColor: Color(0xFF28AC4B),
-                        textColor: Color(0xFF28AC4B),
-                        backgroundColor: Colors.transparent,
-                      ),
-                    ],
-                  ),
-              ],
-            )),
-
-            SizedBox(height: 24.h),
-
-            // Invitation list
-            Expanded(
-              child: Obx(() => ListView.builder(
-                itemCount: invitationListController.invitationStatuses.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    margin: EdgeInsets.only(bottom: 16.h),
-                    padding: EdgeInsets.symmetric(vertical: 12.h),
-                    decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.circular(10.r),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    Row(
                       children: [
-                        Row(
-                          children: [
-                            // Profile Avatar
-                            CircleAvatar(
-                              radius: 45.r,
-                              backgroundColor: Colors.grey.shade300,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(45.r),
-                                child: Image.network(
-                                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFYqoKTu_o3Zns2yExbst2Co84Gpc2Q1RJbA&s',
-                                  fit: BoxFit.cover,
-                                  width: 90.r,
-                                  height: 90.r,
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return Icon(
-                                      Icons.person,
-                                      size: 45.r,
-                                      color: Colors.grey.shade600,
-                                    );
-                                  },
-                                  loadingBuilder: (context, child, loadingProgress) {
-                                    if (loadingProgress == null) return child;
-                                    return Center(
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2.0,
-                                        value: loadingProgress.expectedTotalBytes != null
-                                            ? loadingProgress.cumulativeBytesLoaded /
-                                            loadingProgress.expectedTotalBytes!
-                                            : null,
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
+                        CircleAvatar(
+                          radius: 45.r,
+                          backgroundColor: Colors.grey.shade300,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(45.r),
+                            child: Image.network(
+                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFYqoKTu_o3Zns2yExbst2Co84Gpc2Q1RJbA&s',
+                              fit: BoxFit.cover,
+                              width: 90.r,
+                              height: 90.r,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Icon(
+                                  Icons.person,
+                                  size: 45.r,
+                                  color: Colors.grey.shade600,
+                                );
+                              },
+                              loadingBuilder: (context, child, loadingProgress) {
+                                if (loadingProgress == null) return child;
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2.0,
+                                    value: loadingProgress.expectedTotalBytes != null
+                                        ? loadingProgress.cumulativeBytesLoaded /
+                                        loadingProgress.expectedTotalBytes!
+                                        : null,
+                                  ),
+                                );
+                              },
                             ),
-                            SizedBox(width: 12.w),
-
-                            // User Details
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Alax Tom ${index + 1}', // Adding index for variety
-                                    style: AppStyles.fontSize16(
-                                        fontWeight: FontWeight.w600,
-                                        color: AppColors.color414141),
-                                  ),
-                                  SizedBox(height: 8.h),
-                                  Row(
-                                    children: [
-                                      SvgPicture.asset(
-                                        AppIcons.dotIconForFamily,
-                                        width: 12.w,
-                                        height: 12.w,
-                                      ),
-                                      SizedBox(width: 4.w),
-                                      Flexible(
-                                        child: Text(
-                                          "Account ID: ${2000 + index}",
-                                          style: AppStyles.fontSize10(
-                                              color: AppColors.color414141),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 8.h),
-                                  Row(
-                                    children: [
-                                      SvgPicture.asset(
-                                        AppIcons.dotIconForFamily,
-                                        width: 12.w,
-                                        height: 12.w,
-                                      ),
-                                      SizedBox(width: 4.w),
-                                      Text(
-                                        "Contribution: ${300 + (index * 50)}",
-                                        style: AppStyles.fontSize10(
-                                            color: AppColors.color414141),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
+                          ),
+                        ),
+                        SizedBox(width: 12.w),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Alax Tom', style: AppStyles.fontSize16(fontWeight: FontWeight.w600,color: AppColors.color414141),),
+                            SizedBox(height: 8.h,),
+                            Row(
+                              children: [
+                                SvgPicture.asset(AppIcons.dotIconForFamily),
+                                SizedBox(width: 4),
+                                Text("Account ID: ${invitation['accountID']}",
+                                  style: AppStyles.fontSize10(color: AppColors.color414141),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 8.h,),
+                            Row(
+                              children: [
+                                SvgPicture.asset(AppIcons.dotIconForFamily),
+                                SizedBox(width: 4),
+                                Text("Contribution: ${invitation['contribution']}",
+                                  style: AppStyles.fontSize10(color: AppColors.color414141),
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                        SizedBox(height: 16.h),
-
-                        // Action buttons or status text
-                        _buildInvitationActions(index),
                       ],
                     ),
-                  );
-                },
-              )),
+                    SizedBox(height: 10.h),
+                    Row(
+                      children: [
+                        Expanded(
+                            child:CustomButton(
+                              onTap: (){},
+                              text: 'Ignore',textStyle: TextStyle(fontSize: 16,fontWeight: FontWeight.w500),
+                              color: AppColors.fillColor,
+                              borderColor: AppColors.buttonA47059,
+                              textColor: AppColors.blackColor,
+                            )
+                        ),
+                        SizedBox(width: 10.w),
+                        Expanded(
+                            child:CustomButton(
+                              onTap: (){},
+                              text: 'Accept',textStyle: TextStyle(fontSize: 16,fontWeight: FontWeight.w500),
+                              color: AppColors.buttonA47059,
+                              borderColor: AppColors.buttonA47059,
+                              textColor: AppColors.textColor,
+                            )
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8.w),
+                      child:  Divider(thickness: .5,color: AppColors.greyColor,),
+                    )
+
+
+                  ],
+
+                ),
+
+
+              );
+            },
+                ),
+              ),
+            ],
+          ),
+          if (invitations.isNotEmpty)
+            Positioned(
+              bottom: 15,
+              left: 0,
+              right: 0,
+
+              child: Padding(
+                padding: EdgeInsets.all(12.r),
+                child: Row(
+                  children: [
+                    Expanded(
+                        child:CustomButton(
+                          onTap: (){},
+                          text: 'Ignore All',textStyle: TextStyle(fontSize: 16,fontWeight: FontWeight.w500),
+                          color: AppColors.fillColor,
+                          borderColor: AppColors.buttonColor,
+                          textColor: AppColors.blackColor,
+                        )
+                    ),
+                    SizedBox(width: 10.w),
+                    Expanded(
+                        child:CustomButton(
+                          onTap: (){},
+                          text: 'Accept All',textStyle: TextStyle(fontSize: 16,fontWeight: FontWeight.w500),
+                          color: AppColors.buttonColor,
+                          borderColor: AppColors.buttonA47059,
+                          textColor: AppColors.textColor,
+                        )
+                    ),
+                  ],
+                ),
+              ),
             ),
-          ],
-        ),
+        ],
       ),
+
     );
   }
 

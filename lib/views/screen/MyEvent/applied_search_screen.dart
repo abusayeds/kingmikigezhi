@@ -145,11 +145,8 @@ class _AppliedSearchEventListScreenState extends State<AppliedSearchEventListScr
                                       mainAxisAlignment: MainAxisAlignment.start,
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        CustomText(
-                                          text: event['title']!,
-                                          fontsize: 16.sp,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                        Text(event['title']!,style: AppStyles.fontSize14(fontWeight: FontWeight.w600)),
+
                                         //=====================> Event Info Section <=========================
                                         Row(
                                           crossAxisAlignment: CrossAxisAlignment.start,

@@ -80,6 +80,8 @@ class _MyConnectionScreenState extends State<MyConnectionScreen>
                       color: _tabController.index == 0
                           ? Colors.white
                           : Colors.black,
+                      fontWeight: FontWeight.w500,
+                      fontsize: 14.sp,
                     ),
                   ),
                 ),
@@ -103,6 +105,8 @@ class _MyConnectionScreenState extends State<MyConnectionScreen>
                       color: _tabController.index == 1
                           ? Colors.white
                           : Colors.black,
+                      fontWeight: FontWeight.w500,
+                      fontsize: 14.sp,
                     ),
                   ),
                 ),

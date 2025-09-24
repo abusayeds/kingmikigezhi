@@ -79,6 +79,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                   Text('Piano Star Event',
                       style: AppStyles.headTitle()
                           .copyWith(
+                        fontSize: 15.sp,
                         decoration: TextDecoration.underline,
                         decorationColor: Colors.black, // Color of the underline
                         decorationThickness: 1.0, // Thickness of the underline
@@ -204,7 +205,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
               //=======================> Description Event Section <============================
               SizedBox(height: 24.h),
               Text(AppStrings.description,
-                  style: AppStyles.fieldTitle()),
+                  style:TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
               SizedBox(height: 8.h),
               Text(
                 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable.',
@@ -218,7 +219,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
 
               // Note
               Text(AppStrings.note,
-                  style: AppStyles.fieldTitle()),
+                  style:TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
               SizedBox(height: 8.h),
               Text(
                 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable.',
@@ -262,7 +263,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                     style: AppStyles.fontSize18(
                         color: AppColors.blackColor,
                         fontWeight: FontWeight.w500),
-                    hint: CustomText(text: 'Select Ages', fontsize: 14.sp),
+                    hint: CustomText(text: 'Select Ages', fontsize: 13.sp),
                     icon: SvgPicture.asset(
                       AppIcons.downArrowIcon,
                       width: 16.w,
@@ -295,7 +296,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                       ),
                       SizedBox(width: 8.w),
                       Text('Preliminary',
-                          style: AppStyles.fieldTitle()),
+                          style:TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600)),
                     ],
                   ),
                   SizedBox(height: 15.h),
@@ -390,7 +391,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                       ),
                       SizedBox(width: 8.w),
                       Text('Semi Final',
-                          style: AppStyles.fieldTitle()),
+                          style:TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600)),
                     ],
                   ),
                   SizedBox(height: 16.h),
@@ -485,7 +486,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                       ),
                       SizedBox(width: 8.w),
                       Text('Final  ',
-                          style:AppStyles.fontSize12(fontWeight: FontWeight.w600,).copyWith(fontSize: 16.sp)),
+                          style:TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600)),
                     ],
                   ),
                   SizedBox(height: 16.h),
@@ -577,7 +578,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
 
 
                     Text('Preliminary',
-                        style: AppStyles.fontSize12(fontWeight: FontWeight.w600,).copyWith(fontSize: 16.sp)),
+                        style: AppStyles.fontSize12(fontWeight: FontWeight.w600,).copyWith(fontSize: 13.sp)),
                     SizedBox(height: 8.h),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -742,7 +743,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                     Text(
                       'Latest active 3 days ago',
                       style: TextStyle(
-                        fontSize: 14.sp,
+                        fontSize: 13.sp,
                         color: AppColors.color414141,
                       ),
                     ),
@@ -816,7 +817,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
             children: [
               Text(
                 label,
-                style: AppStyles.fieldTitle(),
+                style:TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600),
               ),
               SizedBox(height: 5.h),
               Text(
@@ -854,7 +855,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
             children: [
               Text(
                 label,
-                style: AppStyles.fieldTitle(),
+                style:TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600),
               ),
               SizedBox(height: 5.h),
               Row(
@@ -905,7 +906,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                 children: [
                   Text(
                     label,
-                    style: AppStyles.fieldTitle(),
+                    style:TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600),
                   ),
                   Container(
                     height: 20.h,
