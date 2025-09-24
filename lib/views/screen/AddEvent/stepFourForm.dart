@@ -34,12 +34,12 @@ class _StepFourFormState extends State<StepFourForm> {
               children: [
                 Padding(
                   padding:  EdgeInsets.symmetric(vertical: 8.h),
-                  child:Text("Step 4: Configuration", style: AppStyles.fontSize20(fontWeight: FontWeight.bold)),
+                  child:Text("Step 4: Configuration", style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w600)),
                 ),
                 SizedBox(height: 22.h),
                 Padding(
                   padding: EdgeInsets.all(4.r),
-                  child: Text("Repeat Function", style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
+                  child: Text("Repeat Function", style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
                 ),
                 Container(
                   height: 53.h,

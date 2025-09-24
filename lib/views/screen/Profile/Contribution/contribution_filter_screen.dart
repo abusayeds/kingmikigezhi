@@ -50,7 +50,7 @@ class _ContributionFilterScreenState extends State<ContributionFilterScreen> {
               CustomText(
                 text: 'Program',
                 fontWeight: FontWeight.w500,
-                fontsize: 16.sp,
+             fontsize: 13.sp,
                 bottom: 8.h,
               ),
               InputDecorator(
@@ -101,7 +101,7 @@ class _ContributionFilterScreenState extends State<ContributionFilterScreen> {
               CustomText(
                 text: 'Type',
                 fontWeight: FontWeight.w500,
-                fontsize: 16.sp,
+             fontsize: 13.sp,
                 bottom: 8.h,
               ),
               InputDecorator(
@@ -152,7 +152,7 @@ class _ContributionFilterScreenState extends State<ContributionFilterScreen> {
               CustomText(
                 text: AppStrings.location,
                 fontWeight: FontWeight.w500,
-                fontsize: 16.sp,
+             fontsize: 13.sp,
                 bottom: 8.h,
               ),
               CustomTextField(
@@ -169,7 +169,7 @@ class _ContributionFilterScreenState extends State<ContributionFilterScreen> {
               CustomText(
                 text: 'Category/Group',
                 fontWeight: FontWeight.w500,
-                fontsize: 16.sp,
+             fontsize: 13.sp,
                 bottom: 8.h,
               ),
               InputDecorator(
@@ -220,7 +220,7 @@ class _ContributionFilterScreenState extends State<ContributionFilterScreen> {
               CustomText(
                 text: 'Time Range',
                 fontWeight: FontWeight.w500,
-                fontsize: 16.sp,
+             fontsize: 13.sp,
                 bottom: 8.h,
               ),
               InputDecorator(

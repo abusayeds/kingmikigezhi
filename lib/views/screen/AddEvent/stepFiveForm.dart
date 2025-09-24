@@ -48,11 +48,11 @@ class _StepFiveFormState extends State<StepFiveForm> {
             children: [
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 8.h),
-                child: Text("Step 5: Own History", style: AppStyles.fontSize20(fontWeight: FontWeight.bold)),
+                child: Text("Step 5: Own History", style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w600)),
               ),
               //registration date
               SizedBox(height: 12.h),
-             Text('Session', style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
+             Text('Session', style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
               SizedBox(height: 12.h),
               Container(
                 height: AppStyles.standardHeight,
@@ -93,7 +93,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
               SizedBox(height: 8.h),
               Padding(
                 padding: const EdgeInsets.all(4),
-                child: Text('Record', style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
+                child: Text('Record', style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -151,7 +151,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
               SizedBox(height: 8),
               Padding(
                 padding: EdgeInsets.all(4.r),
-                child: Text('History', style: AppStyles.fontSize16(fontWeight: FontWeight.bold)),
+                child: Text('History', style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
               ),
               Container(
                 decoration: BoxDecoration(

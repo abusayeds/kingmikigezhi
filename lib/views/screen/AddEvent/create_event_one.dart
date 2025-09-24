@@ -183,7 +183,7 @@ class _CreateEventOneState extends State<CreateEventOne> {
                       ),
                     ),
                     customTitle: Text(
-                      'Configuration', style: TextStyle(fontSize: 12.sp),
+                      'Config', style: TextStyle(fontSize: 12.sp),
                       textAlign: TextAlign.center,
                     ),
                   ),

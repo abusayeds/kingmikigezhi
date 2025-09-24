@@ -61,7 +61,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               //=================================> Language Section <=======================
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 6.h),
-                child: Text('Display language',style: AppStyles.fieldTitle()),
+                child: Text('Display language',style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
               ),
               SizedBox(
                 height: AppStyles.standardHeight,
@@ -116,7 +116,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               //=================================> Date time format Section <=======================
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 6.h),
-                child: Text('Date time format',style: AppStyles.fieldTitle()),
+                child: Text('Date time format',style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
               ),
               SizedBox(
                 height: AppStyles.standardHeight,
@@ -170,7 +170,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               //=================================> Time zone Section <=======================
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 6.h),
-                child: Text('Time zone',style: AppStyles.fieldTitle()),
+                child: Text('Time zone',style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
               ),
               SizedBox(
                 height: AppStyles.standardHeight,
@@ -224,7 +224,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               //=================================> Currency Section <=======================
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 6.h),
-                child: Text('Currency',style: AppStyles.fieldTitle()),
+                child: Text('Currency',style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
               ),
               SizedBox(
                 height: AppStyles.standardHeight,
@@ -281,7 +281,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               //=================================> Notifications Section <=======================
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 6.h),
-                child: Text('Notifications',style: AppStyles.fieldTitle()),
+                child: Text('Notifications',style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
               ),
               SizedBox(
                height: AppStyles.standardHeight,
@@ -336,7 +336,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   // Event Share Section
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 8.h),
-                    child: Text('Event Share',style: AppStyles.fieldTitle()),
+                    child: Text('Event Share',style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
                   ),
                   Row(
                     children: [
@@ -428,7 +428,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 8.w),
-                    child: Text('Applied Event Update',style: AppStyles.fieldTitle()),
+                    child: Text('Applied Event Update',style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
                   ),
                   SizedBox(height: 8.h),
                   Row(

@@ -259,7 +259,7 @@ class _FilterScreenState extends State<FilterScreen> {
                   CustomText(
                     text: '\$20-\$4K',
                     fontWeight: FontWeight.w500,
-                    fontsize: 10.sp,
+                    fontsize: 16.sp,
                     bottom: 16.h,
                   ),
                 ],

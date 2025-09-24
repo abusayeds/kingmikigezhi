@@ -76,7 +76,7 @@ class _CategoriesFilterScreenState extends State<CategoriesFilterScreen> {
               CustomText(
                 text: 'Program',
                 fontWeight: FontWeight.w500,
-                fontsize: 16.sp,
+                fontsize: 13.sp,
                 bottom: 8.h,
               ),
               InputDecorator(
@@ -127,7 +127,7 @@ class _CategoriesFilterScreenState extends State<CategoriesFilterScreen> {
               CustomText(
                 text: 'Type',
                 fontWeight: FontWeight.w500,
-                fontsize: 16.sp,
+                fontsize: 13.sp,
                 bottom: 8.h,
               ),
               InputDecorator(
@@ -178,7 +178,7 @@ class _CategoriesFilterScreenState extends State<CategoriesFilterScreen> {
               CustomText(
                 text: AppStrings.location,
                 fontWeight: FontWeight.w500,
-                fontsize: 16.sp,
+                fontsize: 13.sp,
                 bottom: 8.h,
               ),
               CustomTextField(
@@ -195,7 +195,7 @@ class _CategoriesFilterScreenState extends State<CategoriesFilterScreen> {
               CustomText(
                 text: 'Category/Group',
                 fontWeight: FontWeight.w500,
-                fontsize: 16.sp,
+                fontsize: 13.sp,
                 bottom: 8.h,
               ),
               InputDecorator(
@@ -252,13 +252,13 @@ class _CategoriesFilterScreenState extends State<CategoriesFilterScreen> {
                   CustomText(
                     text: 'Price Range',
                     fontWeight: FontWeight.w500,
-                    fontsize: 16.sp,
+                    fontsize: 13.sp,
                     bottom: 16.h,
                   ),
                   CustomText(
                     text: '\$20-\$4K',
                     fontWeight: FontWeight.w500,
-                    fontsize: 8.sp,
+                    fontsize: 16.sp,
                     bottom: 16.h,
                   ),
                 ],

@@ -64,7 +64,7 @@ class _SteponeformState extends State<Steponeform> {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Text('Step 1: Basic',
-                style: AppStyles.fontSize20(fontWeight: FontWeight.bold)),
+                style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
           ),
           // Cover Image Section
           DottedBorderContainer(
@@ -84,7 +84,7 @@ class _SteponeformState extends State<Steponeform> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('Session Number',
-                      style: AppStyles.fieldTitle()),
+                      style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 20.w),
                     decoration: BoxDecoration(
@@ -100,7 +100,7 @@ class _SteponeformState extends State<Steponeform> {
                         menuWidth: 240.w,
                         borderRadius: BorderRadius.circular(8.r),
                         hint: Text("Select Number",
-                            style: AppStyles.fontSize14(color: AppColors.color414141)),
+                            style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
                         icon: SvgPicture.asset(
                           AppIcons.downArrowIcon,
                           width: 16.w,
@@ -130,8 +130,7 @@ class _SteponeformState extends State<Steponeform> {
                         padding: const EdgeInsets.all(4),
                         child: Text(
                           'Year',
-                          style: AppStyles.fieldTitle(
-                              color: AppColors.blackColor),
+                          style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600),
                         ),
                       ),
                       SizedBox(width: 120.w),
@@ -139,8 +138,7 @@ class _SteponeformState extends State<Steponeform> {
                         padding: const EdgeInsets.all(4),
                         child: Text(
                           'Session',
-                          style: AppStyles.fieldTitle(
-                              color: AppColors.blackColor),
+                          style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600),
                         ),
                       ),
                     ],
@@ -239,7 +237,7 @@ class _SteponeformState extends State<Steponeform> {
           ),
           SizedBox(height: 16.h),
 
-          Text('Program', style: AppStyles.fieldTitle()),
+          Text('Program', style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
           SizedBox(height: 12.h),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -283,7 +281,7 @@ class _SteponeformState extends State<Steponeform> {
 
           // Organization Name
           SizedBox(height: 16.h),
-          Text('Organizer', style: AppStyles.fieldTitle()),
+          Text('Organizer', style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
           SizedBox(height: 12.h),
           SizedBox(
             height: 50.h,
@@ -299,7 +297,7 @@ class _SteponeformState extends State<Steponeform> {
 
           // Event Name
           SizedBox(height: 16.h),
-          Text('Event Name', style: AppStyles.fieldTitle()),
+          Text('Event Name', style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
           SizedBox(height: 12.h),
           SizedBox(
             height: 50.h,
@@ -315,7 +313,7 @@ class _SteponeformState extends State<Steponeform> {
 
           // Event Portal Name
           SizedBox(height: 16.h),
-          Text('Event Portal', style: AppStyles.fieldTitle()),
+          Text('Event Portal', style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
           SizedBox(height: 12.h),
           SizedBox(
             height: 50.h,
@@ -331,7 +329,7 @@ class _SteponeformState extends State<Steponeform> {
 
           // Registration Portal Name
           SizedBox(height: 16.h),
-          Text('Registration Portal', style: AppStyles.fieldTitle()),
+          Text('Registration Portal', style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
           SizedBox(height: 12.h),
           SizedBox(
             height: 50.h,
@@ -347,7 +345,7 @@ class _SteponeformState extends State<Steponeform> {
 
           // Description
           SizedBox(height: 16.h),
-          Text('Description', style: AppStyles.fieldTitle()),
+          Text('Description', style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
           SizedBox(height: 12.h),
           CustomTextField(
             maxLines: 3,
@@ -361,7 +359,7 @@ class _SteponeformState extends State<Steponeform> {
 
           // Note
           SizedBox(height: 16.h),
-          Text('Note', style: AppStyles.fieldTitle()),
+          Text('Note', style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
           SizedBox(height: 12.h),
           CustomTextField(
             maxLines: 3,

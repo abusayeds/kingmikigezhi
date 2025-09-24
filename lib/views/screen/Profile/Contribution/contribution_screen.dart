@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import '../../../../helpers/route.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_icons.dart';
+import '../../../../utils/style.dart';
 import '../../../base/custom_text.dart';
 
 class MyContributionScreen extends StatefulWidget {
@@ -105,11 +106,8 @@ class _MyContributionScreenState extends State<MyContributionScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  CustomText(
-                                    text: event['title']!,
-                                    fontsize: 16.sp,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                  Text(event['title']!,style: AppStyles.fontSize14(fontWeight: FontWeight.w600)),
+
                                   SizedBox(height: 10.h),
                                   //=====================> Event Info Section <=========================
                                   Row(
