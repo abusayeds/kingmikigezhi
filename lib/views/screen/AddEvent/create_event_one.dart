@@ -47,11 +47,6 @@ class _CreateEventOneState extends State<CreateEventOne> {
   final List<String> sessionList = ['One', 'Two', 'Three'];
   final Addeventcontroller addEventController = Get.put(Addeventcontroller());
 
-  String? _selectedProgram;
-  String? _selectedNumber;
-  String? _selectedSession;
-  String? _selectedYear;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -208,8 +203,8 @@ class _CreateEventOneState extends State<CreateEventOne> {
                         ),
                       ),
                     ),
-                    customTitle: const Text(
-                      'History', style: TextStyle(fontSize: 10),
+                    customTitle:  Text(
+                      'History', style: TextStyle(fontSize: 12.sp),
                       textAlign: TextAlign.center,
                     ),
                   ),
