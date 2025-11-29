@@ -237,12 +237,7 @@ class _MemberProfileDetailsScreenState
                                   ),
                                   TextSpan(
                                     text: 'Chess since 2020',
-                                    style: TextStyle(
-                                color: Colors.black,
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w400,
-                                      height: 1.2,
-                                    ),
+                                    style: TextStyle(color: Colors.black),
                                   ),
                                 ],
                               ),
@@ -265,12 +260,7 @@ class _MemberProfileDetailsScreenState
                                   ),
                                   TextSpan(
                                     text: 'Math since 2021',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w400,
-                                      height: 1.2,
-                                    ),
+                                    style: TextStyle(color: Colors.black),
                                   ),
                                 ],
                               ),
@@ -293,12 +283,7 @@ class _MemberProfileDetailsScreenState
                                   ),
                                   TextSpan(
                                     text: 'Piano since 2023',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w400,
-                                      height: 1.2,
-                                    ),
+                                    style: TextStyle(color: Colors.black),
                                   ),
                                 ],
                               ),
