@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import '../../../../../helpers/route.dart';
 import '../../../../../utils/app_colors.dart';
 import '../../../../../utils/app_icons.dart';
+import '../../../../utils/style.dart';
 
 class MyUpcomingEventScreen extends StatefulWidget {
   MyUpcomingEventScreen({super.key});
@@ -63,7 +64,6 @@ class _MyUpcomingEventScreenState extends State<MyUpcomingEventScreen> {
                 itemCount: events.length,
                 itemBuilder: (context, index) {
                   final event = events[index];
-
                   return GestureDetector(
                       onTap: () {
                         Get.toNamed(AppRoutes.eventDetailsScreen);
@@ -99,11 +99,7 @@ class _MyUpcomingEventScreenState extends State<MyUpcomingEventScreen> {
                                       mainAxisAlignment: MainAxisAlignment.start,
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        CustomText(
-                                          text: event['title']!,
-                                          fontsize: 16.sp,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                        Text(event['title']!,style: AppStyles.fontSize14(fontWeight: FontWeight.w600)),
                                         //=====================> Event Info Section <=========================
                                         Row(
                                           crossAxisAlignment: CrossAxisAlignment.start,

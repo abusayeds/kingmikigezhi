@@ -70,13 +70,15 @@ class _InvitationlistState extends State<Invitationlist> {
             children: [
               Padding(
                 padding:   EdgeInsets.symmetric(horizontal: 24.w),
-                child: Text(
-                  'All the people who has invited you!',
-                  style: GoogleFonts.poppins(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.blackColor),
-                ),
+                // child: Text(
+                //   'All the people who has invited you!',
+                //   style: GoogleFonts.poppins(
+                //       fontSize: 14.sp,
+                //       fontWeight: FontWeight.w400,
+                //       color: AppColors.blackColor),
+                // ),
+
+                child: const Text('All the people who has invited you!'),
               ),
               SizedBox(height: 8.h,),
               Expanded(
