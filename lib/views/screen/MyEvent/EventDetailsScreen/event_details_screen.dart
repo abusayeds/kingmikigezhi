@@ -671,9 +671,16 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                         Row(
                           children: [
                             Text('Created By',
-                                style: AppStyles.fontSize14(
-                                    color: AppColors.color414141,
-                                    fontWeight: FontWeight.w500)),
+                                // style: AppStyles.fontSize14(
+                                //     color: AppColors.color414141,
+                                //     fontWeight: FontWeight.w500)
+///-------------------------Updated with the concern of client by Abir on 29/11/2025
+                            style: GoogleFonts.poppins(
+                              fontSize: 12.sp,
+                              color: AppColors.color414141,
+
+                            ),
+                            ),
                             SizedBox(width: 8.w),
                             CircleAvatar(
                               radius: 30.r,
@@ -685,9 +692,16 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                         Text(
                           'Created at\n1-1-2022',
                           textAlign: TextAlign.right,
-                          style: AppStyles.fontSize14(
+                          // style: AppStyles.fontSize14(
+                          //     color: AppColors.color414141,
+                          //     fontWeight: FontWeight.w600),
+                          ///-------------------------Updated with the concern of client by Abir on 29/11/2025
+
+                          style: GoogleFonts.poppins(
+                              fontSize: 12.sp,
                               color: AppColors.color414141,
-                              fontWeight: FontWeight.w600),
+
+                          ),
                         ),
                       ],
                     ),
@@ -908,17 +922,17 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                     style: AppStyles.fieldTitle(),
                   ),
                   Container(
-                    height: 20.h,
-                    width: 20.h,
                     decoration: BoxDecoration(
                       color: Colors.blueGrey,
-                      borderRadius: BorderRadius.circular(4.r),
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(4),
                     ),
                     child: Icon(
                       Icons.check,
                       color: Colors.white,
-                      size: 12,
+                      size: 10,
                     ),
+                    padding: EdgeInsets.all(4),
                   ),
                 ],
               ),
