@@ -122,7 +122,7 @@ class _SignUpOtpVerificationScreenState extends State<SignUpOtpVerificationScree
           child: CustomText(
             text: "Sign In",
             fontsize: 12.sp,
-            fontWeight: FontWeight.w900,
+
             color: AppColors.primaryColor,
             decoration: TextDecoration.underline,
             lineHeight: 4.h,

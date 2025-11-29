@@ -115,7 +115,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           },
           child: CustomText(
             text: "Sign In",
-            fontWeight: FontWeight.w700,
+            fontWeight: FontWeight.w400,
             color: AppColors.primaryColor,
             decoration: TextDecoration.underline,
           ),

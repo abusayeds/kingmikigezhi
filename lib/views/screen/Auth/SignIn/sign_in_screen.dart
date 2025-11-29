@@ -183,7 +183,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             fontsize: 12.sp,
                             text: AppStrings.signUp,
                             color: AppColors.primaryColor,
-                            fontWeight: FontWeight.w700,
+                            fontWeight: FontWeight.w400,
                             decoration:TextDecoration.underline,
                             lineHeight: 1.5.h,
                           ))
