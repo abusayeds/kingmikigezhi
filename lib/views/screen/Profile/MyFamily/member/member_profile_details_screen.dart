@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../utils/app_colors.dart';
+import '../../../../../utils/style.dart';
 import '../../../../base/custom_text.dart';
 import '../../../../base/custom_list_tile.dart';
 
@@ -236,9 +237,9 @@ class _MemberProfileDetailsScreenState
                                         color: AppColors.primaryColor),
                                   ),
                                   TextSpan(
-                                    text: 'Chess since 2020',
-                                    style: TextStyle(color: Colors.black),
-                                  ),
+                                      text: 'Chess since 2020',
+                                      style: AppStyles.fontSize14(
+                                          color: AppColors.color414141))
                                 ],
                               ),
                             ),
@@ -260,7 +261,8 @@ class _MemberProfileDetailsScreenState
                                   ),
                                   TextSpan(
                                     text: 'Math since 2021',
-                                    style: TextStyle(color: Colors.black),
+                                    style:AppStyles.fontSize14(
+                                        color: AppColors.color414141),
                                   ),
                                 ],
                               ),
@@ -283,7 +285,8 @@ class _MemberProfileDetailsScreenState
                                   ),
                                   TextSpan(
                                     text: 'Piano since 2023',
-                                    style: TextStyle(color: Colors.black),
+                                    style: AppStyles.fontSize14(
+                                        color: AppColors.color414141),
                                   ),
                                 ],
                               ),
