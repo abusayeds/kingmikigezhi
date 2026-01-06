@@ -302,7 +302,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
         CustomText(
           text: 'Gender',
           fontWeight: FontWeight.w500,
-          fontsize: 16.sp,
+          fontsize: 14.sp,
           bottom: 8.h,
         ),
         Container(
@@ -359,7 +359,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
         CustomText(
           text: 'Birthday',
           fontWeight: FontWeight.w500,
-          fontsize: 16.sp,
+          fontsize: 14.sp,
           bottom: 8.h,
         ),
         Row(
@@ -412,7 +412,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
         CustomText(
           text: 'Location',
           fontWeight: FontWeight.w500,
-          fontsize: 16.sp,
+          fontsize: 14.sp,
           bottom: 8.h,
         ),
         Row(
@@ -528,7 +528,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
           CustomText(
             text: label,
             fontWeight: FontWeight.w500,
-            fontsize: 16.sp,
+            fontsize: 14.sp,
             bottom: 8.h,
           ),
           CustomTextField(
@@ -695,23 +695,45 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   }
   //==========================> Already Have Account Text <=======================
   _alreadyHaveAccountText() {
+    // return Row(
+    //   mainAxisAlignment: MainAxisAlignment.center,
+    //   children: [
+    //     CustomText(
+    //       text: AppStrings.alreadyHaveAccount,
+    //       fontWeight: FontWeight.w400,
+    //     ),
+    //     TextButton(
+    //       onPressed: () {
+    //         Get.toNamed(AppRoutes.signInScreen);
+    //       },
+    //       child: CustomText(
+    //         text: 'Sign In',
+    //         fontWeight: FontWeight.w500,
+    //         color: AppColors.primaryColor,
+    //       ),
+    //     ),
+    //   ],
+    // );
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         CustomText(
+          fontsize: 12.sp,
           text: AppStrings.alreadyHaveAccount,
           fontWeight: FontWeight.w400,
         ),
         TextButton(
-          onPressed: () {
-            Get.toNamed(AppRoutes.signInScreen);
-          },
-          child: CustomText(
-            text: 'Sign In',
-            fontWeight: FontWeight.w500,
-            color: AppColors.primaryColor,
-          ),
-        ),
+            onPressed: () {
+              Get.toNamed(AppRoutes.signInScreen);
+            },
+            child: CustomText(
+              fontsize: 12.sp,
+              text:   "Sign In",
+              color: AppColors.primaryColor,
+              fontWeight: FontWeight.w400,
+              decoration:TextDecoration.underline,
+              lineHeight: 1.5.h,
+            ))
       ],
     );
   }

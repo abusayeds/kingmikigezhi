@@ -99,7 +99,7 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
                     dropdownColor: AppColors.fillColor,
                     menuWidth: 240.w,
                     borderRadius: BorderRadius.circular(8.r),
-                    hint: Text("Select Member", style: TextStyle(    fontSize: 15.sp, fontWeight: FontWeight.w500),),
+                    hint: Text("Select Member", style: TextStyle(    fontSize: 14.sp, fontWeight: FontWeight.w500),),
                     icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
                     ),
                     isExpanded: true,
@@ -212,7 +212,7 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
                     dropdownColor: AppColors.fillColor,
                     menuWidth: 240.w,
                     borderRadius: BorderRadius.circular(8.r),
-                    hint: Text("Select Repeat", style: TextStyle(    fontSize: 15.sp, fontWeight: FontWeight.w500),),
+                    hint: Text("Select Repeat", style: TextStyle(    fontSize: 14.sp, fontWeight: FontWeight.w500),),
                     icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,),
                     isExpanded: true,
                     items: _repeat.map((String value) {

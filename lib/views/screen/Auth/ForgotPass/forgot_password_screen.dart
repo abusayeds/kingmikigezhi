@@ -90,7 +90,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     color: AppColors.buttonColor,
                   ),
                   SizedBox(height: 32.h),
-                  _alreadyHaveAccountText()
+                  _alreadyHaveAccountText(),
+
                 ],
               ),
             ),
@@ -102,24 +103,26 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
   //==========================> Already Have Account Text <=======================
   _alreadyHaveAccountText() {
-    return Row(
+    return   Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         CustomText(
+          fontsize: 12.sp,
           text: AppStrings.alreadyHaveAccount,
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.w400,
         ),
         TextButton(
-          onPressed: () {
-            Get.toNamed(AppRoutes.signInScreen);
-          },
-          child: CustomText(
-            text: "Sign In",
-            fontWeight: FontWeight.w400,
-            color: AppColors.primaryColor,
-            decoration: TextDecoration.underline,
-          ),
-        ),
+            onPressed: () {
+              Get.toNamed(AppRoutes.signInScreen);
+            },
+            child: CustomText(
+              fontsize: 12.sp,
+              text:   "Sign In",
+              color: AppColors.primaryColor,
+              fontWeight: FontWeight.w400,
+              decoration:TextDecoration.underline,
+              lineHeight: 1.5.h,
+            ))
       ],
     );
   }

@@ -149,7 +149,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       //       decoration:TextDecoration.underline,
                       //     ))
                     ],
-                  )
+                  ),
+
                 ],
               ),
             ),
