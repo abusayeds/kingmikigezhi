@@ -108,7 +108,7 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
                         value: value,
                         child: Text(
                           value,
-                          style: const TextStyle(color: Colors.black),
+                          style:   TextStyle(color: Colors.black,fontSize: 14.sp),
                         ),
                       );
                     }).toList(),
@@ -136,6 +136,7 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
                           icon: Icon(Icons.calendar_today_rounded)),
                       controller: _startsDateCTRL,
                       hintText: 'Date',
+
                       readOnly: true,
                       sufixicons: Padding(
                         padding: EdgeInsets.only(right: 12.w),
@@ -220,7 +221,8 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
                         value: value,
                         child: Text(
                           value,
-                          style: const TextStyle(color: Colors.black),
+                          style:   TextStyle(color: Colors.black,fontSize: 13.sp),
+
                         ),
                       );
                     }).toList(),

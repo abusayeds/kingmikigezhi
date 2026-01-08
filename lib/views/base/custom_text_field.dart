@@ -85,8 +85,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
       validator: widget.validator ?? _defaultValidator,
       cursorColor: AppColors.primaryColor,
       obscureText: widget.isPassword ? obscureText : false,
-      style: const TextStyle(
+      style:   TextStyle(
         color: Colors.black,
+        fontSize: 13.sp,
         height: 1.0, // Add line height for proper vertical centering
       ),
       decoration: InputDecoration(
@@ -135,7 +136,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             TextStyle(
               color: AppColors.hintColor,
               fontFamily: 'Poppins',
-              fontSize: 14.sp, // Fixed font size for consistency
+              fontSize: 13.sp, // Fixed font size for consistency
             ),
         border: _buildOutlineInputBorder(),
         errorBorder: _buildOutlineInputBorder(),
