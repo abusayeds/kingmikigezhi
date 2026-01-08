@@ -57,8 +57,8 @@ class _CalendarWithDropdownState extends State<CalendarWithDropdown> {
                 return DropdownMenuItem<String>(
                   value: "$month ${_focusedDay.year}",
                   child: Text("$month ${_focusedDay.year}", style: GoogleFonts.poppins(
-                    fontSize: 22.sp,
-                    fontWeight: FontWeight.w600,
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.w500,
                     color: Color(0xFF202020)
                   )),
                 );
