@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import '../../../../controllers/auth_controller.dart';
 
 
 
@@ -23,6 +24,7 @@ class _SignInScreenState extends State<SignInScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController emailCTRl = TextEditingController();
   final TextEditingController passwordCTRl = TextEditingController();
+  final AuthController authController = Get.find<AuthController>();
   bool isChecked = false;
   @override
   Widget build(BuildContext context) {
@@ -85,14 +87,24 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                   //================================> Sign In Button <======================================
                   SizedBox(height: 35.h),
-                  CustomButton(
-                    onTap: () {
-                      Get.toNamed(AppRoutes.homeScreen);
+                  Obx(() => CustomButton(
+                    onTap: () async {
+                      if (authController.isLoading.value) return;
+                      
+                      if (!_formKey.currentState!.validate()) {
+                        return;
+                      }
+
+                      await authController.loginUser(
+                        email: emailCTRl.text.trim(),
+                        password: passwordCTRl.text,
+                      );
                     },
                     text: 'Sign In',
                     color: AppColors.buttonColor,
                     textColor: Colors.white,
-                  ),
+                    loading: authController.isLoading.value,
+                  )),
                   SizedBox(height: 16.h),
                   //=======================================> CheckBox Section <==============================
 

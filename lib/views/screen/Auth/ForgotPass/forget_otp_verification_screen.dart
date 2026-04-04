@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import '../../../../controllers/auth_controller.dart';
 import '../../../../utils/app_colors.dart';
 
 class ForgetPasswordOtpScreen extends StatefulWidget {
@@ -20,6 +21,7 @@ class ForgetPasswordOtpScreen extends StatefulWidget {
 class _ForgetPasswordOtpScreenState extends State<ForgetPasswordOtpScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController emailCTRl = TextEditingController();
+  final AuthController authController = Get.find<AuthController>();
   bool isChecked = false;
   @override
   Widget build(BuildContext context) {
@@ -74,15 +76,28 @@ class _ForgetPasswordOtpScreenState extends State<ForgetPasswordOtpScreen> {
 
                   //================================> Continue Button <======================================
                   SizedBox(height: 24.h),
-                  CustomButton(
-                    onTap: () {
-                      Get.toNamed(AppRoutes.forgotPasswordScreen);
+                  Obx(() => CustomButton(
+                    onTap: () async {
+                      if (authController.isLoading.value) return;
+                      
+                      if (!_formKey.currentState!.validate()) {
+                        return;
+                      }
+
+                      bool success = await authController.forgotPassword(
+                        email: emailCTRl.text.trim(),
+                      );
+
+                      if (success) {
+                        Get.toNamed(AppRoutes.forgetPasswordOtpScreen, arguments: emailCTRl.text.trim());
+                      }
                     },
                     text: 'Send Verification Code',
                     color: AppColors.buttonColor,
                     textColor: Colors.white,
                     textStyle: TextStyle(fontSize: 12.sp),
-                  ),
+                    loading: authController.isLoading.value,
+                  )),
                   SizedBox(height: 2.h),
                 ],
               ),

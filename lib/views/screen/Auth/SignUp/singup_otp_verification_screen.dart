@@ -1,8 +1,8 @@
 import 'package:event_sharing/helpers/route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:get/get.dart';
+import '../../../../controllers/auth_controller.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_strings.dart';
 import '../../../base/custom_button.dart';
@@ -19,6 +19,27 @@ class SignUpOtpVerificationScreen extends StatefulWidget {
 class _SignUpOtpVerificationScreenState extends State<SignUpOtpVerificationScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController emailCTRl = TextEditingController();
+  final TextEditingController otpController = TextEditingController();
+  final AuthController authController = Get.find<AuthController>();
+
+  @override
+  void initState() {
+    super.initState();
+    // Get email from arguments or stored value
+    final String emailFromArgs = Get.arguments as String? ?? '';
+    if (emailFromArgs.isNotEmpty) {
+      emailCTRl.text = emailFromArgs;
+    } else {
+      emailCTRl.text = authController.getStoredEmail();
+    }
+  }
+
+  @override
+  void dispose() {
+    otpController.dispose();
+    emailCTRl.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,14 +79,16 @@ class _SignUpOtpVerificationScreenState extends State<SignUpOtpVerificationScree
                     maxline: 2,
                   ),
                   CustomText(
-                    text: 'Basharxxxxxx@gmail.com',
+                    text: emailCTRl.text.isNotEmpty ? emailCTRl.text : 'email@example.com',
                     fontWeight: FontWeight.bold,
                     fontsize: 16.sp,
                     color: const Color(0xff20353F),
                   ),
                   SizedBox(height: 53.h),
                   //==============================> Pin Code Text Field <=====================
-                  const CustomPinCodeTextField(),
+                  CustomPinCodeTextField(
+                    textEditingController: otpController,
+                  ),
                   SizedBox(height: 48.h),
                   CustomText(
                     text: 'Code Time',
@@ -75,25 +98,59 @@ class _SignUpOtpVerificationScreenState extends State<SignUpOtpVerificationScree
                   ),
                   //================================> Resend code Button <======================================
                   SizedBox(height: 32.h),
-                  CustomButton(
-                    onTap: () {
-                      // Get.toNamed(AppRoutes.verificationCodeScreen);
+                  Obx(() => CustomButton(
+                    onTap: authController.isLoading.value ? () {} : () async {
+                      if (emailCTRl.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Email not found. Please register again.')),
+                        );
+                        return;
+                      }
+
+                      await authController.resendVerificationOTP(
+                        email: emailCTRl.text.trim(),
+                      );
                     },
                     text: 'Resend code',
                     textColor: Colors.white,
                     color: AppColors.primaryColor,
-                  ),
+                    loading: authController.isLoading.value,
+                  )),
                   //================================> Verify Button <======================================
                   SizedBox(height: 128.h),
-                  CustomButton(
-                    onTap: () {
-                      Get.toNamed(AppRoutes.createAccountScreen);
+                  Obx(() => CustomButton(
+                    onTap: () async {
+                      // Prevent multiple taps while loading
+                      if (authController.isLoading.value) return;
+                      
+                      // Validate OTP code
+                      if (otpController.text.isEmpty || otpController.text.length < 6) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Please enter valid OTP code')),
+                        );
+                        return;
+                      }
+
+                      if (emailCTRl.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Email not found. Please register again.')),
+                        );
+                        return;
+                      }
+
+                      // Call verify email API
+                      await authController.verifyEmail(
+                        email: emailCTRl.text.trim(),
+                        otp: otpController.text.trim(),
+                      );
+
+                      // Navigation is handled in the controller on success
                     },
                     text: 'Verify',
                     textColor: Colors.white,
-                    borderColor:AppColors.buttonColor,
-                    //color: AppColors.buttonColor,
-                  ),
+                    borderColor: AppColors.buttonColor,
+                    loading: authController.isLoading.value,
+                  )),
                   SizedBox(height: 12.h),
                   _alreadyHaveAccountText()
                 ],
