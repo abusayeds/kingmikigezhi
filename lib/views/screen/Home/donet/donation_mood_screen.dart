@@ -43,7 +43,6 @@ class DonationMoodScreen extends StatelessWidget {
                 borderColor: AppColors.buttonColor,
               ),
             ),
-
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: CustomButton(
@@ -51,7 +50,6 @@ class DonationMoodScreen extends StatelessWidget {
                   Get.toNamed(AppRoutes.donationScreen);
                 },
                 text: 'Give Monthly',
-
 
                 textStyle:TextStyle(color: Colors.black),
                 color: AppColors.buttonColor,
