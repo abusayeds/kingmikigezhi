@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import '../../../../helpers/route.dart';
+import '../../../../controllers/auth_controller.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_icons.dart';
 import '../../../../utils/app_strings.dart';
@@ -21,6 +21,18 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController passwordCTRl = TextEditingController();
   final TextEditingController confirmPasswordCTRl = TextEditingController();
+  final AuthController authController = Get.find<AuthController>();
+
+  late String userEmail;
+  late String resetToken;
+
+  @override
+  void initState() {
+    super.initState();
+    final args = Get.arguments as Map<String, dynamic>?;
+    userEmail = args?['email'] ?? authController.getStoredEmail();
+    resetToken = args?['token'] ?? '';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,14 +114,31 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   ),
                   //================================> Reset Password Button <======================================
                   SizedBox(height: 35.h),
-                  CustomButton(
-                    onTap: () {
-                      Get.toNamed(AppRoutes.homeScreen);
+                  Obx(() => CustomButton(
+                    onTap: authController.isLoading.value ? () {} : () async {
+                      if (!_formKey.currentState!.validate()) {
+                        return;
+                      }
+
+                      if (passwordCTRl.text != confirmPasswordCTRl.text) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Passwords do not match')),
+                        );
+                        return;
+                      }
+
+                      await authController.resetPassword(
+                        email: userEmail,
+                        token: resetToken,
+                        newPassword: passwordCTRl.text,
+                        confirmPassword: confirmPasswordCTRl.text,
+                      );
                     },
                     text: AppStrings.resetPassword,
                     textColor: Colors.white,
                     color: AppColors.buttonColor,
-                  ),
+                    loading: authController.isLoading.value,
+                  )),
                   SizedBox(height: 16.h),
                 ],
               ),
