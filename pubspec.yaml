@@ -44,30 +44,30 @@ dependencies:
   image_picker:
   internet_connection_checker:
   connectivity_plus:
-  fluttertoast: ^8.2.12
+  fluttertoast:
   flutter_html:
   mime_type:
   cached_network_image:
   intl:
-  timeago: ^3.7.0
+  timeago:
   shimmer:
   path_provider:
   photo_view:
   grouped_list:
   webview_flutter:
-  dotted_border: ^2.1.0
-  google_maps_flutter: ^2.1.2
-  geolocator: ^9.0.2
+  dotted_border:
+  google_maps_flutter:
+  geolocator:
   geocoding:
   table_calendar:
-  country_code_picker: ^3.0.0
-  easy_stepper: ^0.8.5+1
-  syncfusion_flutter_calendar: ^27.1.53
-  flutter_launcher_icons: ^0.14.3
-  flutter_keyboard_visibility: ^6.0.0
-  flutter_typeahead: ^5.2.0
+  country_code_picker:
+  easy_stepper:
+  syncfusion_flutter_calendar:
+  flutter_launcher_icons:
+  flutter_keyboard_visibility:
+  flutter_typeahead:
   google_fonts:
-  http: ^1.1.0 
+  http:
 
 
 
