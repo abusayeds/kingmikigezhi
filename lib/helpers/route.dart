@@ -32,7 +32,6 @@ import 'package:event_sharing/views/screen/Profile/Settings/SettingsScreen/setti
 import 'package:event_sharing/views/screen/Profile/TermsConditions/terms_condition_screen.dart';
 import 'package:event_sharing/views/screen/Profile/error_screen.dart';
 import 'package:get/get.dart';
-import '../views/screen/Auth/CreateAccount/create_account_screen.dart';
 import '../views/screen/Auth/ForgotPass/forgot_password_screen.dart';
 import '../views/screen/Auth/ResetPass/reset_password_screen.dart';
 import '../views/screen/Auth/SignUp/sign_up_screen.dart';
@@ -141,10 +140,10 @@ class AppRoutes {
         name: categoriesScreen,
         page: () => CategoriesScreen(),
         transition: Transition.noTransition),
-    GetPage(
-        name: createAccountScreen,
-        page: () => CreateAccountScreen(),
-        transition: Transition.noTransition),
+    // GetPage(
+    //     name: createAccountScreen,
+    //     page: () => CreateAccountScreen(),
+    //     transition: Transition.noTransition),
     GetPage(
         name: calenderScreen,
         page: () => const CalenderScreen(),
