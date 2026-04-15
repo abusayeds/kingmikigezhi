@@ -89,7 +89,11 @@ class _ForgetPasswordOtpScreenState extends State<ForgetPasswordOtpScreen> {
                       );
 
                       if (success) {
-                        Get.toNamed(AppRoutes.forgetPasswordOtpScreen, arguments: emailCTRl.text.trim());
+                        // Navigate to OTP verification screen with email and sessionId
+                        Get.toNamed(AppRoutes.forgetPasswordOtpScreen, arguments: {
+                          'email': emailCTRl.text.trim(),
+                          'sessionId': authController.forgotPasswordSessionId.value,
+                        });
                       }
                     },
                     text: 'Send Verification Code',

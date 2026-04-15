@@ -147,7 +147,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       ),
                       const Spacer(),
                       GestureDetector(
-                        onDoubleTap: (){
+                        onTap: (){
                           Get.toNamed(AppRoutes.forgetPasswordOtpScreen);
                         },
                         child: CustomText(

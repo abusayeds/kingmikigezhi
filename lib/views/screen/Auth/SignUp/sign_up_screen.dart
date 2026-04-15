@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'dart:async';
 import '../../../../controllers/auth_controller.dart';
 import '../../../../helpers/route.dart';
 import '../../../../utils/app_colors.dart';
@@ -43,8 +44,80 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   // Auth controller instance
   final AuthController authController = Get.find<AuthController>();
+  
+  // Username validation
+  String? _usernameError;
+  bool _isCheckingUsername = false;
+  Timer? _usernameDebounce;
 
   List<String> genderList = ['Male', 'Female'];
+
+  @override
+  void initState() {
+    super.initState();
+    // Add listener to username field
+    userNameController.addListener(_onUsernameChanged);
+  }
+
+  @override
+  void dispose() {
+    userNameController.removeListener(_onUsernameChanged);
+    userNameController.dispose();
+    firstNameController.dispose();
+    lastNameController.dispose();
+    emailController.dispose();
+    genderController.dispose();
+    phoneController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    _usernameDebounce?.cancel();
+    super.dispose();
+  }
+
+  // Check username availability with debounce
+  void _onUsernameChanged() {
+    _usernameDebounce?.cancel();
+    
+    final username = userNameController.text.trim();
+    
+    // Clear error if username is empty
+    if (username.isEmpty) {
+      setState(() {
+        _usernameError = null;
+        _isCheckingUsername = false;
+      });
+      return;
+    }
+    
+    // Validate minimum length
+    if (username.length < 3) {
+      setState(() {
+        _usernameError = 'Username must be at least 3 characters';
+        _isCheckingUsername = false;
+      });
+      return;
+    }
+    
+    // Set debounce timer to avoid excessive API calls
+    _usernameDebounce = Timer(const Duration(milliseconds: 800), () async {
+      setState(() {
+        _isCheckingUsername = true;
+      });
+      
+      final exists = await authController.checkUsername(username);
+      
+      if (mounted) {
+        setState(() {
+          _isCheckingUsername = false;
+          if (exists) {
+            _usernameError = 'This username is already taken';
+          } else {
+            _usernameError = null;
+          }
+        });
+      }
+    });
+  }
 
   // Birthday dropdown data
   List<String> yearList = List.generate(100, (index) => (2024 - index).toString());
@@ -240,8 +313,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 _signUpTextSection(),
                 SizedBox(height: 48.h),
                 //==========================> User Name Text Field <=======================
-                _textFieldSection('User Name', userNameController,
-                    AppIcons.singlePerson, 'Enter your user name'),
+                _userNameTextField(),
                 //==========================> First Name Text Field <=======================
                 _textFieldSection('First Name', firstNameController,
                     AppIcons.singlePerson, 'Enter your first name'),
@@ -546,6 +618,76 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
+  //==========================> Username Text Field Widget with Validation <=======================
+  _userNameTextField() {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 16.h),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CustomText(
+            text: 'User Name',
+            fontWeight: FontWeight.w500,
+            fontsize: 14.sp,
+            bottom: 8.h,
+          ),
+          CustomTextField(
+            controller: userNameController,
+            hintText: 'Enter your user name',
+            prifixicon: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 12.h),
+              child: SvgPicture.asset(
+                AppIcons.singlePerson,
+                color: AppColors.primaryColor,
+              ),
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return "Please enter your username";
+              }
+              if (_usernameError != null) {
+                return _usernameError;
+              }
+              return null;
+            },
+          ),
+          // Error message or loading indicator
+          if (_usernameError != null || _isCheckingUsername)
+            Padding(
+              padding: EdgeInsets.only(top: 4.h),
+              child: Row(
+                children: [
+                  if (_isCheckingUsername)
+                    SizedBox(
+                      width: 12.w,
+                      height: 12.w,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 1.5,
+                        valueColor: AlwaysStoppedAnimation<Color>(AppColors.primaryColor),
+                      ),
+                    )
+                  else if (_usernameError != null)
+                    Icon(
+                      Icons.error_outline,
+                      size: 14.sp,
+                      color: Colors.red,
+                    ),
+                  SizedBox(width: 4.w),
+                  Expanded(
+                    child: CustomText(
+                      text: _isCheckingUsername ? 'Checking username...' : (_usernameError ?? ''),
+                      fontsize: 12.sp,
+                      color: _isCheckingUsername ? AppColors.primaryColor : Colors.red,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
   //==========================> Text Field Widget <=======================
   _textFieldSection(String label, TextEditingController controller,
       String? icon, String hintText,
@@ -700,6 +842,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
           );
           return;
         }
+        
+        // Check if username is available
+        if (_usernameError != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Please choose a different username')),
+          );
+          return;
+        }
+        
+        // Check if still checking username
+        if (_isCheckingUsername) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Please wait while checking username')),
+          );
+          return;
+        }
 
         // Convert month name to number for API
         int monthIndex = monthList.indexOf(selectedMonth!) + 1;
@@ -723,7 +881,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
         // Navigate to OTP verification screen if successful
         if (success) {
-          Get.toNamed(AppRoutes.signUpOtpVerificationScreen, arguments: emailController.text.trim());
+          // Pass sessionId to OTP verification screen
+          Get.toNamed(
+            AppRoutes.signUpOtpVerificationScreen, 
+            arguments: {
+              'sessionId': authController.storedSessionId.value,
+              'email': emailController.text.trim(),
+            }
+          );
         }
       },
       color: AppColors.buttonColor,
