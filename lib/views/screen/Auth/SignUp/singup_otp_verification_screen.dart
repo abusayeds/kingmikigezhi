@@ -21,14 +21,23 @@ class _SignUpOtpVerificationScreenState extends State<SignUpOtpVerificationScree
   final TextEditingController emailCTRl = TextEditingController();
   final TextEditingController otpController = TextEditingController();
   final AuthController authController = Get.find<AuthController>();
+  
+  String sessionId = '';
 
   @override
   void initState() {
     super.initState();
-    // Get email from arguments or stored value
-    final String emailFromArgs = Get.arguments as String? ?? '';
-    if (emailFromArgs.isNotEmpty) {
-      emailCTRl.text = emailFromArgs;
+    // Get email and sessionId from arguments or stored values
+    final args = Get.arguments as Map<String, dynamic>? ?? {};
+    
+    if (args['sessionId'] != null) {
+      sessionId = args['sessionId'];
+    } else {
+      sessionId = authController.storedSessionId.value;
+    }
+    
+    if (args['email'] != null) {
+      emailCTRl.text = args['email'];
     } else {
       emailCTRl.text = authController.getStoredEmail();
     }
@@ -100,15 +109,15 @@ class _SignUpOtpVerificationScreenState extends State<SignUpOtpVerificationScree
                   SizedBox(height: 32.h),
                   Obx(() => CustomButton(
                     onTap: authController.isLoading.value ? () {} : () async {
-                      if (emailCTRl.text.isEmpty) {
+                      if (sessionId.isEmpty) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Email not found. Please register again.')),
+                          const SnackBar(content: Text('Session not found. Please register again.')),
                         );
                         return;
                       }
 
                       await authController.resendVerificationOTP(
-                        email: emailCTRl.text.trim(),
+                        sessionId: sessionId,
                       );
                     },
                     text: 'Resend code',
@@ -122,7 +131,7 @@ class _SignUpOtpVerificationScreenState extends State<SignUpOtpVerificationScree
                     onTap: () async {
                       // Prevent multiple taps while loading
                       if (authController.isLoading.value) return;
-                      
+
                       // Validate OTP code
                       if (otpController.text.isEmpty || otpController.text.length < 6) {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -131,16 +140,16 @@ class _SignUpOtpVerificationScreenState extends State<SignUpOtpVerificationScree
                         return;
                       }
 
-                      if (emailCTRl.text.isEmpty) {
+                      if (sessionId.isEmpty) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Email not found. Please register again.')),
+                          const SnackBar(content: Text('Session not found. Please register again.')),
                         );
                         return;
                       }
 
-                      // Call verify email API
+                      // Call verify email API with sessionId
                       await authController.verifyEmail(
-                        email: emailCTRl.text.trim(),
+                        sessionId: sessionId,
                         otp: otpController.text.trim(),
                       );
 
