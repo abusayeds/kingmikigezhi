@@ -21,13 +21,23 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final TextEditingController emailCTRl = TextEditingController();
   final TextEditingController otpController = TextEditingController();
   final AuthController authController = Get.find<AuthController>();
+  
+  String sessionId = '';
 
   @override
   void initState() {
     super.initState();
-    final String emailFromArgs = Get.arguments as String? ?? '';
-    if (emailFromArgs.isNotEmpty) {
-      emailCTRl.text = emailFromArgs;
+    // Get email and sessionId from arguments or stored values
+    final args = Get.arguments as Map<String, dynamic>? ?? {};
+    
+    if (args['sessionId'] != null) {
+      sessionId = args['sessionId'];
+    } else {
+      sessionId = authController.forgotPasswordSessionId.value;
+    }
+    
+    if (args['email'] != null) {
+      emailCTRl.text = args['email'];
     } else {
       emailCTRl.text = authController.getStoredEmail();
     }
@@ -96,15 +106,15 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   SizedBox(height: 32.h),
                   Obx(() => CustomButton(
                     onTap: authController.isLoading.value ? () {} : () async {
-                      if (emailCTRl.text.isEmpty) {
+                      if (sessionId.isEmpty) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Email not found. Please enter your email again.')),
+                          const SnackBar(content: Text('Session not found. Please enter your email again.')),
                         );
                         return;
                       }
 
-                      await authController.forgotPassword(
-                        email: emailCTRl.text.trim(),
+                      await authController.resendForgotPasswordOTP(
+                        sessionId: sessionId,
                       );
                     },
                     text: 'Resend code',
@@ -123,22 +133,27 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         return;
                       }
 
-                      if (emailCTRl.text.isEmpty) {
+                      if (sessionId.isEmpty) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Email not found. Please enter your email again.')),
+                          const SnackBar(content: Text('Session not found. Please enter your email again.')),
                         );
                         return;
                       }
 
-                      bool success = await authController.verifyForgotPasswordOTP(
-                        email: emailCTRl.text.trim(),
+                      var successResponse = await authController.verifyForgotPasswordOTP(
+                        sessionId: sessionId,
                         otp: otpController.text.trim(),
                       );
 
-                      if (success) {
+                      if (successResponse != null) {
+                        // Get resetToken from response or storage
+                        String resetToken = successResponse['data']?['resetToken'] ?? 
+                                           authController.sharedPreferences.getString('reset_token') ?? '';
+                        
+                        // Navigate to reset password screen with resetToken
                         Get.toNamed(AppRoutes.resetPasswordScreen, arguments: {
+                          'resetToken': resetToken,
                           'email': emailCTRl.text.trim(),
-                          'token': otpController.text.trim(),
                         });
                       }
                     },

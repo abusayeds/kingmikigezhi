@@ -31,7 +31,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     super.initState();
     final args = Get.arguments as Map<String, dynamic>?;
     userEmail = args?['email'] ?? authController.getStoredEmail();
-    resetToken = args?['token'] ?? '';
+    resetToken = args?['resetToken'] ?? authController.sharedPreferences.getString('reset_token') ?? '';
   }
 
   @override
@@ -128,10 +128,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       }
 
                       await authController.resetPassword(
-                        email: userEmail,
-                        token: resetToken,
+                        resetToken: resetToken,
                         newPassword: passwordCTRl.text,
-                        confirmPassword: confirmPasswordCTRl.text,
                       );
                     },
                     text: AppStrings.resetPassword,

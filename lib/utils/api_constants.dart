@@ -1,21 +1,26 @@
 class ApiConstants {
   // TODO: Change this to your actual backend API base URL
-  static const String baseUrl = 'https://hrm.merinasib.shop'; // Replace with your actual base URL
+  static const String baseUrl = 'http://10.10.11.17:8057'; // Replace with your actual base URL
   static const String apiUrl = '$baseUrl/api/v1';
 
 
   //Refresh Token
   static const String refreshToken = '$apiUrl/auth/refresh';
 
+  // Username check
+  static const String checkUsername = '$apiUrl/users/check-username';
   
   // Auth endpoints
   static const String register = '$apiUrl/auth/register';
   static const String verifyEmail = '$apiUrl/auth/verify-email';
-  static const String verifyresendOTP = '$apiUrl/auth/verify-email/resend';
+  static const String verifyresendOTP = '$apiUrl/auth/resend-verification-otp';
   static const String login = '$apiUrl/auth/login';
   static const String forgotpassword = '$apiUrl/auth/forgot-password';
+  static const String verifyforgotpassword = '$apiUrl/auth/verify-forgot-password-otp';
+  static const String resendforgotpassword = '$apiUrl/auth/resend-forgot-password-otp';
   static const String resetpassVerifyOTP = '$apiUrl/auth/reset-password/verify-otp';
   static const String resetPass = '$apiUrl/auth/reset-password';
+  static const String changePass = '$apiUrl/auth/change-password';
 
 
 
@@ -31,4 +36,5 @@ class ApiConstants {
   static const String keyUserData = 'user_data';
   static const String keyIsLoggedIn = 'is_logged_in';
   static const String keyUserEmail = 'user_email_for_otp';
+  static const String keySessionId = 'session_id';
 }
