@@ -22,9 +22,28 @@ class ApiConstants {
   static const String resetPass = '$apiUrl/auth/reset-password';
   static const String changePass = '$apiUrl/auth/change-password';
 
-
-
   static const String logout = '$apiUrl/auth/logout';
+
+
+
+  // Profile
+  static const String myProfile = '$apiUrl/users/me';
+  static const String updateProfile = '$apiUrl/users/update-me';
+
+
+  // Family
+  static const String createFamily = '$apiUrl/families';
+  static const String myFamilies = '$apiUrl/families';
+  static const String getFamily = '$apiUrl/families/:userId';
+  static const String updateFamily = '$apiUrl/families/:userId';
+  static const String deleteFamily = '$apiUrl/families/:userId';
+
+
+  // Family Members
+  static const String addFamilyMember = '$apiUrl/family-members';
+  static const String familyMemberbyFamilyId = '$apiUrl/family-members/family/:userId';
+  static const String removeFamilyMember = '$apiUrl/family-members//family/:familyId/user/:userId';
+  static const String addOwner = '$apiUrl/family-members/add-owner';
 
 
 
