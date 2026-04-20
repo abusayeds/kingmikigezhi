@@ -24,6 +24,7 @@ import 'package:event_sharing/views/screen/Profile/Contribution/contribution_scr
 import 'package:event_sharing/views/screen/Profile/Invitation/my_invitation_screen.dart';
 import 'package:event_sharing/views/screen/Profile/Invitation/share_invitation_screen.dart';
 import 'package:event_sharing/views/screen/Profile/MyFamily/createMember_profile.dart';
+import 'package:event_sharing/views/screen/Profile/MyFamily/family_group_screen.dart';
 import 'package:event_sharing/views/screen/Profile/MyFamily/member/member_profile_details_screen.dart';
 import 'package:event_sharing/views/screen/Profile/MyFamily/owner/owner_profile_details_screen.dart';
 import 'package:event_sharing/views/screen/Profile/MyFamily/my_family_screen.dart';
@@ -128,6 +129,7 @@ class AppRoutes {
   //==============Invitation page================
 
   static String invitationListPage = "/invitationPage";
+  static String familyGroupScreen = "/familyGroupScreen";
 
 //======================>>>> List PAge
   static List<GetPage> page = [
@@ -184,6 +186,7 @@ class AppRoutes {
     GetPage(name: inviteEventScreen, page: () => InviteEventScreen()),
     GetPage(name: ownershipScreen, page: () => OwnershipScreen()),
     GetPage(name: mapScreen, page: () => MapScreen()),
+    GetPage(name: familyGroupScreen, page: () => FamilyGroupScreen()),
     //GetPage(name:bottomMenu, page: ()=> BottomMenu()),
 
     //==============================>>>> Profile section <<<<< ============

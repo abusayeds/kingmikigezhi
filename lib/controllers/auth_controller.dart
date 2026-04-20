@@ -17,30 +17,31 @@ class AuthController extends GetxController {
 
   // Email storage for OTP verification
   var storedEmail = ''.obs;
-  
+
   // Session ID for OTP verification
   var storedSessionId = ''.obs;
-  
+
   // Session ID for forgot password flow
   var forgotPasswordSessionId = ''.obs;
 
   // Check if username exists
   Future<bool> checkUsername(String username) async {
     try {
-      final String fullUrl = '${ApiConstants.checkUsername}?username=${Uri.encodeComponent(username)}';
+      final String fullUrl =
+          '${ApiConstants.checkUsername}?username=${Uri.encodeComponent(username)}';
       print('=== CHECK USERNAME REQUEST ===');
       print('Base URL: ${ApiConstants.baseUrl}');
       print('Full URL: $fullUrl');
       print('Username: $username');
       print('==============================');
-      
+
       final response = await apiService.get(fullUrl);
 
       print('=== CHECK USERNAME RESPONSE ===');
       print('Username: $username');
       print('Response: $response');
       print('Response type: ${response.runtimeType}');
-      
+
       if (response is Map) {
         print('Success: ${response['success']}');
         print('Data: ${response['data']}');
@@ -54,7 +55,7 @@ class AuthController extends GetxController {
         print('Username exists: $exists');
         return exists; // Returns true if username exists, false if available
       }
-      
+
       print('Unexpected response format, returning false (available)');
       return false; // If response format unexpected, assume username is available
     } catch (e) {
@@ -63,13 +64,13 @@ class AuthController extends GetxController {
       print('Error: $e');
       print('Error type: ${e.runtimeType}');
       print('=============================');
-      
+
       Fluttertoast.showToast(
         msg: "Check error: $e",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
       );
-      
+
       return false; // If error occurs, assume username is available to let user proceed
     }
   }
@@ -126,7 +127,8 @@ class AuthController extends GetxController {
         update();
 
         Fluttertoast.showToast(
-          msg: response['message'] ?? "Registration successful! Please verify your email.",
+          msg: response['message'] ??
+              "Registration successful! Please verify your email.",
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.BOTTOM,
         );
@@ -144,7 +146,7 @@ class AuthController extends GetxController {
       String errorMessage = 'Registration failed. Please try again.';
       if (e is String) {
         String error = e.toLowerCase();
-        
+
         if (error.contains('username already exists')) {
           errorMessage = 'Username already exists. Please choose another.';
         } else if (error.contains('email already registered')) {
@@ -152,7 +154,8 @@ class AuthController extends GetxController {
         } else if (error.contains('password must be at least 8 characters')) {
           errorMessage = 'Password must be at least 8 characters.';
         } else if (error.contains('password is too common')) {
-          errorMessage = 'This password is too common. Please choose a stronger password.';
+          errorMessage =
+              'This password is too common. Please choose a stronger password.';
         } else {
           errorMessage = e;
         }
@@ -421,14 +424,16 @@ class AuthController extends GetxController {
         // Store sessionId for forgot password flow
         String sessionId = response['data']['sessionId'] ?? '';
         forgotPasswordSessionId.value = sessionId;
-        await sharedPreferences.setString('forgot_password_session_id', sessionId);
-        
+        await sharedPreferences.setString(
+            'forgot_password_session_id', sessionId);
+
         // Store email for forgot password flow
         storedEmail.value = email;
         await sharedPreferences.setString(ApiConstants.keyUserEmail, email);
 
         Fluttertoast.showToast(
-          msg: response['message'] ?? "If the email exists, a password reset OTP has been sent.",
+          msg: response['message'] ??
+              "If the email exists, a password reset OTP has been sent.",
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.BOTTOM,
         );
@@ -637,6 +642,143 @@ class AuthController extends GetxController {
         textColor: Colors.white,
       );
 
+      return false;
+    }
+  }
+
+  // User profile data
+  var userProfile = Rxn<Map<String, dynamic>>();
+
+  // Fetch user profile
+  Future<void> fetchUserProfile() async {
+    try {
+      isLoading.value = true;
+      update();
+
+      final response = await apiService.get(ApiConstants.myProfile);
+
+      if (response != null && response['success'] == true) {
+        userProfile.value = response['data'];
+        await apiService.saveUserData(response['data']);
+      }
+
+      isLoading.value = false;
+      update();
+    } catch (e) {
+      isLoading.value = false;
+      update();
+      print('Error fetching profile: $e');
+    }
+  }
+
+  // Update user profile
+  Future<bool> updateProfile({
+    String? firstName,
+    String? lastName,
+    String? gender,
+    String? birthDate,
+    String? phoneNumber,
+    String? country,
+    String? state,
+    String? city,
+    String? username,
+    String? profilePicture,
+    List<String>? skills,
+  }) async {
+    try {
+      isLoading.value = true;
+      update();
+
+      final Map<String, dynamic> requestBody = {};
+      if (firstName != null) requestBody['firstName'] = firstName;
+      if (lastName != null) requestBody['lastName'] = lastName;
+      if (gender != null) requestBody['gender'] = gender;
+      if (birthDate != null) requestBody['birthDate'] = birthDate;
+      if (phoneNumber != null) requestBody['phoneNumber'] = phoneNumber;
+      if (country != null) requestBody['country'] = country;
+      if (state != null) requestBody['state'] = state;
+      if (city != null) requestBody['city'] = city;
+      if (username != null) requestBody['username'] = username;
+      if (profilePicture != null)
+        requestBody['profilePicture'] = profilePicture;
+      if (skills != null) requestBody['skills'] = skills;
+
+      final response = await apiService.put(
+        ApiConstants.updateProfile,
+        body: requestBody,
+      );
+
+      isLoading.value = false;
+      update();
+
+      if (response != null && response['success'] == true) {
+        userProfile.value = response['data'];
+        await apiService.saveUserData(response['data']);
+        Fluttertoast.showToast(
+          msg: response['message'] ?? "Profile updated successfully!",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+        );
+        return true;
+      }
+
+      return false;
+    } catch (e) {
+      isLoading.value = false;
+      update();
+      Fluttertoast.showToast(
+        msg: "Failed to update profile: $e",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+      return false;
+    }
+  }
+
+  // Change password
+  Future<bool> changePassword({
+    required String currentPassword,
+    required String newPassword,
+  }) async {
+    try {
+      isLoading.value = true;
+      update();
+
+      final Map<String, dynamic> requestBody = {
+        "currentPassword": currentPassword,
+        "newPassword": newPassword,
+      };
+
+      final response = await apiService.post(
+        ApiConstants.changePass,
+        body: requestBody,
+      );
+
+      isLoading.value = false;
+      update();
+
+      if (response != null && response['success'] == true) {
+        Fluttertoast.showToast(
+          msg: response['message'] ?? "Password changed successfully!",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+        );
+        return true;
+      }
+
+      return false;
+    } catch (e) {
+      isLoading.value = false;
+      update();
+      Fluttertoast.showToast(
+        msg: "Failed to change password: $e",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
       return false;
     }
   }

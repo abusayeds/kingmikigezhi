@@ -39,7 +39,7 @@ class ProfileScreen extends StatelessWidget {
                   //============================> My Family List Tile <=================
                   ProfileListTile(
                     onTap: () {
-                      Get.toNamed(AppRoutes.myFamilyScreen);
+                      Get.toNamed(AppRoutes.familyGroupScreen);
                     },
                     title:AppStrings.myFamily,
                     prefixIcon: SvgPicture.asset(AppIcons.ownershipIcon, color: AppColors.primaryColor, width: 24.w, height: 24.h),
