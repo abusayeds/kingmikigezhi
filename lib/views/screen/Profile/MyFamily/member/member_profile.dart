@@ -280,7 +280,7 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
               right: 0,
               child: InkWell(
                 onTap: () {
-                  _showViewModeBottomSheet(context);
+                  _showViewModeBottomSheet(context, title); // ✅ pass member name
                 },
                 child: Icon(Icons.more_horiz, color: AppColors.color8C8C8C, size: 20.sp),
               ),
@@ -291,7 +291,7 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
     );
   }
   //profile view
-  void _showViewModeBottomSheet(BuildContext context) {
+  void _showViewModeBottomSheet(BuildContext context, String memberName) {
     showModalBottomSheet(
       context: context,
       shape: RoundedRectangleBorder(
@@ -308,18 +308,22 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
             ),
             color: AppColors.backgroundColor,
           ),
-          height: 265,
+          height: 320, // increased height
           padding: EdgeInsets.all(16),
           child: Column(
             children: [
               SizedBox(height: 20.h),
               Divider(thickness: 1, color: AppColors.greyColor),
               SizedBox(height: 20.h),
+
               Text(
                 "What you want?",
                 style: AppStyles.fontSize18(color: AppColors.borderColor),
               ),
+
               SizedBox(height: 20.h),
+
+              /// 🔹 First Row (2 buttons)
               Row(
                 children: [
                   Expanded(
@@ -330,7 +334,8 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                       style: ElevatedButton.styleFrom(
                         minimumSize: Size(double.infinity, 58),
                         backgroundColor: AppColors.primaryColor,
-                        side: BorderSide(width: 1, color: AppColors.greyColor),
+                        side: BorderSide(
+                            width: 1, color: AppColors.greyColor),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(100),
                         ),
@@ -338,17 +343,40 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SvgPicture.asset(AppIcons.eyeIcon, width: 24.w,height:24.h,color: Colors.white,),
+                          SvgPicture.asset(
+                            AppIcons.eyeIcon,
+                            width: 24.w,
+                            height: 24.h,
+                            color: Colors.white,
+                          ),
                           SizedBox(width: 4.w),
-                          Text('View Profile', style: AppStyles.fontSize14(color: AppColors.backgroundColor),),
+                          Text(
+                            'View Profile',
+                            style: AppStyles.fontSize14(
+                                color: AppColors.backgroundColor),
+                          ),
                         ],
                       ),
                     ),
                   ),
-                  SizedBox(width: MediaQuery.of(context).size.width * 0.02),
+
+                  SizedBox(width: 10.w),
+
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        Get.back(); // close option sheet first
+
+                        final bool? result =
+                        await _showCustomBottomSheet(context, memberName);
+
+                        if (result == true) {
+                          setState(() {
+                            familyMembers.removeWhere(
+                                    (member) => member['name'] == memberName);
+                          });
+                        }
+                      },
                       style: ElevatedButton.styleFrom(
                         minimumSize: Size(double.infinity, 58),
                         backgroundColor: AppColors.primaryColor,
@@ -359,16 +387,60 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SvgPicture.asset(AppIcons.delete, width: 24.w,height:24.h),
+                          SvgPicture.asset(
+                            AppIcons.delete,
+                            width: 24.w,
+                            height: 24.h,
+                            color: Colors.white,
+                          ),
                           SizedBox(width: 4.w),
-                          Text('Delete Profile', style: AppStyles.fontSize14(color: AppColors.backgroundColor)),
+                          Text(
+                            'Delete Profile',
+                            style: AppStyles.fontSize14(
+                                color: AppColors.backgroundColor),
+                          ),
                         ],
                       ),
                     ),
                   ),
                 ],
-              )
-          ],
+              ),
+
+              SizedBox(height: 15.h),
+
+              /// 🔹 Second Row (Add Owner Button - full width)
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    // Add Owner logic
+                  },
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(double.infinity, 58),
+                    backgroundColor: AppColors.primaryColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(100.r),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.add_circle_outlined,
+                        color: Colors.white, // ✅ FIXED
+                        size: 20.h,
+                      ),
+                      SizedBox(width: 6.w),
+                      Text(
+                        'Add Owner',
+                        style: AppStyles.fontSize14(
+                            color: AppColors.backgroundColor),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         );
       },

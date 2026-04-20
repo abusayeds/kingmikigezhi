@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:event_sharing/controllers/auth_controller.dart';
 import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/skillItem.dart';
 import 'package:event_sharing/views/screen/AddEvent/InnerWidget/dotted_border_container.dart';
@@ -24,43 +25,93 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
-  final _nameController = TextEditingController();
+  final AuthController _authController = Get.find<AuthController>();
+
+  final _accountIdController = TextEditingController();
+  final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
+  final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
-  final _addressController = TextEditingController();
-  var parameter = Get.parameters;
+
   Uint8List? _image;
   File? selectedIMage;
+  String? existingProfilePicture;
 
   final TextEditingController birthDayYearController = TextEditingController();
   final TextEditingController birthDayMonthController = TextEditingController();
   final TextEditingController birthDayDayController = TextEditingController();
 
-  final TextEditingController locationCountryController = TextEditingController();
+  final TextEditingController locationCountryController =
+      TextEditingController();
   final TextEditingController locationStateController = TextEditingController();
   final TextEditingController locationCityController = TextEditingController();
   final TextEditingController phoneNumberController = TextEditingController();
 
   String selectedCountryCodes = '+880';
-  final List<Map<String, String>> skills = [
-    {'name': 'Chess since 2020'},
-    {'name': 'Math  since 2021',},
-    {'name': 'Piano since 2022',},
-  ];
+  String selectedGender = '';
+  List<String> skills = [];
 
+  bool isAccountIdEditable = false;
+  bool isFirstNameEditable = false;
+  bool isLastNameEditable = false;
+  bool isUsernameEditable = false;
+  bool isGenderEditable = false;
+  bool isBirthdayEditable = false;
+  bool isLocationEditable = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProfileData();
+  }
+
+  void _loadProfileData() {
+    final profile = _authController.userProfile.value;
+    if (profile != null) {
+      _accountIdController.text = profile['accountId']?.toString() ?? '';
+      _firstNameController.text = profile['firstName'] ?? '';
+      _lastNameController.text = profile['lastName'] ?? '';
+      _usernameController.text = profile['username'] ?? '';
+      _emailController.text = profile['email'] ?? '';
+      existingProfilePicture = profile['profilePicture'];
+
+      final gender = profile['gender'] ?? '';
+      selectedGender =
+          gender == 'MALE' ? 'Male' : (gender == 'FEMALE' ? 'Female' : '');
+
+      final birthDate = profile['birthDate'] ?? '';
+      if (birthDate.isNotEmpty) {
+        try {
+          final date = DateTime.parse(birthDate);
+          birthDayDayController.text = date.day.toString();
+          birthDayMonthController.text = date.month.toString();
+          birthDayYearController.text = date.year.toString();
+        } catch (_) {}
+      }
+
+      locationCountryController.text = profile['country'] ?? '';
+      locationStateController.text = profile['state'] ?? '';
+      locationCityController.text = profile['city'] ?? '';
+
+      final skillsList = profile['skills'] as List?;
+      if (skillsList != null) {
+        skills = skillsList.map((e) => e.toString()).toList();
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading:  IconButton(
-          icon: Icon(Icons.arrow_back_ios,
-              color: Colors.black, size: 18.w),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: Colors.black, size: 18.w),
           onPressed: () {
             Get.back();
           },
         ),
         title: CustomText(
-          text:'Edit account',
+          text: 'Edit account',
           fontWeight: FontWeight.bold,
           fontsize: 18.sp,
         ),
@@ -81,28 +132,34 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       children: [
                         _image != null
                             ? Container(
-                          width: 120.w,
-                          height: 120.h,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.rectangle,
-                              border: Border.all(
-                                  width: 2.w, color: AppColors.white),
-                              image: DecorationImage(
-                                  image: MemoryImage(_image!),
-                                  fit: BoxFit.cover)),
-                        )
+                                width: 120.w,
+                                height: 120.h,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.rectangle,
+                                    border: Border.all(
+                                        width: 2.w, color: AppColors.white),
+                                    image: DecorationImage(
+                                        image: MemoryImage(_image!),
+                                        fit: BoxFit.cover)),
+                              )
                             : Container(
-                          width: 120.w,
-                          height: 120.h,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.rectangle,
-                              border: Border.all(
-                                  width: 2.w, color: AppColors.white),
-                              image: const DecorationImage(
-                                  image: NetworkImage(
-                                      'https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg'),
-                                  fit: BoxFit.cover)),
-                        ),
+                                width: 120.w,
+                                height: 120.h,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.rectangle,
+                                    border: Border.all(
+                                        width: 2.w, color: AppColors.white),
+                                    image: DecorationImage(
+                                        image: existingProfilePicture != null &&
+                                                existingProfilePicture!
+                                                    .isNotEmpty
+                                            ? NetworkImage(
+                                                existingProfilePicture!)
+                                            : const AssetImage(
+                                                    'assets/images/ownerImage.png')
+                                                as ImageProvider,
+                                        fit: BoxFit.cover)),
+                              ),
                         Positioned(
                             bottom: -5.h,
                             right: -5.w,
@@ -116,51 +173,64 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 4.h),
-                    child: Text('Account ID', style:  AppStyles.fontSize16(fontWeight: FontWeight.w600)),
+                    child: Text('Account ID',
+                        style:
+                            AppStyles.fontSize16(fontWeight: FontWeight.w600)),
                   ),
-                  CustomTextField(
-                    controller: _nameController,
-                    hintText: '20103200',
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 4.h),
-                    child: Text('Full Name', style: AppStyles.fontSize16(fontWeight: FontWeight.w600 )),
-                  ),
-                  CustomTextField(
-                    controller: _nameController,
-                    hintText: 'Mahafujer',
+                  _buildEditableTextField(
+                    controller: _accountIdController,
+                    hintText: 'Account ID',
+                    isEditable: isAccountIdEditable,
+                    onTap: () => setState(() => isAccountIdEditable = true),
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 4.h),
-                    child: Text('Last Name', style:  AppStyles.fontSize16(fontWeight: FontWeight.w600 )),
+                    child: Text('First Name',
+                        style:
+                            AppStyles.fontSize16(fontWeight: FontWeight.w600)),
                   ),
-                  CustomTextField(
-                    controller: _emailController,
-                    hintText: 'Rahman',
+                  _buildEditableTextField(
+                    controller: _firstNameController,
+                    hintText: 'First Name',
+                    isEditable: isFirstNameEditable,
+                    onTap: () => setState(() => isFirstNameEditable = true),
                   ),
-                  //=======================>>> Public display name <<====================
-
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 4.h),
-                    child: Text('Public display name', style: AppStyles.fontSize16(fontWeight: FontWeight.w600 )),
+                    child: Text('Last Name',
+                        style:
+                            AppStyles.fontSize16(fontWeight: FontWeight.w600)),
                   ),
-                  CustomTextField(
-                    controller: _addressController,
-                    hintText: 'Public',
+                  _buildEditableTextField(
+                    controller: _lastNameController,
+                    hintText: 'Last Name',
+                    isEditable: isLastNameEditable,
+                    onTap: () => setState(() => isLastNameEditable = true),
                   ),
-                  //=======================>>> Gender <<====================
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 4.h),
-                    child: Text('Gender', style:  AppStyles.fontSize16(fontWeight: FontWeight.w600 )),
+                    child: Text('Public display name',
+                        style:
+                            AppStyles.fontSize16(fontWeight: FontWeight.w600)),
                   ),
-                  CustomTextField(
-                    controller: _addressController,
-                    hintText: 'Male',
+                  _buildEditableTextField(
+                    controller: _usernameController,
+                    hintText: 'Username',
+                    isEditable: isUsernameEditable,
+                    onTap: () => setState(() => isUsernameEditable = true),
                   ),
-
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 4.h),
-                    child: Text('Birthday',style:  AppStyles.fontSize16(fontWeight: FontWeight.w600 )),
+                    child: Text('Gender',
+                        style:
+                            AppStyles.fontSize16(fontWeight: FontWeight.w600)),
+                  ),
+                  _buildGenderSelector(),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 4.h),
+                    child: Text('Birthday',
+                        style:
+                            AppStyles.fontSize16(fontWeight: FontWeight.w600)),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -170,12 +240,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         child: CustomTextField(
                           controller: birthDayDayController,
                           hintText: 'Day',
+                          readOnly: !isBirthdayEditable,
                           sufixicons: Padding(
                             padding: EdgeInsets.only(right: 12.w),
-                            child: SvgPicture.asset(
-                              AppIcons.downArrowIcon,
-                              width: 16.w,
-                              color: AppColors.primaryColor,
+                            child: GestureDetector(
+                              onTap: () =>
+                                  setState(() => isBirthdayEditable = true),
+                              child: SvgPicture.asset(
+                                AppIcons.downArrowIcon,
+                                width: 16.w,
+                                color: AppColors.primaryColor,
+                              ),
                             ),
                           ),
                         ),
@@ -185,12 +260,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         child: CustomTextField(
                           controller: birthDayMonthController,
                           hintText: 'Month',
+                          readOnly: !isBirthdayEditable,
                           sufixicons: Padding(
                             padding: EdgeInsets.only(right: 12.w),
-                            child: SvgPicture.asset(
-                              AppIcons.downArrowIcon,
-                              width: 16.w,
-                              color: AppColors.primaryColor,
+                            child: GestureDetector(
+                              onTap: () =>
+                                  setState(() => isBirthdayEditable = true),
+                              child: SvgPicture.asset(
+                                AppIcons.downArrowIcon,
+                                width: 16.w,
+                                color: AppColors.primaryColor,
+                              ),
                             ),
                           ),
                         ),
@@ -200,31 +280,40 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         child: CustomTextField(
                           controller: birthDayYearController,
                           hintText: 'Year',
+                          readOnly: !isBirthdayEditable,
                           sufixicons: Padding(
                             padding: EdgeInsets.only(right: 12.w),
-                            child: SvgPicture.asset(
-                              AppIcons.downArrowIcon,
-                              width: 16.w,
-                              color: AppColors.primaryColor,
+                            child: GestureDetector(
+                              onTap: () =>
+                                  setState(() => isBirthdayEditable = true),
+                              child: SvgPicture.asset(
+                                AppIcons.downArrowIcon,
+                                width: 16.w,
+                                color: AppColors.primaryColor,
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ],
                   ),
-                  //====================>>  Email <<===================================
                   Padding(
                       padding: EdgeInsets.symmetric(vertical: 4.h),
-                      child: Text('Email', style:  AppStyles.fontSize16(fontWeight: FontWeight.w600 ))),
+                      child: Text('Email',
+                          style: AppStyles.fontSize16(
+                              fontWeight: FontWeight.w600))),
                   CustomTextField(
                     keyboardType: TextInputType.text,
                     controller: _emailController,
-                    hintText: 'Rahman@gmail.com',
+                    hintText: 'email@example.com',
+                    readOnly: true,
                     prifixicon: _prefixIcon(AppIcons.mailIcon),
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 4.h),
-                    child: Text('Phone Number', style:  AppStyles.fontSize16(fontWeight: FontWeight.w600)),
+                    child: Text('Phone Number',
+                        style:
+                            AppStyles.fontSize16(fontWeight: FontWeight.w600)),
                   ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -246,7 +335,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 showFlagDialog: true,
                                 onChanged: (countryCode) {
                                   setState(() {
-                                    selectedCountryCodes = countryCode.dialCode!;
+                                    selectedCountryCodes =
+                                        countryCode.dialCode!;
                                   });
                                 },
                                 initialSelection: 'BD',
@@ -272,9 +362,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       ),
                     ],
                   ),
-                  //====================>>  Location <<===================================
                   SizedBox(height: 8.h),
-                  Text('Location', style: AppStyles.fontSize16(fontWeight: FontWeight.w600)),
+                  Text('Location',
+                      style: AppStyles.fontSize16(fontWeight: FontWeight.w600)),
                   SizedBox(height: 8.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -284,11 +374,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         child: CustomTextField(
                           controller: locationCountryController,
                           hintText: 'Country',
+                          readOnly: !isLocationEditable,
                           sufixicons: Padding(
                             padding: EdgeInsets.only(right: 12.w),
-                            child: SvgPicture.asset(
-                              AppIcons.downArrowIcon,
-                              width: 16.w,
+                            child: GestureDetector(
+                              onTap: () =>
+                                  setState(() => isLocationEditable = true),
+                              child: SvgPicture.asset(
+                                AppIcons.downArrowIcon,
+                                width: 16.w,
+                              ),
                             ),
                           ),
                         ),
@@ -298,11 +393,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         child: CustomTextField(
                           controller: locationStateController,
                           hintText: 'State',
+                          readOnly: !isLocationEditable,
                           sufixicons: Padding(
                             padding: EdgeInsets.only(right: 12.w),
-                            child: SvgPicture.asset(
-                              AppIcons.downArrowIcon,
-                              width: 16.w,
+                            child: GestureDetector(
+                              onTap: () =>
+                                  setState(() => isLocationEditable = true),
+                              child: SvgPicture.asset(
+                                AppIcons.downArrowIcon,
+                                width: 16.w,
+                              ),
                             ),
                           ),
                         ),
@@ -312,16 +412,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         child: CustomTextField(
                           controller: locationCityController,
                           hintText: 'City',
+                          readOnly: !isLocationEditable,
                           sufixicons: Padding(
                             padding: EdgeInsets.only(right: 12.w),
-                            child: SvgPicture.asset(
-                              AppIcons.downArrowIcon,
-                              width: 16.w,
+                            child: GestureDetector(
+                              onTap: () =>
+                                  setState(() => isLocationEditable = true),
+                              child: SvgPicture.asset(
+                                AppIcons.downArrowIcon,
+                                width: 16.w,
+                              ),
                             ),
                           ),
                         ),
                       ),
-
                     ],
                   ),
                   SizedBox(height: 10.h),
@@ -332,9 +436,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding:  EdgeInsets.only(bottom: 8.h),
-                            child: Text(
-                              'Skill', style: AppStyles.fontSize16(fontWeight: FontWeight.w600 )),
+                            padding: EdgeInsets.only(bottom: 8.h),
+                            child: Text('Skill',
+                                style: AppStyles.fontSize16(
+                                    fontWeight: FontWeight.w600)),
                           ),
                           Row(
                             children: [
@@ -345,14 +450,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   children: [
                                     Text(
                                       'Start Year',
-                                      style:  AppStyles.fontSize16(fontWeight: FontWeight.w600),
+                                      style: AppStyles.fontSize16(
+                                          fontWeight: FontWeight.w600),
                                     ),
                                     SizedBox(height: 8.h),
                                     Container(
                                       height: 52.h,
-                                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 12, vertical: 8),
                                       decoration: BoxDecoration(
-                                        border: Border.all(color:AppColors.borderColor),
+                                        border: Border.all(
+                                            color: AppColors.borderColor),
                                         borderRadius: BorderRadius.circular(8),
                                         color: AppColors.fillColor,
                                       ),
@@ -363,7 +471,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                         ),
                                         isExpanded: true,
                                         underline: SizedBox(),
-                                        hint: Text('', style: TextStyle(color: AppColors.color414141, fontSize: 14.sp),),
+                                        hint: Text(
+                                          '',
+                                          style: TextStyle(
+                                              color: AppColors.color414141,
+                                              fontSize: 14.sp),
+                                        ),
                                         items: <String>['2020', '2021', '2023']
                                             .map((String value) {
                                           return DropdownMenuItem<String>(
@@ -385,14 +498,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   children: [
                                     Text(
                                       'Program',
-                                      style:  AppStyles.fontSize16(fontWeight: FontWeight.w600 ),
+                                      style: AppStyles.fontSize16(
+                                          fontWeight: FontWeight.w600),
                                     ),
                                     SizedBox(height: 8.h),
                                     Container(
                                       height: 52.h,
-                                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 12, vertical: 8),
                                       decoration: BoxDecoration(
-                                        border: Border.all(color: AppColors.borderColor),
+                                        border: Border.all(
+                                            color: AppColors.borderColor),
                                         borderRadius: BorderRadius.circular(8),
                                         color: AppColors.fillColor,
                                       ),
@@ -403,9 +519,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                         ),
                                         isExpanded: true,
                                         underline: SizedBox(),
-                                        hint: Text('', style: TextStyle(color: AppColors.color414141, fontSize: 14.sp),),
-                                        items: <String>['Option 1', 'Option 2', 'Option 3']
-                                            .map((String value) {
+                                        hint: Text(
+                                          '',
+                                          style: TextStyle(
+                                              color: AppColors.color414141,
+                                              fontSize: 14.sp),
+                                        ),
+                                        items: <String>[
+                                          'Option 1',
+                                          'Option 2',
+                                          'Option 3'
+                                        ].map((String value) {
                                           return DropdownMenuItem<String>(
                                             value: value,
                                             child: Text(value),
@@ -423,73 +547,193 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: 8.h),
                             child: CustomButton(
-                                color: AppColors.buttonA47059,
-                                borderColor: Colors.white,
-                                onTap: (){},
-                                text: "Add",
-                              textColor:Colors.white,
+                              color: AppColors.buttonA47059,
+                              borderColor: Colors.white,
+                              onTap: () {},
+                              text: "Add",
+                              textColor: Colors.white,
                             ),
                           ),
                           SizedBox(height: 8.h),
-
-                          Text('Added Skill', style: AppStyles.fontSize16(fontWeight: FontWeight.w600)),
+                          Text('Added Skill',
+                              style: AppStyles.fontSize16(
+                                  fontWeight: FontWeight.w600)),
                           SizedBox(height: 8.h),
                           Container(
                             decoration: BoxDecoration(
-                              color:AppColors.colorEDF2F4,
-                              borderRadius: BorderRadius.all(Radius.circular(8.r)),
-                              border: Border.all(color: AppColors.primaryColor, width: 1.w),
+                              color: AppColors.colorEDF2F4,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8.r)),
+                              border: Border.all(
+                                  color: AppColors.primaryColor, width: 1.w),
                             ),
-                            child: Padding(
-                              padding: EdgeInsets.all(8.r),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SkillRowWidget(
-                                      leadingText: 'Chess since 2020',
-                                      editIconPath: '${AppIcons.editIcon}',
-                                      deleteIconPath: '${AppIcons.trashIcon}',
-                                      onEditTap: () {},
-                                      onDeleteTap: () {}),
-                                  SkillRowWidget(
-                                    leadingText: 'Math since 2021',
-                                    editIconPath: '${AppIcons.editIcon}',
-                                    deleteIconPath: '${AppIcons.trashIcon}',
-                                    onEditTap: () {},
-                                    onDeleteTap: () {}),
-                                  SkillRowWidget(
-                                      leadingText: 'Piano since 2023',
-                                      editIconPath: '${AppIcons.editIcon}',
-                                      deleteIconPath: '${AppIcons.trashIcon}',
-                                      onEditTap: () {},
-                                      onDeleteTap: () {}),
-                                ],
-                              ),
-                            ),
+                            child: skills.isEmpty
+                                ? Padding(
+                                    padding: EdgeInsets.all(16.h),
+                                    child: Text('No skills added',
+                                        style: AppStyles.fontSize14(
+                                            color: AppColors.color414141)),
+                                  )
+                                : Padding(
+                                    padding: EdgeInsets.all(8.r),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: skills.map((skill) {
+                                        return SkillRowWidget(
+                                            leadingText: skill,
+                                            editIconPath:
+                                                '${AppIcons.editIcon}',
+                                            deleteIconPath:
+                                                '${AppIcons.trashIcon}',
+                                            onEditTap: () {},
+                                            onDeleteTap: () {
+                                              setState(() {
+                                                skills.remove(skill);
+                                              });
+                                            });
+                                      }).toList(),
+                                    ),
+                                  ),
                           ),
                           SizedBox(height: 10.h),
                         ],
                       ),
                     ),
                   ),
-
                   SizedBox(height: 10),
-                  CustomButton(
-                    color: AppColors.buttonA47059,
-                    borderColor: Colors.white,
-                    onTap: (){},
-                    text: "Update Profile",
-                    textColor:Colors.white,
-                  ),
+                  Obx(() => CustomButton(
+                        color: AppColors.buttonA47059,
+                        borderColor: Colors.white,
+                        loading: _authController.isLoading.value,
+                        onTap: _updateProfile,
+                        text: "Update Profile",
+                        textColor: Colors.white,
+                      )),
                 ],
               ),
             ),
           );
         },
       ),
-
     );
   }
+
+  Widget _buildEditableTextField({
+    required TextEditingController controller,
+    required String hintText,
+    required bool isEditable,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: AbsorbPointer(
+        absorbing: !isEditable,
+        child: CustomTextField(
+          controller: controller,
+          hintText: hintText,
+          readOnly: !isEditable,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildGenderSelector() {
+    return GestureDetector(
+      onTap: () => setState(() => isGenderEditable = true),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+        decoration: BoxDecoration(
+          color: isGenderEditable
+              ? AppColors.backgroundColor
+              : AppColors.colorEDF2F4,
+          borderRadius: BorderRadius.circular(8.r),
+          border: Border.all(
+            color:
+                isGenderEditable ? AppColors.primaryColor : Colors.transparent,
+            width: 1.w,
+          ),
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Row(
+                children: [
+                  Radio<String>(
+                    value: 'Male',
+                    groupValue: selectedGender,
+                    onChanged: isGenderEditable
+                        ? (value) {
+                            setState(() {
+                              selectedGender = value!;
+                            });
+                          }
+                        : null,
+                  ),
+                  Text('Male'),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Row(
+                children: [
+                  Radio<String>(
+                    value: 'Female',
+                    groupValue: selectedGender,
+                    onChanged: isGenderEditable
+                        ? (value) {
+                            setState(() {
+                              selectedGender = value!;
+                            });
+                          }
+                        : null,
+                  ),
+                  Text('Female'),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _updateProfile() async {
+    String genderApi = '';
+    if (selectedGender == 'Male') {
+      genderApi = 'MALE';
+    } else if (selectedGender == 'Female') {
+      genderApi = 'FEMALE';
+    }
+
+    String birthDate = '';
+    if (birthDayDayController.text.isNotEmpty &&
+        birthDayMonthController.text.isNotEmpty &&
+        birthDayYearController.text.isNotEmpty) {
+      birthDate =
+          '${birthDayYearController.text}-${birthDayMonthController.text.padLeft(2, '0')}-${birthDayDayController.text.padLeft(2, '0')}T00:00:00.000Z';
+    }
+
+    final success = await _authController.updateProfile(
+      firstName: _firstNameController.text,
+      lastName: _lastNameController.text,
+      gender: genderApi,
+      birthDate: birthDate.isNotEmpty ? birthDate : null,
+      phoneNumber: phoneNumberController.text.isNotEmpty
+          ? phoneNumberController.text
+          : null,
+      country: locationCountryController.text,
+      state: locationStateController.text,
+      city: locationCityController.text,
+      username: _usernameController.text,
+      skills: skills,
+    );
+
+    if (success) {
+      Get.back();
+    }
+  }
+
   _prefixIcon(String icon) {
     return Padding(
       padding: EdgeInsets.only(left: 8.w, right: 16.w),
@@ -500,8 +744,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       ),
     );
   }
-
-  //==================================> ShowImagePickerOption Function <===============================
 
   void showImagePickerOption(BuildContext context) {
     showModalBottomSheet(
@@ -558,7 +800,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         });
   }
 
-  //==================================> Gallery <===============================
   Future _pickImageFromGallery() async {
     final returnImage =
         await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -570,7 +811,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     Get.back();
   }
 
-//==================================> Camera <===============================
   Future _pickImageFromCamera() async {
     final returnImage =
         await ImagePicker().pickImage(source: ImageSource.camera);
