@@ -34,14 +34,15 @@ class ApiConstants {
   // Family
   static const String createFamily = '$apiUrl/families';
   static const String myFamilies = '$apiUrl/families';
-  static const String getFamily = '$apiUrl/families/:userId';
-  static const String updateFamily = '$apiUrl/families/:userId';
-  static const String deleteFamily = '$apiUrl/families/:userId';
+  static const String getFamily = '$apiUrl/families/:familyId';
+  static const String updateFamily = '$apiUrl/families/:familyId';
+  static const String deleteFamily = '$apiUrl/families/:familyId';
 
 
   // Family Members
   static const String addFamilyMember = '$apiUrl/family-members';
-  static const String familyMemberbyFamilyId = '$apiUrl/family-members/family/:userId';
+  static const String familyMemberbyFamilyId = '$apiUrl/family-members/family/:familyId';
+  static const String familyOwnerbyFamilyId = '$apiUrl/family-members/family/:familyId?role=OWNER';
   static const String removeFamilyMember = '$apiUrl/family-members//family/:familyId/user/:userId';
   static const String addOwner = '$apiUrl/family-members/add-owner';
 

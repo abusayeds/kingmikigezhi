@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:event_sharing/controllers/family_controller.dart';
 import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/skillItem.dart';
 import 'package:event_sharing/views/screen/AddEvent/InnerWidget/dotted_border_container.dart';
@@ -20,30 +21,41 @@ class CreateMemberProfileScreen extends StatefulWidget {
   const CreateMemberProfileScreen({super.key});
 
   @override
-  State<CreateMemberProfileScreen> createState() => _CreateMemberProfileScreenState();
+  State<CreateMemberProfileScreen> createState() =>
+      _CreateMemberProfileScreenState();
 }
 
 class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
-
   var parameter = Get.parameters;
   Uint8List? _image;
   File? selectedImage;
   String? _selectedRelationship;
   final List<String> relationshipList = ['Brother', 'Father', 'Mother'];
 
+  late FamilyController _familyController;
+  String? familyId;
+
+  @override
+  void initState() {
+    super.initState();
+    _familyController = Get.find<FamilyController>();
+    familyId = Get.arguments?['familyId'];
+  }
+
   final TextEditingController birthDayYearController = TextEditingController();
   final TextEditingController birthDayMonthController = TextEditingController();
   final TextEditingController birthDayDayController = TextEditingController();
 
-  final TextEditingController locationCountryController = TextEditingController();
+  final TextEditingController locationCountryController =
+      TextEditingController();
   final TextEditingController locationStateController = TextEditingController();
   final TextEditingController locationCityController = TextEditingController();
   final TextEditingController phoneNumberController = TextEditingController();
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confrimPasswordController = TextEditingController();
-
+  final TextEditingController confrimPasswordController =
+      TextEditingController();
 
   final TextEditingController accountIdController = TextEditingController();
   final TextEditingController fullNameController = TextEditingController();
@@ -51,7 +63,6 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
 
   final TextEditingController relationShipController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
-
 
   String selectedCountryCodes = '+880';
 
@@ -66,8 +77,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
           fontsize: 18.sp,
         ),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios,
-              color: Colors.black, size: 18.w),
+          icon: Icon(Icons.arrow_back_ios, color: Colors.black, size: 18.w),
           onPressed: () {
             Get.back();
           },
@@ -89,28 +99,28 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                       children: [
                         _image != null
                             ? Container(
-                          width: 120.w,
-                          height: 120.h,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.rectangle,
-                              border: Border.all(
-                                  width: 2.w, color: AppColors.white),
-                              image: DecorationImage(
-                                  image: MemoryImage(_image!),
-                                  fit: BoxFit.cover)),
-                        )
+                                width: 120.w,
+                                height: 120.h,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.rectangle,
+                                    border: Border.all(
+                                        width: 2.w, color: AppColors.white),
+                                    image: DecorationImage(
+                                        image: MemoryImage(_image!),
+                                        fit: BoxFit.cover)),
+                              )
                             : Container(
-                          width: 120.w,
-                          height: 120.h,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.rectangle,
-                              border: Border.all(
-                                  width: 2.w, color: AppColors.white),
-                              image: const DecorationImage(
-                                  image: NetworkImage(
-                                      'https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg'),
-                                  fit: BoxFit.cover)),
-                        ),
+                                width: 120.w,
+                                height: 120.h,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.rectangle,
+                                    border: Border.all(
+                                        width: 2.w, color: AppColors.white),
+                                    image: const DecorationImage(
+                                        image: NetworkImage(
+                                            'https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg'),
+                                        fit: BoxFit.cover)),
+                              ),
                         Positioned(
                             bottom: -5.h,
                             right: -5.w,
@@ -125,14 +135,16 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 8.h),
                     child: Text('Relationship',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w600)),
                   ),
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 20.w),
                     decoration: BoxDecoration(
                       color: AppColors.fillColor,
                       borderRadius: BorderRadius.circular(8.r),
-                      border: Border.all(color: AppColors.primaryColor, width: 1),
+                      border:
+                          Border.all(color: AppColors.primaryColor, width: 1),
                     ),
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton<String>(
@@ -140,8 +152,13 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                         dropdownColor: AppColors.fillColor,
                         menuWidth: 240.w,
                         borderRadius: BorderRadius.circular(8.r),
-                        hint: Text("Select RelationShip", style:AppStyles.fontSize14(color: AppColors.color414141)),
-                        icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
+                        hint: Text("Select RelationShip",
+                            style: AppStyles.fontSize14(
+                                color: AppColors.color414141)),
+                        icon: SvgPicture.asset(
+                          AppIcons.downArrowIcon,
+                          width: 16.w,
+                          color: AppColors.primaryColor,
                         ),
                         isExpanded: true,
                         items: relationshipList.map((String value) {
@@ -164,7 +181,8 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 8.h),
                     child: Text('Account Id',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w600)),
                   ),
                   CustomTextField(
                     controller: accountIdController,
@@ -173,7 +191,8 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 8.h),
                     child: Text('Full Name',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w600)),
                   ),
                   CustomTextField(
                     controller: fullNameController,
@@ -182,7 +201,8 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 8.h),
                     child: Text('Last Name',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w600)),
                   ),
                   CustomTextField(
                     controller: lastNameController,
@@ -192,7 +212,8 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 8.h),
                     child: Text('Public Display name',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w600)),
                   ),
                   CustomTextField(
                     controller: addressController,
@@ -201,7 +222,8 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 8.h),
                     child: Text('Gender',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w600)),
                   ),
                   CustomTextField(
                     controller: addressController,
@@ -210,7 +232,8 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 8.h),
                     child: Text('Birthday',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w600)),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -265,7 +288,8 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 8.h),
                     child: Text('Email',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w600)),
                   ),
                   CustomTextField(
                     keyboardType: TextInputType.text,
@@ -276,7 +300,8 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 8.h),
                     child: Text('Phone Number',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w600)),
                   ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -324,7 +349,8 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 8.h),
                     child: Text('Location',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w600)),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -371,7 +397,6 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                           ),
                         ),
                       ),
-
                     ],
                   ),
                   SizedBox(height: 10.h),
@@ -382,10 +407,9 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text(
-                            'Skill',
-                            style: AppStyles.fontSize18(fontWeight: FontWeight.w500)
-                          ),
+                          Text('Skill',
+                              style: AppStyles.fontSize18(
+                                  fontWeight: FontWeight.w500)),
                           Row(
                             children: [
                               Expanded(
@@ -393,16 +417,17 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      'Start Year',
-                                      style: AppStyles.fontSize16(fontWeight: FontWeight.w500)
-                                    ),
+                                    Text('Start Year',
+                                        style: AppStyles.fontSize16(
+                                            fontWeight: FontWeight.w500)),
                                     SizedBox(height: 8.h),
                                     Container(
                                       height: 52.h,
-                                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 12, vertical: 8),
                                       decoration: BoxDecoration(
-                                        border: Border.all(color:AppColors.borderColor),
+                                        border: Border.all(
+                                            color: AppColors.borderColor),
                                         borderRadius: BorderRadius.circular(8),
                                         color: AppColors.fillColor,
                                       ),
@@ -413,9 +438,15 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                                         ),
                                         isExpanded: true,
                                         underline: SizedBox(),
-                                        hint: Text('Select Year', style: AppStyles.fontSize14(fontWeight: FontWeight.w400,color: AppColors.color414141)),
-                                        items: <String>['Option 1', 'Option 2', 'Option 3']
-                                            .map((String value) {
+                                        hint: Text('Select Year',
+                                            style: AppStyles.fontSize14(
+                                                fontWeight: FontWeight.w400,
+                                                color: AppColors.color414141)),
+                                        items: <String>[
+                                          'Option 1',
+                                          'Option 2',
+                                          'Option 3'
+                                        ].map((String value) {
                                           return DropdownMenuItem<String>(
                                             value: value,
                                             child: Text(value),
@@ -433,16 +464,17 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      'Program',
-                                      style:  AppStyles.fontSize16(fontWeight: FontWeight.w500)
-                                    ),
+                                    Text('Program',
+                                        style: AppStyles.fontSize16(
+                                            fontWeight: FontWeight.w500)),
                                     SizedBox(height: 8.h),
                                     Container(
                                       height: 52.h,
-                                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 12, vertical: 8),
                                       decoration: BoxDecoration(
-                                        border: Border.all(color: AppColors.borderColor),
+                                        border: Border.all(
+                                            color: AppColors.borderColor),
                                         borderRadius: BorderRadius.circular(8),
                                         color: AppColors.fillColor,
                                       ),
@@ -453,9 +485,15 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                                         ),
                                         isExpanded: true,
                                         underline: SizedBox(),
-                                        hint: Text('Select Program', style: AppStyles.fontSize14(fontWeight: FontWeight.w400,color: AppColors.color414141)),
-                                        items: <String>['Option 1', 'Option 2', 'Option 3']
-                                            .map((String value) {
+                                        hint: Text('Select Program',
+                                            style: AppStyles.fontSize14(
+                                                fontWeight: FontWeight.w400,
+                                                color: AppColors.color414141)),
+                                        items: <String>[
+                                          'Option 1',
+                                          'Option 2',
+                                          'Option 3'
+                                        ].map((String value) {
                                           return DropdownMenuItem<String>(
                                             value: value,
                                             child: Text(value),
@@ -469,27 +507,28 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                               ),
                             ],
                           ),
-
                           SizedBox(height: 10.h),
                           CustomButton(
                             color: AppColors.buttonA47059,
-
                             borderColor: AppColors.buttonA47059,
-                            onTap: (){},
+                            onTap: () {},
                             text: "Add",
-                            textColor:Colors.white,
+                            textColor: Colors.white,
                           ),
                           SizedBox(height: 16.h),
                           Text(
                             'Added Skill',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w600),
                           ),
                           SizedBox(height: 8),
                           Container(
                             decoration: BoxDecoration(
-                              color:AppColors.colorEDF2F4,
-                              borderRadius: BorderRadius.all(Radius.circular(8.r)),
-                              border: Border.all(color: AppColors.primaryColor, width: 1.w),
+                              color: AppColors.colorEDF2F4,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8.r)),
+                              border: Border.all(
+                                  color: AppColors.primaryColor, width: 1.w),
                             ),
                             child: Padding(
                               padding: EdgeInsets.all(8.r),
@@ -534,14 +573,15 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                           CustomButton(
                             color: AppColors.borderColor,
                             borderColor: AppColors.borderColor,
-                            onTap: (){},
+                            onTap: () {},
                             text: "Active a separate family account",
                             textColor: AppColors.white,
                           ),
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: 8.h),
                             child: Text('User Name',
-                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.w600)),
                           ),
                           CustomTextField(
                             keyboardType: TextInputType.text,
@@ -552,7 +592,8 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: 8.h),
                             child: Text('Password',
-                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.w600)),
                           ),
                           CustomTextField(
                             controller: passwordController,
@@ -575,7 +616,8 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: 8.h),
                             child: Text('Confirm Password',
-                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.w600)),
                           ),
                           CustomTextField(
                             controller: confrimPasswordController,
@@ -595,27 +637,28 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                               return null;
                             },
                           ),
-
                         ],
                       ),
                     ),
                   ),
                   SizedBox(height: 10),
-                  CustomButton(
-                    color: AppColors.buttonA47059,
-                    borderColor:    AppColors.buttonA47059,
-                    onTap: (){},
-                    text: "Update Profile",
-                    textColor:Colors.white,
-                  ),
-
+                  Obx(() => CustomButton(
+                        color: AppColors.buttonA47059,
+                        borderColor: AppColors.buttonA47059,
+                        onTap: _familyController.isCreating.value
+                            ? () {}
+                            : () => _addFamilyMember(),
+                        text: _familyController.isCreating.value
+                            ? "Creating..."
+                            : "Update Profile",
+                        textColor: Colors.white,
+                      )),
                 ],
               ),
             ),
           );
         },
       ),
-
     );
   }
 
@@ -690,7 +733,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
   //==================================> Gallery <===============================
   Future _pickImageFromGallery() async {
     final returnImage =
-    await ImagePicker().pickImage(source: ImageSource.gallery);
+        await ImagePicker().pickImage(source: ImageSource.gallery);
     if (returnImage == null) return;
     setState(() {
       selectedImage = File(returnImage.path);
@@ -702,12 +745,61 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
 //==================================>> Camera <<===============================
   Future _pickImageFromCamera() async {
     final returnImage =
-    await ImagePicker().pickImage(source: ImageSource.camera);
+        await ImagePicker().pickImage(source: ImageSource.camera);
     if (returnImage == null) return;
     setState(() {
       selectedImage = File(returnImage.path);
       _image = File(returnImage.path).readAsBytesSync();
     });
     Get.back();
+  }
+
+  Future<void> _addFamilyMember() async {
+    if (familyId == null) {
+      Get.snackbar('Error', 'Family ID not found');
+      return;
+    }
+
+    final firstName = fullNameController.text.trim();
+    final lastName = lastNameController.text.trim();
+    final email = emailController.text.trim();
+    final password = passwordController.text.trim();
+    final username = accountIdController.text.trim();
+    final relationShip = _selectedRelationship;
+
+    if (firstName.isEmpty ||
+        lastName.isEmpty ||
+        email.isEmpty ||
+        password.isEmpty ||
+        username.isEmpty ||
+        relationShip == null) {
+      Get.snackbar('Error', 'Please fill all required fields');
+      return;
+    }
+
+    final birthDay =
+        '${birthDayYearController.text}-${birthDayMonthController.text.padLeft(2, '0')}-${birthDayDayController.text.padLeft(2, '0')}';
+    final location =
+        '${locationCityController.text}, ${locationStateController.text}, ${locationCountryController.text}';
+
+    final success = await _familyController.addFamilyMember(
+      familyId: familyId!,
+      firstName: firstName,
+      lastName: lastName,
+      gender: 'MALE',
+      birthDate: birthDay,
+      location: location,
+      country: locationCountryController.text,
+      state: locationStateController.text,
+      city: locationCityController.text,
+      email: email,
+      password: password,
+      username: username,
+      relationShip: relationShip,
+    );
+
+    if (success) {
+      Get.back();
+    }
   }
 }

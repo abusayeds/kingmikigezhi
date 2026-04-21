@@ -1,3 +1,4 @@
+import 'package:event_sharing/controllers/family_controller.dart';
 import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_icons.dart';
@@ -11,21 +12,22 @@ import 'package:timeago/timeago.dart' as TimeAgo;
 import '../../../../base/custom_text.dart';
 
 class OwnerMemberAddScreen extends StatefulWidget {
-  const OwnerMemberAddScreen({super.key});
+  final String? familyId;
+  const OwnerMemberAddScreen({super.key, this.familyId});
 
   @override
-  State<OwnerMemberAddScreen> createState() =>
-      _OwnerMemberAddScreenState();
+  State<OwnerMemberAddScreen> createState() => _OwnerMemberAddScreenState();
 }
 
 class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
+  late FamilyController _familyController;
 
-  final List<Map<String, String>> familyMembers = [
-    {'name': 'Kiefer', 'number': '55555-000045', 'image': 'assets/images/show.png'},
-    {'name': 'John', 'number': '666-412045', 'image': 'assets/images/shoot.png'},
-    {'name': 'Emily', 'number': '55555-000045', 'image': 'assets/images/song.png'},
-  ];
-  bool shouldRemove = false;
+  @override
+  void initState() {
+    super.initState();
+    _familyController = Get.find<FamilyController>();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +36,7 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
         child: Column(
           children: [
             SizedBox(height: 20.h),
-        /*    //     Top action button
+            /*    //     Top action button
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -49,7 +51,7 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
                     ),
                     child: InkWell(
                         onTap: (){
-                          Get.toNamed(AppRoutes.createMemberProfileScreen);
+                          Get.toNamed(AppRoutes.createMemberProfileScreen, arguments: {'familyId': widget.familyId});
                         },
                         child: Icon(Icons.add, color: Colors.white)),
                   ),
@@ -65,7 +67,7 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
                 decoration: BoxDecoration(
                   color: AppColors.colorEDF2F4,
                   borderRadius: BorderRadius.all(Radius.circular(8.r)),
-                  border: Border.all(color:AppColors.primaryColor, width: 1.0),
+                  border: Border.all(color: AppColors.primaryColor, width: 1.0),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -74,7 +76,8 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
                       hintText: 'Search Name',
                       hintStyle: TextStyle(color: AppColors.greyColor),
                       border: InputBorder.none,
-                      suffixIcon: Icon(Icons.search,color: AppColors.primaryColor),
+                      suffixIcon:
+                          Icon(Icons.search, color: AppColors.primaryColor),
                     ),
                   ),
                 ),
@@ -82,40 +85,45 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
             ),
             // Family members list
 
-
-
             // this is the new one. i want the
-            ListView.builder(
-              itemCount: familyMembers.length,
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                final member = familyMembers[index];
-                return Padding(
-                  padding:  EdgeInsets.symmetric(vertical: 8.h,horizontal: 8.w),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: AppColors.colorD9A951,
-                    ),
-                    child: _notification(
-                      member['name']!,
-                        member['number']!,
-                      DateTime.now(),
-                member['image']!,
-                      'Your account creation is successful, you can now experience our services.',
-                    ),
-                  ),
-                );
-              },
-            ),
+            Obx(() => ListView.builder(
+                  itemCount: _familyController.familyOwners.length,
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    final member = _familyController.familyOwners[index];
+                    return Padding(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: AppColors.colorD9A951,
+                        ),
+                        child: _notification(
+                          member.user != null
+                              ? '${member.user!.firstName} ${member.user!.lastName}'
+                              : '',
+                          member.user?.email ?? '',
+                          member.createdAt,
+                          member.user?.profilePicture ?? '',
+                          member.relationShip ?? '',
+                          userId: member.userId,
+                          familyMemberId: member.id,
+                        ),
+                      ),
+                    );
+                  },
+                )),
           ],
         ),
       ),
     );
   }
+
   //=========================>>>>> Delete Custom BottomSheet    <<<================================
-  Future<bool?> _showCustomBottomSheet(BuildContext context, String memberName) {
+  Future<bool?> _showCustomBottomSheet(
+      BuildContext context, String memberName) {
     return showModalBottomSheet<bool>(
       context: context,
       shape: RoundedRectangleBorder(
@@ -136,20 +144,28 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
 
           // padding: EdgeInsets.all(16),
           child: Padding(
-            padding:  EdgeInsets.symmetric(horizontal: 24.w,vertical: 10.w),
+            padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 10.w),
             child: Column(
               children: [
                 SizedBox(
                   height: 16.h,
                 ),
-                Container(height: 3.h,width: 38.w,color: Color(0xFF4C7E95),),
+                Container(
+                  height: 3.h,
+                  width: 38.w,
+                  color: Color(0xFF4C7E95),
+                ),
                 SizedBox(
                   height: 16.h,
                 ),
                 Divider(thickness: 1.w, color: AppColors.primaryColor),
                 SizedBox(height: 20.h),
-                Text("Delete", style: AppStyles.fontSize20(color: AppColors.blackColor, fontWeight: FontWeight.w600)),
-                Text("Are you sure to delete this?",
+                Text("Delete",
+                    style: AppStyles.fontSize20(
+                        color: AppColors.blackColor,
+                        fontWeight: FontWeight.w600)),
+                Text(
+                  "Are you sure to delete this?",
                   style: AppStyles.fontSize18(color: AppColors.borderColor),
                 ),
                 SizedBox(height: 20.h),
@@ -164,14 +180,15 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
                           minimumSize: Size(double.infinity, 58),
                           backgroundColor: AppColors.colorEDF2F4,
                           side: BorderSide(
-                              width: 1,
-                              color: AppColors.primaryColor),
+                              width: 1, color: AppColors.primaryColor),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(100),
                           ),
                         ),
-                        child: Text('Cancel',
-                          style: AppStyles.fontSize16(color: AppColors.primaryColor),
+                        child: Text(
+                          'Cancel',
+                          style: AppStyles.fontSize16(
+                              color: AppColors.primaryColor),
                         ),
                       ),
                     ),
@@ -188,8 +205,10 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
                             borderRadius: BorderRadius.circular(100.r),
                           ),
                         ),
-                        child: Text('Yes',
-                          style: AppStyles.fontSize16(color: AppColors.backgroundColor),
+                        child: Text(
+                          'Yes',
+                          style: AppStyles.fontSize16(
+                              color: AppColors.backgroundColor),
                         ),
                       ),
                     ),
@@ -202,15 +221,18 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
       },
     );
   }
+
   _notification(
-      String title,
-      String phone,
-      DateTime time,
-      String imageUrl,
-      String email,
-      ) {
+    String title,
+    String phone,
+    DateTime time,
+    String imageUrl,
+    String email, {
+    String? userId,
+    String? familyMemberId,
+  }) {
     return Dismissible(
-      key: Key(title),
+      key: Key(familyMemberId ?? title),
       direction: DismissDirection.endToStart,
       background: Container(
         decoration: BoxDecoration(
@@ -227,14 +249,16 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
         return result ?? false; // Return true to dismiss, false to cancel
       },
       // onDismissed is called only when the item is actually dismissed
-      onDismissed: (direction) {
-        // Handle the actual dismissal here (e.g., remove from list)
-        setState(() {
-          familyMembers.removeWhere((member) => member['name'] == title);
-        });
+      onDismissed: (direction) async {
+        if (widget.familyId != null && userId != null) {
+          await _familyController.removeFamilyMember(
+            familyId: widget.familyId!,
+            userId: userId,
+          );
+        }
       },
       child: GestureDetector(
-        onTap: (){
+        onTap: () {
           Get.toNamed(AppRoutes.ownerProfileDetailsScreen);
         },
         child: Container(
@@ -260,26 +284,32 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
                       children: [
                         Text(
                           title,
-                          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16.sp),
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500, fontSize: 16.sp),
                         ),
                         SizedBox(height: 4.h),
                         Row(
                           children: [
-                            SvgPicture.asset(AppIcons.dotIconForFamily, width: 5.w, height: 5.h),
+                            SvgPicture.asset(AppIcons.dotIconForFamily,
+                                width: 5.w, height: 5.h),
                             SizedBox(width: 4.w),
-                            Text('Phone: $phone',
-                              style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12.sp),
+                            Text(
+                              'Phone: $phone',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 12.sp),
                             ),
                           ],
                         ),
                         SizedBox(height: 4.h),
                         Row(
                           children: [
-                            SvgPicture.asset(AppIcons.dotIconForFamily, width: 5.w, height: 5.h),
+                            SvgPicture.asset(AppIcons.dotIconForFamily,
+                                width: 5.w, height: 5.h),
                             SizedBox(width: 4.w),
                             Text(
                               'Email : abac@gmail.com',
-                              style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12.sp),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 12.sp),
                             ),
                           ],
                         ),
@@ -294,6 +324,7 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
       ),
     );
   }
+
   //profile view
   void _showViewModeBottomSheet(BuildContext context) {
     showModalBottomSheet(
@@ -341,11 +372,15 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
                       ),
                       child: Row(
                         children: [
-                          SvgPicture.asset(AppIcons.eyeIcon, width: 24.w,height:24.h,color: AppColors.backgroundColor),
+                          SvgPicture.asset(AppIcons.eyeIcon,
+                              width: 24.w,
+                              height: 24.h,
+                              color: AppColors.backgroundColor),
                           SizedBox(width: 4.w),
                           Text(
                             'View Profile',
-                            style: AppStyles.fontSize14(color: AppColors.backgroundColor),
+                            style: AppStyles.fontSize14(
+                                color: AppColors.backgroundColor),
                           ),
                         ],
                       ),
@@ -364,10 +399,12 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
                       ),
                       child: Row(
                         children: [
-                          SvgPicture.asset(AppIcons.delete, width: 24.w,height:24.h),
+                          SvgPicture.asset(AppIcons.delete,
+                              width: 24.w, height: 24.h),
                           Text(
                             'Delete Profile',
-                            style: AppStyles.fontSize14(color: AppColors.backgroundColor),
+                            style: AppStyles.fontSize14(
+                                color: AppColors.backgroundColor),
                           ),
                         ],
                       ),

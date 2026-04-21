@@ -22,7 +22,8 @@ class ApiService {
   }
 
   // POST request
-  Future<dynamic> post(String url, {dynamic body, Map<String, String>? headers}) async {
+  Future<dynamic> post(String url,
+      {dynamic body, Map<String, String>? headers}) async {
     try {
       final response = await http.post(
         Uri.parse(url),
@@ -36,7 +37,8 @@ class ApiService {
   }
 
   // PUT request
-  Future<dynamic> put(String url, {dynamic body, Map<String, String>? headers}) async {
+  Future<dynamic> put(String url,
+      {dynamic body, Map<String, String>? headers}) async {
     try {
       final response = await http.put(
         Uri.parse(url),
@@ -62,6 +64,21 @@ class ApiService {
     }
   }
 
+  // PATCH request
+  Future<dynamic> patch(String url,
+      {dynamic body, Map<String, String>? headers}) async {
+    try {
+      final response = await http.patch(
+        Uri.parse(url),
+        headers: headers ?? await _getHeaders(),
+        body: jsonEncode(body),
+      );
+      return _handleResponse(response);
+    } catch (e) {
+      throw _handleError(e);
+    }
+  }
+
   // Handle response
   dynamic _handleResponse(http.Response response) {
     final statusCode = response.statusCode;
@@ -71,7 +88,7 @@ class ApiService {
       return body;
     } else {
       String errorMessage = 'Something went wrong';
-      
+
       // Handle different error response formats
       if (body['message'] != null) {
         if (body['message'] is List) {
@@ -96,7 +113,7 @@ class ApiService {
       } else if (body['error'] != null) {
         errorMessage = body['error'];
       }
-      
+
       throw ApiError(
         message: errorMessage,
         statusCode: statusCode,
@@ -120,8 +137,9 @@ class ApiService {
 
   // Get headers
   Future<Map<String, String>> _getHeaders() async {
-    String? accessToken = sharedPreferences.getString(ApiConstants.keyAccessToken);
-    
+    String? accessToken =
+        sharedPreferences.getString(ApiConstants.keyAccessToken);
+
     return {
       'Content-Type': 'application/json',
       if (accessToken != null && accessToken.isNotEmpty)
@@ -137,14 +155,18 @@ class ApiService {
     required String refreshTokenExpiresAt,
   }) async {
     await sharedPreferences.setString(ApiConstants.keyAccessToken, accessToken);
-    await sharedPreferences.setString(ApiConstants.keyRefreshToken, refreshToken);
-    await sharedPreferences.setString(ApiConstants.keyAccessTokenExpiresAt, accessTokenExpiresAt);
-    await sharedPreferences.setString(ApiConstants.keyRefreshTokenExpiresAt, refreshTokenExpiresAt);
+    await sharedPreferences.setString(
+        ApiConstants.keyRefreshToken, refreshToken);
+    await sharedPreferences.setString(
+        ApiConstants.keyAccessTokenExpiresAt, accessTokenExpiresAt);
+    await sharedPreferences.setString(
+        ApiConstants.keyRefreshTokenExpiresAt, refreshTokenExpiresAt);
   }
 
   // Save user data
   Future<void> saveUserData(Map<String, dynamic> userData) async {
-    await sharedPreferences.setString(ApiConstants.keyUserData, jsonEncode(userData));
+    await sharedPreferences.setString(
+        ApiConstants.keyUserData, jsonEncode(userData));
     await sharedPreferences.setBool(ApiConstants.keyIsLoggedIn, true);
   }
 

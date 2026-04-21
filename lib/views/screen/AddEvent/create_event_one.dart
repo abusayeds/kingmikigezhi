@@ -1,10 +1,7 @@
 import 'dart:io';
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:event_sharing/utils/app_colors.dart';
-import 'package:event_sharing/utils/app_icons.dart';
-import 'package:event_sharing/utils/style.dart';
-import 'package:event_sharing/views/base/custom_button.dart';
-import 'package:event_sharing/views/base/custom_text_field.dart';
+
 import 'package:event_sharing/views/screen/AddEvent/controller/addEventController.dart';
 import 'package:event_sharing/views/screen/AddEvent/stepFiveForm.dart';
 import 'package:event_sharing/views/screen/AddEvent/stepFourForm.dart';
@@ -14,12 +11,10 @@ import 'package:event_sharing/views/screen/AddEvent/stepTwoForm.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import '../../../utils/app_strings.dart';
 import '../../base/custom_text.dart';
-import 'InnerWidget/dotted_border_container.dart';
+
 
 class CreateEventOne extends StatefulWidget {
   const CreateEventOne({super.key});
