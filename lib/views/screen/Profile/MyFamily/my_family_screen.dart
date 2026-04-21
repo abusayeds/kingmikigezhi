@@ -1,3 +1,5 @@
+import 'package:event_sharing/controllers/family_controller.dart';
+import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:event_sharing/views/screen/Profile/MyFamily/member/member_profile.dart';
@@ -6,7 +8,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import 'owner/owner_profile.dart';
-
 
 class MyFamilyScreen extends StatefulWidget {
   const MyFamilyScreen({super.key});
@@ -18,14 +19,28 @@ class MyFamilyScreen extends StatefulWidget {
 class _MyFamilyScreenState extends State<MyFamilyScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  late FamilyController _familyController;
+  String? familyId;
 
   @override
   void initState() {
     super.initState();
+    _familyController = Get.find<FamilyController>();
     _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(() {
       setState(() {});
     });
+
+    // Get familyId from arguments
+    familyId = Get.arguments?['familyId'];
+    if (familyId != null) {
+      _loadData();
+    }
+  }
+
+  void _loadData() {
+    _familyController.fetchFamilyMembers(familyId!);
+    _familyController.fetchFamilyMembers(familyId!, isOwner: true);
   }
 
   @override
@@ -41,17 +56,17 @@ class _MyFamilyScreenState extends State<MyFamilyScreen>
       length: 2,
       child: Scaffold(
         backgroundColor: Colors.white,
-       // bottomNavigationBar: const UserBottomMenu(2),
+        // bottomNavigationBar: const UserBottomMenu(2),
         appBar: AppBar(
           backgroundColor: Colors.white,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios,
-                color: Colors.black, size: 18.w),
+            icon: Icon(Icons.arrow_back_ios, color: Colors.black, size: 18.w),
             onPressed: () {
               Get.back();
             },
           ),
-          title:  Text('My Family',style: TextStyle(fontSize: 18.sp,fontWeight: FontWeight.bold)),
+          title: Text('My Family',
+              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
           centerTitle: true,
           bottom: TabBar(
             controller: _tabController,
@@ -67,23 +82,24 @@ class _MyFamilyScreenState extends State<MyFamilyScreen>
                 child: Container(
                   decoration: BoxDecoration(
                     color: _tabController.index == 0
-                        ?  AppColors.primaryColor
+                        ? AppColors.primaryColor
                         : Colors.transparent,
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(10.r),
                         topRight: Radius.circular(10.r)),
-                   // border: Border.all(color: const Color(0xFFBD9A73)),
+                    // border: Border.all(color: const Color(0xFFBD9A73)),
                   ),
                   child: Align(
                     alignment: Alignment.center,
-                    child: CustomText(
-                      text: 'Member(3)',
-                      color: _tabController.index == 0
-                          ? Colors.white
-                          : Colors.black,
-                      fontWeight: FontWeight.w500,
-                      fontsize: 14.sp,
-                    ),
+                    child: Obx(() => CustomText(
+                          text:
+                              'Member(${_familyController.familyMembers.length})',
+                          color: _tabController.index == 0
+                              ? Colors.white
+                              : Colors.black,
+                          fontWeight: FontWeight.w500,
+                          fontsize: 14.sp,
+                        )),
                   ),
                 ),
               ),
@@ -101,18 +117,18 @@ class _MyFamilyScreenState extends State<MyFamilyScreen>
                   ),
                   child: Align(
                     alignment: Alignment.center,
-                    child: CustomText(
-                      text:  'Owner (3)',
-                      color: _tabController.index == 1
-                          ? Colors.white
-                          : Colors.black,
-                      fontWeight: FontWeight.w500,
-                      fontsize: 14.sp,
-                    ),
+                    child: Obx(() => CustomText(
+                          text:
+                              'Owner (${_familyController.familyOwners.length})',
+                          color: _tabController.index == 1
+                              ? Colors.white
+                              : Colors.black,
+                          fontWeight: FontWeight.w500,
+                          fontsize: 14.sp,
+                        )),
                   ),
                 ),
               ),
-
             ],
           ),
         ),
@@ -120,9 +136,9 @@ class _MyFamilyScreenState extends State<MyFamilyScreen>
           padding: EdgeInsets.symmetric(horizontal: 10.h, vertical: 8.w),
           child: TabBarView(
             controller: _tabController,
-            children: const [
-              MyFamilyMemberAddScreen(),
-              OwnerMemberAddScreen(),
+            children: [
+              MyFamilyMemberAddScreen(familyId: familyId),
+              OwnerMemberAddScreen(familyId: familyId),
             ],
           ),
         ),

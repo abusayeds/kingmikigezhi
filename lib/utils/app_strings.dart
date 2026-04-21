@@ -63,6 +63,8 @@ class AppStrings{
 
   static String editProfile  = "Edit Account";
   static String createProfile  = "Create Member Account";
+  static String createFamily  = "Create Family";
+  static String updateFamily  = "Update Family";
   static String updateProfile  = "Update Profile";
   static String areYouSure  = "Are you sure you want to log out ?";
   static String on  = "No";

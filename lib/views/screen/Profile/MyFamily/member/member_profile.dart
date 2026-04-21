@@ -1,3 +1,4 @@
+import 'package:event_sharing/controllers/family_controller.dart';
 import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_icons.dart';
@@ -8,7 +9,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class MyFamilyMemberAddScreen extends StatefulWidget {
-  const MyFamilyMemberAddScreen({super.key});
+  final String? familyId;
+  const MyFamilyMemberAddScreen({super.key, this.familyId});
 
   @override
   State<MyFamilyMemberAddScreen> createState() =>
@@ -16,13 +18,13 @@ class MyFamilyMemberAddScreen extends StatefulWidget {
 }
 
 class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
+  late FamilyController _familyController;
 
-  final List<Map<String, String>> familyMembers = [
-    {'name': 'Kiefer', 'relation': 'Spouse', 'image': 'assets/images/show.png'},
-    {'name': 'John', 'relation': 'Father', 'image': 'assets/images/shoot.png'},
-    {'name': 'Emily', 'relation': 'Daughter', 'image': 'assets/images/song.png'},
-  ];
-  bool shouldRemove = false;
+  @override
+  void initState() {
+    super.initState();
+    _familyController = Get.find<FamilyController>();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,9 +47,10 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                       color: AppColors.buttonColor,
                     ),
                     child: InkWell(
-                      onTap: (){
-                        Get.toNamed(AppRoutes.createMemberProfileScreen);
-                      },
+                        onTap: () {
+                          Get.toNamed(AppRoutes.createMemberProfileScreen,
+                              arguments: {'familyId': widget.familyId});
+                        },
                         child: const Icon(Icons.add, color: Colors.white)),
                   ),
                 ],
@@ -62,7 +65,7 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                 decoration: BoxDecoration(
                   color: AppColors.colorEDF2F4,
                   borderRadius: BorderRadius.all(Radius.circular(8)),
-                  border: Border.all(color:AppColors.primaryColor, width: 1.0),
+                  border: Border.all(color: AppColors.primaryColor, width: 1.0),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -71,7 +74,8 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                       hintText: 'Search Name',
                       hintStyle: TextStyle(color: AppColors.greyColor),
                       border: InputBorder.none,
-                      suffixIcon: Icon(Icons.search,color: AppColors.primaryColor),
+                      suffixIcon:
+                          Icon(Icons.search, color: AppColors.primaryColor),
                     ),
                   ),
                 ),
@@ -80,38 +84,41 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
             // Family members list
 
             ListView.builder(
-              itemCount: familyMembers.length,
+              itemCount: _familyController.familyMembers.length,
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
-                final member = familyMembers[index];
+                final member = _familyController.familyMembers[index];
                 return Padding(
-                  padding:  EdgeInsets.symmetric(vertical: 8.h,horizontal: 8.w),
+                  padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       color: AppColors.colorD9A951,
                     ),
                     child: _notification(
-                      member['name']!,
-
-                      DateTime.now(),
-                      member['image']!,
-                        member['relation']!,
-
+                      member.user != null
+                          ? '${member.user!.firstName} ${member.user!.lastName}'
+                          : '',
+                      member.createdAt,
+                      member.user?.profilePicture ?? '',
+                      member.relationShip ?? '',
+                      userId: member.userId,
+                      familyMemberId: member.id,
                     ),
                   ),
                 );
               },
             ),
-
           ],
         ),
       ),
     );
   }
+
   //=========================>>>>> Delete Custom BottomSheet    <<<================================
-  Future<bool?> _showCustomBottomSheet(BuildContext context, String memberName) {
+  Future<bool?> _showCustomBottomSheet(
+      BuildContext context, String memberName) {
     return showModalBottomSheet<bool>(
       context: context,
       shape: RoundedRectangleBorder(
@@ -135,8 +142,12 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
               SizedBox(height: 20.h),
               Divider(thickness: 1, color: AppColors.greyColor),
               SizedBox(height: 20.h),
-              Text("Delete", style: AppStyles.fontSize20(color: AppColors.primaryColor, fontWeight: FontWeight.w600)),
-              Text("Are you sure to delete this?",
+              Text("Delete",
+                  style: AppStyles.fontSize20(
+                      color: AppColors.primaryColor,
+                      fontWeight: FontWeight.w600)),
+              Text(
+                "Are you sure to delete this?",
                 style: AppStyles.fontSize18(color: AppColors.borderColor),
               ),
               SizedBox(height: 20.h),
@@ -150,15 +161,16 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                       style: ElevatedButton.styleFrom(
                         minimumSize: Size(double.infinity, 58),
                         backgroundColor: AppColors.colorEDF2F4,
-                        side: BorderSide(
-                            width: 1,
-                            color: AppColors.primaryColor),
+                        side:
+                            BorderSide(width: 1, color: AppColors.primaryColor),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(100),
                         ),
                       ),
-                      child: Text('Cancel',
-                        style: AppStyles.fontSize16(color: AppColors.primaryColor),
+                      child: Text(
+                        'Cancel',
+                        style:
+                            AppStyles.fontSize16(color: AppColors.primaryColor),
                       ),
                     ),
                   ),
@@ -175,8 +187,10 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                           borderRadius: BorderRadius.circular(100.r),
                         ),
                       ),
-                      child: Text('Yes',
-                        style: AppStyles.fontSize16(color: AppColors.backgroundColor),
+                      child: Text(
+                        'Yes',
+                        style: AppStyles.fontSize16(
+                            color: AppColors.backgroundColor),
                       ),
                     ),
                   ),
@@ -190,14 +204,15 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
   }
 
   _notification(
-      String title,
-
-      DateTime time,
-      String imageUrl,
-      String relation,
-      ) {
+    String title,
+    DateTime time,
+    String imageUrl,
+    String relation, {
+    String? userId,
+    String? familyMemberId,
+  }) {
     return Dismissible(
-      key: Key(title),
+      key: Key(familyMemberId ?? title),
       direction: DismissDirection.endToStart,
       background: Container(
         decoration: BoxDecoration(
@@ -214,11 +229,13 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
         return result ?? false; // Return true to dismiss, false to cancel
       },
       // onDismissed is called only when the item is actually dismissed
-      onDismissed: (direction) {
-        // Handle the actual dismissal here (e.g., remove from list)
-        setState(() {
-          familyMembers.removeWhere((member) => member['name'] == title);
-        });
+      onDismissed: (direction) async {
+        if (widget.familyId != null && userId != null) {
+          await _familyController.removeFamilyMember(
+            familyId: widget.familyId!,
+            userId: userId,
+          );
+        }
       },
       child: Container(
         decoration: BoxDecoration(
@@ -243,7 +260,8 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                     children: [
                       Text(
                         title,
-                        style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16.sp),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500, fontSize: 16.sp),
                       ),
                       SizedBox(height: 4.h),
                       // Row(
@@ -258,21 +276,19 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                       SizedBox(height: 4.h),
                       Row(
                         children: [
-                          SvgPicture.asset(AppIcons.dotIconForFamily, width: 5.w, height: 5.h),
+                          SvgPicture.asset(AppIcons.dotIconForFamily,
+                              width: 5.w, height: 5.h),
                           SizedBox(width: 4.w),
                           Text(
                             relation,
-                            style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12.sp),
+                            style: TextStyle(
+                                fontWeight: FontWeight.w400, fontSize: 12.sp),
                           ),
-
                         ],
                       ),
-
                     ],
                   ),
                 ),
-
-
               ],
             ),
             Positioned(
@@ -280,9 +296,11 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
               right: 0,
               child: InkWell(
                 onTap: () {
-                  _showViewModeBottomSheet(context, title); // ✅ pass member name
+                  _showViewModeBottomSheet(
+                      context, title); // ✅ pass member name
                 },
-                child: Icon(Icons.more_horiz, color: AppColors.color8C8C8C, size: 20.sp),
+                child: Icon(Icons.more_horiz,
+                    color: AppColors.color8C8C8C, size: 20.sp),
               ),
             )
           ],
@@ -290,6 +308,7 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
       ),
     );
   }
+
   //profile view
   void _showViewModeBottomSheet(BuildContext context, String memberName) {
     showModalBottomSheet(
@@ -334,8 +353,7 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                       style: ElevatedButton.styleFrom(
                         minimumSize: Size(double.infinity, 58),
                         backgroundColor: AppColors.primaryColor,
-                        side: BorderSide(
-                            width: 1, color: AppColors.greyColor),
+                        side: BorderSide(width: 1, color: AppColors.greyColor),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(100),
                         ),
@@ -359,22 +377,30 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                       ),
                     ),
                   ),
-
                   SizedBox(width: 10.w),
-
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () async {
                         Get.back(); // close option sheet first
 
                         final bool? result =
-                        await _showCustomBottomSheet(context, memberName);
+                            await _showCustomBottomSheet(context, memberName);
 
-                        if (result == true) {
-                          setState(() {
-                            familyMembers.removeWhere(
-                                    (member) => member['name'] == memberName);
-                          });
+                        if (result == true && widget.familyId != null) {
+                          // Get userId from the member by name
+                          final member =
+                              _familyController.familyMembers.firstWhere(
+                            (m) =>
+                                '${m.user?.firstName} ${m.user?.lastName}' ==
+                                memberName,
+                            orElse: () => _familyController.familyMembers.first,
+                          );
+                          if (member.userId.isNotEmpty) {
+                            await _familyController.removeFamilyMember(
+                              familyId: widget.familyId!,
+                              userId: member.userId,
+                            );
+                          }
                         }
                       },
                       style: ElevatedButton.styleFrom(
@@ -432,7 +458,7 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                       ),
                       SizedBox(width: 6.w),
                       Text(
-                        'Add Owner',
+                        'Make Owner',
                         style: AppStyles.fontSize14(
                             color: AppColors.backgroundColor),
                       ),

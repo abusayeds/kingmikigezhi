@@ -24,10 +24,12 @@ import 'package:event_sharing/views/screen/Profile/Contribution/contribution_scr
 import 'package:event_sharing/views/screen/Profile/Invitation/my_invitation_screen.dart';
 import 'package:event_sharing/views/screen/Profile/Invitation/share_invitation_screen.dart';
 import 'package:event_sharing/views/screen/Profile/MyFamily/createMember_profile.dart';
+import 'package:event_sharing/views/screen/Profile/MyFamily/create_family_group.dart';
 import 'package:event_sharing/views/screen/Profile/MyFamily/family_group_screen.dart';
 import 'package:event_sharing/views/screen/Profile/MyFamily/member/member_profile_details_screen.dart';
 import 'package:event_sharing/views/screen/Profile/MyFamily/owner/owner_profile_details_screen.dart';
 import 'package:event_sharing/views/screen/Profile/MyFamily/my_family_screen.dart';
+import 'package:event_sharing/views/screen/Profile/MyFamily/update_family_group.dart';
 import 'package:event_sharing/views/screen/Profile/PrivacyPolicy/privacy_policy_screen.dart';
 import 'package:event_sharing/views/screen/Profile/Settings/SettingsScreen/settings_screen.dart';
 import 'package:event_sharing/views/screen/Profile/TermsConditions/terms_condition_screen.dart';
@@ -92,6 +94,8 @@ class AppRoutes {
   static String inviteEventScreen = "/invite_event_screen";
   static String ownershipScreen = "/ownership_screen";
   static String mapScreen = "/map_screen";
+  static String createFamilyGroup = "/createFamilyGroup";
+  static String updateFamilyGroup = "/updateFamilyGroup";
 
   //static String bottomMenu ="/bottom_menu";
 
@@ -187,6 +191,8 @@ class AppRoutes {
     GetPage(name: ownershipScreen, page: () => OwnershipScreen()),
     GetPage(name: mapScreen, page: () => MapScreen()),
     GetPage(name: familyGroupScreen, page: () => FamilyGroupScreen()),
+    GetPage(name: createFamilyGroup, page: () => CreateFamilyGroup()),
+    GetPage(name: updateFamilyGroup, page: () => UpdateFamilyGroup()),
     //GetPage(name:bottomMenu, page: ()=> BottomMenu()),
 
     //==============================>>>> Profile section <<<<< ============

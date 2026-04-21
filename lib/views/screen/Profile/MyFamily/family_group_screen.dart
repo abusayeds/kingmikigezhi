@@ -1,3 +1,4 @@
+import 'package:event_sharing/controllers/family_controller.dart';
 import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_icons.dart';
@@ -16,23 +17,18 @@ class FamilyGroupScreen extends StatefulWidget {
 }
 
 class _FamilyGroupScreenState extends State<FamilyGroupScreen> {
+  late FamilyController _familyController;
 
-
-
-  // ✅ Fixed: Added 'relation' key to match usage below
-  final List<Map<String, String>> familyMembers = [
-    {'name': 'Kiefer', 'description': 'My Family', 'image': 'assets/images/show.png'},
-    {'name': 'John', 'description': 'My Wife Family', 'image': 'assets/images/shoot.png'},
-    {'name': 'Emily', 'description': 'Daughter Family', 'image': 'assets/images/song.png'},
-  ];
-
-  bool shouldRemove = false;
+  @override
+  void initState() {
+    super.initState();
+    _familyController = Get.find<FamilyController>();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      // ✅ AppBar properly placed inside Scaffold
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: IconButton(
@@ -47,50 +43,127 @@ class _FamilyGroupScreenState extends State<FamilyGroupScreen> {
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(height: 14.h),
+      body: Obx(() {
+        if (_familyController.isLoading.value &&
+            _familyController.families.isEmpty) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-            // ✅ Fixed: Moved ListView inside Column children properly
-            ListView.builder(
-              itemCount: familyMembers.length,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                final member = familyMembers[index];
-                return Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: AppColors.colorD9A951,
-                    ),
-
-                    child: _notification(
-                      member['name']!,
-                      DateTime.now(),
-                      member['image']!,
-                      member['description']!,
-                    ),
-                  ),
-                );
-              },
+        if (_familyController.families.isEmpty) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.family_restroom, size: 64, color: Colors.grey),
+                SizedBox(height: 16.h),
+                Text(
+                  'No families yet',
+                  style: TextStyle(fontSize: 16, color: Colors.grey),
+                ),
+                SizedBox(height: 8.h),
+                Text(
+                  'Create your first family',
+                  style: TextStyle(fontSize: 14, color: Colors.grey),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+          );
+        }
+
+        return SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(height: 14.h),
+              Padding(
+                padding: EdgeInsets.only(right: 8.w),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Container(
+                      height: 36.h,
+                      width: 36.h,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(30.r)),
+                        color: AppColors.buttonColor,
+                      ),
+                      child: InkWell(
+                          onTap: () {
+                            Get.toNamed(AppRoutes.createFamilyGroup);
+                          },
+                          child: const Icon(Icons.add, color: Colors.white)),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 11.h),
+              ListView.builder(
+                itemCount: _familyController.families.length,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  final family = _familyController.families[index];
+                  return Padding(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: AppColors.colorD9A951,
+                      ),
+                      child: _notification(
+                        family.name,
+                        family.createdAt,
+                        family.imageUrl ?? '',
+                        family.description ?? '',
+                        familyId: family.id,
+                      ),
+                    ),
+                  );
+                },
+              ),
+              SizedBox(height: 16.h),
+              if (_familyController.hasNext || _familyController.hasPrev)
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      if (_familyController.hasPrev)
+                        ElevatedButton(
+                          onPressed: () => _familyController.loadPreviousPage(),
+                          child: const Text('Previous'),
+                        ),
+                      SizedBox(width: 16.w),
+                      Text(
+                        'Page ${_familyController.currentPage}/${_familyController.totalPages}',
+                        style: TextStyle(fontSize: 14),
+                      ),
+                      SizedBox(width: 16.w),
+                      if (_familyController.hasNext)
+                        ElevatedButton(
+                          onPressed: () => _familyController.loadNextPage(),
+                          child: const Text('Next'),
+                        ),
+                    ],
+                  ),
+                ),
+              SizedBox(height: 20.h),
+            ],
+          ),
+        );
+      }),
     );
   }
 
   Widget _notification(
-      String title,
-      DateTime time,
-      String imageUrl,
-      String relation,
-      ) {
+    String title,
+    DateTime time,
+    String imageUrl,
+    String relation, {
+    required String familyId,
+  }) {
     return Dismissible(
-      key: Key(title),
+      key: Key(familyId),
       direction: DismissDirection.endToStart,
       background: Container(
         decoration: BoxDecoration(
@@ -106,14 +179,12 @@ class _FamilyGroupScreenState extends State<FamilyGroupScreen> {
         return result ?? false;
       },
       onDismissed: (direction) {
-        setState(() {
-          familyMembers.removeWhere((member) => member['name'] == title);
-        });
+        _familyController.deleteFamily(familyId);
       },
-      // ✅ Wrap the tile with GestureDetector for navigation
       child: GestureDetector(
         onTap: () {
-          Get.toNamed(AppRoutes.myFamilyScreen); // 👈 change to your actual route
+          Get.toNamed(AppRoutes.myFamilyScreen,
+              arguments: {'familyId': familyId});
         },
         child: Container(
           decoration: BoxDecoration(
@@ -128,7 +199,10 @@ class _FamilyGroupScreenState extends State<FamilyGroupScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   CircleAvatar(
-                    backgroundImage: AssetImage(imageUrl),
+                    backgroundImage: imageUrl.isNotEmpty
+                        ? NetworkImage(imageUrl)
+                        : const NetworkImage(
+                            'https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg'),
                     radius: 30.r,
                   ),
                   SizedBox(width: 12.w),
@@ -144,36 +218,46 @@ class _FamilyGroupScreenState extends State<FamilyGroupScreen> {
                           ),
                         ),
                         SizedBox(height: 4.h),
-                        Row(
-                          children: [
-                            SvgPicture.asset(
-                              AppIcons.dotIconForFamily,
-                              width: 5.w,
-                              height: 5.h,
-                            ),
-                            SizedBox(width: 4.w),
-                            Text(
-                              relation,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 12.sp,
+                        if (relation.isNotEmpty)
+                          Row(
+                            children: [
+                              SvgPicture.asset(
+                                AppIcons.dotIconForFamily,
+                                width: 5.w,
+                                height: 5.h,
                               ),
-                            ),
-                          ],
-                        ),
+                              SizedBox(width: 4.w),
+                              Text(
+                                relation,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 12.sp,
+                                ),
+                              ),
+                            ],
+                          ),
                       ],
                     ),
                   ),
                 ],
               ),
+              Positioned(
+                bottom: -5,
+                right: 0,
+                child: InkWell(
+                  onTap: () {
+                    _showViewModeBottomSheet(context, title, familyId);
+                  },
+                  child: Icon(Icons.more_horiz,
+                      color: AppColors.color8C8C8C, size: 20.sp),
+                ),
+              )
             ],
           ),
         ),
       ),
     );
   }
-
-
 
   Future<bool?> _showCustomBottomSheet(BuildContext context, String name) {
     return showModalBottomSheet<bool>(
@@ -203,7 +287,8 @@ class _FamilyGroupScreenState extends State<FamilyGroupScreen> {
                           borderRadius: BorderRadius.circular(100),
                         ),
                       ),
-                      child: Text('Cancel', style: TextStyle(color: Colors.black)),
+                      child:
+                          Text('Cancel', style: TextStyle(color: Colors.black)),
                     ),
                   ),
                   SizedBox(width: 12.w),
@@ -216,7 +301,8 @@ class _FamilyGroupScreenState extends State<FamilyGroupScreen> {
                           borderRadius: BorderRadius.circular(100),
                         ),
                       ),
-                      child: Text('Remove', style: TextStyle(color: Colors.white)),
+                      child:
+                          Text('Remove', style: TextStyle(color: Colors.white)),
                     ),
                   ),
                 ],
@@ -228,4 +314,115 @@ class _FamilyGroupScreenState extends State<FamilyGroupScreen> {
     );
   }
 
+  void _showViewModeBottomSheet(
+      BuildContext context, String memberName, String familyId) {
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(20.r),
+        ),
+      ),
+      builder: (BuildContext context) {
+        return Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20.r),
+              topRight: Radius.circular(20.r),
+            ),
+            color: AppColors.backgroundColor,
+          ),
+          height: 320,
+          padding: EdgeInsets.all(16),
+          child: Column(
+            children: [
+              SizedBox(height: 20.h),
+              Divider(thickness: 1, color: AppColors.greyColor),
+              SizedBox(height: 20.h),
+              Text(
+                "What you want?",
+                style: AppStyles.fontSize18(color: AppColors.borderColor),
+              ),
+              SizedBox(height: 20.h),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                        Get.toNamed(AppRoutes.updateFamilyGroup,
+                            arguments: {'familyId': familyId});
+                      },
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(double.infinity, 58),
+                        backgroundColor: AppColors.primaryColor,
+                        side: BorderSide(width: 1, color: AppColors.greyColor),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(
+                            AppIcons.eyeIcon,
+                            width: 24.w,
+                            height: 24.h,
+                            color: Colors.white,
+                          ),
+                          SizedBox(width: 4.w),
+                          Text(
+                            'Update Family',
+                            style: AppStyles.fontSize14(
+                                color: AppColors.backgroundColor),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 10.w),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        Get.back();
+                        final bool? result =
+                            await _showCustomBottomSheet(context, memberName);
+                        if (result == true) {
+                          _familyController.deleteFamily(familyId);
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(double.infinity, 58),
+                        backgroundColor: AppColors.primaryColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(100.r),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(
+                            AppIcons.delete,
+                            width: 24.w,
+                            height: 24.h,
+                            color: Colors.white,
+                          ),
+                          SizedBox(width: 4.w),
+                          Text(
+                            'Delete Family',
+                            style: AppStyles.fontSize14(
+                                color: AppColors.backgroundColor),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 }
