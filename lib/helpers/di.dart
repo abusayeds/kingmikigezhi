@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../controllers/auth_controller.dart';
+import '../controllers/family_controller.dart';
 import '../controllers/home_controller.dart';
 import '../controllers/localization_controller.dart';
 import '../controllers/theme_controller.dart';
@@ -24,6 +25,9 @@ Future<Map<String, Map<String, String>>> init() async {
   Get.put(LocalizationController(sharedPreferences: Get.find()),
       permanent: true);
   Get.put(HomeController(), permanent: true);
+  Get.put(
+      FamilyController(apiService: Get.find(), sharedPreferences: Get.find()),
+      permanent: true);
 
   //Retrieving localized data
   Map<String, Map<String, String>> _languages = Map();
