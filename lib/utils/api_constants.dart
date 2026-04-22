@@ -29,6 +29,12 @@ class ApiConstants {
   // Profile
   static const String myProfile = '$apiUrl/users/me';
   static const String updateProfile = '$apiUrl/users/update-me';
+  static const String deleteAccount = '$apiUrl/users/me';
+
+  //Get User
+  static const String getUserProfile = '$apiUrl/users/:userId';
+
+
 
 
   // Family

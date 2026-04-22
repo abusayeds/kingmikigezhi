@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class MyFamilyMemberAddScreen extends StatefulWidget {
   final String? familyId;
@@ -32,7 +33,6 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            //========================> Top action button <=====================
             SizedBox(height: 11.h),
             Padding(
               padding: EdgeInsets.only(right: 8.w),
@@ -57,7 +57,6 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
               ),
             ),
             SizedBox(height: 14.h),
-            //========================> Search bar <=========================
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
@@ -81,35 +80,69 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                 ),
               ),
             ),
-            // Family members list
-
-            ListView.builder(
-              itemCount: _familyController.familyMembers.length,
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                final member = _familyController.familyMembers[index];
-                return Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: AppColors.colorD9A951,
-                    ),
-                    child: _notification(
-                      member.user != null
-                          ? '${member.user!.firstName} ${member.user!.lastName}'
-                          : '',
-                      member.createdAt,
-                      member.user?.profilePicture ?? '',
-                      member.relationShip ?? '',
-                      userId: member.userId,
-                      familyMemberId: member.id,
+            Obx(() {
+              if (_familyController.isLoading.value) {
+                return Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(20.h),
+                    child: CircularProgressIndicator(
+                      color: AppColors.primaryColor,
                     ),
                   ),
                 );
-              },
-            ),
+              }
+
+              if (_familyController.familyMembers.isEmpty) {
+                return Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(20.h),
+                    child: Column(
+                      children: [
+                        Icon(Icons.person_off,
+                            size: 50.h, color: AppColors.greyColor),
+                        SizedBox(height: 10.h),
+                        Text(
+                          'No members found',
+                          style: TextStyle(
+                            color: AppColors.greyColor,
+                            fontSize: 16.sp,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }
+
+              return ListView.builder(
+                itemCount: _familyController.familyMembers.length,
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  final member = _familyController.familyMembers[index];
+                  return Padding(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: AppColors.colorD9A951,
+                      ),
+                      child: _notification(
+                        member.user != null
+                            ? '${member.user!.firstName} ${member.user!.lastName}'
+                            : '',
+                        member.createdAt,
+                        member.user?.profilePicture ?? '',
+                        member.relationShip ?? 'Member',
+                        userId: member.userId,
+                        familyMemberId: member.id,
+                      ),
+                    ),
+                  );
+                },
+              );
+            }),
           ],
         ),
       ),
@@ -250,8 +283,15 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 CircleAvatar(
-                  backgroundImage: AssetImage(imageUrl),
+                  backgroundImage: imageUrl.isNotEmpty
+                      ? CachedNetworkImageProvider(imageUrl)
+                      : null,
                   radius: 30.r,
+                  backgroundColor: AppColors.colorEDF2F4,
+                  child: imageUrl.isEmpty
+                      ? Icon(Icons.person,
+                          size: 30.r, color: AppColors.greyColor)
+                      : null,
                 ),
                 SizedBox(width: 12.w),
                 Expanded(
@@ -263,16 +303,6 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                         style: TextStyle(
                             fontWeight: FontWeight.w500, fontSize: 16.sp),
                       ),
-                      SizedBox(height: 4.h),
-                      // Row(
-                      //   children: [
-                      //     SvgPicture.asset(AppIcons.dotIconForFamily, width: 5.w, height: 5.h),
-                      //     SizedBox(width: 4.w),
-                      //     Text('Phone: $phone',
-                      //       style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12.sp),
-                      //     ),
-                      //   ],
-                      // ),
                       SizedBox(height: 4.h),
                       Row(
                         children: [
@@ -296,8 +326,7 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
               right: 0,
               child: InkWell(
                 onTap: () {
-                  _showViewModeBottomSheet(
-                      context, title); // ✅ pass member name
+                  _showViewModeBottomSheet(context, title);
                 },
                 child: Icon(Icons.more_horiz,
                     color: AppColors.color8C8C8C, size: 20.sp),
@@ -348,7 +377,17 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
-                        Get.toNamed(AppRoutes.memberProfileDetailsScreen);
+                        Get.toNamed(AppRoutes.memberProfileDetailsScreen,
+                            arguments: {
+                              'userId': _familyController.familyMembers
+                                  .firstWhere(
+                                      (m) =>
+                                          '${m.user?.firstName} ${m.user?.lastName}' ==
+                                          memberName,
+                                      orElse: () =>
+                                          _familyController.familyMembers.first)
+                                  .userId
+                            });
                       },
                       style: ElevatedButton.styleFrom(
                         minimumSize: Size(double.infinity, 58),
@@ -438,8 +477,22 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {
-                    // Add Owner logic
+                  onPressed: () async {
+                    Get.back();
+                    if (widget.familyId != null) {
+                      final member = _familyController.familyMembers.firstWhere(
+                        (m) =>
+                            '${m.user?.firstName} ${m.user?.lastName}' ==
+                            memberName,
+                        orElse: () => _familyController.familyMembers.first,
+                      );
+                      if (member.userId.isNotEmpty) {
+                        await _familyController.makeOwner(
+                          familyId: widget.familyId!,
+                          newOwnerUserId: member.userId,
+                        );
+                      }
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     minimumSize: Size(double.infinity, 58),
@@ -453,7 +506,7 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                     children: [
                       Icon(
                         Icons.add_circle_outlined,
-                        color: Colors.white, // ✅ FIXED
+                        color: Colors.white,
                         size: 20.h,
                       ),
                       SizedBox(width: 6.w),
