@@ -44,114 +44,123 @@ class _FamilyGroupScreenState extends State<FamilyGroupScreen> {
         centerTitle: true,
       ),
       body: Obx(() {
-        if (_familyController.isLoading.value &&
-            _familyController.families.isEmpty) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        if (_familyController.families.isEmpty) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.family_restroom, size: 64, color: Colors.grey),
-                SizedBox(height: 16.h),
-                Text(
-                  'No families yet',
-                  style: TextStyle(fontSize: 16, color: Colors.grey),
-                ),
-                SizedBox(height: 8.h),
-                Text(
-                  'Create your first family',
-                  style: TextStyle(fontSize: 14, color: Colors.grey),
-                ),
-              ],
-            ),
-          );
-        }
-
-        return SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(height: 14.h),
-              Padding(
-                padding: EdgeInsets.only(right: 8.w),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Container(
-                      height: 36.h,
-                      width: 36.h,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(30.r)),
-                        color: AppColors.buttonColor,
-                      ),
-                      child: InkWell(
-                          onTap: () {
-                            Get.toNamed(AppRoutes.createFamilyGroup);
-                          },
-                          child: const Icon(Icons.add, color: Colors.white)),
+        return Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(right: 8.w, top: 14.h),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    height: 36.h,
+                    width: 36.h,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(30.r)),
+                      color: AppColors.buttonColor,
                     ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 11.h),
-              ListView.builder(
-                itemCount: _familyController.families.length,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  final family = _familyController.families[index];
-                  return Padding(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: AppColors.colorD9A951,
-                      ),
-                      child: _notification(
-                        family.name,
-                        family.createdAt,
-                        family.imageUrl ?? '',
-                        family.description ?? '',
-                        familyId: family.id,
-                      ),
-                    ),
-                  );
-                },
-              ),
-              SizedBox(height: 16.h),
-              if (_familyController.hasNext || _familyController.hasPrev)
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      if (_familyController.hasPrev)
-                        ElevatedButton(
-                          onPressed: () => _familyController.loadPreviousPage(),
-                          child: const Text('Previous'),
-                        ),
-                      SizedBox(width: 16.w),
-                      Text(
-                        'Page ${_familyController.currentPage}/${_familyController.totalPages}',
-                        style: TextStyle(fontSize: 14),
-                      ),
-                      SizedBox(width: 16.w),
-                      if (_familyController.hasNext)
-                        ElevatedButton(
-                          onPressed: () => _familyController.loadNextPage(),
-                          child: const Text('Next'),
-                        ),
-                    ],
+                    child: InkWell(
+                        onTap: () {
+                          Get.toNamed(AppRoutes.createFamilyGroup);
+                        },
+                        child: const Icon(Icons.add, color: Colors.white)),
                   ),
-                ),
-              SizedBox(height: 20.h),
-            ],
-          ),
+                ],
+              ),
+            ),
+            SizedBox(height: 11.h),
+            Expanded(
+              child: _buildFamilyContent(),
+            ),
+          ],
         );
       }),
+    );
+  }
+
+  Widget _buildFamilyContent() {
+    if (_familyController.isLoading.value &&
+        _familyController.families.isEmpty) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (_familyController.families.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.family_restroom, size: 64, color: Colors.grey),
+            SizedBox(height: 16.h),
+            Text(
+              'No families yet',
+              style: TextStyle(fontSize: 16, color: Colors.grey),
+            ),
+            SizedBox(height: 8.h),
+            Text(
+              'Create your first family',
+              style: TextStyle(fontSize: 14, color: Colors.grey),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          ListView.builder(
+            itemCount: _familyController.families.length,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (context, index) {
+              final family = _familyController.families[index];
+              return Padding(
+                padding:
+                    EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: AppColors.colorD9A951,
+                  ),
+                  child: _notification(
+                    family.name,
+                    family.createdAt,
+                    family.imageUrl ?? '',
+                    family.description ?? '',
+                    familyId: family.id,
+                  ),
+                ),
+              );
+            },
+          ),
+          SizedBox(height: 16.h),
+          if (_familyController.hasNext || _familyController.hasPrev)
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (_familyController.hasPrev)
+                    ElevatedButton(
+                      onPressed: () => _familyController.loadPreviousPage(),
+                      child: const Text('Previous'),
+                    ),
+                  SizedBox(width: 16.w),
+                  Text(
+                    'Page ${_familyController.currentPage}/${_familyController.totalPages}',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  SizedBox(width: 16.w),
+                  if (_familyController.hasNext)
+                    ElevatedButton(
+                      onPressed: () => _familyController.loadNextPage(),
+                      child: const Text('Next'),
+                    ),
+                ],
+              ),
+            ),
+          SizedBox(height: 20.h),
+        ],
+      ),
     );
   }
 
