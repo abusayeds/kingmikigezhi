@@ -255,9 +255,12 @@ class FamilyController extends GetxController {
 
       String url =
           ApiConstants.familyMemberbyFamilyId.replaceAll(':familyId', familyId);
+
+      // Only add role filter for OWNER tab
       if (isOwner) {
         url = '$url?role=OWNER';
       }
+      // For MEMBER tab, fetch ALL members (no role filter) - includes owners who are also members
 
       final response = await apiService.get(url);
 
@@ -266,7 +269,7 @@ class FamilyController extends GetxController {
 
       if (response != null && response['success'] == true) {
         List<FamilyMemberModel> membersList = [];
-        if (response['data'] != null) {
+        if (response['data'] != null && response['data'] is List) {
           membersList = (response['data'] as List)
               .map((member) => FamilyMemberModel.fromJson(member))
               .toList();

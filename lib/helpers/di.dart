@@ -7,6 +7,7 @@ import '../controllers/family_controller.dart';
 import '../controllers/home_controller.dart';
 import '../controllers/localization_controller.dart';
 import '../controllers/theme_controller.dart';
+import '../controllers/splash_controller.dart';
 import '../models/language_model.dart';
 import '../services/api_service.dart';
 import '../utils/app_constants.dart';
@@ -24,6 +25,7 @@ Future<Map<String, Map<String, String>>> init() async {
   Get.put(ThemeController(sharedPreferences: Get.find()), permanent: true);
   Get.put(LocalizationController(sharedPreferences: Get.find()),
       permanent: true);
+  Get.put(SplashController(sharedPreferences: Get.find()), permanent: true);
   Get.put(HomeController(), permanent: true);
   Get.put(
       FamilyController(apiService: Get.find(), sharedPreferences: Get.find()),
