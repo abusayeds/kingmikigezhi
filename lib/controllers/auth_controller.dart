@@ -703,7 +703,7 @@ class AuthController extends GetxController {
         requestBody['profilePicture'] = profilePicture;
       if (skills != null) requestBody['skills'] = skills;
 
-      final response = await apiService.put(
+      final response = await apiService.patch(
         ApiConstants.updateProfile,
         body: requestBody,
       );

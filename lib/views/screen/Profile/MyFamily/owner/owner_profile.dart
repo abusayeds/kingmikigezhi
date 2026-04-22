@@ -7,9 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:timeago/timeago.dart' as TimeAgo;
-
-import '../../../../base/custom_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class OwnerMemberAddScreen extends StatefulWidget {
   final String? familyId;
@@ -31,35 +29,10 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: AppColors.redColor,
       body: SingleChildScrollView(
         child: Column(
           children: [
             SizedBox(height: 20.h),
-            /*    //     Top action button
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    height: 36.h,
-                    width: 36.w,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(30)),
-                      color: AppColors.buttonColor,
-                    ),
-                    child: InkWell(
-                        onTap: (){
-                          Get.toNamed(AppRoutes.createMemberProfileScreen, arguments: {'familyId': widget.familyId});
-                        },
-                        child: Icon(Icons.add, color: Colors.white)),
-                  ),
-                ),
-              ],
-            ),*/
-
-            // Search bar
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
@@ -83,38 +56,70 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
                 ),
               ),
             ),
-            // Family members list
+            Obx(() {
+              if (_familyController.isLoading.value) {
+                return Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(20.h),
+                    child: CircularProgressIndicator(
+                      color: AppColors.primaryColor,
+                    ),
+                  ),
+                );
+              }
 
-            // this is the new one. i want the
-            Obx(() => ListView.builder(
-                  itemCount: _familyController.familyOwners.length,
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    final member = _familyController.familyOwners[index];
-                    return Padding(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: AppColors.colorD9A951,
+              if (_familyController.familyOwners.isEmpty) {
+                return Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(20.h),
+                    child: Column(
+                      children: [
+                        Icon(Icons.person_off,
+                            size: 50.h, color: AppColors.greyColor),
+                        SizedBox(height: 10.h),
+                        Text(
+                          'No owners found',
+                          style: TextStyle(
+                            color: AppColors.greyColor,
+                            fontSize: 16.sp,
+                          ),
                         ),
-                        child: _notification(
-                          member.user != null
-                              ? '${member.user!.firstName} ${member.user!.lastName}'
-                              : '',
-                          member.user?.email ?? '',
-                          member.createdAt,
-                          member.user?.profilePicture ?? '',
-                          member.relationShip ?? '',
-                          userId: member.userId,
-                          familyMemberId: member.id,
-                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }
+
+              return ListView.builder(
+                itemCount: _familyController.familyOwners.length,
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  final member = _familyController.familyOwners[index];
+                  return Padding(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: AppColors.colorD9A951,
                       ),
-                    );
-                  },
-                )),
+                      child: _notification(
+                        member.user != null
+                            ? '${member.user!.firstName} ${member.user!.lastName}'
+                            : '',
+                        member.user?.email ?? '',
+                        member.createdAt,
+                        member.user?.profilePicture ?? '',
+                        member.relationShip ?? '',
+                        userId: member.userId,
+                        familyMemberId: member.id,
+                      ),
+                    ),
+                  );
+                },
+              );
+            }),
           ],
         ),
       ),
@@ -224,10 +229,10 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
 
   _notification(
     String title,
-    String phone,
+    String email,
     DateTime time,
     String imageUrl,
-    String email, {
+    String relation, {
     String? userId,
     String? familyMemberId,
   }) {
@@ -259,7 +264,12 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
       },
       child: GestureDetector(
         onTap: () {
-          Get.toNamed(AppRoutes.ownerProfileDetailsScreen);
+          final owner = _familyController.familyOwners.firstWhere(
+            (o) => '${o.user?.firstName} ${o.user?.lastName}' == title,
+            orElse: () => _familyController.familyOwners.first,
+          );
+          Get.toNamed(AppRoutes.ownerProfileDetailsScreen,
+              arguments: {'userId': owner.userId});
         },
         child: Container(
           decoration: BoxDecoration(
@@ -274,8 +284,15 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   CircleAvatar(
-                    backgroundImage: AssetImage(imageUrl),
+                    backgroundImage: imageUrl.isNotEmpty
+                        ? CachedNetworkImageProvider(imageUrl)
+                        : null,
                     radius: 30.r,
+                    backgroundColor: AppColors.colorEDF2F4,
+                    child: imageUrl.isEmpty
+                        ? Icon(Icons.person,
+                            size: 30.r, color: AppColors.greyColor)
+                        : null,
                   ),
                   SizedBox(width: 12.w),
                   Expanded(
@@ -293,23 +310,14 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
                             SvgPicture.asset(AppIcons.dotIconForFamily,
                                 width: 5.w, height: 5.h),
                             SizedBox(width: 4.w),
-                            Text(
-                              'Phone: $phone',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w400, fontSize: 12.sp),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 4.h),
-                        Row(
-                          children: [
-                            SvgPicture.asset(AppIcons.dotIconForFamily,
-                                width: 5.w, height: 5.h),
-                            SizedBox(width: 4.w),
-                            Text(
-                              'Email : abac@gmail.com',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w400, fontSize: 12.sp),
+                            Expanded(
+                              child: Text(
+                                email.isNotEmpty ? email : 'N/A',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 12.sp),
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
                           ],
                         ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import '../../../helpers/route.dart';
+import '../../../controllers/splash_controller.dart';
 import '../../../utils/app_images.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -12,14 +12,13 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  late SplashController _splashController;
 
   @override
   void initState() {
-    Future.delayed(const Duration(seconds: 3),(){
-      Get.offAllNamed(AppRoutes.onboardScreen);
-    });
-    // TODO: implement initState
     super.initState();
+    _splashController = Get.find<SplashController>();
+    _splashController.checkAuthStatus();
   }
 
   @override
@@ -29,8 +28,6 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Container(
         decoration: const BoxDecoration(
           color: Color(0xff4C7E95),
-          /*image: DecorationImage(
-                image: AssetImage(AppImages.splashBg), fit: BoxFit.cover)*/
         ),
         child: Center(
           child: Image.asset(

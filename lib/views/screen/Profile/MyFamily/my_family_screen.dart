@@ -1,5 +1,4 @@
 import 'package:event_sharing/controllers/family_controller.dart';
-import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:event_sharing/views/screen/Profile/MyFamily/member/member_profile.dart';
@@ -31,16 +30,20 @@ class _MyFamilyScreenState extends State<MyFamilyScreen>
       setState(() {});
     });
 
-    // Get familyId from arguments
-    familyId = Get.arguments?['familyId'];
-    if (familyId != null) {
-      _loadData();
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      familyId = Get.arguments?['familyId'];
+      if (familyId != null) {
+        _loadData();
+      }
+    });
   }
 
-  void _loadData() {
-    _familyController.fetchFamilyMembers(familyId!);
-    _familyController.fetchFamilyMembers(familyId!, isOwner: true);
+  void _loadData() async {
+    print('DEBUG: Loading family members for familyId: $familyId');
+    await _familyController.fetchFamilyMembers(familyId!);
+    print('DEBUG: Members fetched: ${_familyController.familyMembers.length}');
+    await _familyController.fetchFamilyMembers(familyId!, isOwner: true);
+    print('DEBUG: Owners fetched: ${_familyController.familyOwners.length}');
   }
 
   @override
@@ -52,95 +55,88 @@ class _MyFamilyScreenState extends State<MyFamilyScreen>
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
         backgroundColor: Colors.white,
-        // bottomNavigationBar: const UserBottomMenu(2),
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios, color: Colors.black, size: 18.w),
-            onPressed: () {
-              Get.back();
-            },
-          ),
-          title: Text('My Family',
-              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
-          centerTitle: true,
-          bottom: TabBar(
-            controller: _tabController,
-            indicatorColor: Colors.transparent,
-            labelColor: Colors.black,
-            unselectedLabelColor: Colors.grey,
-            indicatorWeight: 1,
-            //dividerColor: Color(0xFFFFFFFF),
-            dividerColor: Color(0xFFC8D7DE),
-            tabs: [
-              //========================> Tab 01  <====================
-              Tab(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: _tabController.index == 0
-                        ? AppColors.primaryColor
-                        : Colors.transparent,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10.r),
-                        topRight: Radius.circular(10.r)),
-                    // border: Border.all(color: const Color(0xFFBD9A73)),
-                  ),
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Obx(() => CustomText(
-                          text:
-                              'Member(${_familyController.familyMembers.length})',
-                          color: _tabController.index == 0
-                              ? Colors.white
-                              : Colors.black,
-                          fontWeight: FontWeight.w500,
-                          fontsize: 14.sp,
-                        )),
-                  ),
-                ),
-              ),
-              //========================> Tab 01  <====================
-              Tab(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: _tabController.index == 1
-                        ? AppColors.primaryColor
-                        : Colors.transparent,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10.r),
-                        topRight: Radius.circular(10.r)),
-                    //border: Border.all(color: const Color(0xFFBD9A73)),
-                  ),
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Obx(() => CustomText(
-                          text:
-                              'Owner (${_familyController.familyOwners.length})',
-                          color: _tabController.index == 1
-                              ? Colors.white
-                              : Colors.black,
-                          fontWeight: FontWeight.w500,
-                          fontsize: 14.sp,
-                        )),
-                  ),
-                ),
-              ),
-            ],
-          ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: Colors.black, size: 18.w),
+          onPressed: () {
+            Get.back();
+          },
         ),
-        body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.h, vertical: 8.w),
-          child: TabBarView(
-            controller: _tabController,
-            children: [
-              MyFamilyMemberAddScreen(familyId: familyId),
-              OwnerMemberAddScreen(familyId: familyId),
-            ],
-          ),
+        title: Text('My Family',
+            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
+        centerTitle: true,
+        bottom: TabBar(
+          controller: _tabController,
+          indicatorColor: Colors.transparent,
+          labelColor: Colors.black,
+          unselectedLabelColor: Colors.grey,
+          indicatorWeight: 1,
+          dividerColor: Color(0xFFC8D7DE),
+          tabs: [
+            Tab(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: _tabController.index == 0
+                      ? AppColors.primaryColor
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10.r),
+                      topRight: Radius.circular(10.r)),
+                ),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: GetBuilder<FamilyController>(
+                    builder: (controller) => CustomText(
+                      text: 'Member(${controller.familyMembers.length})',
+                      color: _tabController.index == 0
+                          ? Colors.white
+                          : Colors.black,
+                      fontWeight: FontWeight.w500,
+                      fontsize: 14.sp,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Tab(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: _tabController.index == 1
+                      ? AppColors.primaryColor
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10.r),
+                      topRight: Radius.circular(10.r)),
+                ),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: GetBuilder<FamilyController>(
+                    builder: (controller) => CustomText(
+                      text: 'Owner (${controller.familyOwners.length})',
+                      color: _tabController.index == 1
+                          ? Colors.white
+                          : Colors.black,
+                      fontWeight: FontWeight.w500,
+                      fontsize: 14.sp,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 10.h, vertical: 8.w),
+        child: TabBarView(
+          controller: _tabController,
+          children: [
+            MyFamilyMemberAddScreen(familyId: familyId),
+            OwnerMemberAddScreen(familyId: familyId),
+          ],
         ),
       ),
     );
