@@ -1,3 +1,4 @@
+import 'package:event_sharing/controllers/connection_controller.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_icons.dart';
 import 'package:event_sharing/utils/style.dart';
@@ -5,6 +6,7 @@ import 'package:event_sharing/views/base/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 
 class NewInvitationScreen extends StatefulWidget {
   const NewInvitationScreen({super.key});
@@ -14,153 +16,228 @@ class NewInvitationScreen extends StatefulWidget {
 }
 
 class _NewInvitationScreenState extends State<NewInvitationScreen> {
-  final List<Map<String, dynamic>> invitations = [
-    {
-      "name": "Alax Tom",
-      "accountID": 2010,
-      "contribution": 100,
-    },
-    {
-      "name": "Mahafujer",
-      "accountID": 2011,
-      "contribution": 150,
-    },
-    {
-      "name": "Rahman MunnA",
-      "accountID": 2012,
-      "contribution": 200,
-    },
-  ];
+  late ConnectionController connectionController;
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    connectionController = Get.find<ConnectionController>();
+    _scrollController.addListener(_scrollListener);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_scrollListener);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _scrollListener() {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      if (connectionController.hasMoreInvitations.value &&
+          !connectionController.isLoadingInvitations.value) {
+        connectionController.fetchInvitations(isRefresh: false);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-      children: [
-        ListView.builder(
-          padding: EdgeInsets.all(12.r),
-          itemCount: invitations.length,
-          itemBuilder: (context, index) {
-            final invitation = invitations[index];
-            return Container(
-              padding: EdgeInsets.symmetric(vertical: 4.h,horizontal: 8.w),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10.r),
+      body: Obx(() => Stack(
+        children: [
+          if (connectionController.invitations.isEmpty &&
+              !connectionController.isLoadingInvitations.value)
+            Center(
+              child: Text(
+                'No invitations',
+                style: AppStyles.fontSize16(color: AppColors.color414141),
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
+            )
+          else
+            ListView.builder(
+              controller: _scrollController,
+              padding: EdgeInsets.all(12.r),
+              itemCount: connectionController.invitations.length,
+              itemBuilder: (context, index) {
+                final invitation = connectionController.invitations[index];
+                final requester = invitation['requester'];
+                final firstName = requester['firstName'] ?? 'Unknown';
+                final lastName = requester['lastName'] ?? '';
+                final fullName = '$firstName $lastName'.trim();
+
+                return Container(
+                  padding: EdgeInsets.symmetric(vertical: 4.h, horizontal: 8.w),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10.r),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CircleAvatar(
-                        radius: 45.r,
-                        backgroundColor: Colors.grey.shade300,
-                        child: Icon(Icons.person, size: 40, color: Colors.white),
-                      ),
-                      SizedBox(width: 12.w),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      Row(
                         children: [
-                          Text('Alax Tom', style: AppStyles.fontSize16(fontWeight: FontWeight.w600,color: AppColors.color414141),),
-                          SizedBox(height: 8.h,),
-                          Row(
-                            children: [
-                              SvgPicture.asset(AppIcons.dotIconForFamily),
-                              SizedBox(width: 4),
-                              Text("Account ID: ${invitation['accountID']}",
-                                style: AppStyles.fontSize10(color: AppColors.color414141),
-                              ),
-                            ],
+                          CircleAvatar(
+                            radius: 45.r,
+                            backgroundColor: Colors.grey.shade300,
+                            child: Icon(Icons.person, size: 40, color: Colors.white),
                           ),
-                          SizedBox(height: 8.h,),
-                          Row(
-                            children: [
-                              SvgPicture.asset(AppIcons.dotIconForFamily),
-                              SizedBox(width: 4),
-                              Text("Contribution: ${invitation['contribution']}",
-                                style: AppStyles.fontSize10(color: AppColors.color414141),
-                              ),
-                            ],
+                          SizedBox(width: 12.w),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  fullName,
+                                  style: AppStyles.fontSize16(
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.color414141,
+                                  ),
+                                ),
+                                SizedBox(height: 8.h),
+                                Row(
+                                  children: [
+                                    SvgPicture.asset(AppIcons.dotIconForFamily),
+                                    SizedBox(width: 4),
+                                    Expanded(
+                                      child: Text(
+                                        requester['email'] ?? 'N/A',
+                                        style: AppStyles.fontSize10(
+                                          color: AppColors.color414141,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 8.h),
+                                Row(
+                                  children: [
+                                    SvgPicture.asset(AppIcons.dotIconForFamily),
+                                    SizedBox(width: 4),
+                                    Text(
+                                      "Username: ${requester['username'] ?? 'N/A'}",
+                                      style: AppStyles.fontSize10(
+                                        color: AppColors.color414141,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
+                      SizedBox(height: 10.h),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: CustomButton(
+                              onTap: () {
+                                connectionController
+                                    .rejectConnection(invitation['id']);
+                              },
+                              text: 'Ignore',
+                              textStyle: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              color: AppColors.fillColor,
+                              borderColor: AppColors.buttonA47059,
+                              textColor: AppColors.blackColor,
+                            ),
+                          ),
+                          SizedBox(width: 10.w),
+                          Expanded(
+                            child: CustomButton(
+                              onTap: () {
+                                connectionController
+                                    .acceptConnection(invitation['id']);
+                              },
+                              text: 'Accept',
+                              textStyle: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              color: AppColors.buttonA47059,
+                              borderColor: AppColors.buttonA47059,
+                              textColor: AppColors.textColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 8.w),
+                        child: Divider(
+                          thickness: 0.5,
+                          color: AppColors.greyColor,
+                        ),
+                      ),
                     ],
                   ),
-                  SizedBox(height: 10.h),
-                  Row(
-                    children: [
-                      Expanded(
-                          child:CustomButton(
-                            onTap: (){},
-                            text: 'Ignore',textStyle: TextStyle(fontSize: 16,fontWeight: FontWeight.w500),
-                            color: AppColors.fillColor,
-                            borderColor: AppColors.buttonA47059,
-                            textColor: AppColors.blackColor,
-                          )
-                      ),
-                      SizedBox(width: 10.w),
-                      Expanded(
-                          child:CustomButton(
-                            onTap: (){},
-                            text: 'Accept',textStyle: TextStyle(fontSize: 16,fontWeight: FontWeight.w500),
-                            color: AppColors.buttonA47059,
-                            borderColor: AppColors.buttonA47059,
-                            textColor: AppColors.textColor,
-                          )
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8.w),
-                    child:  Divider(thickness: .5,color: AppColors.greyColor,),
-                  )
-
-
-                ],
-
-              ),
-
-
-            );
-          },
-        ),
-        if (invitations.isNotEmpty)
-        Positioned(
-          bottom: 15,
-          left: 0,
-          right: 0,
-          child: Padding(
-            padding: EdgeInsets.all(12.r),
-            child: Row(
-              children: [
-                Expanded(
-                    child:CustomButton(
-                      onTap: (){},
-                      text: 'Ignore All',textStyle: TextStyle(fontSize: 16,fontWeight: FontWeight.w500),
-                      color: AppColors.fillColor,
-                      borderColor: AppColors.buttonColor,
-                      textColor: AppColors.blackColor,
-                    )
-                ),
-                SizedBox(width: 10.w),
-                Expanded(
-                    child:CustomButton(
-                      onTap: (){},
-                      text: 'Accept All',textStyle: TextStyle(fontSize: 16,fontWeight: FontWeight.w500),
-                      color: AppColors.buttonColor,
-                      borderColor: AppColors.buttonA47059,
-                      textColor: AppColors.textColor,
-                    )
-                ),
-              ],
+                );
+              },
             ),
-          ),
-        ),
-      ],
-      ),
-
+          if (connectionController.invitations.isNotEmpty)
+            Positioned(
+              bottom: 15,
+              left: 0,
+              right: 0,
+              child: Padding(
+                padding: EdgeInsets.all(12.r),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: CustomButton(
+                        onTap: () {
+                          connectionController.rejectAllConnections();
+                        },
+                        text: 'Ignore All',
+                        textStyle: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        color: AppColors.fillColor,
+                        borderColor: AppColors.buttonColor,
+                        textColor: AppColors.blackColor,
+                      ),
+                    ),
+                    SizedBox(width: 10.w),
+                    Expanded(
+                      child: CustomButton(
+                        onTap: () {
+                          connectionController.acceptAllConnections();
+                        },
+                        text: 'Accept All',
+                        textStyle: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        color: AppColors.buttonColor,
+                        borderColor: AppColors.buttonA47059,
+                        textColor: AppColors.textColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          if (connectionController.isLoadingInvitations.value)
+            Positioned(
+              bottom: 80,
+              left: 0,
+              right: 0,
+              child: Center(
+                child: CircularProgressIndicator(
+                  color: AppColors.primaryColor,
+                ),
+              ),
+            ),
+        ],
+      )),
     );
   }
 }

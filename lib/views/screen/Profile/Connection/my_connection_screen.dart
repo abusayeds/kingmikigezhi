@@ -1,3 +1,4 @@
+import 'package:event_sharing/controllers/connection_controller.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:event_sharing/views/screen/Profile/Connection/remove_connection_screen.dart';
@@ -17,6 +18,9 @@ class MyConnectionScreen extends StatefulWidget {
 class _MyConnectionScreenState extends State<MyConnectionScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  final ConnectionController connectionController = Get.put(ConnectionController(
+    sharedPreferences: Get.find(),
+  ));
 
   @override
   void initState() {
@@ -75,18 +79,18 @@ class _MyConnectionScreenState extends State<MyConnectionScreen>
                   ),
                   child: Align(
                     alignment: Alignment.center,
-                    child: CustomText(
-                      text: 'New Invitations(30)',
+                    child: Obx(() => CustomText(
+                      text: 'New Invitations(${connectionController.invitationTotal.value})',
                       color: _tabController.index == 0
                           ? Colors.white
                           : Colors.black,
                       fontWeight: FontWeight.w500,
                       fontsize: 14.sp,
-                    ),
+                    )),
                   ),
                 ),
               ),
-              //========================> Tab 01  <====================
+              //========================> Tab 02  <====================
               Tab(
                 child: Container(
                   decoration: BoxDecoration(
@@ -100,14 +104,14 @@ class _MyConnectionScreenState extends State<MyConnectionScreen>
                   ),
                   child: Align(
                     alignment: Alignment.center,
-                    child: CustomText(
-                      text:  'Connections(30)',
+                    child: Obx(() => CustomText(
+                      text:  'Connections(${connectionController.connectionTotal.value})',
                       color: _tabController.index == 1
                           ? Colors.white
                           : Colors.black,
                       fontWeight: FontWeight.w500,
                       fontsize: 14.sp,
-                    ),
+                    )),
                   ),
                 ),
               ),
