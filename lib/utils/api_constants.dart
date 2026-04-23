@@ -54,6 +54,23 @@ class ApiConstants {
 
 
 
+
+
+  //Connections
+  static const String createConnections = '$apiUrl/connections/requests/create';
+  static const String suggestConnections = '$apiUrl/connections/suggestions';
+  static const String myConnections = '$apiUrl/connections/my-connections';
+  static const String sendRequestConnections = '$apiUrl/connections/requests/sent';
+  static const String reciveRequestConnections = '$apiUrl/connections/requests/received';
+  static const String acceptRequestConnection = '$apiUrl/connections/requests/accept/{{id}}';
+  static const String rejectRequestConnection = '$apiUrl/connections/requests/reject/{{id}}';
+  static const String cancelRequestConnection = '$apiUrl/connections/requests/cancel/{{id}}';
+  static const String removeRequestConnection = '$apiUrl/connections/requests/remove/{{id}}';
+
+
+
+
+
   // Storage keys
   static const String keyAccessToken = 'access_token';
   static const String keyRefreshToken = 'refresh_token';

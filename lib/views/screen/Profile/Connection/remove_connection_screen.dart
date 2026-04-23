@@ -1,3 +1,4 @@
+import 'package:event_sharing/controllers/connection_controller.dart';
 import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_icons.dart';
@@ -17,32 +18,48 @@ class AddedConneectionScreen extends StatefulWidget {
 }
 
 class _AddedConneectionScreenState extends State<AddedConneectionScreen> {
+  late ConnectionController connectionController;
   TextEditingController _searchController = TextEditingController();
-  final List<Map<String, dynamic>> invitations = [
-    {
-      "name": "Alax Tom",
-      "accountID": 2010,
-      "contribution": 100,
-    },
-    {
-      "name": "Mahafujer",
-      "accountID": 2011,
-      "contribution": 150,
-    },
-    {
-      "name": "Rahman MunnA",
-      "accountID": 2012,
-      "contribution": 200,
-    },
-  ];
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    connectionController = Get.find<ConnectionController>();
+    _searchController.addListener(_onSearchChanged);
+    _scrollController.addListener(_scrollListener);
+  }
+
+  @override
+  void dispose() {
+    _searchController.removeListener(_onSearchChanged);
+    _searchController.dispose();
+    _scrollController.removeListener(_scrollListener);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onSearchChanged() {
+    connectionController.searchQuery.value = _searchController.text;
+  }
+
+  void _scrollListener() {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      if (connectionController.hasMoreConnections.value &&
+          !connectionController.isLoadingConnections.value) {
+        connectionController.fetchConnections(isRefresh: false);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body: Obx(() => Column(
         children: [
           Padding(
-            padding:  EdgeInsets.symmetric(horizontal: 15.h,vertical: 8.w),
+            padding: EdgeInsets.symmetric(horizontal: 15.h, vertical: 8.w),
             child: CustomTextField(
               controller: _searchController,
               contenpaddingHorizontal: 12.w,
@@ -60,115 +77,155 @@ class _AddedConneectionScreenState extends State<AddedConneectionScreen> {
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              itemCount: invitations.length,
-              itemBuilder: (context, index) {
-                final invitation = invitations[index];
-                return Padding(
-                  padding:  EdgeInsets.symmetric(vertical: 8.h,horizontal: 4.h),
-                  child: Container(
-                    padding: EdgeInsets.all(12..r),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10.r),
+            child: connectionController.getFilteredConnections().isEmpty &&
+                    connectionController.connections.isEmpty &&
+                    !connectionController.isLoadingConnections.value
+                ? Center(
+                    child: Text(
+                      'No connections',
+                      style: AppStyles.fontSize16(color: AppColors.color414141),
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            CircleAvatar(
-                              radius: 45.r,
-                              backgroundColor: Colors.grey.shade300,
-                              child: Icon(Icons.person, size: 40, color: Colors.white),
-                            ),
-                            SizedBox(width: 4.w),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Alax Tom', style: AppStyles.fontSize16(fontWeight: FontWeight.w600,color: AppColors.color414141),),
-                                SizedBox(height: 8),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
+                  )
+                : ListView.builder(
+                    controller: _scrollController,
+                    itemCount: connectionController.getFilteredConnections().length,
+                    itemBuilder: (context, index) {
+                      final connection =
+                          connectionController.getFilteredConnections()[index];
+                      final requester = connection['requester'];
+                      final firstName = requester['firstName'] ?? 'Unknown';
+                      final lastName = requester['lastName'] ?? '';
+                      final fullName = '$firstName $lastName'.trim();
+                      final email = requester['email'] ?? 'N/A';
+                      final username = requester['username'] ?? 'N/A';
+
+                      return Padding(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 8.h,
+                          horizontal: 4.h,
+                        ),
+                        child: Container(
+                          padding: EdgeInsets.all(12.r),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  CircleAvatar(
+                                    radius: 45.r,
+                                    backgroundColor: Colors.grey.shade300,
+                                    child: Icon(Icons.person,
+                                        size: 40, color: Colors.white),
+                                  ),
+                                  SizedBox(width: 12.w),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        SvgPicture.asset(AppIcons.dotIconForFamily),
-                                        SizedBox(width: 4),
                                         Text(
-                                          "Account ID: ${invitation['accountID']}",
-                                          style: AppStyles.fontSize10(color: AppColors.color414141),
+                                          fullName,
+                                          style: AppStyles.fontSize16(
+                                            fontWeight: FontWeight.w600,
+                                            color: AppColors.color414141,
+                                          ),
+                                        ),
+                                        SizedBox(height: 8),
+                                        Row(
+                                          children: [
+                                            SvgPicture.asset(
+                                              AppIcons.dotIconForFamily,
+                                            ),
+                                            SizedBox(width: 4),
+                                            Expanded(
+                                              child: Text(
+                                                'Username: $username',
+                                                style:
+                                                    AppStyles.fontSize10(
+                                                  color:
+                                                      AppColors.color414141,
+                                                ),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(height: 8),
+                                        Row(
+                                          children: [
+                                            SvgPicture.asset(
+                                              AppIcons.dotIconForFamily,
+                                            ),
+                                            SizedBox(width: 4),
+                                            Expanded(
+                                              child: Text(
+                                                'Email: $email',
+                                                style:
+                                                    AppStyles.fontSize10(
+                                                  color:
+                                                      AppColors.color414141,
+                                                ),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),
-                                    SizedBox(width: 40),
-                                    Row(
-                                      children: [
-                                        SvgPicture.asset(AppIcons.dotIconForFamily),
-                                        SizedBox(width: 4),
-                                        Text(
-                                          "Contribution: ${invitation['contribution']}",
-                                          style: AppStyles.fontSize10(color: AppColors.color414141),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 10),
+                              CustomButton(
+                                onTap: () {
+                                  _showCustomDeleteBottomSheet(
+                                    context,
+                                    connection['id'],
+                                    fullName,
+                                  );
+                                },
+                                text: 'Remove',
+                                textStyle: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
                                 ),
-                                SizedBox(height: 8),
-                                Row(
-                                  children: [
-                                    SvgPicture.asset(AppIcons.dotIconForFamily),
-                                    SizedBox(width: 4),
-                                    Text("Phone: 123456789",
-                                      style: AppStyles.fontSize10(color: AppColors.color414141),
-                                    ),
-                                  ],
+                                color: AppColors.colorD9A951,
+                                borderColor: AppColors.colorD9A951,
+                                textColor: AppColors.textColor,
+                              ),
+                              SizedBox(width: 10),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Divider(
+                                  thickness: 0.5,
+                                  color: AppColors.greyColor,
                                 ),
-                                SizedBox(height: 8),
-                                Row(
-                                  children: [
-                                    SvgPicture.asset(AppIcons.dotIconForFamily),
-                                    SizedBox(width: 4),
-                                    Text("Email: mahafujer@gmail.com",
-                                      style: AppStyles.fontSize10(color: AppColors.color414141),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
+                              )
+                            ],
+                          ),
                         ),
-                        SizedBox(height: 10),
-                        CustomButton(
-                          onTap: (){
-                            _showCustomDeleteBottomSheet(context);
-                          },
-                          text: 'Remove',textStyle: TextStyle(fontSize: 16,fontWeight: FontWeight.w500),
-                          color: AppColors.colorD9A951,
-                          borderColor: AppColors.colorD9A951,
-                          textColor: AppColors.textColor,
-                        ),
-                        SizedBox(width: 10),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child:  Divider(thickness: .5,color: AppColors.greyColor,),
-                        )
-                      ],
-
-                    ),
-
+                      );
+                    },
                   ),
-                );
-              },
-            ),
           ),
+          if (connectionController.isLoadingConnections.value)
+            Padding(
+              padding: EdgeInsets.all(16.r),
+              child: CircularProgressIndicator(
+                color: AppColors.primaryColor,
+              ),
+            ),
         ],
-      ),
+      )),
     );
   }
 
-  //=========================>>>>>  Log out Custom BottomSheet    <<<================================
-  void _showCustomDeleteBottomSheet(BuildContext context) {
+  void _showCustomDeleteBottomSheet(BuildContext context, String connectionId,
+      String connectionName) {
     showModalBottomSheet(
       context: context,
       shape: RoundedRectangleBorder(
@@ -192,8 +249,15 @@ class _AddedConneectionScreenState extends State<AddedConneectionScreen> {
               SizedBox(height: 20.h),
               Divider(thickness: 1, color: AppColors.greyColor),
               SizedBox(height: 20.h),
-              Text("Remove", style: AppStyles.fontSize20(color: AppColors.primaryColor,fontWeight: FontWeight.w600),),
-              Text("Are you sure to remove Alax Tom ??",
+              Text(
+                "Remove",
+                style: AppStyles.fontSize20(
+                  color: AppColors.primaryColor,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              Text(
+                "Are you sure to remove $connectionName ??",
                 style: AppStyles.fontSize18(color: AppColors.borderColor),
               ),
               SizedBox(height: 20.h),
@@ -206,23 +270,27 @@ class _AddedConneectionScreenState extends State<AddedConneectionScreen> {
                       },
                       style: ElevatedButton.styleFrom(
                         minimumSize: Size(double.infinity, 58),
-                        backgroundColor:  AppColors.colorEDF2F4,
-                        side: BorderSide(
-                            width: 1,
-                            color: AppColors.greyColor),
+                        backgroundColor: AppColors.colorEDF2F4,
+                        side: BorderSide(width: 1, color: AppColors.greyColor),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(100),
                         ),
                       ),
-                      child:Text('Cancel',
-                        style: AppStyles.fontSize16(color: AppColors.primaryColor),
+                      child: Text(
+                        'Cancel',
+                        style: AppStyles.fontSize16(
+                          color: AppColors.primaryColor,
+                        ),
                       ),
                     ),
                   ),
                   SizedBox(width: 16.w),
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        connectionController.removeConnection(connectionId);
+                        Get.back();
+                      },
                       style: ElevatedButton.styleFrom(
                         minimumSize: Size(double.infinity, 58),
                         backgroundColor: AppColors.primaryColor,
@@ -230,8 +298,11 @@ class _AddedConneectionScreenState extends State<AddedConneectionScreen> {
                           borderRadius: BorderRadius.circular(100.r),
                         ),
                       ),
-                      child: Text('Yes',
-                        style:  AppStyles.fontSize16(color: AppColors.backgroundColor),
+                      child: Text(
+                        'Yes',
+                        style: AppStyles.fontSize16(
+                          color: AppColors.backgroundColor,
+                        ),
                       ),
                     ),
                   ),
