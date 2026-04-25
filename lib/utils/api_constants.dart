@@ -80,4 +80,35 @@ class ApiConstants {
   static const String keyIsLoggedIn = 'is_logged_in';
   static const String keyUserEmail = 'user_email_for_otp';
   static const String keySessionId = 'session_id';
+
+
+  // Categories
+
+
+
+
+
+
+
+
+   // Events
+  static const String createEvent = '$apiUrl/events';
+  static const String todayEvents= '$apiUrl/events/feed/today';
+  static const String getActiveEvents = '$apiUrl/events/feed/active';
+  static const String getUpcomingEvents = '$apiUrl/events/feed/upcoming';
+  static const String getHistoryEvents = '$apiUrl/events/feed/history';
+  static const String getEventsDetails = '$apiUrl/events/cc7da7b1-bcca-4d7f-8a40-6a9b79d218ef';
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
