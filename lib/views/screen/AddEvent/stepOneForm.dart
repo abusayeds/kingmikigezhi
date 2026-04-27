@@ -32,24 +32,57 @@ class _SteponeformState extends State<Steponeform> {
   final TextEditingController registrationPortal = TextEditingController();
   final TextEditingController descriptionCRTL = TextEditingController();
   final TextEditingController noteCRTL = TextEditingController();
+  final TextEditingController sessionNumberController = TextEditingController();
 
   var parameter = Get.parameters;
   Uint8List? coverImage;
   List<Uint8List?> eventImages = [null, null, null, null];
   File? selectedImage;
 
-  final List<String> numberList = ['Concert', 'Sports', 'Show', 'Olympic game'];
   final List<String> programList = ['Program One', 'Program Two', 'Program Three'];
-  final List<String> yearList = ['2020', '2021', '2024'];
-  final List<String> sessionList = ['One', 'Two', 'Three'];
 
-  // Get the existing controller instance instead of creating a new one
-  final Addeventcontroller addEventController = Get.find<Addeventcontroller>();
+  // Generate year list: current year -4 to +4
+  List<String> get yearList {
+    final currentYear = DateTime.now().year;
+    return List.generate(9, (i) => (currentYear - 4 + i).toString());
+  }
 
-  String? _selectedProgram;
-  String? _selectedNumber;
-  String? _selectedSession;
+  // Session frequency options
+  final List<String> sessionFrequencyList = ['Daily', 'Weekly', 'Monthly', 'Quarterly', 'Yearly'];
+
+  // Sub-options per frequency
+  final Map<String, List<String>> sessionSubOptions = {
+    'Daily': ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+    'Weekly': ['Week One', 'Week Two', 'Week Three', 'Week Four'],
+    'Monthly': [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ],
+    'Quarterly': ['Quarter One', 'Quarter Two', 'Quarter Three', 'Quarter Four'],
+    'Yearly': [],
+  };
+
+  // Is Repeated toggle & dropdown
+  bool _isRepeated = false;
+  String? _selectedRepeatOption;
+
+  // Repeat options shown in toggle dropdown
+  final List<String> repeatOptions = [
+    'Don\'t Repeat',
+    'Daily',
+    'Weekly',
+    'Monthly',
+    'Quarterly',
+    'Yearly',
+  ];
+
+  // Session section fields
   String? _selectedYear;
+  String? _selectedSessionFrequency;
+  String? _selectedSessionSubOption;
+
+  final Addeventcontroller addEventController = Get.find<Addeventcontroller>();
+  String? _selectedProgram;
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +99,7 @@ class _SteponeformState extends State<Steponeform> {
             child: Text('Step 1: Basic',
                 style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
           ),
+
           // Cover Image Section
           DottedBorderContainer(
             child: AspectRatio(
@@ -76,167 +110,299 @@ class _SteponeformState extends State<Steponeform> {
                       (image) => setState(() => coverImage = image))),
             ),
           ),
-          SizedBox(height: 23.h),
-          DottedBorderContainer(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Session Number',
-                      style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20.w),
-                    decoration: BoxDecoration(
-                      color: AppColors.fillColor,
-                      borderRadius: BorderRadius.circular(8.r),
-                      border: Border.all(color: AppColors.primaryColor, width: 1),
-                    ),
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton<String>(
-                        padding: EdgeInsets.symmetric(vertical: 0.w),
-                        value: _selectedNumber,
-                        dropdownColor: AppColors.fillColor,
-                        menuWidth: 240.w,
-                        borderRadius: BorderRadius.circular(8.r),
-                        hint: Text("Select Number",
-                            style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
-                        icon: SvgPicture.asset(
-                          AppIcons.downArrowIcon,
-                          width: 16.w,
-                          color: AppColors.primaryColor,
-                        ),
-                        isExpanded: true,
-                        items: numberList.map((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(
-                              value,
-                              style: const TextStyle(color: Colors.black),
-                            ),
-                          );
-                        }).toList(),
-                        onChanged: (newValue) {
-                          setState(() {
-                            _selectedNumber = newValue;
-                          });
-                        },
-                      ),
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(4),
-                        child: Text(
-                          'Year',
-                          style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600),
-                        ),
-                      ),
-                      SizedBox(width: 120.w),
-                      Padding(
-                        padding: const EdgeInsets.all(4),
-                        child: Text(
-                          'Session',
-                          style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 20.w),
-                          decoration: BoxDecoration(
-                            color: AppColors.fillColor,
-                            borderRadius: BorderRadius.circular(8.r),
-                            border: Border.all(color: AppColors.primaryColor, width: 1),
-                          ),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton<String>(
-                              padding: EdgeInsets.symmetric(vertical: 0.w),
-                              value: _selectedYear,
-                              dropdownColor: AppColors.fillColor,
-                              menuWidth: 240.w,
-                              borderRadius: BorderRadius.circular(8.r),
-                              hint: Text("Year",
-                                  style: AppStyles.fontSize14(color: AppColors.color414141)),
-                              icon: SvgPicture.asset(
-                                AppIcons.downArrowIcon,
-                                width: 16.w,
-                                color: AppColors.primaryColor,
-                              ),
-                              isExpanded: true,
-                              items: yearList.map((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(
-                                    value,
-                                    style: const TextStyle(color: Colors.black),
-                                  ),
-                                );
-                              }).toList(),
-                              onChanged: (newValue) {
-                                setState(() {
-                                  _selectedYear = newValue;
-                                });
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 8.w),
-                      Expanded(
-                        child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 20.w),
-                          decoration: BoxDecoration(
-                            color: AppColors.fillColor,
-                            borderRadius: BorderRadius.circular(8.r),
-                            border: Border.all(color: AppColors.primaryColor, width: 1),
-                          ),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton<String>(
-                              padding: EdgeInsets.symmetric(vertical: 0.w),
-                              value: _selectedSession,
-                              dropdownColor: AppColors.fillColor,
-                              menuWidth: 240.w,
-                              borderRadius: BorderRadius.circular(8.r),
-                              hint: Text("Session",
-                                  style: AppStyles.fontSize14(color: AppColors.color414141)),
-                              icon: SvgPicture.asset(
-                                AppIcons.downArrowIcon,
-                                width: 16.w,
-                                color: AppColors.primaryColor,
-                              ),
-                              isExpanded: true,
-                              items: sessionList.map((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(
-                                    value,
-                                    style: const TextStyle(color: Colors.black),
-                                  ),
-                                );
-                              }).toList(),
-                              onChanged: (newValue) {
-                                setState(() {
-                                  _selectedSession = newValue;
-                                });
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
           SizedBox(height: 16.h),
 
+          // ── Is Repeated Toggle ──
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    'Is Repeated ?',
+                    style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600),
+                  ),
+                  if (_isRepeated && _selectedRepeatOption != null) ...[
+                    SizedBox(width: 8.w),
+                    Text(
+                      '($_selectedRepeatOption)',
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        color: const Color(0xFF4C7E95),
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ]
+                ],
+              ),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _isRepeated = !_isRepeated;
+                    if (!_isRepeated) {
+                      _selectedRepeatOption = null;
+                    }
+                  });
+                },
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  width: 46.w,
+                  height: 26.h,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(13.r),
+                    color: _isRepeated
+                        ? const Color(0xFF4C7E95)
+                        : Colors.grey.shade400,
+                  ),
+                  child: AnimatedAlign(
+                    duration: const Duration(milliseconds: 200),
+                    alignment: _isRepeated
+                        ? Alignment.centerRight
+                        : Alignment.centerLeft,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 3.w),
+                      child: Container(
+                        width: 20.w,
+                        height: 20.h,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+
+          // ── Repeat Dropdown (shown when toggle is ON) ──
+          if (_isRepeated) ...[
+            SizedBox(height: 12.h),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              decoration: BoxDecoration(
+                color: AppColors.fillColor,
+                borderRadius: BorderRadius.circular(8.r),
+                border: Border.all(color: AppColors.primaryColor, width: 1),
+              ),
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<String>(
+                  padding: EdgeInsets.symmetric(vertical: 0.w),
+                  value: _selectedRepeatOption,
+                  dropdownColor: AppColors.fillColor,
+                  menuWidth: 240.w,
+                  borderRadius: BorderRadius.circular(8.r),
+                  hint: Text("Select Repeat Option",
+                      style: AppStyles.fontSize14(color: AppColors.color414141)),
+                  icon: SvgPicture.asset(
+                    AppIcons.downArrowIcon,
+                    width: 16.w,
+                    color: AppColors.primaryColor,
+                  ),
+                  isExpanded: true,
+                  items: repeatOptions.map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value, style: const TextStyle(color: Colors.black)),
+                    );
+                  }).toList(),
+                  onChanged: (newValue) {
+                    setState(() {
+                      _selectedRepeatOption = newValue;
+                    });
+                  },
+                ),
+              ),
+            ),
+          ],
+
+          SizedBox(height: 23.h),
+
+          // ── Session Section (shown when toggle is OFF) ──
+          if (!_isRepeated)
+            DottedBorderContainer(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Session Number - TextField
+                    Text('Session Number',
+                        style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
+                    SizedBox(height: 8.h),
+                    SizedBox(
+                      height: 50.h,
+                      child: CustomTextField(
+                        controller: sessionNumberController,
+                        hintText: 'Enter Session Number',
+                        hintTextStyle: AppStyles.fieldContent(color: AppColors.color414141),
+                        sufixicons: Padding(padding: EdgeInsets.all(16.w)),
+                      ),
+                    ),
+                    SizedBox(height: 12.h),
+
+                    // Year & Session row labels
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(4),
+                          child: Text('Year',
+                              style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
+                        ),
+                        SizedBox(width: 120.w),
+                        Padding(
+                          padding: const EdgeInsets.all(4),
+                          child: Text('Session',
+                              style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
+                        ),
+                      ],
+                    ),
+
+                    // Year & Session Frequency row
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // Year Dropdown
+                        Expanded(
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 20.w),
+                            decoration: BoxDecoration(
+                              color: AppColors.fillColor,
+                              borderRadius: BorderRadius.circular(8.r),
+                              border: Border.all(color: AppColors.primaryColor, width: 1),
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton<String>(
+                                padding: EdgeInsets.symmetric(vertical: 0.w),
+                                value: _selectedYear,
+                                dropdownColor: AppColors.fillColor,
+                                menuWidth: 240.w,
+                                borderRadius: BorderRadius.circular(8.r),
+                                hint: Text("Year",
+                                    style: AppStyles.fontSize14(color: AppColors.color414141)),
+                                icon: SvgPicture.asset(
+                                  AppIcons.downArrowIcon,
+                                  width: 16.w,
+                                  color: AppColors.primaryColor,
+                                ),
+                                isExpanded: true,
+                                items: yearList.map((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value,
+                                        style: const TextStyle(color: Colors.black)),
+                                  );
+                                }).toList(),
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    _selectedYear = newValue;
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 8.w),
+
+                        // Session Frequency Dropdown
+                        Expanded(
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 20.w),
+                            decoration: BoxDecoration(
+                              color: AppColors.fillColor,
+                              borderRadius: BorderRadius.circular(8.r),
+                              border: Border.all(color: AppColors.primaryColor, width: 1),
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton<String>(
+                                padding: EdgeInsets.symmetric(vertical: 0.w),
+                                value: _selectedSessionFrequency,
+                                dropdownColor: AppColors.fillColor,
+                                menuWidth: 240.w,
+                                borderRadius: BorderRadius.circular(8.r),
+                                hint: Text("Session",
+                                    style: AppStyles.fontSize14(color: AppColors.color414141)),
+                                icon: SvgPicture.asset(
+                                  AppIcons.downArrowIcon,
+                                  width: 16.w,
+                                  color: AppColors.primaryColor,
+                                ),
+                                isExpanded: true,
+                                items: sessionFrequencyList.map((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value,
+                                        style: const TextStyle(color: Colors.black)),
+                                  );
+                                }).toList(),
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    _selectedSessionFrequency = newValue;
+                                    _selectedSessionSubOption = null; // reset sub
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    // Sub-option Dropdown (shown when frequency is selected and has sub-options)
+                    if (_selectedSessionFrequency != null &&
+                        (sessionSubOptions[_selectedSessionFrequency!]?.isNotEmpty ?? false)) ...[
+                      SizedBox(height: 12.h),
+                      Text(_selectedSessionFrequency!,
+                          style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
+                      SizedBox(height: 8.h),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 20.w),
+                        decoration: BoxDecoration(
+                          color: AppColors.fillColor,
+                          borderRadius: BorderRadius.circular(8.r),
+                          border: Border.all(color: AppColors.primaryColor, width: 1),
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            padding: EdgeInsets.symmetric(vertical: 0.w),
+                            value: _selectedSessionSubOption,
+                            dropdownColor: AppColors.fillColor,
+                            menuWidth: 240.w,
+                            borderRadius: BorderRadius.circular(8.r),
+                            hint: Text("Select ${_selectedSessionFrequency!}",
+                                style: AppStyles.fontSize14(color: AppColors.color414141)),
+                            icon: SvgPicture.asset(
+                              AppIcons.downArrowIcon,
+                              width: 16.w,
+                              color: AppColors.primaryColor,
+                            ),
+                            isExpanded: true,
+                            items: sessionSubOptions[_selectedSessionFrequency!]!
+                                .map((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value,
+                                    style: const TextStyle(color: Colors.black)),
+                              );
+                            }).toList(),
+                            onChanged: (newValue) {
+                              setState(() {
+                                _selectedSessionSubOption = newValue;
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            ),
+
+          SizedBox(height: 16.h),
+
+          // ── Program ──
           Text('Program', style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
           SizedBox(height: 12.h),
           Container(
@@ -264,10 +430,7 @@ class _SteponeformState extends State<Steponeform> {
                 items: programList.map((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
-                    child: Text(
-                      value,
-                      style: const TextStyle(color: Colors.black),
-                    ),
+                    child: Text(value, style: const TextStyle(color: Colors.black)),
                   );
                 }).toList(),
                 onChanged: (newValue) {
@@ -279,7 +442,7 @@ class _SteponeformState extends State<Steponeform> {
             ),
           ),
 
-          // Organization Name
+          // ── Organizer ──
           SizedBox(height: 16.h),
           Text('Organizer', style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
           SizedBox(height: 12.h),
@@ -289,13 +452,11 @@ class _SteponeformState extends State<Steponeform> {
               controller: organizerController,
               hintText: 'Type Organizer',
               hintTextStyle: AppStyles.fieldContent(color: AppColors.color414141),
-              sufixicons: Padding(
-                padding: EdgeInsets.all(16.w),
-              ),
+              sufixicons: Padding(padding: EdgeInsets.all(16.w)),
             ),
           ),
 
-          // Event Name
+          // ── Event Name ──
           SizedBox(height: 16.h),
           Text('Event Name', style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
           SizedBox(height: 12.h),
@@ -305,13 +466,11 @@ class _SteponeformState extends State<Steponeform> {
               controller: eventName,
               hintText: 'Type Event Name',
               hintTextStyle: AppStyles.fieldContent(color: AppColors.color414141),
-              sufixicons: Padding(
-                padding: EdgeInsets.all(16.w),
-              ),
+              sufixicons: Padding(padding: EdgeInsets.all(16.w)),
             ),
           ),
 
-          // Event Portal Name
+          // ── Event Portal ──
           SizedBox(height: 16.h),
           Text('Event Portal', style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
           SizedBox(height: 12.h),
@@ -321,15 +480,14 @@ class _SteponeformState extends State<Steponeform> {
               controller: eventPortal,
               hintText: 'Type Event Portal',
               hintTextStyle: AppStyles.fieldContent(color: AppColors.color414141),
-              sufixicons: Padding(
-                padding: EdgeInsets.all(16.w),
-              ),
+              sufixicons: Padding(padding: EdgeInsets.all(16.w)),
             ),
           ),
 
-          // Registration Portal Name
+          // ── Registration Portal ──
           SizedBox(height: 16.h),
-          Text('Registration Portal', style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
+          Text('Registration Portal',
+              style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
           SizedBox(height: 12.h),
           SizedBox(
             height: 50.h,
@@ -337,13 +495,11 @@ class _SteponeformState extends State<Steponeform> {
               controller: registrationPortal,
               hintText: 'Type Registration Portal',
               hintTextStyle: AppStyles.fieldContent(color: AppColors.color414141),
-              sufixicons: Padding(
-                padding: EdgeInsets.all(16.w),
-              ),
+              sufixicons: Padding(padding: EdgeInsets.all(16.w)),
             ),
           ),
 
-          // Description
+          // ── Description ──
           SizedBox(height: 16.h),
           Text('Description', style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
           SizedBox(height: 12.h),
@@ -352,12 +508,10 @@ class _SteponeformState extends State<Steponeform> {
             controller: descriptionCRTL,
             hintText: 'Type your Description...',
             hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
-            sufixicons: Padding(
-              padding: EdgeInsets.all(16.w),
-            ),
+            sufixicons: Padding(padding: EdgeInsets.all(16.w)),
           ),
 
-          // Note
+          // ── Note ──
           SizedBox(height: 16.h),
           Text('Note', style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
           SizedBox(height: 12.h),
@@ -366,11 +520,12 @@ class _SteponeformState extends State<Steponeform> {
             controller: noteCRTL,
             hintText: 'Type your event note',
             hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
-            sufixicons: Padding(
-              padding: EdgeInsets.all(16.w),
-            ),
+            sufixicons: Padding(padding: EdgeInsets.all(16.w)),
           ),
+
           SizedBox(height: 16.h),
+
+          // ── Back / Next Buttons ──
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -378,7 +533,6 @@ class _SteponeformState extends State<Steponeform> {
                 width: 166.w,
                 child: CustomButton(
                   onTap: () {
-                    // Only go back if not on the first step
                     if (addEventController.activeStepIndex.value > 0) {
                       addEventController.activeStepIndex.value--;
                     }
@@ -393,7 +547,6 @@ class _SteponeformState extends State<Steponeform> {
                 width: 166.w,
                 child: CustomButton(
                   onTap: () {
-                    // Move to next step using the controller
                     if (addEventController.activeStepIndex.value < 4) {
                       addEventController.activeStepIndex.value++;
                     }
@@ -412,7 +565,7 @@ class _SteponeformState extends State<Steponeform> {
     );
   }
 
-  _addImageButton(VoidCallback onPressed) {
+  Widget _addImageButton(VoidCallback onPressed) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -434,7 +587,6 @@ class _SteponeformState extends State<Steponeform> {
     );
   }
 
-  // Pick Image
   Future _pickImage(Function(Uint8List) setImage) async {
     final pickedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedImage != null) {
