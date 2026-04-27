@@ -4,15 +4,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
+import '../../../models/event_model.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_icons.dart';
 
 class EventCard extends StatelessWidget {
-  const EventCard({super.key});
+  final EventModel? eventModel;
+  const EventCard({super.key, this.eventModel});
 
   @override
   Widget build(BuildContext context) {
+    String displayDate = '';
+    if (eventModel?.schedule?.registrationDate != null) {
+      displayDate = DateFormat('dd MMM').format(eventModel!.schedule!.registrationDate!);
+    }
+    String deadline = '';
+    if (eventModel?.schedule?.deadline != null) {
+      deadline = DateFormat('d-M-yyyy').format(eventModel!.schedule!.deadline!);
+    }
+
     return Card(
       color: const Color(0xffedf2f4),
       shape: RoundedRectangleBorder(
@@ -33,12 +45,21 @@ class EventCard extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(24.r),
-                  child: Image.asset(
-                    'assets/images/shoot.png',
-                    height: 144.h,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                  ),
+                  child: eventModel?.coverImage != null
+                      ? Image.network(
+                          eventModel!.coverImage!,
+                          height: 144.h,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) =>
+                              Container(height: 144.h, color: Colors.grey, child: const Icon(Icons.image)),
+                        )
+                      : Image.asset(
+                          'assets/images/shoot.png',
+                          height: 144.h,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        ),
                 ),
                 Positioned(
                   right: -4.w,
@@ -54,7 +75,7 @@ class EventCard extends StatelessWidget {
                       padding: EdgeInsets.symmetric(
                           horizontal: 16.w, vertical: 16.h),
                       child: CustomText(
-                        text: '20 Feb',
+                        text: displayDate.isNotEmpty ? displayDate : '20 Feb',
                         fontsize: 10.sp,
                         color: AppColors.white,
                       ),
@@ -79,11 +100,17 @@ class EventCard extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Snowboard Festival', style: GoogleFonts.poppins(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14.sp,
-                            color: const Color(0xFF111111)
-                        )),
+                        Expanded(
+                          child: Text(
+                            eventModel?.eventName ?? 'Snowboard Festival',
+                            style: GoogleFonts.poppins(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp,
+                                color: const Color(0xFF111111)),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                         SvgPicture.asset(
                           AppIcons.share,
                           color: AppColors.primaryColor,
@@ -104,7 +131,7 @@ class EventCard extends StatelessWidget {
                             children: [
                               Icon(Icons.circle, color: AppColors.primaryColor, size: 8.w),
                               SizedBox(width: 4.w),
-                              Text('Onsite Event',style: GoogleFonts.poppins(color: AppColors.color414141,fontSize: 10.sp,fontWeight: FontWeight.w400))
+                              Text(eventModel?.schedule?.eventType ?? 'Onsite Event',style: GoogleFonts.poppins(color: AppColors.color414141,fontSize: 10.sp,fontWeight: FontWeight.w400))
                             ],
                           ),
                           Row(
@@ -112,7 +139,7 @@ class EventCard extends StatelessWidget {
                               Icon(Icons.circle,
                                   color: AppColors.primaryColor, size: 8.w),
                               SizedBox(width: 4.w),
-                              Text('Dhaka Bangladesh',style: GoogleFonts.poppins(color: AppColors.color414141,fontSize: 10.sp,fontWeight: FontWeight.w400),)
+                              Text(eventModel?.location ?? 'Dhaka Bangladesh',style: GoogleFonts.poppins(color: AppColors.color414141,fontSize: 10.sp,fontWeight: FontWeight.w400),)
                             ],
                           ),
                         ],
@@ -126,14 +153,14 @@ class EventCard extends StatelessWidget {
                               Icon(Icons.circle,
                                   color: AppColors.primaryColor, size: 8.w),
                               SizedBox(width: 4.w),
-                              Text('Cost-100',style: GoogleFonts.poppins(color: AppColors.color414141,fontSize: 10.sp,fontWeight: FontWeight.w400),)
+                              Text('Cost-${eventModel?.schedule?.cost ?? '100'}',style: GoogleFonts.poppins(color: AppColors.color414141,fontSize: 10.sp,fontWeight: FontWeight.w400),)
                             ],
                           ),
                           Row(
                             children: [
                               Icon(Icons.circle, color: AppColors.primaryColor, size: 8.w),
                               SizedBox(width: 4.w),
-                              Text('Deadline: 1-6-2025',style: GoogleFonts.poppins(color: AppColors.color414141,fontSize: 10.sp,fontWeight: FontWeight.w400),)
+                              Text('Deadline: ${deadline.isNotEmpty ? deadline : '1-6-2025'}',style: GoogleFonts.poppins(color: AppColors.color414141,fontSize: 10.sp,fontWeight: FontWeight.w400),)
                             ],
                           ),
                         ],

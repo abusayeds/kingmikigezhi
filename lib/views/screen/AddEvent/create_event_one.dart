@@ -151,6 +151,32 @@ class _CreateEventOneState extends State<CreateEventOne> {
                       textAlign: TextAlign.center,
                     ),
                   ),
+                  // EasyStep(
+                  //   customStep: ClipRRect(
+                  //     borderRadius: BorderRadius.circular(20),
+                  //     child: Opacity(
+                  //       opacity: addEventController.activeStepIndex.value >= 3 ? 1 : 0.3,
+                  //       child: Container(
+                  //         color: AppColors.primaryColor,
+                  //         width: 50,
+                  //         height: 50,
+                  //         alignment: Alignment.center,
+                  //         child: const Text(
+                  //           '4',
+                  //           style: TextStyle(
+                  //             fontSize: 24,
+                  //             color: Colors.white,
+                  //             fontWeight: FontWeight.bold,
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ),
+                  //   customTitle: Text(
+                  //     'Config', style: TextStyle(fontSize: 12.sp),
+                  //     textAlign: TextAlign.center,
+                  //   ),
+                  // ),
                   EasyStep(
                     customStep: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
@@ -163,32 +189,6 @@ class _CreateEventOneState extends State<CreateEventOne> {
                           alignment: Alignment.center,
                           child: const Text(
                             '4',
-                            style: TextStyle(
-                              fontSize: 24,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    customTitle: Text(
-                      'Config', style: TextStyle(fontSize: 12.sp),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  EasyStep(
-                    customStep: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Opacity(
-                        opacity: addEventController.activeStepIndex.value >= 4 ? 1 : 0.3,
-                        child: Container(
-                          color: AppColors.primaryColor,
-                          width: 50,
-                          height: 50,
-                          alignment: Alignment.center,
-                          child: const Text(
-                            '5',
                             style: TextStyle(
                               fontSize: 24,
                               color: Colors.white,
@@ -216,9 +216,9 @@ class _CreateEventOneState extends State<CreateEventOne> {
               else if (addEventController.activeStepIndex.value == 2)
                 return const StepThreeForm();
               else if (addEventController.activeStepIndex.value == 3)
-                return const StepFourForm();
-              else if (addEventController.activeStepIndex.value == 4)
                 return const StepFiveForm();
+              // else if (addEventController.activeStepIndex.value == 4)
+              //   return const StepFiveForm();
               else
                 return const Steponeform(); // Default fallback
             }),
