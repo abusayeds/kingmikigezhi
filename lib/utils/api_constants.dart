@@ -92,12 +92,18 @@ class ApiConstants {
 
 
    // Events
+  // Events
   static const String createEvent = '$apiUrl/events';
-  static const String todayEvents= '$apiUrl/events/feed/today';
+  static const String todayEvents = '$apiUrl/events/feed/today';
+  static const String familySelfUsersEvents = '$apiUrl/events/feed/by-family-relation?relationShip=Self';
+  static const String familySpousUsersEvents = '$apiUrl/events/feed/by-family-relation?relationShip=Spous';
+  static const String familyChildStephanieUsersEvents = '$apiUrl/events/feed/by-family-relation?relationShip=ChildStephanie';
+  static const String familyChildSophiaUsersEvents = '$apiUrl/events/feed/by-family-relation?relationShip=ChildSophia';
+  static const String familyOtherUsersEvents = '$apiUrl/events/feed/by-family-relation?relationShip=Other';
   static const String getActiveEvents = '$apiUrl/events/feed/active';
   static const String getUpcomingEvents = '$apiUrl/events/feed/upcoming';
   static const String getHistoryEvents = '$apiUrl/events/feed/history';
-  static const String getEventsDetails = '$apiUrl/events/cc7da7b1-bcca-4d7f-8a40-6a9b79d218ef';
+  static const String getEventsDetails = '$apiUrl/events/:eventId';
 
 
 

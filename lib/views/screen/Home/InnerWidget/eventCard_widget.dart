@@ -4,31 +4,45 @@ import 'package:event_sharing/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
+import '../../../../models/event_model.dart';
 
 class EventCardWidget extends StatelessWidget {
-  final String eventTitle;
-  final String imagePath;
-  final String name;
-  final String eventType;
-  final String address;
-  final String time;
-  final String history;
+  final String? eventTitle;
+  final String? imagePath;
+  final String? name;
+  final String? eventType;
+  final String? address;
+  final String? time;
+  final String? history;
   final Color backgroundColor;
+  final EventModel? eventModel;
 
   const EventCardWidget({
     Key? key,
-    required this.eventTitle,
-    required this.imagePath,
-    required this.name,
-    required this.eventType,
-    required this.address,
-    required this.time,
-    required this.history,
+    this.eventTitle,
+    this.imagePath,
+    this.name,
+    this.eventType,
+    this.address,
+    this.time,
+    this.history,
     required this.backgroundColor,
+    this.eventModel,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    String displayTitle = eventModel?.eventName ?? eventTitle ?? '';
+    String displayName = eventModel?.program?.name ?? name ?? '';
+    String displayType = eventModel?.schedule?.eventType ?? eventType ?? '';
+    String displayAddress = eventModel?.location ?? address ?? '';
+    String displayTime = time ?? '';
+    if (eventModel?.schedule?.registrationDate != null) {
+       displayTime = DateFormat('hh:mm a').format(eventModel!.schedule!.registrationDate!);
+    }
+    String displayHistory = history ?? '';
+
     return Container(
       width: MediaQuery.of(context).size.width * 0.9,
       decoration: BoxDecoration(
@@ -49,12 +63,21 @@ class EventCardWidget extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsets.symmetric(
                         horizontal: 20.w, vertical: 10.h),
-                    child: Image.asset(
-                      imagePath,
-                      width: 85.w,
-                      height: 104.h,
-                      fit: BoxFit.contain,
-                    ),
+                    child: eventModel?.coverImage != null
+                        ? Image.network(
+                            eventModel!.coverImage!,
+                            width: 85.w,
+                            height: 104.h,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) =>
+                                Icon(Icons.image, size: 50.w),
+                          )
+                        : Image.asset(
+                            imagePath ?? '',
+                            width: 85.w,
+                            height: 104.h,
+                            fit: BoxFit.contain,
+                          ),
                   ),
                 ),
                 SizedBox(width: 12.w),
@@ -62,37 +85,40 @@ class EventCardWidget extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-
                       Text(
-                        eventTitle,
+                        displayTitle,
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 16.sp,
                         ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                       SizedBox(height: 12.h),
                       Row(
                         children: [
-                          _buildIconText('$name'),
-                          const Spacer(),
-                          _buildIconText("Type: $eventType"),
+                          Expanded(child: _buildIconText(displayName)),
+                          SizedBox(width: 4.w),
+                          _buildIconText("Type: $displayType"),
                         ],
                       ),
                       SizedBox(height: 8.h),
-                      _buildIconText('$address'),
+                      _buildIconText(displayAddress),
                       SizedBox(height: 8.h),
-                      _buildIconText('$time'),
+                      _buildIconText(displayTime),
+                      if (displayHistory.isNotEmpty) ...[
+                        SizedBox(height: 8.h),
+                        Row(
+                          children: [
+                            SvgPicture.asset(AppIcons.dotIconForFamily),
+                            SizedBox(width: 5.w),
+                            SizedBox(width: 5.w),
+                            Text("History: $displayHistory",
+                                style: AppStyles.fontSize10(color: Colors.black26)),
+                          ],
+                        ),
+                      ],
                       SizedBox(height: 8.h),
-                      Row(
-                        children: [
-                          SvgPicture.asset(AppIcons.dotIconForFamily),
-                          SizedBox(width: 5.w),
-                          SizedBox(width: 5.w),
-                          Text("History: ${history}",style: AppStyles.fontSize10(color: Colors.black26)),
-                        ],
-                      ),
-                      SizedBox(height: 8.h),
-
                     ],
                   ),
                 ),
@@ -114,13 +140,18 @@ class EventCardWidget extends StatelessWidget {
 
   Widget _buildIconText(String text) {
     return Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
         SvgPicture.asset(AppIcons.dotIconForFamily),
         SizedBox(width: 5.w),
         SizedBox(width: 5.w),
-        Text(
-          text,
-          style: TextStyle(fontSize: 10.sp, color: Colors.black),
+        Flexible(
+          child: Text(
+            text,
+            style: TextStyle(fontSize: 10.sp, color: Colors.black),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
         ),
       ],
     );

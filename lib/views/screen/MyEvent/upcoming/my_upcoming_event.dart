@@ -1,15 +1,17 @@
 import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:event_sharing/views/base/custom_text_field.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../../helpers/route.dart';
 import '../../../../../utils/app_colors.dart';
 import '../../../../../utils/app_icons.dart';
 import '../../../../utils/style.dart';
+import '../../../../../controllers/home_controller.dart';
+import '../../../../../models/event_model.dart';
 
 class MyUpcomingEventScreen extends StatefulWidget {
   MyUpcomingEventScreen({super.key});
@@ -19,34 +21,25 @@ class MyUpcomingEventScreen extends StatefulWidget {
 }
 
 class _MyUpcomingEventScreenState extends State<MyUpcomingEventScreen> {
-  final List<Map<String, String>> events = [
-
-    {
-      "imageUrl": "assets/images/music.png",
-      "title": "Bangla Music",
-      "location": "Dhaka, Bangladesh",
-      "time": "10:00 AM",
-    },
-    {
-      "imageUrl": "assets/images/music.png",
-      "title": "Bangla Music",
-      "location": "Dhaka, Bangladesh",
-      "time": "10:00 AM",
-    },
-    {
-      "imageUrl": "assets/images/music.png",
-      "title": "Bangla Music",
-      "location": "Dhaka, Bangladesh",
-      "time": "10:00 AM",
-    },
-    {
-      "imageUrl": "assets/images/music.png",
-      "title": "Bangla Music",
-      "location": "Dhaka, Bangladesh",
-      "time": "10:00 AM",
-    },
-  ];
+  final HomeController _homeController = Get.find<HomeController>();
   final TextEditingController _searchController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+        _homeController.fetchUpcomingEvents(isLoadMore: true);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,146 +53,177 @@ class _MyUpcomingEventScreenState extends State<MyUpcomingEventScreen> {
             SizedBox(height: 16.h),
             //=================================> Event List view <========================
             Expanded(
-              child: ListView.builder(
-                itemCount: events.length,
-                itemBuilder: (context, index) {
-                  final event = events[index];
-                  return GestureDetector(
-                      onTap: () {
-                        Get.toNamed(AppRoutes.eventDetailsScreen);
-                      },
-                      child: Stack(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.symmetric(vertical: 8.h),
-                            decoration: BoxDecoration(
-                              color: const Color(0xffedf2f4),
-                              border: Border.all(color: AppColors.colorC8D7DE, width: 1.w),
-                              borderRadius: BorderRadius.circular(15.r),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 12.h),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  //=====================> Event Image Section <=========================
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(10.r),
-                                    child: Image.asset(
-                                      event['imageUrl']!,
-                                      height: 75.0.h,
-                                      width: 75.0.w,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                  SizedBox(width: 12.w),
-                                  //=====================> Event Details Section <=========================
-                                  Expanded(
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(event['title']!,style: AppStyles.fontSize14(fontWeight: FontWeight.w600)),
-                                        //=====================> Event Info Section <=========================
-                                        Row(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Padding(
-                                                  padding: const EdgeInsets.symmetric(vertical: 3.0),
-                                                  child: Row(
-                                                    children: [
-                                                      SvgPicture.asset(AppIcons.dotIconForFamily),
-                                                      SizedBox(width: 4.w),
-                                                      Text('Onsite Event', style: TextStyle(fontSize: 8.sp, color: AppColors.color414141)),
-                                                    ],
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: const EdgeInsets.symmetric(vertical: 3.0),
-                                                  child: Row(
-                                                    children: [
-                                                      SvgPicture.asset(AppIcons.dotIconForFamily),
-                                                      SizedBox(width: 4.w),
-                                                      Text('Dhaka Bangladesh', style: TextStyle(fontSize: 8.sp, color: AppColors.color414141)),
-                                                    ],
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: const EdgeInsets.symmetric(vertical: 3.0),
-                                                  child: Row(
-                                                    children: [
-                                                      SvgPicture.asset(AppIcons.dotIconForFamily),
-                                                      SizedBox(width: 4.w),
-                                                      Text('History: 2023-1st winner', style: TextStyle(fontSize: 8.sp, color: AppColors.color808080)),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Column(
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Padding(
-                                                  padding: const EdgeInsets.symmetric(vertical: 3.0),
-                                                  child: Row(
-                                                    children: [
-                                                      SvgPicture.asset(AppIcons.dotIconForFamily),
-                                                      SizedBox(width: 4.w),
-                                                      Text('Cost: \$100', style: TextStyle(fontSize: 8.sp, color: AppColors.color414141)),
-                                                    ],
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: const EdgeInsets.symmetric(vertical: 3.0),
-                                                  child: Row(
-                                                    children: [
-                                                      SvgPicture.asset(AppIcons.dotIconForFamily),
-                                                      SizedBox(width: 4.w),
-                                                      Text('Deadline: 1-6-2025', style: TextStyle(fontSize: 8.sp, color: AppColors.color414141)),
-                                                    ],
-                                                  ),
-                                                ),
+              child: Obx(() {
+                if (_homeController.isLoadingUpcoming.value && _homeController.upcomingEvents.isEmpty) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (_homeController.upcomingEvents.isEmpty) {
+                  return const Center(child: Text("No upcoming events"));
+                }
+                return ListView.builder(
+                  controller: _scrollController,
+                  itemCount: _homeController.upcomingEvents.length + (_homeController.upcomingHasNext.value ? 1 : 0),
+                  itemBuilder: (context, index) {
+                    if (index == _homeController.upcomingEvents.length) {
+                      return const Center(child: Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: CircularProgressIndicator(),
+                      ));
+                    }
+                    final EventModel event = _homeController.upcomingEvents[index];
+                    String deadline = '';
+                    if (event.schedule?.deadline != null) {
+                      deadline = DateFormat('d-M-yyyy').format(event.schedule!.deadline!);
+                    }
 
-                                              ],
+                    return GestureDetector(
+                        onTap: () {
+                          Get.toNamed(AppRoutes.eventDetailsScreen, arguments: event.id);
+                        },
+                        child: Stack(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.symmetric(vertical: 8.h),
+                              decoration: BoxDecoration(
+                                color: const Color(0xffedf2f4),
+                                border: Border.all(color: AppColors.colorC8D7DE, width: 1.w),
+                                borderRadius: BorderRadius.circular(15.r),
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 12.h),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    //=====================> Event Image Section <=========================
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(10.r),
+                                      child: event.coverImage != null
+                                          ? Image.network(
+                                              event.coverImage!,
+                                              height: 75.0.h,
+                                              width: 75.0.w,
+                                              fit: BoxFit.cover,
+                                              errorBuilder: (context, error, stackTrace) =>
+                                                  Container(height: 75.h, width: 75.w, color: Colors.grey, child: const Icon(Icons.image)),
+                                            )
+                                          : Image.asset(
+                                              "assets/images/music.png",
+                                              height: 75.0.h,
+                                              width: 75.0.w,
+                                              fit: BoxFit.cover,
                                             ),
-                                          ],
-                                        ),
-                                      ],
                                     ),
-                                  ),
-                                  //=====================> Share Icon <=========================
-                                  GestureDetector(
-                                    onTap: (){
-                                      Get.toNamed(AppRoutes.myInvitationPage);
-                                    },
-                                    child: SvgPicture.asset(
-                                      AppIcons.share,
-                                      width: 16.w,
-                                      height: 16.h,
-                                      color: Colors.blueGrey,
+                                    SizedBox(width: 12.w),
+                                    //=====================> Event Details Section <=========================
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(event.eventName ?? '',style: AppStyles.fontSize14(fontWeight: FontWeight.w600), maxLines: 1, overflow: TextOverflow.ellipsis),
+                                          //=====================> Event Info Section <=========================
+                                          Row(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Expanded(
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Padding(
+                                                      padding: const EdgeInsets.symmetric(vertical: 3.0),
+                                                      child: Row(
+                                                        children: [
+                                                          SvgPicture.asset(AppIcons.dotIconForFamily),
+                                                          SizedBox(width: 4.w),
+                                                          Flexible(child: Text(event.schedule?.eventType ?? 'Onsite Event', style: TextStyle(fontSize: 8.sp, color: AppColors.color414141), maxLines: 1, overflow: TextOverflow.ellipsis)),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding: const EdgeInsets.symmetric(vertical: 3.0),
+                                                      child: Row(
+                                                        children: [
+                                                          SvgPicture.asset(AppIcons.dotIconForFamily),
+                                                          SizedBox(width: 4.w),
+                                                          Flexible(child: Text(event.location ?? 'Dhaka Bangladesh', style: TextStyle(fontSize: 8.sp, color: AppColors.color414141), maxLines: 1, overflow: TextOverflow.ellipsis)),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding: const EdgeInsets.symmetric(vertical: 3.0),
+                                                      child: Row(
+                                                        children: [
+                                                          SvgPicture.asset(AppIcons.dotIconForFamily),
+                                                          SizedBox(width: 4.w),
+                                                          Flexible(child: Text('History: 2023-1st winner', style: TextStyle(fontSize: 8.sp, color: AppColors.color808080), maxLines: 1, overflow: TextOverflow.ellipsis)),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Column(
+                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Padding(
+                                                    padding: const EdgeInsets.symmetric(vertical: 3.0),
+                                                    child: Row(
+                                                      children: [
+                                                        SvgPicture.asset(AppIcons.dotIconForFamily),
+                                                        SizedBox(width: 4.w),
+                                                        Text('Cost: \$${event.schedule?.cost ?? '100'}', style: TextStyle(fontSize: 8.sp, color: AppColors.color414141)),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding: const EdgeInsets.symmetric(vertical: 3.0),
+                                                    child: Row(
+                                                      children: [
+                                                        SvgPicture.asset(AppIcons.dotIconForFamily),
+                                                        SizedBox(width: 4.w),
+                                                        Text('Deadline: ${deadline.isNotEmpty ? deadline : '1-6-2025'}', style: TextStyle(fontSize: 8.sp, color: AppColors.color414141)),
+                                                      ],
+                                                    ),
+                                                  ),
+
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                    //=====================> Share Icon <=========================
+                                    GestureDetector(
+                                      onTap: (){
+                                        Get.toNamed(AppRoutes.myInvitationPage);
+                                      },
+                                      child: SvgPicture.asset(
+                                        AppIcons.share,
+                                        width: 16.w,
+                                        height: 16.h,
+                                        color: Colors.blueGrey,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                          //=====================> Positioned More Icon at Top Right <=========================
-                          Positioned(
-                            bottom: 10,
-                            right: 10,
-                            child: Icon(Icons.more_horiz, color:AppColors.greyColor),
-                          ),
-                        ],
-                      )
+                            //=====================> Positioned More Icon at Top Right <=========================
+                            Positioned(
+                              bottom: 10,
+                              right: 10,
+                              child: Icon(Icons.more_horiz, color:AppColors.greyColor),
+                            ),
+                          ],
+                        )
 
-                  );
-                },
-              ),
+                    );
+                  },
+                );
+              }),
             )
 
           ],
