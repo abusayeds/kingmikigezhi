@@ -1,3 +1,5 @@
+import 'package:event_sharing/controllers/auth_controller.dart';
+import 'package:event_sharing/controllers/home_controller.dart';
 import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_images.dart';
@@ -24,37 +26,22 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final AuthController _authController = Get.find<AuthController>();
+  final HomeController _homeController = Get.find<HomeController>();
   final TextEditingController _searchController = TextEditingController();
-  final List<Map<String, String>> events = [
-    {
-      "date": "20 Feb",
-      "title": "Basketball Game",
-      "type": "Onsite Event",
-      "location": "Dhaka, Bangladesh",
-      "time": "Deadline: 1-6-2025",
-      "cost": " Cost-100",
-      "image": "assets/images/upcoming.png"
-    },
-    {
-      "date": "21 Mar",
-      "title": "Music Concert",
-      "type": "Onsite Event",
-      "location": "Chittagong, Bangladesh",
-      "time": "Deadline: 1-6-2025",
-      "cost": " Cost-100",
-      "image": "assets/images/upcoming.png"
-    },
-    {
-      "date": "15 Apr",
-      "type": "Onsite Event",
-      "title": "Art Exhibition",
-      "location": "Sylhet, Bangladesh",
-      "time": "Deadline: 1-6-2025",
-      "cost": " Cost-100",
-      "image": "assets/images/upcoming.png"
-    }
-  ];
-  String dropdownValue = 'All';
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _authController.fetchUserProfile();
+      _homeController.fetchTodayEvents();
+      _homeController.fetchFamilyEvents('Self');
+      _homeController.fetchUpcomingEvents();
+    });
+  }
+
+  String dropdownValue = 'Self';
 
   @override
   Widget build(BuildContext context) {
@@ -139,6 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           setState(() {
                             dropdownValue = selectedValue;
                           });
+                          _homeController.fetchFamilyEvents(selectedValue);
                         }
                       });
                     },
@@ -185,22 +173,37 @@ class _HomeScreenState extends State<HomeScreen> {
               child: CalendarWithDropdown(),
             ),
             SizedBox(height: 16.h),
-            //gray color event
+            //today events
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.h),
-              child: EventCardWidget(
-                eventTitle: 'Piano Song Event',
-                imagePath: AppImages.logoCard,
-                backgroundColor: Color(0xffAAAFAE),
-                name: 'Piano',
-                eventType: 'Online',
-                address: 'Dhaka, Bangladesh',
-                time: '7:00 AM - 8:00 PM',
-                history: '2023-1st winner',
+              padding: EdgeInsets.symmetric(horizontal: 6.h),
+              child: SizedBox(
+                height: 160.h,
+                child: Obx(() {
+                  if (_homeController.isLoadingToday.value) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (_homeController.todayEvents.isEmpty) {
+                    return const Center(child: Text("No events today"));
+                  }
+                  return ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: _homeController.todayEvents.length,
+                    itemBuilder: (context, index) {
+                      final event = _homeController.todayEvents[index];
+                      return Padding(
+                        padding: EdgeInsets.only(right: 8.w),
+                        child: EventCardWidget(
+                          eventModel: event,
+                          backgroundColor: Color(0xffAAAFAE),
+                        ),
+                      );
+                    },
+                  );
+                }),
               ),
             ),
             SizedBox(height: 16.h),
-            //gray color event
+            //family events
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 6.h),
               child: _pianoList(),
@@ -241,21 +244,30 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: EdgeInsets.only(left: 6.w, right: 6.w),
               child: SizedBox(
                 height: 275.h,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 3,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        Get.toNamed(AppRoutes.eventDetailsScreen);
-                      },
-                      child: SizedBox(
-                        width: 369.w,
-                        child: EventCard(),
-                      ),
-                    );
-                  },
-                ),
+                child: Obx(() {
+                  if (_homeController.isLoadingUpcoming.value) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (_homeController.upcomingEvents.isEmpty) {
+                    return const Center(child: Text("No upcoming events"));
+                  }
+                  return ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: _homeController.upcomingEvents.length,
+                    itemBuilder: (context, index) {
+                      final event = _homeController.upcomingEvents[index];
+                      return GestureDetector(
+                        onTap: () {
+                          Get.toNamed(AppRoutes.eventDetailsScreen, arguments: event.id);
+                        },
+                        child: SizedBox(
+                          width: 369.w,
+                          child: EventCard(eventModel: event),
+                        ),
+                      );
+                    },
+                  );
+                }),
               ),
             ),
             SizedBox(
@@ -335,28 +347,49 @@ class _HomeScreenState extends State<HomeScreen> {
 
   //============================> Piano Event List View <=================================
   _pianoList() {
+    Color selectedColor;
+    switch (dropdownValue) {
+      case 'Self':
+        selectedColor = AppColors.color67AB9F;
+        break;
+      case 'Spouse':
+        selectedColor = AppColors.colorE5CCFF;
+        break;
+      case 'Child Stephanie':
+        selectedColor = AppColors.colorCCFFE6;
+        break;
+      case 'Child Sophia':
+        selectedColor = AppColors.colorFFF2CC;
+        break;
+      default:
+        selectedColor = Color(0xffAAAFAE);
+    }
+
     return Container(
       width: MediaQuery.of(context).size.width,
       height: 160.h,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: 3,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: EdgeInsets.only(right: 8.w),
-            child: EventCardWidget(
-              eventTitle: 'Piano Song Event',
-              imagePath: AppImages.logoCard,
-              backgroundColor: Color(0xffE5CCFF),
-              name: 'Piano',
-              eventType: 'Online',
-              address: 'Dhaka, Bangladesh',
-              time: '7:00 AM - 8:00 PM',
-              history: '2023-1st winner',
-            ),
-          );
-        },
-      ),
+      child: Obx(() {
+        if (_homeController.isLoadingFamily.value) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (_homeController.familyEvents.isEmpty) {
+          return const Center(child: Text("No events found"));
+        }
+        return ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: _homeController.familyEvents.length,
+          itemBuilder: (context, index) {
+            final event = _homeController.familyEvents[index];
+            return Padding(
+              padding: EdgeInsets.only(right: 8.w),
+              child: EventCardWidget(
+                eventModel: event,
+                backgroundColor: selectedColor,
+              ),
+            );
+          },
+        );
+      }),
     );
   }
 }
