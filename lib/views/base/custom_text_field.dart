@@ -21,6 +21,7 @@ class CustomTextField extends StatefulWidget {
   final double? contenpaddingVertical;
   final Widget? sufixicons;
   final FormFieldValidator? validator;
+  final ValueChanged<String>? onChanged;
   final VoidCallback? onTab;
   final bool isPassword;
   final bool? isEmail;
@@ -37,6 +38,7 @@ class CustomTextField extends StatefulWidget {
     this.prifixicon,
     this.sufixicons,
     this.validator,
+    this.onChanged,
     this.isEmail,
     required this.controller,
     this.keyboardType = TextInputType.text,
@@ -78,6 +80,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         child: TextFormField(
       maxLines: widget.maxLines,
       onTap: widget.onTab,
+      onChanged: widget.onChanged,
       readOnly: widget.readOnly ?? false,
       controller: widget.controller,
       keyboardType: widget.keyboardType,
