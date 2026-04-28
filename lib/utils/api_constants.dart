@@ -83,15 +83,16 @@ class ApiConstants {
 
 
   // Categories
+  static const String categoriesEvent = '$apiUrl/categories';
+  static String subCategoriesEvent(String categoryId) => '$apiUrl/subcategories?categoryId=\$categoryId';
+  static String getProgrambySubCategory(String subcategoryId) => '$apiUrl/programs?subcategoryId=\$subcategoryId';
+  static String getProgrambyCategory(String categoryId) => '$apiUrl/programs?categoryId=\$categoryId';
+  static String categorieDetailsEvent(String categoryId) => '$apiUrl/categories/\$categoryId';
 
 
 
 
 
-
-
-
-   // Events
   // Events
   static const String createEvent = '$apiUrl/events';
   static const String todayEvents = '$apiUrl/events/feed/today';
@@ -104,6 +105,17 @@ class ApiConstants {
   static const String getUpcomingEvents = '$apiUrl/events/feed/upcoming';
   static const String getHistoryEvents = '$apiUrl/events/feed/history';
   static const String getEventsDetails = '$apiUrl/events/:eventId';
+
+
+
+
+
+
+  static const String appliedEvents = '$apiUrl/event-applications/my';
+
+
+
+
 
 
 

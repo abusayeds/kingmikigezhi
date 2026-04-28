@@ -35,6 +35,7 @@ import 'package:event_sharing/views/screen/Profile/Settings/SettingsScreen/setti
 import 'package:event_sharing/views/screen/Profile/TermsConditions/terms_condition_screen.dart';
 import 'package:event_sharing/views/screen/Profile/error_screen.dart';
 import 'package:get/get.dart';
+import '../services/api_service.dart';
 import '../views/screen/Auth/ForgotPass/forgot_password_screen.dart';
 import '../views/screen/Auth/ResetPass/reset_password_screen.dart';
 import '../views/screen/Auth/SignUp/sign_up_screen.dart';
@@ -246,7 +247,10 @@ class AppRoutes {
     GetPage(name: categoriesFilterScreen, page: () => CategoriesFilterScreen()),
     GetPage(
         name: categoriesSearchAppliedScreen,
-        page: () => CategoriesSearchAppliedScreen()),
+        page: () => CategoriesSearchAppliedScreen(category: Get.arguments),
+        binding: BindingsBuilder(() {
+          Get.lazyPut(() => ApiService(sharedPreferences: Get.find()));
+        })),
     //========Invitation page
     GetPage(
         name: invitationListPage,

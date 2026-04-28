@@ -36,6 +36,42 @@ class ApiService {
     }
   }
 
+  // Multipart POST request
+  Future<dynamic> multipartPost(String url,
+      {Map<String, String>? fields,
+      Map<String, String>? files,
+      Map<String, String>? headers}) async {
+    try {
+      var request = http.MultipartRequest('POST', Uri.parse(url));
+
+      // Add headers
+      var defaultHeaders = await _getHeaders();
+      defaultHeaders.remove('Content-Type'); // MultipartRequest sets its own Content-Type
+      if (headers != null) {
+        defaultHeaders.addAll(headers);
+      }
+      request.headers.addAll(defaultHeaders);
+
+      // Add fields
+      if (fields != null) {
+        request.fields.addAll(fields);
+      }
+
+      // Add files
+      if (files != null) {
+        for (var entry in files.entries) {
+          request.files.add(await http.MultipartFile.fromPath(entry.key, entry.value));
+        }
+      }
+
+      final streamedResponse = await request.send();
+      final response = await http.Response.fromStream(streamedResponse);
+      return _handleResponse(response);
+    } catch (e) {
+      throw _handleError(e);
+    }
+  }
+
   // PUT request
   Future<dynamic> put(String url,
       {dynamic body, Map<String, String>? headers}) async {

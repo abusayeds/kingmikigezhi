@@ -36,10 +36,10 @@ class _CreateEventOneState extends State<CreateEventOne> {
   List<Uint8List?> eventImages = [null, null, null, null];
   File? selectedImage;
 
-  final List<String> numberList = ['Concert', 'Sports', 'Show', 'Olympic game'];
-  final List<String> programList = ['Program One', 'Program Two', 'Program Three'];
-  final List<String> yearList = ['2020', '2021', '2024'];
-  final List<String> sessionList = ['One', 'Two', 'Three'];
+  // final List<String> numberList = ['Concert', 'Sports', 'Show', 'Olympic game'];
+  // final List<String> programList = ['Program One', 'Program Two', 'Program Three'];
+  //  final List<String> yearList = ['2020', '2021', '2024'];
+  // final List<String> sessionList = ['One', 'Two', 'Three'];
   final Addeventcontroller addEventController = Get.put(Addeventcontroller());
 
   @override
