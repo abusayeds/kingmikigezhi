@@ -1,3 +1,4 @@
+import 'package:event_sharing/controllers/event_controller.dart';
 import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_strings.dart';
@@ -17,6 +18,27 @@ class UpcomingEventScreen extends StatefulWidget {
 
 class _UpcomingEventScreenState extends State<UpcomingEventScreen> {
   final TextEditingController _searchController = TextEditingController();
+  final EventController _eventController = Get.find<EventController>();
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_scrollListener);
+  }
+
+  void _scrollListener() {
+    if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+      _eventController.fetchUpcomingEvents(isLoadMore: true);
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +46,7 @@ class _UpcomingEventScreenState extends State<UpcomingEventScreen> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         scrolledUnderElevation: 0,
-        leading:  IconButton(
+        leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios,
             color: Colors.black,
@@ -34,7 +56,7 @@ class _UpcomingEventScreenState extends State<UpcomingEventScreen> {
             Navigator.pop(context);
           },
         ),
-        title:  CustomText(
+        title: CustomText(
           text: AppStrings.upcomingEvent,
           fontsize: 18.sp,
           fontWeight: FontWeight.w600,
@@ -51,16 +73,37 @@ class _UpcomingEventScreenState extends State<UpcomingEventScreen> {
             SizedBox(height: 16.h),
             //==========================> List View Section <=====================
             Expanded(
-              child: ListView.builder(
-                itemCount: 3,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                      onTap: () {
-                        Get.toNamed(AppRoutes.eventDetailsScreen);
-                      },
-                      child: EventCard());
-                },
-              ),
+              child: Obx(() {
+                if (_eventController.isLoadingUpcoming.value && _eventController.upcomingEvents.isEmpty) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                if (_eventController.upcomingEvents.isEmpty) {
+                  return const Center(child: Text("No upcoming events found"));
+                }
+
+                return RefreshIndicator(
+                  onRefresh: () async {
+                    await _eventController.fetchUpcomingEvents();
+                  },
+                  child: ListView.builder(
+                    controller: _scrollController,
+                    itemCount: _eventController.upcomingEvents.length + (_eventController.upcomingHasNext.value ? 1 : 0),
+                    itemBuilder: (context, index) {
+                      if (index == _eventController.upcomingEvents.length) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                      final event = _eventController.upcomingEvents[index];
+                      return GestureDetector(
+                        onTap: () {
+                          Get.toNamed(AppRoutes.eventDetailsScreen, arguments: event.id);
+                        },
+                        child: EventCard(eventModel: event),
+                      );
+                    },
+                  ),
+                );
+              }),
             ),
           ],
         ),
@@ -80,6 +123,9 @@ class _UpcomingEventScreenState extends State<UpcomingEventScreen> {
             contenpaddingHorizontal: 12.w,
             contenpaddingVertical: 12.h,
             hintText: "Search",
+            onChanged: (value) {
+              _eventController.fetchUpcomingEvents(search: value);
+            },
             sufixicons: Padding(
               padding: EdgeInsets.symmetric(horizontal: 8.w),
               child: SvgPicture.asset(

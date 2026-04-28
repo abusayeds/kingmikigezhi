@@ -52,6 +52,7 @@ dependencies:
   timeago:
   shimmer:
   path_provider:
+  provider:
   photo_view:
   grouped_list:
   webview_flutter:

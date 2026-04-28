@@ -1,12 +1,12 @@
 import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/custom_button.dart';
-import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:event_sharing/views/base/custom_text_field.dart';
 import 'package:event_sharing/views/screen/AddEvent/InnerWidget/dotted_border_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_icons.dart';
 import 'controller/addEventController.dart';
@@ -19,28 +19,38 @@ class StepThreeForm extends StatefulWidget {
 }
 
 class _StepThreeFormState extends State<StepThreeForm> {
-  final List<String> costList = ['Has Final Deadline', 'Has Late Fee'];
-  final List<String> typeList = ['First', 'Second'];
+  // Enums for Backend
+  final List<String> groupCriteriaList = ['Age', 'Score'];
+  final List<String> conditionList = ['UpTo', 'DownTo', 'Greater', 'GreaterAndEqual', 'Lower', 'LowerAndEqual'];
+  final List<String> roundTypeList = ['Preliminary', 'SemiFinal', 'Final'];
+  final List<String> yesNoList = ['True', 'False'];
 
-  final TextEditingController dateController = TextEditingController();
-  final TextEditingController timeController = TextEditingController();
+  // Controllers for Group
+  final TextEditingController groupNameController = TextEditingController();
+  final TextEditingController groupValueController = TextEditingController();
 
-  final TextEditingController finalDatelineMonthController =
-      TextEditingController();
-  final TextEditingController finalDatelineDayController =
-      TextEditingController();
-  final TextEditingController finalDatelineYearController =
-      TextEditingController();
+  // Controllers for Round
+  final TextEditingController roundDateController = TextEditingController();
+  final TextEditingController roundTimeController = TextEditingController();
+  final TextEditingController roundCostController = TextEditingController();
+  final TextEditingController roundLateFeeController = TextEditingController();
+  final TextEditingController roundDescriptionController = TextEditingController();
+  final TextEditingController rFinalYearController = TextEditingController();
+  final TextEditingController rFinalMonthController = TextEditingController();
+  final TextEditingController rFinalDayController = TextEditingController();
 
-  final TextEditingController descriptionController = TextEditingController();
-  final TextEditingController deadLineDateController = TextEditingController();
-  final TextEditingController deadLineTimeController = TextEditingController();
-  final TextEditingController lateFee = TextEditingController();
   final Addeventcontroller addeventcontroller = Get.find<Addeventcontroller>();
 
-  final TextEditingController payment = TextEditingController();
-  String? _selectedCost;
-  String? _selectedType;
+  String? _selectedCriteria;
+  String? _selectedCondition;
+  String? _selectedRoundType;
+  String? _selectedHasFinalDeadline;
+
+  @override
+  void initState() {
+    super.initState();
+    addeventcontroller.clearTempRounds();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,46 +66,35 @@ class _StepThreeFormState extends State<StepThreeForm> {
                 child: Text('Step 3: Group',
                     style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w600)),
               ),
-              //registration date
               SizedBox(height: 12.h),
-              //registration date
               Text('Define Group',
                   style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
+              SizedBox(height: 12.h),
+              
+              CustomTextField(
+                controller: groupNameController,
+                hintText: 'Group Name (e.g. Group A)',
+                hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
+              ),
               SizedBox(height: 12.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                    child: CustomTextField(
-                      controller: dateController,
-                      hintText: 'Group',
-                      hintTextStyle:
-                          AppStyles.fontSize14(color: AppColors.color414141),
-                      sufixicons: Padding(
-                        padding: EdgeInsets.only(right: 12.w),
-                        child: SvgPicture.asset(
-                          AppIcons.downArrowIcon,
-                          width: 16.w,
-                          color: AppColors.primaryColor,
-                        ),
-                      ),
+                    child: _buildDropdown(
+                      value: _selectedCriteria,
+                      hint: 'Criteria',
+                      items: groupCriteriaList,
+                      onChanged: (v) => setState(() => _selectedCriteria = v),
                     ),
                   ),
                   SizedBox(width: 15.w),
                   Expanded(
-                    child: CustomTextField(
-                      controller: dateController,
-                      hintText: 'Condition',
-                      hintTextStyle:
-                          AppStyles.fontSize14(color: AppColors.color414141),
-                      sufixicons: Padding(
-                        padding: EdgeInsets.only(right: 12.w),
-                        child: SvgPicture.asset(
-                          AppIcons.downArrowIcon,
-                          width: 16.w,
-                          color: AppColors.primaryColor,
-                        ),
-                      ),
+                    child: _buildDropdown(
+                      value: _selectedCondition,
+                      hint: 'Condition',
+                      items: conditionList,
+                      onChanged: (v) => setState(() => _selectedCondition = v),
                     ),
                   ),
                 ],
@@ -107,25 +106,45 @@ class _StepThreeFormState extends State<StepThreeForm> {
                 children: [
                   Expanded(
                     child: CustomTextField(
-
-                      // Fixed height - won't change with device height
-                      controller: payment,
-                      hintText: '\$',
-                      hintTextStyle:
-                          AppStyles.fontSize14(color: AppColors.color414141),
+                      controller: groupValueController,
+                      hintText: 'Value (e.g. 18)',
+                      keyboardType: TextInputType.number,
+                      hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
                     ),
                   ),
                   SizedBox(width: 15.w),
-                  // Width-based spacing (scales with width, not height)
                   SizedBox(
-                    width: 90.w, // Width-based sizing
+                    width: 90.w,
                     child: CustomButton(
                       height: 48.5,
-                      // Fixed height - won't change with device height
                       width: 90.w,
                       color: AppColors.buttonA47059,
                       borderColor: Colors.transparent,
-                      onTap: () {},
+                      onTap: () {
+                        if (groupNameController.text.isEmpty || _selectedCriteria == null || _selectedCondition == null || groupValueController.text.isEmpty) {
+                          Get.snackbar("Error", "Please fill all group details");
+                          return;
+                        }
+                        if (addeventcontroller.tempRounds.isEmpty) {
+                          Get.snackbar("Error", "Please add at least one round to the group");
+                          return;
+                        }
+                        addeventcontroller.addGroup(
+                          groupNameController.text,
+                          _selectedCriteria!,
+                          _selectedCondition!,
+                          int.parse(groupValueController.text),
+                          addeventcontroller.tempRounds,
+                        );
+                        // Reset
+                        groupNameController.clear();
+                        groupValueController.clear();
+                        setState(() {
+                          _selectedCriteria = null;
+                          _selectedCondition = null;
+                        });
+                        addeventcontroller.clearTempRounds();
+                      },
                       text: 'Add',
                       textColor: AppColors.textColor,
                     ),
@@ -133,167 +152,57 @@ class _StepThreeFormState extends State<StepThreeForm> {
                 ],
               ),
               SizedBox(height: 8.h),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4),
-                child: Text('Added Group',
-                    style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
-              ),
+              Text('Added Groups',
+                  style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
               SizedBox(height: 8.h),
-              Container(
+              Obx(() => Container(
+                width: double.infinity,
                 decoration: BoxDecoration(
                   color: AppColors.colorEDF2F4,
-                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                  borderRadius: const BorderRadius.all(Radius.circular(8)),
                   border: Border.all(color: AppColors.primaryColor, width: 1),
                 ),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8.w, horizontal: 8.w),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8.w),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('1 Age up to 10 years old',
-                                style: AppStyles.fontSize14(
-                                    color: AppColors.color414141)),
-                            Row(
-                              children: [
-                                InkWell(
-                                    onTap: () {
-                                      Get.back();
-                                    },
-                                    child: SvgPicture.asset(AppIcons.editIcon)),
-                                SizedBox(width: 4),
-                                InkWell(
-                                    onTap: () {
-                                      Get.back();
-                                    },
-                                    child: SvgPicture.asset(AppIcons.trashIcon))
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 2.h,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8.w),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('2 Age up to 15 years old',
-                                style: AppStyles.fontSize14(
-                                    color: AppColors.color414141)),
-                            Row(
-                              children: [
-                                InkWell(
-                                    onTap: () {
-                                      Get.back();
-                                    },
-                                    child: SvgPicture.asset(AppIcons.editIcon)),
-                                SizedBox(width: 4),
-                                InkWell(
-                                    onTap: () {
-                                      Get.back();
-                                    },
-                                    child: SvgPicture.asset(AppIcons.trashIcon))
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 2.h,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8.w),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('3 Age up to 18 years old',
-                                style: AppStyles.fontSize14(
-                                    color: AppColors.color414141)),
-                            Row(
-                              children: [
-                                InkWell(
-                                    onTap: () {
-                                      //  Get.back();
-                                    },
-                                    child: SvgPicture.asset(AppIcons.editIcon)),
-                                SizedBox(width: 4),
-                                InkWell(
-                                    onTap: () {
-                                      //Get.back();
-                                    },
-                                    child: SvgPicture.asset(AppIcons.trashIcon))
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+                child: addeventcontroller.groups.isEmpty 
+                  ? Padding(padding: EdgeInsets.all(16), child: Text("No groups added yet"))
+                  : Column(
+                      children: addeventcontroller.groups.asMap().entries.map((entry) {
+                        int idx = entry.key;
+                        var group = entry.value;
+                        return ListTile(
+                          title: Text("${group['name']} (${group['criteria']} ${group['condition']} ${group['value']})"),
+                          subtitle: Text("${group['rounds'].length} rounds"),
+                          trailing: IconButton(
+                            icon: SvgPicture.asset(AppIcons.trashIcon),
+                            onPressed: () => addeventcontroller.removeGroup(idx),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+              )),
               SizedBox(height: 10.h),
-              //======================>> Defile Round
+
+              // ── Define Round ──
               DottedBorderContainer(
                 child: Padding(
-                  padding: const EdgeInsets.all(4.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Defile Round',
+                      Text('Define Round for Group',
                           style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
                       SizedBox(height: 8.h),
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 20.w,vertical: 0.w),
-                        decoration: BoxDecoration(
-                          color: AppColors.fillColor,
-                          borderRadius: BorderRadius.circular(8.r),
-                          border: Border.all(
-                              color: AppColors.primaryColor, width: 1),
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            value: _selectedType,
-                            dropdownColor: AppColors.fillColor,
-                            menuWidth: 240.w,
-                            borderRadius: BorderRadius.circular(8.r),
-                            hint: Text("Select Round",
-                                style: AppStyles.fontSize14(
-                                    color: AppColors.color414141)),
-                            icon: SvgPicture.asset(
-                              AppIcons.downArrowIcon,
-                              width: 16.w,
-                              color: AppColors.primaryColor,
-                            ),
-                            isExpanded: true,
-                            items: typeList.map((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(
-                                  value,
-                                  style: const TextStyle(color: Colors.black),
-                                ),
-                              );
-                            }).toList(),
-                            onChanged: (newValue) {
-                              setState(() {
-                                _selectedType = newValue;
-                              });
-                            },
-                          ),
-                        ),
+
+                      _buildDropdown(
+                        value: _selectedRoundType,
+                        hint: 'Select Round Type',
+                        items: roundTypeList,
+                        onChanged: (v) => setState(() => _selectedRoundType = v),
                       ),
                       SizedBox(height: 12.h),
-                      //deadline date
+
                       Text("Deadline",
                           style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
-                      SizedBox(height: 12.h),
+                      SizedBox(height: 8.h),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -301,20 +210,11 @@ class _StepThreeFormState extends State<StepThreeForm> {
                             child: CustomTextField(
                               height: 44.h,
                               prifixicon: IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(Icons.calendar_today_rounded, size: 20.sp,)),
-                              controller: deadLineDateController,
+                                  onPressed: () => _selectDate(context, roundDateController),
+                                  icon: Icon(Icons.calendar_today_rounded, size: 20.sp)),
+                              controller: roundDateController,
                               hintText: 'Date',
-                              hintTextStyle: AppStyles.fontSize14(
-                                  color: AppColors.color414141),
-                              sufixicons: Padding(
-                                padding: EdgeInsets.only(right: 12.w),
-                                child: SvgPicture.asset(
-                                  AppIcons.downArrowIcon,
-                                  width: 12.w,
-                                  color: AppColors.primaryColor,
-                                ),
-                              ),
+                              readOnly: true,
                             ),
                           ),
                           SizedBox(width: 15.w),
@@ -322,332 +222,122 @@ class _StepThreeFormState extends State<StepThreeForm> {
                             child: CustomTextField(
                               height: 44.h,
                               prifixicon: IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(Icons.watch_later_rounded)),
-                              controller: deadLineTimeController,
+                                  onPressed: () => _selectTime(context, roundTimeController),
+                                  icon: const Icon(Icons.watch_later_rounded)),
+                              controller: roundTimeController,
                               hintText: 'Time',
-                              hintTextStyle: AppStyles.fontSize14(
-                                  color: AppColors.color414141),
-                              sufixicons: Padding(
-                                padding: EdgeInsets.only(right: 12.w),
-                                child: SvgPicture.asset(
-                                  AppIcons.downArrowIcon,
-                                  width: 16.w,
-                                  color: AppColors.primaryColor,
-                                ),
-                              ),
+                              readOnly: true,
                             ),
                           ),
                         ],
                       ),
-                      //cost
+
                       SizedBox(height: 12.h),
                       Text("Cost",
                           style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
-                      SizedBox(height: 12.h),
+                      SizedBox(height: 8.h),
                       CustomTextField(
-                        controller: dateController,
+                        controller: roundCostController,
                         hintText: '\$',
+                        keyboardType: TextInputType.number,
                       ),
                       SizedBox(height: 12.h),
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 20.w),
-                        decoration: BoxDecoration(
-                          color: AppColors.fillColor,
-                          borderRadius: BorderRadius.circular(8.r),
-                          border: Border.all(
-                              color: AppColors.primaryColor, width: 1),
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            padding: EdgeInsets.symmetric(vertical: 0.w,),                    //focusColor:  AppColors.primaryColor,
+                      _buildDropdown(
+                        value: _selectedHasFinalDeadline,
+                        hint: 'Has Final Deadline?',
+                        items: yesNoList,
+                        onChanged: (v) => setState(() => _selectedHasFinalDeadline = v),
+                      ),
 
-                            value: _selectedCost,
-                            dropdownColor: AppColors.fillColor,
-                            menuWidth: 240.w,
-                            borderRadius: BorderRadius.circular(8.r),
-                            hint: Text(
-                              "Select Cost",
-                              style: AppStyles.fontSize14(
-                                  color: AppColors.color414141),
-                            ),
-                            icon: SvgPicture.asset(
-                              AppIcons.downArrowIcon,
-                              width: 16.w,
-                              color: AppColors.primaryColor,
-                            ),
-                            isExpanded: true,
-                            items: costList.map((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(
-                                  value,
-                                  style: const TextStyle(color: Colors.black),
-                                ),
-                              );
-                            }).toList(),
-                            onChanged: (newValue) {
-                              setState(() {
-                                _selectedCost = newValue;
-                              });
-                            },
-                          ),
+                      if (_selectedHasFinalDeadline == 'True') ...[
+                        SizedBox(height: 12.h),
+                        Text("Final Deadline",
+                            style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
+                        SizedBox(height: 8.h),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(width: 108.w, child: CustomTextField(height: 44.h, controller: rFinalYearController, hintText: 'Year')),
+                            SizedBox(width: 108.w, child: CustomTextField(height: 44.h, controller: rFinalMonthController, hintText: 'Month')),
+                            SizedBox(width: 108.w, child: CustomTextField(height: 44.h, controller: rFinalDayController, hintText: 'Day')),
+                          ],
                         ),
-                      ),
-                      //final date
-                      SizedBox(height: 12.h),
-                      Text("Final Deadline",
-                          style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
-                      SizedBox(height: 12.h),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                            width: 108.w,
-                            child: CustomTextField(
-                              height: 44.h,
-                              controller: finalDatelineYearController,
-                              hintText: 'Year',
-                              hintTextStyle: AppStyles.fontSize14(
-                                  color: AppColors.color414141),
-                              sufixicons: Padding(
-                                padding: EdgeInsets.only(right: 12.w),
-                                child: SvgPicture.asset(
-                                  AppIcons.downArrowIcon,
-                                  width: 16.w,
-                                  color: AppColors.primaryColor,
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 108.w,
-                            child: CustomTextField(
-                              height: 44.h,
-                              controller: finalDatelineMonthController,
-                              hintText: 'Month',
-                              hintTextStyle: AppStyles.fontSize14(
-                                  color: AppColors.color414141),
-                              sufixicons: Padding(
-                                padding: EdgeInsets.only(right: 12.w),
-                                child: SvgPicture.asset(
-                                  AppIcons.downArrowIcon,
-                                  width: 16.w,
-                                  color: AppColors.primaryColor,
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 108.w,
-                            child: CustomTextField(
-                              height: 44.h,
-                              controller: finalDatelineDayController,
-                              hintText: 'Day',
-                              hintTextStyle: AppStyles.fontSize14(
-                                  color: AppColors.color414141),
-                              sufixicons: Padding(
-                                padding: EdgeInsets.only(right: 12.w),
-                                child: SvgPicture.asset(
-                                  AppIcons.downArrowIcon,
-                                  width: 16.w,
-                                  color: AppColors.primaryColor,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 16.h),
-                      Text("Late fee",
-                          style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
-                      SizedBox(height: 12.h),
-                      CustomTextField(
-                        controller: lateFee,
-                        hintText: '\$',
-                        hintTextStyle:
-                            AppStyles.fontSize14(color: AppColors.color414141),
-                      ),
-                      SizedBox(height: 12.h),
-                      Text("Type",
-                          style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
-                      SizedBox(height: 12.h),
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 20.w),
-                        decoration: BoxDecoration(
-                          color: AppColors.fillColor,
-                          borderRadius: BorderRadius.circular(8.r),
-                          border: Border.all(
-                              color: AppColors.primaryColor, width: 1),
+                        SizedBox(height: 12.h),
+                        Text("Late fee",
+                            style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
+                        SizedBox(height: 8.h),
+                        CustomTextField(
+                          controller: roundLateFeeController,
+                          hintText: '\$',
+                          keyboardType: TextInputType.number,
                         ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            padding: EdgeInsets.symmetric(vertical: 0.w,),                    //focusColor:  AppColors.primaryColor,
+                      ],
 
-                            value: _selectedType,
-                            dropdownColor: AppColors.fillColor,
-                            menuWidth: 240.w,
-                            borderRadius: BorderRadius.circular(8.r),
-                            hint: Text(
-                              "Select Type",
-                              style: AppStyles.fontSize14(
-                                  color: AppColors.color414141),
-                            ),
-                            icon: SvgPicture.asset(
-                              AppIcons.downArrowIcon,
-                              width: 16.w,
-                              color: AppColors.primaryColor,
-                            ),
-                            isExpanded: true,
-                            items: typeList.map((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(
-                                  value,
-                                  style: const TextStyle(color: Colors.black),
-                                ),
-                              );
-                            }).toList(),
-                            onChanged: (newValue) {
-                              setState(() {
-                                _selectedType = newValue;
-                              });
-                            },
-                          ),
-                        ),
-                      ),
                       SizedBox(height: 12.h),
                       Text("Description",
                           style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
-                      SizedBox(height: 12.h),
+                      SizedBox(height: 8.h),
                       CustomTextField(
-                        controller: lateFee,
-                        hintText: 'Type your Description...',
-                        hintTextStyle:
-                            AppStyles.fontSize14(color: AppColors.color414141),
+                        controller: roundDescriptionController,
+                        hintText: 'Round Description...',
                       ),
 
-                      SizedBox(height: 10.h),
+                      SizedBox(height: 16.h),
                       CustomButton(
                         color: AppColors.buttonA47059,
                         borderColor: Colors.white,
-                        onTap: () {},
-                        text: "Add",
+                        onTap: () {
+                          if (_selectedRoundType == null || roundDateController.text.isEmpty) {
+                            Get.snackbar("Error", "Round type and deadline are required");
+                            return;
+                          }
+                          addeventcontroller.addTempRound(
+                            roundType: _selectedRoundType!,
+                            date: roundDateController.text,
+                            time: roundTimeController.text,
+                            cost: double.tryParse(roundCostController.text) ?? 0,
+                            hasFinalDeadline: _selectedHasFinalDeadline == 'True',
+                            fYear: rFinalYearController.text,
+                            fMonth: rFinalMonthController.text,
+                            fDay: rFinalDayController.text,
+                            lateFee: double.tryParse(roundLateFeeController.text) ?? 0,
+                            description: roundDescriptionController.text,
+                          );
+                          // Reset round fields
+                          roundDateController.clear();
+                          roundTimeController.clear();
+                          roundCostController.clear();
+                          roundLateFeeController.clear();
+                          roundDescriptionController.clear();
+                          rFinalYearController.clear();
+                          rFinalMonthController.clear();
+                          rFinalDayController.clear();
+                          setState(() {
+                            _selectedRoundType = null;
+                            _selectedHasFinalDeadline = null;
+                          });
+                        },
+                        text: "Add Round to Group",
                         textColor: Colors.white,
                       ),
                       SizedBox(height: 10.h),
-                      Text("Added Round",
+                      Text("Rounds added to current group:",
                           style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
                       SizedBox(height: 8.h),
-                      Container(
+                      Obx(() => Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.all(8),
                         decoration: BoxDecoration(
-                          color: AppColors.colorEDF2F4,
-                          borderRadius: BorderRadius.all(Radius.circular(8)),
-                          border: Border.all(
-                              color: AppColors.primaryColor, width: 1),
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: Colors.grey.shade300),
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 8..w,vertical: 0.h),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    CustomText(
-                                      text: '1. Bangla',
-                                      color: AppColors.color414141,
-                                      fontsize: 14.sp,
-                                    ),
-                                    Row(
-                                      children: [
-                                        InkWell(
-                                            onTap: () {
-                                              Get.back();
-                                            },
-                                            child: SvgPicture.asset(
-                                                AppIcons.editIcon)),
-                                        SizedBox(width: 4),
-                                        InkWell(
-                                            onTap: () {
-                                              Get.back();
-                                            },
-                                            child: SvgPicture.asset(
-                                                AppIcons.trashIcon))
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 8.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    CustomText(
-                                      text: '2. English',
-                                      color: AppColors.color414141,
-                                      fontsize: 14.sp,
-                                    ),
-                                    Row(
-                                      children: [
-                                        InkWell(
-                                            onTap: () {
-                                              Get.back();
-                                            },
-                                            child: SvgPicture.asset(
-                                                AppIcons.editIcon)),
-                                        SizedBox(width: 4),
-                                        InkWell(
-                                            onTap: () {
-                                              Get.back();
-                                            },
-                                            child: SvgPicture.asset(
-                                                AppIcons.trashIcon))
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 8.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    CustomText(
-                                      text: '3. Math',
-                                      color: AppColors.color414141,
-                                      fontsize: 14.sp,
-                                    ),
-                                    Row(
-                                      children: [
-                                        InkWell(
-                                            onTap: () {
-                                              //  Get.back();
-                                            },
-                                            child: SvgPicture.asset(
-                                                AppIcons.editIcon)),
-                                        SizedBox(width: 4.w),
-                                        InkWell(
-                                            onTap: () {
-                                              //Get.back();
-                                            },
-                                            child: SvgPicture.asset(
-                                                AppIcons.trashIcon))
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                        child: addeventcontroller.tempRounds.isEmpty 
+                          ? Text("No rounds added")
+                          : Column(
+                              children: addeventcontroller.tempRounds.map((r) => Text("• ${r['roundType']} - ${r['deadline']}")).toList(),
+                            ),
+                      )),
                     ],
                   ),
                 ),
@@ -658,12 +348,9 @@ class _StepThreeFormState extends State<StepThreeForm> {
                   Expanded(
                     child: CustomButton(
                       onTap: () {
-                        setState(() {
-                          if (addeventcontroller.activeStepIndex.value == 2) {
-                            addeventcontroller.activeStepIndex.value--;
-                            //StepThreeForm();
-                          } // In create_event_one.dart, modify the step widgets to pass the activeStepIndex and update function:
-                        });
+                        if (addeventcontroller.activeStepIndex.value > 0) {
+                          addeventcontroller.activeStepIndex.value--;
+                        }
                       },
                       text: "Back",
                       color: AppColors.fillColor,
@@ -675,12 +362,9 @@ class _StepThreeFormState extends State<StepThreeForm> {
                   Expanded(
                     child: CustomButton(
                       onTap: () {
-                        setState(() {
-                          if (addeventcontroller.activeStepIndex.value == 2) {
-                            addeventcontroller.activeStepIndex.value++;
-                            //StepThreeForm();
-                          } // In create_event_one.dart, modify the step widgets to pass the activeStepIndex and update function:
-                        });
+                        if (addeventcontroller.activeStepIndex.value < 4) {
+                          addeventcontroller.activeStepIndex.value++;
+                        }
                       },
                       text: "Next",
                       textColor: Colors.white,
@@ -696,5 +380,64 @@ class _StepThreeFormState extends State<StepThreeForm> {
         )
       ]),
     );
+  }
+
+  Widget _buildDropdown({
+    required String? value,
+    required String hint,
+    required List<String> items,
+    required void Function(String?) onChanged,
+  }) {
+    return Container(
+      height: 50.h,
+      padding: EdgeInsets.symmetric(horizontal: 20.w),
+      decoration: BoxDecoration(
+        color: AppColors.fillColor,
+        borderRadius: BorderRadius.circular(8.r),
+        border: Border.all(color: AppColors.primaryColor, width: 1),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          value: value,
+          dropdownColor: AppColors.fillColor,
+          borderRadius: BorderRadius.circular(8.r),
+          hint: Text(hint, style: AppStyles.fontSize14(color: AppColors.color414141)),
+          icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor),
+          isExpanded: true,
+          items: items
+              .map((v) => DropdownMenuItem(value: v, child: Text(v, style: const TextStyle(color: Colors.black))))
+              .toList(),
+          onChanged: onChanged,
+        ),
+      ),
+    );
+  }
+
+  Future<void> _selectDate(BuildContext context, TextEditingController controller) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2023),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null) {
+      setState(() {
+        controller.text = DateFormat('yyyy-MM-dd').format(picked);
+      });
+    }
+  }
+
+  Future<void> _selectTime(BuildContext context, TextEditingController controller) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+    if (picked != null) {
+      final now = DateTime.now();
+      final dateTime = DateTime(now.year, now.month, now.day, picked.hour, picked.minute);
+      setState(() {
+        controller.text = DateFormat('hh:mm a').format(dateTime);
+      });
+    }
   }
 }

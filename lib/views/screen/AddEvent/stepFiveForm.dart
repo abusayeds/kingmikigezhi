@@ -8,8 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_icons.dart';
-
-
+import 'controller/addEventController.dart';
 
 class StepFiveForm extends StatefulWidget {
   const StepFiveForm({super.key});
@@ -31,8 +30,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
   final TextEditingController finalDatelineDayController = TextEditingController();
   final TextEditingController finalDatelineYearController = TextEditingController();
 
-  bool isSharedCommunityChecked = true;
-  bool isUserAgreementChecked = false;
+  final Addeventcontroller addEventController = Get.find<Addeventcontroller>();
 
   String? _selectedType;
   String? _selectedRound;
@@ -271,20 +269,24 @@ class _StepFiveFormState extends State<StepFiveForm> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
+                  Obx(() => Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.blueGrey,
-                          shape: BoxShape.rectangle,
-                          borderRadius: BorderRadius.circular(4.r),
-                        ),
-                        padding: EdgeInsets.all(4),
-                        child: Icon(
-                          Icons.check,
-                          color: Colors.white,
-                          size: 16.sp,
+                      GestureDetector(
+                        onTap: () => addEventController.isSharedToCommunity.value = !addEventController.isSharedToCommunity.value,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: addEventController.isSharedToCommunity.value ? Colors.blueGrey : Colors.transparent,
+                            shape: BoxShape.rectangle,
+                            border: Border.all(color: Colors.blueGrey),
+                            borderRadius: BorderRadius.circular(4.r),
+                          ),
+                          padding: EdgeInsets.all(4),
+                          child: Icon(
+                            Icons.check,
+                            color: addEventController.isSharedToCommunity.value ? Colors.white : Colors.transparent,
+                            size: 16.sp,
+                          ),
                         ),
                       ),
                       SizedBox(width: 10.w),
@@ -295,34 +297,45 @@ class _StepFiveFormState extends State<StepFiveForm> {
                         ),
                       ),
                     ],
-                  ),
+                  )),
                   SizedBox(height: 16.h),
-                  Row(
+                  Obx(() => Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        width: 20.w,
-                        height: 20.h,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.blueGrey),
-                          borderRadius: BorderRadius.circular(4.r),
+                      GestureDetector(
+                        onTap: () => addEventController.isUserAgreementAccepted.value = !addEventController.isUserAgreementAccepted.value,
+                        child: Container(
+                          width: 24.w,
+                          height: 24.h,
+                          decoration: BoxDecoration(
+                            color: addEventController.isUserAgreementAccepted.value ? Colors.blueGrey : Colors.transparent,
+                            border: Border.all(color: Colors.blueGrey),
+                            borderRadius: BorderRadius.circular(4.r),
+                          ),
+                          child: addEventController.isUserAgreementAccepted.value 
+                            ? Icon(Icons.check, color: Colors.white, size: 16.sp)
+                            : null,
                         ),
                       ),
-                      SizedBox(width: 10),
+                      SizedBox(width: 10.w),
                       Text(
                         'User agreement',
                           style: AppStyles.fontSize12(color: AppColors.hintColor)
                       ),
                     ],
-                  ),
+                  )),
                 ],
               ),
               SizedBox(height: 50.h),
-              Row(
+              Obx(() => Row(
                 children: [
                   Expanded(
                     child: CustomButton(
-                      onTap: () {},
+                      onTap: () {
+                        if (addEventController.activeStepIndex.value > 0) {
+                          addEventController.activeStepIndex.value--;
+                        }
+                      },
                       text: "Back",
                       borderColor: AppColors.buttonColor,
                       color: AppColors.fillColor,
@@ -331,16 +344,18 @@ class _StepFiveFormState extends State<StepFiveForm> {
                   ),
                   SizedBox(width: 10.w),
                   Expanded(
-                    child: CustomButton(
-                      onTap: () {},
-                      text: "Add & Share",
-                      textColor: Colors.white,
-                      borderColor: AppColors.buttonColor,
-                      color: AppColors.buttonColor,
-                    ),
+                    child: addEventController.isLoading.value 
+                      ? Center(child: CircularProgressIndicator())
+                      : CustomButton(
+                          onTap: addEventController.createEvent,
+                          text: "Add & Share",
+                          textColor: Colors.white,
+                          borderColor: AppColors.buttonColor,
+                          color: AppColors.buttonColor,
+                        ),
                   ),
                 ],
-              ),
+              )),
               SizedBox(height: 10.h),
             ],
           ),

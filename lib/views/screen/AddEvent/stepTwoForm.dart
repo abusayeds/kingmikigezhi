@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 
 class StepTwoForm extends StatefulWidget {
@@ -19,35 +18,60 @@ class StepTwoForm extends StatefulWidget {
 }
 
 class _StepTwoFormState extends State<StepTwoForm> {
-  int _activeStepIndex = 1;
-
-  final TextEditingController competitionLevelCRTL = TextEditingController();
-  final TextEditingController typeCRTL = TextEditingController();
-  final TextEditingController resgitationOpenDateCRTL = TextEditingController();
-  final TextEditingController resgitationOpenTimeCRTL = TextEditingController();
-  final TextEditingController deadlineDateCRTL = TextEditingController();
-  final TextEditingController deadlineTimeCRTL = TextEditingController();
-
   final TextEditingController costCRTL = TextEditingController();
-  final TextEditingController finalDeadLineCRTL = TextEditingController();
+  final TextEditingController yearCRTL = TextEditingController();
   final TextEditingController monthCRTL = TextEditingController();
   final TextEditingController dayCRTL = TextEditingController();
-  final TextEditingController yearCRTL = TextEditingController();
   final TextEditingController lateFeeCRTL = TextEditingController();
-  final Addeventcontroller addeventcontroller = Get.find<Addeventcontroller>();
-  final TextEditingController _typeCTRL = TextEditingController();
+  
+  final Addeventcontroller addEventController = Get.find<Addeventcontroller>();
+  
   final TextEditingController _startsDateCTRL = TextEditingController();
   final TextEditingController _startsTimeCTRL = TextEditingController();
   final TextEditingController _endsDateCTRL = TextEditingController();
   final TextEditingController _endsTimeCTRL = TextEditingController();
 
-
   String? _selectedCompetitionLevel;
   String? _selectedType;
-  String? _selectedCost;
-  final List<String> competitionLevel = ['One', 'Two', 'Three', 'Four', 'Five'];
+  String? _selectedCostOption;
+  final List<String> competitionLevel = ['Preliminary', 'SemiFinal', 'Final'];
   final List<String> type = ['Onsite', 'Online', 'Hybrid'];
-  final List<String> cost = ['Has Final Deadline', 'Has Late Fee'];
+  final List<String> costOptions = ['Has Final Deadline', 'Has Late Fee'];
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize with existing data if any
+    _selectedCompetitionLevel = addEventController.competitionLevel;
+    _selectedType = addEventController.eventType;
+    _startsDateCTRL.text = addEventController.registrationDate ?? "";
+    _startsTimeCTRL.text = addEventController.registrationTime ?? "";
+    _endsDateCTRL.text = addEventController.deadlineDate ?? "";
+    _endsTimeCTRL.text = addEventController.deadlineTime ?? "";
+    costCRTL.text = addEventController.cost?.toString() ?? "";
+    yearCRTL.text = addEventController.finalDeadlineYear ?? "";
+    monthCRTL.text = addEventController.finalDeadlineMonth ?? "";
+    dayCRTL.text = addEventController.finalDeadlineDay ?? "";
+    lateFeeCRTL.text = addEventController.lateFee?.toString() ?? "";
+    if (addEventController.hasFinalDeadline) {
+      _selectedCostOption = 'Has Final Deadline';
+    }
+  }
+
+  void _saveDataToController() {
+    addEventController.competitionLevel = _selectedCompetitionLevel;
+    addEventController.eventType = _selectedType;
+    addEventController.registrationDate = _startsDateCTRL.text;
+    addEventController.registrationTime = _startsTimeCTRL.text;
+    addEventController.deadlineDate = _endsDateCTRL.text;
+    addEventController.deadlineTime = _endsTimeCTRL.text;
+    addEventController.cost = double.tryParse(costCRTL.text);
+    addEventController.hasFinalDeadline = _selectedCostOption == 'Has Final Deadline';
+    addEventController.finalDeadlineYear = yearCRTL.text;
+    addEventController.finalDeadlineMonth = monthCRTL.text;
+    addEventController.finalDeadlineDay = dayCRTL.text;
+    addEventController.lateFee = double.tryParse(lateFeeCRTL.text);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,99 +85,25 @@ class _StepTwoFormState extends State<StepTwoForm> {
             child: Text('Step 2: Details',
                 style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w600)),
           ),
-          //organization Name
           Text('Competition Level',
               style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
           SizedBox(height: 12.h),
-          Container(
-            height: AppStyles.standardHeight,
-            padding: EdgeInsets.symmetric(horizontal: 20.w),
-            decoration: BoxDecoration(
-              color: AppColors.fillColor,
-              borderRadius: BorderRadius.circular(8.r),
-              border: Border.all(color: AppColors.primaryColor, width: 1.w),
-            ),
-            child: Center(
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton<String>(
-                  value: _selectedCompetitionLevel,
-                dropdownColor: AppColors.fillColor,
-                menuWidth: 240.w,
-                borderRadius: BorderRadius.circular(8.r),
-                hint: Text("Select Competition Level",
-                    style: AppStyles.fontSize14(color: AppColors.color414141)),
-                icon: SvgPicture.asset(
-                  AppIcons.downArrowIcon,
-                  width: 16.w,
-                  color: AppColors.primaryColor,
-                ),
-                isExpanded: true,
-                items: competitionLevel.map((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(
-                      value,
-                      style: const TextStyle(color: Colors.black),
-                    ),
-                  );
-                }).toList(),
-                  onChanged: (newValue) {
-                    setState(() {
-                      _selectedCompetitionLevel = newValue;
-                    });
-                  },
-                ),
-              ),
-            ),
+          _buildDropdown(
+            value: _selectedCompetitionLevel,
+            hint: "Select Competition Level",
+            items: competitionLevel,
+            onChanged: (v) => setState(() => _selectedCompetitionLevel = v),
           ),
-          //type
-          //organization Name
           SizedBox(height: 16.h),
           Text('Type', style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
           SizedBox(height: 12.h),
-          Container(
-            height: AppStyles.standardHeight,
-            padding: EdgeInsets.symmetric(horizontal: 20.w),
-            decoration: BoxDecoration(
-              color: AppColors.fillColor,
-              borderRadius: BorderRadius.circular(8.r),
-              border: Border.all(color: AppColors.primaryColor, width: 1),
-            ),
-            child: Center(
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton<String>(
-                  value: _selectedType,
-                dropdownColor: AppColors.fillColor,
-                menuWidth: 240.w,
-                borderRadius: BorderRadius.circular(8.r),
-                hint: Text("Select Type",
-                    style: AppStyles.fontSize14(color: AppColors.color414141)),
-                icon: SvgPicture.asset(
-                  AppIcons.downArrowIcon,
-                  width: 16.w,
-                  color: AppColors.primaryColor,
-                ),
-                isExpanded: true,
-                items: type.map((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(
-                      value,
-                      style: const TextStyle(color: Colors.black),
-                    ),
-                  );
-                }).toList(),
-                  onChanged: (newValue) {
-                    setState(() {
-                      _selectedType = newValue;
-                    });
-                  },
-                ),
-              ),
-            ),
+          _buildDropdown(
+            value: _selectedType,
+            hint: "Select Type",
+            items: type,
+            onChanged: (v) => setState(() => _selectedType = v),
           ),
           SizedBox(height: 12.h),
-          //registration date
           Text('Registration Open',
               style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
           SizedBox(height: 12.h),
@@ -162,23 +112,9 @@ class _StepTwoFormState extends State<StepTwoForm> {
             children: [
               Expanded(
                 child: CustomTextField(
-                  prifixicon: Container(
-                    width: 48.w,
-                    height: AppStyles.standardHeight,
-                    alignment: Alignment.center,
-                    child: IconButton(
-                      onPressed: () => _selectDate(context, _startsDateCTRL),
-                      icon: Icon(
-                        Icons.calendar_today_rounded,
-                        color: AppColors.primaryColor,
-                        size: 20.w,
-                      ),
-                      padding: EdgeInsets.zero,
-                      constraints: BoxConstraints(
-                        minWidth: 24.w,
-                        minHeight: 24.h,
-                      ),
-                    ),
+                  prifixicon: IconButton(
+                    onPressed: () => _selectDate(context, _startsDateCTRL),
+                    icon: Icon(Icons.calendar_today_rounded, color: AppColors.primaryColor, size: 20.w),
                   ),
                   controller: _startsDateCTRL,
                   hintText: 'Date',
@@ -188,23 +124,9 @@ class _StepTwoFormState extends State<StepTwoForm> {
               SizedBox(width: 15.w),
               Expanded(
                 child: CustomTextField(
-                  prifixicon: Container(
-                    width: 48.w,
-                    height: AppStyles.standardHeight,
-                    alignment: Alignment.center,
-                    child: IconButton(
-                      onPressed: () => _selectTime(context, _startsTimeCTRL),
-                      icon: Icon(
-                        Icons.watch_later_rounded,
-                        color: AppColors.primaryColor,
-                        size: 20.w,
-                      ),
-                      padding: EdgeInsets.zero,
-                      constraints: BoxConstraints(
-                        minWidth: 24.w,
-                        minHeight: 24.h,
-                      ),
-                    ),
+                  prifixicon: IconButton(
+                    onPressed: () => _selectTime(context, _startsTimeCTRL),
+                    icon: Icon(Icons.watch_later_rounded, color: AppColors.primaryColor, size: 20.w),
                   ),
                   controller: _startsTimeCTRL,
                   hintText: 'Time',
@@ -215,7 +137,6 @@ class _StepTwoFormState extends State<StepTwoForm> {
           ),
 
           SizedBox(height: 12.h),
-          //============================>> Deadline Date
           Text('Deadline',
               style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
 
@@ -225,23 +146,9 @@ class _StepTwoFormState extends State<StepTwoForm> {
             children: [
               Expanded(
                 child: CustomTextField(
-                  prifixicon: Container(
-                    width: 48.w,
-                    height: AppStyles.standardHeight,
-                    alignment: Alignment.center,
-                    child: IconButton(
-                      onPressed: () => _selectDate(context, _endsDateCTRL),
-                      icon: Icon(
-                        Icons.calendar_today_rounded,
-                        color: AppColors.primaryColor,
-                        size: 20.w,
-                      ),
-                      padding: EdgeInsets.zero,
-                      constraints: BoxConstraints(
-                        minWidth: 24.w,
-                        minHeight: 24.h,
-                      ),
-                    ),
+                  prifixicon: IconButton(
+                    onPressed: () => _selectDate(context, _endsDateCTRL),
+                    icon: Icon(Icons.calendar_today_rounded, color: AppColors.primaryColor, size: 20.w),
                   ),
                   controller: _endsDateCTRL,
                   hintText: 'Date',
@@ -251,23 +158,9 @@ class _StepTwoFormState extends State<StepTwoForm> {
               SizedBox(width: 15.w),
               Expanded(
                 child: CustomTextField(
-                  prifixicon: Container(
-                    width: 48.w,
-                    height: AppStyles.standardHeight,
-                    alignment: Alignment.center,
-                    child: IconButton(
-                      onPressed: () => _selectTime(context, _endsTimeCTRL),
-                      icon: Icon(
-                        Icons.watch_later_rounded,
-                        color: AppColors.primaryColor,
-                        size: 20.w,
-                      ),
-                      padding: EdgeInsets.zero,
-                      constraints: BoxConstraints(
-                        minWidth: 24.w,
-                        minHeight: 24.h,
-                      ),
-                    ),
+                  prifixicon: IconButton(
+                    onPressed: () => _selectTime(context, _endsTimeCTRL),
+                    icon: Icon(Icons.watch_later_rounded, color: AppColors.primaryColor, size: 20.w),
                   ),
                   controller: _endsTimeCTRL,
                   hintText: 'Time',
@@ -276,148 +169,51 @@ class _StepTwoFormState extends State<StepTwoForm> {
               ),
             ],
           ),
-          //=============================Cost
           SizedBox(height: 12.h),
           Text('Cost', style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
           SizedBox(height: 12.h),
           CustomTextField(
-            prifixicon: Container(
-              width: 12.w,
-              height: AppStyles.standardHeight,
-              alignment: Alignment.center,
-              child: SizedBox.shrink()
-            ),
             controller: costCRTL,
             hintText: '\$',
-              height: AppStyles.standardHeight,
-              hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
-
-          ),
-
-          SizedBox(height: 12.h),
-          Container(
             height: AppStyles.standardHeight,
-            padding: EdgeInsets.symmetric(horizontal: 20.w),
-            decoration: BoxDecoration(
-              color: AppColors.fillColor,
-              borderRadius: BorderRadius.circular(8.r),
-              border: Border.all(color: AppColors.primaryColor, width: 1),
-            ),
-            child: Center(
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton<String>(
-                  value: _selectedCost,
-                dropdownColor: AppColors.fillColor,
-                menuWidth: 240.w,
-                borderRadius: BorderRadius.circular(8.r),
-                hint: Text("Select Cost",
-                    style: AppStyles.fontSize14(color: AppColors.color414141)),
-                icon: SvgPicture.asset(
-                  AppIcons.downArrowIcon,
-                  width: 16.w,
-                  color: AppColors.primaryColor,
-                ),
-                isExpanded: true,
-                items: cost.map((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(
-                      value,
-                      style: const TextStyle(color: Colors.black),
-                    ),
-                  );
-                }).toList(),
-                  onChanged: (newValue) {
-                    setState(() {
-                      _selectedCost = newValue;
-                    });
-                  },
-                ),
-              ),
-            ),
-          ),
-
-          //final date
-          SizedBox(height: 12.h),
-          Text('Final Deadline',
-              style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
-          SizedBox(height: 12.h),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(
-                width: 108.w,
-                child: CustomTextField(
-                  controller: monthCRTL,
-                  hintText: 'Year',
-                  hintTextStyle:
-                      AppStyles.fontSize14(color: AppColors.color414141),
-                  sufixicons: Padding(
-                    padding: EdgeInsets.only(right: 12.w),
-                    child: SvgPicture.asset(
-                      AppIcons.downArrowIcon,
-                      width: 16.w,
-                      color: AppColors.primaryColor,
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: 108.w,
-                child: CustomTextField(
-                  controller: dayCRTL,
-                  hintText: 'Month',
-                  hintTextStyle:
-                      AppStyles.fontSize14(color: AppColors.color414141),
-                  sufixicons: Padding(
-                    padding: EdgeInsets.only(right: 12.w),
-                    child: SvgPicture.asset(
-                      AppIcons.downArrowIcon,
-                      width: 16.w,
-                      color: AppColors.primaryColor,
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: 108.w,
-                child: CustomTextField(
-                  controller: yearCRTL,
-                  hintText: 'Day',
-                  hintTextStyle:
-                      AppStyles.fontSize14(color: AppColors.color414141),
-                  sufixicons: Padding(
-                    padding: EdgeInsets.only(right: 12.w),
-                    child: SvgPicture.asset(
-                      AppIcons.downArrowIcon,
-                      width: 16.w,
-                      color: AppColors.primaryColor,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 16.h),
-          Text('Late fee',
-              style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
-          SizedBox(height: 12.h),
-
-
-          CustomTextField(
-            prifixicon: Container(
-                width: 12.w,
-                height: AppStyles.standardHeight,
-                alignment: Alignment.center,
-                child: SizedBox.shrink()
-            ),
-            controller: lateFeeCRTL,
-            hintText: '\$',
-            height: AppStyles.standardHeight,
+            keyboardType: TextInputType.number,
             hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
-
           ),
+
           SizedBox(height: 12.h),
+          _buildDropdown(
+            value: _selectedCostOption,
+            hint: "Select Cost Type",
+            items: costOptions,
+            onChanged: (v) => setState(() => _selectedCostOption = v),
+          ),
+
+          if (_selectedCostOption == 'Has Final Deadline') ...[
+            SizedBox(height: 12.h),
+            Text('Final Deadline',
+                style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
+            SizedBox(height: 12.h),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(width: 108.w, child: CustomTextField(controller: yearCRTL, hintText: 'Year')),
+                SizedBox(width: 108.w, child: CustomTextField(controller: monthCRTL, hintText: 'Month')),
+                SizedBox(width: 108.w, child: CustomTextField(controller: dayCRTL, hintText: 'Day')),
+              ],
+            ),
+            SizedBox(height: 16.h),
+            Text('Late fee',
+                style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
+            SizedBox(height: 12.h),
+            CustomTextField(
+              controller: lateFeeCRTL,
+              hintText: '\$',
+              height: AppStyles.standardHeight,
+              keyboardType: TextInputType.number,
+            ),
+          ],
+          
+          SizedBox(height: 24.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -425,17 +221,9 @@ class _StepTwoFormState extends State<StepTwoForm> {
                 width: 164.w,
                 child: CustomButton(
                   onTap: () {
-                    setState(() {
-                      // if (_activeStepIndex == 1)
-                      //const StepThreeForm();
-                      setState(() {
-                        if (addeventcontroller.activeStepIndex.value == 1) {
-                          addeventcontroller.activeStepIndex.value--;
-                          //StepThreeForm();
-
-                        } // In create_event_one.dart, modify the step widgets to pass the activeStepIndex and update function:
-                      });
-                    });
+                    if (addEventController.activeStepIndex.value > 0) {
+                      addEventController.activeStepIndex.value--;
+                    }
                   },
                   text: "Back",
                   color: AppColors.colorEDF2F4,
@@ -443,18 +231,14 @@ class _StepTwoFormState extends State<StepTwoForm> {
                   borderColor: AppColors.buttonColor,
                 ),
               ),
-              Spacer(),
               SizedBox(
                 width: 164.w,
                 child: CustomButton(
                   onTap: () {
-                    setState(() {
-                      if (addeventcontroller.activeStepIndex.value == 1) {
-                        addeventcontroller.activeStepIndex.value++;
-                        //StepThreeForm();
-
-                      } // In create_event_one.dart, modify the step widgets to pass the activeStepIndex and update function:
-                    });
+                    _saveDataToController();
+                    if (addEventController.activeStepIndex.value < 4) {
+                      addEventController.activeStepIndex.value++;
+                    }
                   },
                   text: "Next",
                   borderColor: AppColors.buttonColor,
@@ -465,70 +249,63 @@ class _StepTwoFormState extends State<StepTwoForm> {
             ],
           ),
           SizedBox(height: 25.h),
-
-          // if (_activeStepIndex == 2) const StepThreeForm()
         ],
       ),
     );
   }
 
-}
-Future<void> _selectDate(BuildContext context, TextEditingController controller) async {
-  final DateTime? picked = await showDatePicker(
-    context: context,
-    initialDate: DateTime.now(),
-    firstDate: DateTime(2023),
-    lastDate: DateTime(2101),
-    builder: (context, child) {
-      return Theme(
-        data: Theme.of(context).copyWith(
-          colorScheme: ColorScheme.light(
-            primary: AppColors.buttonColor, // header & OK/Cancel button color
-            onPrimary: Colors.white, // text color on header
-            onSurface: Colors.black, // body text color
-          ),
-          textButtonTheme: TextButtonThemeData(
-            style: TextButton.styleFrom(
-              foregroundColor: AppColors.buttonColor, // button text color
-            ),
-          ),
-        ),
-        child: child!,
-      );
-    },
-  );
-  if (picked != null) {
-    controller.text = DateFormat('yyyy-MM-dd').format(picked);
-  }
-}
-
-
-Future<void> _selectTime(BuildContext context, TextEditingController controller) async {
-  final TimeOfDay? picked = await showTimePicker(
-    context: context,
-    initialTime: TimeOfDay.now(),
-    builder: (context, child) {
-      return Theme(
-        data: Theme.of(context).copyWith(
-          colorScheme: ColorScheme.light(
-            primary: AppColors.buttonColor,
-            onPrimary: Colors.white,
-            onSurface: Colors.black,
-          ),
-          textButtonTheme: TextButtonThemeData(
-            style: TextButton.styleFrom(
-              foregroundColor: AppColors.buttonColor,
-            ),
+  Widget _buildDropdown({
+    required String? value,
+    required String hint,
+    required List<String> items,
+    required void Function(String?) onChanged,
+  }) {
+    return Container(
+      height: AppStyles.standardHeight,
+      padding: EdgeInsets.symmetric(horizontal: 20.w),
+      decoration: BoxDecoration(
+        color: AppColors.fillColor,
+        borderRadius: BorderRadius.circular(8.r),
+        border: Border.all(color: AppColors.primaryColor, width: 1.w),
+      ),
+      child: Center(
+        child: DropdownButtonHideUnderline(
+          child: DropdownButton<String>(
+            value: value,
+            dropdownColor: AppColors.fillColor,
+            borderRadius: BorderRadius.circular(8.r),
+            hint: Text(hint, style: AppStyles.fontSize14(color: AppColors.color414141)),
+            icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor),
+            isExpanded: true,
+            items: items.map((String v) => DropdownMenuItem(value: v, child: Text(v, style: const TextStyle(color: Colors.black)))).toList(),
+            onChanged: onChanged,
           ),
         ),
-        child: child!,
-      );
-    },
-  );
-  if (picked != null) {
-    final now = DateTime.now();
-    final dateTime = DateTime(now.year, now.month, now.day, picked.hour, picked.minute);
-    controller.text = DateFormat('hh:mm a').format(dateTime);
+      ),
+    );
+  }
+
+  Future<void> _selectDate(BuildContext context, TextEditingController controller) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2023),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null) {
+      controller.text = DateFormat('yyyy-MM-dd').format(picked);
+    }
+  }
+
+  Future<void> _selectTime(BuildContext context, TextEditingController controller) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+    if (picked != null) {
+      final now = DateTime.now();
+      final dateTime = DateTime(now.year, now.month, now.day, picked.hour, picked.minute);
+      controller.text = DateFormat('hh:mm a').format(dateTime);
+    }
   }
 }
-
