@@ -23,10 +23,9 @@ class _StepThreeFormState extends State<StepThreeForm> {
   final List<String> groupCriteriaList = ['Age', 'Score'];
   final List<String> conditionList = ['UpTo', 'DownTo', 'Greater', 'GreaterAndEqual', 'Lower', 'LowerAndEqual'];
   final List<String> roundTypeList = ['Preliminary', 'SemiFinal', 'Final'];
-  final List<String> yesNoList = ['True', 'False'];
+  final List<String> yesNoList = ['Yes', 'No'];
 
   // Controllers for Group
-  final TextEditingController groupNameController = TextEditingController();
   final TextEditingController groupValueController = TextEditingController();
 
   // Controllers for Round
@@ -69,13 +68,6 @@ class _StepThreeFormState extends State<StepThreeForm> {
               SizedBox(height: 12.h),
               Text('Define Group',
                   style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
-              SizedBox(height: 12.h),
-              
-              CustomTextField(
-                controller: groupNameController,
-                hintText: 'Group Name (e.g. Group A)',
-                hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
-              ),
               SizedBox(height: 12.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -121,7 +113,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
                       color: AppColors.buttonA47059,
                       borderColor: Colors.transparent,
                       onTap: () {
-                        if (groupNameController.text.isEmpty || _selectedCriteria == null || _selectedCondition == null || groupValueController.text.isEmpty) {
+                        if (_selectedCriteria == null || _selectedCondition == null || groupValueController.text.isEmpty) {
                           Get.snackbar("Error", "Please fill all group details");
                           return;
                         }
@@ -129,15 +121,21 @@ class _StepThreeFormState extends State<StepThreeForm> {
                           Get.snackbar("Error", "Please add at least one round to the group");
                           return;
                         }
+
+                        // Auto-generate name
+                        String generatedName = "$_selectedCriteria $_selectedCondition ${groupValueController.text}";
+                        if (_selectedCriteria == 'Age') {
+                          generatedName += " years old";
+                        }
+
                         addeventcontroller.addGroup(
-                          groupNameController.text,
+                          generatedName,
                           _selectedCriteria!,
                           _selectedCondition!,
                           int.parse(groupValueController.text),
                           addeventcontroller.tempRounds,
                         );
                         // Reset
-                        groupNameController.clear();
                         groupValueController.clear();
                         setState(() {
                           _selectedCriteria = null;
@@ -169,7 +167,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
                         int idx = entry.key;
                         var group = entry.value;
                         return ListTile(
-                          title: Text("${group['name']} (${group['criteria']} ${group['condition']} ${group['value']})"),
+                          title: Text("${group['name']}"),
                           subtitle: Text("${group['rounds'].length} rounds"),
                           trailing: IconButton(
                             icon: SvgPicture.asset(AppIcons.trashIcon),
@@ -244,12 +242,12 @@ class _StepThreeFormState extends State<StepThreeForm> {
                       SizedBox(height: 12.h),
                       _buildDropdown(
                         value: _selectedHasFinalDeadline,
-                        hint: 'Has Final Deadline?',
+                        hint: 'Has Final Round?',
                         items: yesNoList,
                         onChanged: (v) => setState(() => _selectedHasFinalDeadline = v),
                       ),
 
-                      if (_selectedHasFinalDeadline == 'True') ...[
+                      if (_selectedHasFinalDeadline == 'Yes') ...[
                         SizedBox(height: 12.h),
                         Text("Final Deadline",
                             style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
@@ -296,7 +294,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
                             date: roundDateController.text,
                             time: roundTimeController.text,
                             cost: double.tryParse(roundCostController.text) ?? 0,
-                            hasFinalDeadline: _selectedHasFinalDeadline == 'True',
+                            hasFinalDeadline: _selectedHasFinalDeadline == 'Yes',
                             fYear: rFinalYearController.text,
                             fMonth: rFinalMonthController.text,
                             fDay: rFinalDayController.text,
