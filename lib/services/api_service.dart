@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
+import 'package:mime_type/mime_type.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../utils/api_constants.dart';
 
@@ -60,7 +62,12 @@ class ApiService {
       // Add files
       if (files != null) {
         for (var entry in files.entries) {
-          request.files.add(await http.MultipartFile.fromPath(entry.key, entry.value));
+          String? mimeType = mime(entry.value);
+          request.files.add(await http.MultipartFile.fromPath(
+            entry.key,
+            entry.value,
+            contentType: mimeType != null ? MediaType.parse(mimeType) : null,
+          ));
         }
       }
 

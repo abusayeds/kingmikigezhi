@@ -79,7 +79,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       }
     } catch (e) {
       setState(() {
-        error = 'Failed to load categories';
+        error = e.toString();
         isLoading = false;
       });
     }
