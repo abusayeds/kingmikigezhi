@@ -5,9 +5,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ConnectionController extends GetxController {
   final SharedPreferences sharedPreferences;
-  late ApiService apiService;
+  final ApiService apiService;
 
-  ConnectionController({required this.sharedPreferences});
+  ConnectionController(
+      {required this.sharedPreferences, required this.apiService});
 
   // Invitations
   RxList<dynamic> invitations = <dynamic>[].obs;
@@ -27,7 +28,6 @@ class ConnectionController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    apiService = ApiService(sharedPreferences: sharedPreferences);
     fetchInvitations();
     fetchConnections();
   }
@@ -37,6 +37,7 @@ class ConnectionController extends GetxController {
     if (isRefresh) {
       invitationPage.value = 1;
       invitations.clear();
+      hasMoreInvitations.value = true;
     }
 
     if (isLoadingInvitations.value || !hasMoreInvitations.value) return;
@@ -53,8 +54,8 @@ class ConnectionController extends GetxController {
         final meta = response['meta'];
 
         invitations.addAll(data);
-        invitationTotal.value = meta['total'];
-        hasMoreInvitations.value = meta['hasNext'];
+        invitationTotal.value = meta['total'] ?? 0;
+        hasMoreInvitations.value = meta['hasNext'] ?? false;
 
         if (hasMoreInvitations.value) {
           invitationPage.value++;
@@ -68,18 +69,22 @@ class ConnectionController extends GetxController {
   }
 
   // Accept connection request
-  Future<void> acceptConnection(String requestId) async {
+  Future<void> acceptConnection(String requestId, {bool shouldRefresh = true}) async {
     try {
       final String url =
           ApiConstants.acceptRequestConnection.replaceAll('{{id}}', requestId);
 
-      final response = await apiService.patch(url);
+      final response = await apiService.patch(url, body: {});
 
-      if (response['success'] == true) {
-        invitations
-            .removeWhere((item) => item['id'] == requestId);
-        connections.insert(0, response['data']);
-        Get.snackbar('Success', 'Connection accepted');
+      if (response != null && response['success'] == true) {
+        invitations.removeWhere((item) => item['id'] == requestId);
+        invitationTotal.value--;
+        if (shouldRefresh) {
+          fetchConnections(isRefresh: true);
+        }
+        if (shouldRefresh) {
+          Get.snackbar('Success', response['message'] ?? 'Connection accepted');
+        }
       }
     } catch (e) {
       Get.snackbar('Error', 'Failed to accept connection: ${e.toString()}');
@@ -87,16 +92,19 @@ class ConnectionController extends GetxController {
   }
 
   // Reject connection request
-  Future<void> rejectConnection(String requestId) async {
+  Future<void> rejectConnection(String requestId, {bool shouldRefresh = true}) async {
     try {
       final String url =
           ApiConstants.rejectRequestConnection.replaceAll('{{id}}', requestId);
 
-      final response = await apiService.patch(url);
+      final response = await apiService.patch(url, body: {});
 
-      if (response['success'] == true) {
+      if (response != null && response['success'] == true) {
         invitations.removeWhere((item) => item['id'] == requestId);
-        Get.snackbar('Success', 'Connection rejected');
+        invitationTotal.value--;
+        if (shouldRefresh) {
+          Get.snackbar('Success', response['message'] ?? 'Connection rejected');
+        }
       }
     } catch (e) {
       Get.snackbar('Error', 'Failed to reject connection: ${e.toString()}');
@@ -110,9 +118,11 @@ class ConnectionController extends GetxController {
           invitations.map((item) => item['id'] as String).toList();
 
       for (String id in requestIds) {
-        await acceptConnection(id);
+        await acceptConnection(id, shouldRefresh: false);
       }
-      await fetchInvitations(isRefresh: true);
+      fetchConnections(isRefresh: true);
+      fetchInvitations(isRefresh: true);
+      Get.snackbar('Success', 'All connections accepted');
     } catch (e) {
       Get.snackbar('Error', 'Failed to accept all connections: ${e.toString()}');
     }
@@ -125,9 +135,10 @@ class ConnectionController extends GetxController {
           invitations.map((item) => item['id'] as String).toList();
 
       for (String id in requestIds) {
-        await rejectConnection(id);
+        await rejectConnection(id, shouldRefresh: false);
       }
-      await fetchInvitations(isRefresh: true);
+      fetchInvitations(isRefresh: true);
+      Get.snackbar('Success', 'All connections rejected');
     } catch (e) {
       Get.snackbar('Error', 'Failed to reject all connections: ${e.toString()}');
     }
@@ -138,6 +149,7 @@ class ConnectionController extends GetxController {
     if (isRefresh) {
       connectionPage.value = 1;
       connections.clear();
+      hasMoreConnections.value = true;
     }
 
     if (isLoadingConnections.value || !hasMoreConnections.value) return;
@@ -154,8 +166,8 @@ class ConnectionController extends GetxController {
         final meta = response['meta'];
 
         connections.addAll(data);
-        connectionTotal.value = meta['total'];
-        hasMoreConnections.value = meta['hasNext'];
+        connectionTotal.value = meta['total'] ?? 0;
+        hasMoreConnections.value = meta['hasNext'] ?? false;
 
         if (hasMoreConnections.value) {
           connectionPage.value++;

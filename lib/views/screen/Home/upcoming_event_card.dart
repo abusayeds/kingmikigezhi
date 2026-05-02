@@ -48,7 +48,7 @@ class EventCard extends StatelessWidget {
                   child: eventModel?.coverImage != null
                       ? Image.network(
                           eventModel!.coverImage!,
-                          height: 144.h,
+                          height: 154.h,
                           width: double.infinity,
                           fit: BoxFit.fill,
                           errorBuilder: (context, error, stackTrace) =>
@@ -56,7 +56,7 @@ class EventCard extends StatelessWidget {
                         )
                       : Image.asset(
                           'assets/images/shoot.png',
-                          height: 144.h,
+                          height: 154.h,
                           width: double.infinity,
                           fit: BoxFit.fill,
                         ),

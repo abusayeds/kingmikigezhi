@@ -29,6 +29,12 @@ class HomeController extends GetxController implements GetxService {
   final RxInt historyPage = 1.obs;
   final RxBool historyHasNext = false.obs;
 
+  // Search Results
+  final RxList<EventModel> searchedEvents = <EventModel>[].obs;
+  final RxBool isLoadingSearch = false.obs;
+  final RxInt searchPage = 1.obs;
+  final RxBool searchHasNext = false.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -36,6 +42,57 @@ class HomeController extends GetxController implements GetxService {
     fetchFamilyEvents('Self');
     fetchUpcomingEvents();
     fetchHistoryEvents();
+  }
+
+  Future<void> searchEvents({
+    bool isLoadMore = false,
+    String? searchTerm,
+    String? programId,
+    String? type,
+    String? location,
+    String? categoryGroup,
+    double? priceMin,
+    double? priceMax,
+  }) async {
+    if (isLoadMore) {
+      if (!searchHasNext.value) return;
+      searchPage.value++;
+    } else {
+      searchPage.value = 1;
+      isLoadingSearch.value = true;
+      if (!isLoadMore) searchedEvents.clear();
+    }
+
+    try {
+      String url = "${ApiConstants.searchEvents}?page=${searchPage.value}&limit=10";
+      if (searchTerm != null && searchTerm.isNotEmpty) url += "&searchTerm=$searchTerm";
+      if (programId != null && programId.isNotEmpty) url += "&programId=$programId";
+      if (type != null && type.isNotEmpty) url += "&type=$type";
+      if (location != null && location.isNotEmpty) url += "&location=$location";
+      if (categoryGroup != null && categoryGroup.isNotEmpty) {
+        url += "&categoryGroup=$categoryGroup";
+      }
+      if (priceMin != null) url += "&priceMin=$priceMin";
+      if (priceMax != null) url += "&priceMax=$priceMax";
+
+      final response = await apiService.get(url);
+      if (response['success'] == true) {
+        final List<dynamic> data = response['data'];
+        final List<EventModel> newEvents = data.map((json) => EventModel.fromJson(json)).toList();
+
+        if (isLoadMore) {
+          searchedEvents.addAll(newEvents);
+        } else {
+          searchedEvents.value = newEvents;
+        }
+
+        searchHasNext.value = response['meta']['hasNext'] ?? false;
+      }
+    } catch (e) {
+      debugPrint("Error searching events: $e");
+    } finally {
+      isLoadingSearch.value = false;
+    }
   }
 
   Future<void> fetchTodayEvents({bool isLoadMore = false}) async {

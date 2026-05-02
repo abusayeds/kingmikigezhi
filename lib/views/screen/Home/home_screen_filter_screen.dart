@@ -1,14 +1,17 @@
+import 'package:event_sharing/models/event_model.dart';
+import 'package:event_sharing/services/api_service.dart';
+import 'package:event_sharing/utils/api_constants.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/views/base/custom_button.dart';
 import 'package:event_sharing/views/base/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../utils/app_icons.dart';
 import '../../../utils/app_strings.dart';
 import '../../../utils/style.dart';
-import '../../base/custom_dropdown.dart';
 import '../../base/custom_text.dart';
 
 class FilterScreen extends StatefulWidget {
@@ -19,21 +22,60 @@ class FilterScreen extends StatefulWidget {
 }
 
 class _FilterScreenState extends State<FilterScreen> {
-  final TextEditingController _categoriesCTRL = TextEditingController();
   final TextEditingController _locationCTRL = TextEditingController();
-  final List<String> _program = ['Concert', 'Sports', 'Show', 'Olympic game'];
   final List<String> _type = ['Onsite', 'Online', 'Hybrid'];
   final List<String> _category = ['6 Year - 10 Year', '11 Year - 16 Year', '17 Year+'];
+  
+  List<Program> _apiPrograms = [];
+  bool _isLoadingPrograms = true;
 
-  RangeValues _currentRangeValues = const RangeValues(50, 80);
-  String? _selectedProgram;
+  RangeValues _currentRangeValues = const RangeValues(50, 4000);
+  Program? _selectedProgram;
   String? _selectedType;
   String? _selectedCategory;
 
   @override
+  void initState() {
+    super.initState();
+    _fetchPrograms();
+  }
+
+  Future<void> _fetchPrograms() async {
+    try {
+      final apiService = Get.find<ApiService>();
+      final response = await apiService.get(ApiConstants.programs);
+      if (response['success'] == true) {
+        final List<dynamic> data = response['data'] ?? [];
+        setState(() {
+          _apiPrograms = data.map((json) => Program.fromJson(json)).toList();
+          _isLoadingPrograms = false;
+        });
+      }
+    } catch (e) {
+      debugPrint("Error fetching programs: $e");
+      setState(() {
+        _isLoadingPrograms = false;
+      });
+    }
+  }
+
+  String _mapCategoryGroup(String? displayValue) {
+    if (displayValue == null) return '';
+    switch (displayValue) {
+      case '6 Year - 10 Year':
+        return '6year-10year';
+      case '11 Year - 16 Year':
+        return '11year-16year';
+      case '17 Year+':
+        return '17year+';
+      default:
+        return displayValue;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //=======================> App Bar Section <============================
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: CustomText(
@@ -56,7 +98,6 @@ class _FilterScreenState extends State<FilterScreen> {
         ),
         centerTitle: true,
       ),
-      //=======================> Body Section <============================
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 10.h),
@@ -91,30 +132,32 @@ class _FilterScreenState extends State<FilterScreen> {
                     contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
                   ),
                   child: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      padding: EdgeInsets.symmetric(vertical: 0.w),
-                      iconDisabledColor: AppColors.primaryColor,
-                      icon: SvgPicture.asset(
-                        AppIcons.down_ArrowIcon,
-                        color: AppColors.primaryColor,
-                        height: 8.h,
-                      ),
-                      iconEnabledColor: AppColors.primaryColor,
-                      isExpanded: true,
-                      value: _selectedProgram,
-                      hint: CustomText(text: 'Select Program', fontsize: 14.sp),
-                      items: _program.map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _selectedProgram = newValue;
-                        });
-                      },
-                    ),
+                    child: _isLoadingPrograms 
+                      ? const Center(child: SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2)))
+                      : DropdownButton<Program>(
+                          padding: EdgeInsets.zero,
+                          iconDisabledColor: AppColors.primaryColor,
+                          icon: SvgPicture.asset(
+                            AppIcons.down_ArrowIcon,
+                            color: AppColors.primaryColor,
+                            height: 8.h,
+                          ),
+                          iconEnabledColor: AppColors.primaryColor,
+                          isExpanded: true,
+                          value: _selectedProgram,
+                          hint: CustomText(text: 'Select Program', fontsize: 14.sp),
+                          items: _apiPrograms.map((Program value) {
+                            return DropdownMenuItem<Program>(
+                              value: value,
+                              child: Text(value.name ?? 'Unknown'),
+                            );
+                          }).toList(),
+                          onChanged: (Program? newValue) {
+                            setState(() {
+                              _selectedProgram = newValue;
+                            });
+                          },
+                        ),
                   ),
                 ),
               ),
@@ -146,7 +189,7 @@ class _FilterScreenState extends State<FilterScreen> {
                 ),
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
-                    padding: EdgeInsets.symmetric(vertical: 0.w),
+                    padding: EdgeInsets.zero,
                     iconDisabledColor: AppColors.primaryColor,
                     iconEnabledColor: AppColors.primaryColor,
                     icon: SvgPicture.asset(
@@ -221,7 +264,7 @@ class _FilterScreenState extends State<FilterScreen> {
                 ),
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
-                    padding: EdgeInsets.symmetric(vertical: 0.w),
+                    padding: EdgeInsets.zero,
                     iconDisabledColor: AppColors.primaryColor,
                     iconEnabledColor: AppColors.primaryColor,
                     isExpanded: true,
@@ -257,7 +300,7 @@ class _FilterScreenState extends State<FilterScreen> {
                     bottom: 16.h,
                   ),
                   CustomText(
-                    text: '\$20-\$4K',
+                    text: '\$${_currentRangeValues.start.round()}-\$${_currentRangeValues.end.round()}',
                     fontWeight: FontWeight.w500,
                     fontsize: 16.sp,
                     bottom: 16.h,
@@ -288,7 +331,7 @@ class _FilterScreenState extends State<FilterScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      '\$${_currentRangeValues.start.round()}',
+                      '\$50',
                       style: GoogleFonts.poppins(
                         fontWeight: FontWeight.w400,
                         fontSize: 8.sp,
@@ -296,7 +339,7 @@ class _FilterScreenState extends State<FilterScreen> {
                       ),
                     ),
                     Text(
-                      '\$${_currentRangeValues.end.round()}',
+                      '\$4000',
                       style: GoogleFonts.poppins(
                         fontWeight: FontWeight.w400,
                         fontSize: 8.sp,
@@ -314,13 +357,12 @@ class _FilterScreenState extends State<FilterScreen> {
                   Expanded(
                     child: CustomButton(
                       onTap: () {
-                        // Reset functionality
                         setState(() {
                           _selectedProgram = null;
                           _selectedType = null;
                           _selectedCategory = null;
                           _locationCTRL.clear();
-                          _currentRangeValues = const RangeValues(50, 80);
+                          _currentRangeValues = const RangeValues(50, 4000);
                         });
                       },
                       borderColor: AppColors.buttonColor,
@@ -333,11 +375,10 @@ class _FilterScreenState extends State<FilterScreen> {
                   Expanded(
                     child: CustomButton(
                       onTap: () {
-                        // Apply filters - implement your logic here
                         Navigator.pop(context, {
-                          'program': _selectedProgram,
+                          'program': _selectedProgram?.id,
                           'type': _selectedType,
-                          'category': _selectedCategory,
+                          'category': _mapCategoryGroup(_selectedCategory),
                           'location': _locationCTRL.text,
                           'priceRange': _currentRangeValues,
                         });

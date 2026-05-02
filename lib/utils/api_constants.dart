@@ -55,6 +55,10 @@ class ApiConstants {
 
 
 
+  //Programs
+  static const String programs = '$apiUrl/programs';
+
+
 
   //Connections
   static const String createConnections = '$apiUrl/connections/requests/create';
@@ -114,18 +118,11 @@ class ApiConstants {
 
 
 
+  //Search
+  static const String searchEvents = '$apiUrl/events/feed/search';
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+  // Event Types
+  static const String onsite = 'Onsite';
+  static const String online = 'Online';
+  static const String hybrid = 'Hybrid';
 }

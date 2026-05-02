@@ -18,9 +18,7 @@ class MyConnectionScreen extends StatefulWidget {
 class _MyConnectionScreenState extends State<MyConnectionScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  final ConnectionController connectionController = Get.put(ConnectionController(
-    sharedPreferences: Get.find(),
-  ));
+  final ConnectionController connectionController = Get.find<ConnectionController>();
 
   @override
   void initState() {
