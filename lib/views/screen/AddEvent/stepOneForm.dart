@@ -75,10 +75,10 @@ class _SteponeformState extends State<Steponeform> {
   final List<String> sessionFrequencyList = ['Daily', 'Weekly', 'Monthly', 'Quarterly', 'Yearly'];
   final Map<String, List<String>> sessionSubOptions = {
     'Daily': ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-    'Weekly': ['Week One', 'Week Two', 'Week Three', 'Week Four'],
+    'Weekly': ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
     'Monthly': ['January', 'February', 'March', 'April', 'May', 'June',
       'July', 'August', 'September', 'October', 'November', 'December'],
-    'Quarterly': ['Quarter One', 'Quarter Two', 'Quarter Three', 'Quarter Four'],
+    'Quarterly': ['Q1', 'Q2', 'Q3', 'Q4'],
     'Yearly': [],
   };
 
@@ -259,6 +259,20 @@ class _SteponeformState extends State<Steponeform> {
     }
   }
 
+  void _updateSessionNumber() {
+    String year = _selectedYear ?? "";
+    String session = _selectedSessionSubOption ?? _selectedSessionFrequency ?? "";
+    if (year.isNotEmpty && session.isNotEmpty) {
+      if (session == 'Yearly') {
+        sessionNumberController.text = year;
+      } else {
+        sessionNumberController.text = '$year-$session';
+      }
+    } else if (year.isNotEmpty) {
+      sessionNumberController.text = year;
+    }
+  }
+
   void _saveDataToController() {
     addEventController.isRepeated.value = _isRepeated;
     addEventController.repeatOption = _selectedRepeatOption;
@@ -346,15 +360,15 @@ class _SteponeformState extends State<Steponeform> {
                       Expanded(child: Text('Session', style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600))),
                     ]),
                     Row(children: [
-                      Expanded(child: _buildDropdown(value: _selectedYear, hint: 'Year', items: yearList, onChanged: (v) => setState(() => _selectedYear = v))),
+                      Expanded(child: _buildDropdown(value: _selectedYear, hint: 'Year', items: yearList, onChanged: (v) => setState(() { _selectedYear = v; _updateSessionNumber(); }))),
                       SizedBox(width: 8.w),
-                      Expanded(child: _buildDropdown(value: _selectedSessionFrequency, hint: 'Session', items: sessionFrequencyList, onChanged: (v) => setState(() { _selectedSessionFrequency = v; _selectedSessionSubOption = null; }))),
+                      Expanded(child: _buildDropdown(value: _selectedSessionFrequency, hint: 'Session', items: sessionFrequencyList, onChanged: (v) => setState(() { _selectedSessionFrequency = v; _selectedSessionSubOption = null; _updateSessionNumber(); }))),
                     ]),
                     if (_selectedSessionFrequency != null && (sessionSubOptions[_selectedSessionFrequency!]?.isNotEmpty ?? false)) ...[
                       SizedBox(height: 12.h),
                       Text(_selectedSessionFrequency!, style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
                       SizedBox(height: 8.h),
-                      _buildDropdown(value: _selectedSessionSubOption, hint: 'Select ${_selectedSessionFrequency!}', items: sessionSubOptions[_selectedSessionFrequency!]!, onChanged: (v) => setState(() => _selectedSessionSubOption = v)),
+                      _buildDropdown(value: _selectedSessionSubOption, hint: 'Select ${_selectedSessionFrequency!}', items: sessionSubOptions[_selectedSessionFrequency!]!, onChanged: (v) => setState(() { _selectedSessionSubOption = v; _updateSessionNumber(); })),
                     ],
                   ],
                 ),

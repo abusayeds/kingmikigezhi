@@ -1,4 +1,7 @@
 import 'package:event_sharing/helpers/route.dart';
+import 'package:event_sharing/models/event_model.dart';
+import 'package:event_sharing/services/api_service.dart';
+import 'package:event_sharing/utils/api_constants.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_icons.dart';
 import 'package:event_sharing/utils/app_strings.dart';
@@ -8,9 +11,9 @@ import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/get_navigation.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 class EventDetailsScreen extends StatefulWidget {
   @override
@@ -18,6 +21,10 @@ class EventDetailsScreen extends StatefulWidget {
 }
 
 class _EventDetailsScreenState extends State<EventDetailsScreen> {
+  EventModel? event;
+  bool isLoading = true;
+  String? error;
+
   final List<String> _agesList = [
     'Age up to 10 years old',
     'Age up to 15 years old'
@@ -25,7 +32,82 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
   String? _selectedAge;
 
   @override
+  void initState() {
+    super.initState();
+    _fetchEventDetails();
+  }
+
+  Future<void> _fetchEventDetails() async {
+    final dynamic args = Get.arguments;
+    String? eventId;
+
+    if (args is EventModel) {
+      eventId = args.id;
+    } else if (args is String) {
+      eventId = args;
+    }
+
+    if (eventId == null) {
+      setState(() {
+        isLoading = false;
+        error = 'No event ID provided';
+      });
+      return;
+    }
+
+    try {
+      final apiService = Get.find<ApiService>();
+      final response = await apiService.get(
+        ApiConstants.getEventsDetails.replaceAll(':eventId', eventId),
+      );
+
+      if (response['success'] == true) {
+        setState(() {
+          event = EventModel.fromJson(response['data']);
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+          error = response['message'] ?? 'Failed to load event details';
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        error = e.toString();
+        isLoading = false;
+      });
+    }
+  }
+
+  String _formatDate(DateTime? date) {
+    if (date == null) return 'N/A';
+    return DateFormat('d-M-yyyy').format(date);
+  }
+
+  String _formatTime(DateTime? date) {
+    if (date == null) return 'N/A';
+    return DateFormat('h:mm a').format(date);
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+
+    if (error != null) {
+      return Scaffold(body: Center(child: Text(error!, style: TextStyle(color: Colors.red))));
+    }
+
+    if (event == null) {
+      return Scaffold(body: Center(child: Text('Event not found')));
+    }
+
+    final schedule = event!.schedule;
+    final program = event!.program;
+    final creator = event!.creator;
+
     return Scaffold(
       //=======================> App Bar Section <============================
       appBar: AppBar(
@@ -62,33 +144,30 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16.r),
                       color: Colors.transparent,
-                      image: const DecorationImage(
-                        // image: NetworkImage('https://static.gltjp.com/glt/data/directory/13000/12058/20210822_040201_6908e9ec_w1920.webp'),
-                        image: AssetImage('assets/images/concert.jpg'),
+                      image: DecorationImage(
+                        image: event!.coverImage != null && event!.coverImage!.isNotEmpty
+                            ? NetworkImage(event!.coverImage!)
+                            : AssetImage('assets/images/concert.jpg') as ImageProvider,
                         fit: BoxFit.cover,
                       ),
                     ),
                   ),
-
                 ],
               ),
               SizedBox(height: 16.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Piano Star Event',
-                      style: AppStyles.headTitle()
-                          .copyWith(
+                  Text(event!.eventName ?? 'Unknown Event',
+                      style: AppStyles.headTitle().copyWith(
                         fontSize: 15.sp,
                         decoration: TextDecoration.underline,
-                        decorationColor: Colors.black, // Color of the underline
-                        decorationThickness: 1.0, // Thickness of the underline
+                        decorationColor: Colors.black,
+                        decorationThickness: 1.0,
                       )),
                 ],
               ),
-              SizedBox(
-                height: 16.h,
-              ),
+              SizedBox(height: 16.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -104,9 +183,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: InkWell(
-                              onTap: () {
-
-                              },
+                              onTap: () {},
                               child: Center(child: SvgPicture.asset(AppIcons.editIcon))),
                         ),
                       ),
@@ -128,9 +205,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                 color: AppColors.primaryColor,
                               ),
                             ),
-                            onPressed: () {
-                              // Edit action
-                            },
+                            onPressed: () {},
                           ),
                         ),
                       ),
@@ -156,44 +231,47 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
               ),
               Column(
                 children: [
-
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Left Column
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(height: 12.h),
-                            _buildInfoRow('Program', 'Piano'),
+                            _buildInfoRow('Program', program?.name ?? 'N/A'),
                             SizedBox(height: 17.h),
-                            _buildInfoRow('Type', 'Onsite Event'),
+                            _buildInfoRow('Type', schedule?.eventType ?? 'N/A'),
                             SizedBox(height: 17.h),
-                            _buildInfoRow('Location', 'Dhaka Bangladesh'),
+                            _buildInfoRow('Location', event!.location ?? 'N/A'),
                             SizedBox(height: 18.h),
-                            _buildInfoRowWithDateTime('Deadline', '1-5-2025', '7:00 PM'),
+                            _buildInfoRowWithDateTime(
+                                'Deadline',
+                                _formatDate(schedule?.deadline),
+                                _formatTime(schedule?.deadline)),
                             SizedBox(height: 18.h),
-                            _buildInfoRow('Final Deadline', '1-5-2025'),
+                            _buildInfoRow('Final Deadline', _formatDate(schedule?.finalDeadline)),
                           ],
                         ),
                       ),
-                      // Right Column
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(height: 12.h),
-                            _buildInfoRow('Competition Level', 'Primary Round'),
+                            _buildInfoRow('Competition Level', schedule?.competitionLevel ?? 'N/A'),
                             SizedBox(height: 17.h),
-                            _buildInfoRowWithDateTime('Registration Open', '1-1-2025', '7.00 AM'),
+                            _buildInfoRowWithDateTime(
+                                'Registration Open',
+                                _formatDate(schedule?.registrationDate),
+                                _formatTime(schedule?.registrationDate)),
                             SizedBox(height: 17.h),
-                            _buildInfoRow('Repeat Function', 'Never'),
+                            _buildInfoRow('Repeat Function', event!.repeatConfig?.frequency ?? 'Never'),
                             SizedBox(height: 18.h),
-                            _buildInfoRowWithCheck('Cost', '\$100'),
+                            _buildInfoRowWithCheck('Cost', '\$${schedule?.cost ?? '0'}'),
                             SizedBox(height: 18.h),
-                            _buildInfoRowWithCheck('Late Fee', '\$100'),
+                            _buildInfoRowWithCheck('Late Fee', '\$${schedule?.lateFee ?? '0'}'),
                           ],
                         ),
                       ),
@@ -201,53 +279,40 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                   )
                 ],
               ),
-
-              //=======================> Description Event Section <============================
               SizedBox(height: 24.h),
               Text(AppStrings.description,
-                  style:TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
+                  style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
               SizedBox(height: 8.h),
               Text(
-                'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable.',
+                event!.description ?? 'No description available',
                 maxLines: 20,
                 textAlign: TextAlign.start,
-                style: AppStyles.fieldContent(
-                  color: AppColors.color414141,
-                ),
+                style: AppStyles.fieldContent(color: AppColors.color414141),
               ),
               SizedBox(height: 16.w),
-
-              // Note
               Text(AppStrings.note,
-                  style:TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
+                  style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
               SizedBox(height: 8.h),
               Text(
-                'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable.',
+                event!.note ?? 'No note available',
                 maxLines: 20,
                 textAlign: TextAlign.start,
-                style: AppStyles.fieldContent(
-                  color: AppColors.color414141,
-                ),
+                style: AppStyles.fieldContent(color: AppColors.color414141),
               ),
               SizedBox(height: 16.h),
-              //=======================> Age up to 10 years old Section <============================
               InputDecorator(
                 decoration: InputDecoration(
                   fillColor: AppColors.fillColor,
-                  // labelText: 'Select',
                   border: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: AppColors.buttonColor, width: 1.w),
+                    borderSide: BorderSide(color: AppColors.buttonColor, width: 1.w),
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: AppColors.buttonColor, width: 1.w),
+                    borderSide: BorderSide(color: AppColors.buttonColor, width: 1.w),
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: AppColors.buttonColor, width: 1.w),
+                    borderSide: BorderSide(color: AppColors.buttonColor, width: 1.w),
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                   contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
@@ -255,21 +320,20 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
                     padding: EdgeInsets.symmetric(vertical: 5.w),
-                    // focusColor:  AppColors.primaryColor,
                     iconDisabledColor: AppColors.primaryColor,
                     iconEnabledColor: AppColors.primaryColor,
                     isExpanded: true,
                     value: _selectedAge,
                     style: AppStyles.fontSize18(
-                        color: AppColors.blackColor,
-                        fontWeight: FontWeight.w500),
+                        color: AppColors.blackColor, fontWeight: FontWeight.w500),
                     hint: CustomText(text: 'Select Ages', fontsize: 13.sp),
                     icon: SvgPicture.asset(
                       AppIcons.downArrowIcon,
                       width: 16.w,
                       color: AppColors.blackColor,
                     ),
-                    items: _agesList.map((String value) {
+                    items: (schedule?.groups?.map((g) => g.name ?? 'Group').toList() ?? [])
+                        .map((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
                         child: Text(value),
@@ -284,361 +348,108 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                 ),
               ),
               SizedBox(height: 16.h),
-              // Preliminary section
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
+              if (schedule?.groups != null)
+                ...schedule!.groups!.map((group) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SvgPicture.asset(
-                        AppIcons.myEventIcon,
-                        color: AppColors.primaryColor,
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 8.h),
+                        child: Text('${group.name ?? 'Group'} (Value: ${group.value ?? 0})',
+                            style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, color: AppColors.primaryColor)),
                       ),
-                      SizedBox(width: 8.w),
-                      Text('Preliminary',
-                          style:TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600)),
+                      if (group.rounds != null)
+                        ...group.rounds!.map((round) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  SvgPicture.asset(
+                                    AppIcons.myEventIcon,
+                                    color: AppColors.primaryColor,
+                                  ),
+                                  SizedBox(width: 8.w),
+                                  Text(round.roundType ?? 'Round',
+                                      style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600)),
+                                ],
+                              ),
+                              SizedBox(height: 15.h),
+                              Padding(
+                                padding: EdgeInsets.only(left: 7.w),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            SvgPicture.asset(AppIcons.dotIconForFamily),
+                                            SizedBox(width: 5.w),
+                                            Text('Deadline: ',
+                                                style: AppStyles.fontSize12(fontWeight: FontWeight.w600)),
+                                            Text(_formatDate(round.deadline), style: AppStyles.fontSize12()),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            SvgPicture.asset(AppIcons.dotIconForFamily),
+                                            SizedBox(width: 5),
+                                            Text('Cost: ',
+                                                style: AppStyles.fontSize12(fontWeight: FontWeight.w600)),
+                                            Text('\$${round.cost ?? '0'}', style: AppStyles.fontSize12()),
+                                            SizedBox(width: 10),
+                                          ],
+                                        ),
+                                        if (round.hasFinalDeadline == true)
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              color: Colors.blueGrey,
+                                              shape: BoxShape.rectangle,
+                                              borderRadius: BorderRadius.circular(4),
+                                            ),
+                                            child: Icon(Icons.check, color: Colors.white, size: 10),
+                                            padding: EdgeInsets.all(4),
+                                          ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 8.h),
+                                    Row(
+                                      children: [
+                                        SvgPicture.asset(AppIcons.dotIconForFamily),
+                                        SizedBox(width: 5),
+                                        Text('Description: ',
+                                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12.sp)),
+                                        Expanded(
+                                          child: Text(round.description ?? 'N/A',
+                                              style: AppStyles.fontSize12()),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const Divider(thickness: 1, color: Colors.grey),
+                            ],
+                          );
+                        }).toList(),
                     ],
-                  ),
-                  SizedBox(height: 15.h),
-                  Padding(
-                    padding:  EdgeInsets.only(left: 7.w),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                SvgPicture.asset(AppIcons.dotIconForFamily),
-                                SizedBox(width: 5.w),
-                                Text('Deadline: ',
-                                    style: AppStyles.fontSize12(
-                                        fontWeight: FontWeight.w600)),
-                                Text( ' 1-1-2024', style: AppStyles.fontSize12()),
-                              ],
-                            ),
-
-                            Row(
-                              children: [
-                                SvgPicture.asset(AppIcons.dotIconForFamily),
-                                SizedBox(width: 5),
-                                Text('Cost: ',
-                                    style: AppStyles.fontSize12(
-                                        fontWeight: FontWeight.w600)),
-                                Text('\$100', style: AppStyles.fontSize12()),
-                                SizedBox(width: 10),
-                              ],
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                color: Colors.blueGrey,
-                                shape: BoxShape.rectangle,
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                              child: Icon(
-                                Icons.check,
-                                color: Colors.white,
-                                size: 10,
-                              ),
-                              padding: EdgeInsets.all(4),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 8.h),
-                        Row(
-                          children: [
-                            SvgPicture.asset(AppIcons.dotIconForFamily),
-                            SizedBox(width: 5),
-                            Text('Type: ',
-                                style: AppStyles.fontSize12(
-                                    fontWeight: FontWeight.w600)),
-                            Text('Onsite Event', style: AppStyles.fontSize12()),
-                          ],
-                        ),
-                        SizedBox(height: 8.h),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SvgPicture.asset(AppIcons.dotIconForFamily),
-                            SizedBox(width: 5),
-                            Text('Description: ',
-                                style: TextStyle(fontWeight: FontWeight.w600)),
-                            Expanded(
-                              child: Text(
-                                  'The point of using Lorem Ipsum is that it has a more or less normal',
-                                  style: AppStyles.fontSize12()),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-              const Divider(thickness: 1, color: Colors.grey),
-              // Semi Final section
+                  );
+                }).toList(),
               SizedBox(height: 16.h),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      SvgPicture.asset(
-                        AppIcons.myEventIcon,
-                        color: AppColors.primaryColor,
-                      ),
-                      SizedBox(width: 8.w),
-                      Text('Semi Final',
-                          style:TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600)),
-                    ],
-                  ),
-                  SizedBox(height: 16.h),
-                  Padding(
-                    padding:  EdgeInsets.only(left: 7.w),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                SvgPicture.asset(AppIcons.dotIconForFamily),
-                                SizedBox(width: 5.w),
-                                Text('Deadline: ',
-                                    style: AppStyles.fontSize12(
-                                        fontWeight: FontWeight.w600)),
-                                Text( ' 1-1-2024', style: AppStyles.fontSize12()),
-                              ],
-                            ),
-
-                            Row(
-                              children: [
-                                SvgPicture.asset(AppIcons.dotIconForFamily),
-                                SizedBox(width: 5),
-                                Text('Cost: ',
-                                    style: AppStyles.fontSize12(
-                                        fontWeight: FontWeight.w600)),
-                                Text('\$100', style: AppStyles.fontSize12()),
-                                SizedBox(width: 10),
-                              ],
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                color: Colors.blueGrey,
-                                shape: BoxShape.rectangle,
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                              child: Icon(
-                                Icons.check,
-                                color: Colors.white,
-                                size: 10,
-                              ),
-                              padding: EdgeInsets.all(4),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 8.h),
-                        Row(
-                          children: [
-                            SvgPicture.asset(AppIcons.dotIconForFamily),
-                            SizedBox(width: 5.w),
-                            Text('Type: ',
-                                style: AppStyles.fontSize12(
-                                    fontWeight: FontWeight.w600)),
-                            Text('Onsite Event', style: AppStyles.fontSize12()),
-                          ],
-                        ),
-                        SizedBox(height: 8.h),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SvgPicture.asset(AppIcons.dotIconForFamily),
-                            SizedBox(width: 5.w),
-                            Text('Description: ',
-                                style: TextStyle(fontWeight: FontWeight.w500,)),
-                            Expanded(
-                              child: Text(
-                                  'The point of using Lorem Ipsum is that it has a more or less normal',
-                                  style: AppStyles.fontSize12()),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-              const Divider(thickness: 1, color: Colors.grey),
-              // Final section
-              SizedBox(height: 16.h),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      SvgPicture.asset(
-                        AppIcons.myEventIcon,
-                        color: AppColors.primaryColor,
-                      ),
-                      SizedBox(width: 8.w),
-                      Text('Final  ',
-                          style:TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600)),
-                    ],
-                  ),
-                  SizedBox(height: 16.h),
-                  Padding(
-                    padding:  EdgeInsets.only(left: 7.w),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                SvgPicture.asset(AppIcons.dotIconForFamily),
-                                SizedBox(width: 5.w),
-                                Text('Deadline: ',
-                                    style: AppStyles.fontSize12(
-                                        fontWeight: FontWeight.w600)),
-                                Text( ' 1-1-2024', style: AppStyles.fontSize12()),
-                              ],
-                            ),
-
-                            Row(
-                              children: [
-                                SvgPicture.asset(AppIcons.dotIconForFamily),
-                                SizedBox(width: 5),
-                                Text('Cost: ',
-                                    style: AppStyles.fontSize12(
-                                        fontWeight: FontWeight.w600)),
-                                Text('\$100', style: AppStyles.fontSize12()),
-                                SizedBox(width: 10),
-                              ],
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                color: Colors.blueGrey,
-                                shape: BoxShape.rectangle,
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                              child: Icon(
-                                Icons.check,
-                                color: Colors.white,
-                                size: 10,
-                              ),
-                              padding: EdgeInsets.all(4),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 8.h),
-                        Row(
-                          children: [
-                            SvgPicture.asset(AppIcons.dotIconForFamily),
-                            SizedBox(width: 5),
-                            Text('Type: ',
-                                style: AppStyles.fontSize12(
-                                    fontWeight: FontWeight.w600)),
-                            Text('Onsite Event', style: AppStyles.fontSize12()),
-                          ],
-                        ),
-                        SizedBox(height: 8.h),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SvgPicture.asset(AppIcons.dotIconForFamily),
-                            SizedBox(width: 5),
-                            Text('Description: ',
-                                style: TextStyle(fontWeight: FontWeight.w500,)),
-                            Expanded(
-                              child: Text(
-                                  'The point of using Lorem Ipsum is that it has a more or less normal',
-                                  style: AppStyles.fontSize12()),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-              const Divider(thickness: 1, color: Colors.grey),
-              //history
               Padding(
-                padding:  EdgeInsets.only(left: 7.w),
+                padding: EdgeInsets.only(left: 7.w),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-
-
-                    Text('Preliminary',
-                        style: AppStyles.fontSize12(fontWeight: FontWeight.w600,).copyWith(fontSize: 13.sp)),
+                    Text('Estimation Total Cost',
+                        style: AppStyles.fontSize12(fontWeight: FontWeight.w600).copyWith(fontSize: 13.sp)),
                     SizedBox(height: 8.h),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Container(
-                              width: 6.w,
-                              height: 6.h,
-                              decoration: BoxDecoration(
-                                color: Colors.blueGrey,
-                                shape: BoxShape.circle,
-                              ),
-                            ),
-                            SizedBox(width: 8.w),
-                            Text('2021 - 1st place winner',
-                                style: TextStyle(color: AppColors.color414141)),
-                          ],
-                        ),
-                        SizedBox(height: 8.h),
-                        Row(
-                          children: [
-                            Container(
-                              width: 6.w,
-                              height: 6.h,
-                              decoration: BoxDecoration(
-                                color: Colors.blueGrey,
-                                shape: BoxShape.circle,
-                              ),
-                            ),
-                            SizedBox(width: 8.w),
-                            Text('2022 - 2nd place winner',
-                                style: TextStyle(color: AppColors.color414141)),
-                          ],
-                        ),
-                        SizedBox(height: 8.h),
-                        Row(
-                          children: [
-                            Container(
-                              width: 6.w,
-                              height: 6.h,
-                              decoration: BoxDecoration(
-                                color: Colors.blueGrey,
-                                shape: BoxShape.circle,
-                              ),
-                            ),
-                            SizedBox(width: 8.w),
-                            Text('2023 - 1st place winner',
-                                style: TextStyle(color: AppColors.color414141)),
-                          ],
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 16.h),
-                    const Divider(thickness: 1, color: Colors.grey),
                     Align(
                       alignment: Alignment.centerRight,
                       child: Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 12.h, vertical: 8.w),
+                        padding: EdgeInsets.symmetric(horizontal: 12.h, vertical: 8.w),
                         decoration: BoxDecoration(
                           color: AppColors.fillColor,
                           borderRadius: BorderRadius.circular(4.r),
@@ -646,123 +457,65 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text('Estimation Total Cost: 400',
+                            Text('Estimation Total Cost: ${schedule?.estimatedCost?.totalEstimatedCost ?? 0}',
                                 style: AppStyles.fontSize14(
                                   color: AppColors.color414141,
                                   fontWeight: FontWeight.w500,
-                                ).copyWith(
-                                  fontSize: 10.sp,
-                                )),
+                                ).copyWith(fontSize: 10.sp)),
                             SizedBox(width: 8.w),
-                            SvgPicture.asset(
-                              AppIcons.editIcon,
-                              height: 12.w,
-                              width: 12.w,
-                            ),
+                            SvgPicture.asset(AppIcons.editIcon, height: 12.w, width: 12.w),
                           ],
                         ),
                       ),
                     ),
                     SizedBox(height: 15.h),
-
-                    // Created By Section
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Row(
                           children: [
                             Text('Created By',
-                                // style: AppStyles.fontSize14(
-                                //     color: AppColors.color414141,
-                                //     fontWeight: FontWeight.w500)
-///-------------------------Updated with the concern of client by Abir on 29/11/2025
-                            style: GoogleFonts.poppins(
-                              fontSize: 12.sp,
-                              color: AppColors.color414141,
-
-                            ),
-                            ),
+                                style: GoogleFonts.poppins(fontSize: 12.sp, color: AppColors.color414141)),
                             SizedBox(width: 8.w),
                             CircleAvatar(
                               radius: 30.r,
-                              backgroundImage: NetworkImage(
-                                  'https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg'), // Placeholder image
+                              backgroundImage: creator?.profilePicture != null
+                                  ? NetworkImage(creator!.profilePicture!)
+                                  : NetworkImage('https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg'),
                             ),
                           ],
                         ),
                         Text(
-                          'Created at\n1-1-2022',
+                          'Created at\n${_formatDate(event!.createdAt)}',
                           textAlign: TextAlign.right,
-                          // style: AppStyles.fontSize14(
-                          //     color: AppColors.color414141,
-                          //     fontWeight: FontWeight.w600),
-                          ///-------------------------Updated with the concern of client by Abir on 29/11/2025
-
-                          style: GoogleFonts.poppins(
-                              fontSize: 12.sp,
-                              color: AppColors.color414141,
-
-                          ),
+                          style: GoogleFonts.poppins(fontSize: 12.sp, color: AppColors.color414141),
                         ),
                       ],
                     ),
                     SizedBox(height: 15.h),
-
-                    // User Contribution Section
                     Text(
-                      'Has already contribute or verification by (10) Users',
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                      ),
+                      'Has already contribute or verification by (${event!.eventApplieds?.length ?? 0}) Users',
+                      style: TextStyle(fontSize: 12.sp),
                     ),
                     SizedBox(height: 10.h),
                     Row(
-                      children: [
-                        Transform.translate(
-                          offset: Offset(0, 0),
-                          child: CircleAvatar(
-                            radius: 25.r,
-                            backgroundImage: NetworkImage(
-                                'https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg'), // Placeholder image
-                          ),
-                        ),
-                        Transform.translate(
-                          offset: Offset(-15, 0),
-                          child: CircleAvatar(
-                            radius: 25.r,
-                            backgroundImage: NetworkImage(
-                                'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=400'), // Placeholder image
-                          ),
-                        ),
-                        Transform.translate(
-                          offset: Offset(-30, 0),
-                          child: CircleAvatar(
-                            radius: 25.r,
-                            backgroundImage: NetworkImage(
-                                'https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'), // Placeholder image
-                          ),
-                        ),
-                        Transform.translate(
-                          offset: Offset(-50, 0),
-                          child: CircleAvatar(
-                            radius: 25.r,
-                            backgroundImage: NetworkImage(
-                                'https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&w=400'), // Placeholder image
-                          ),
-                        ),
-                      ],
+                      children: (event!.eventApplieds?.take(4).map((applied) {
+                            return Transform.translate(
+                              offset: Offset(-(event!.eventApplieds!.indexOf(applied) * 15.0), 0),
+                              child: CircleAvatar(
+                                radius: 25.r,
+                                backgroundImage: NetworkImage('https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg'),
+                              ),
+                            );
+                          }).toList() ??
+                          []),
                     ),
                     SizedBox(height: 10.h),
-                    // Latest active info
                     Text(
-                      'Latest active 3 days ago',
-                      style: TextStyle(
-                        fontSize: 13.sp,
-                        color: AppColors.color414141,
-                      ),
+                      'Latest active ${_formatDate(event!.updatedAt)}',
+                      style: TextStyle(fontSize: 13.sp, color: AppColors.color414141),
                     ),
                     SizedBox(height: 20.h),
-                    // Buttons Row
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -779,8 +532,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                             width: 164.w,
                             child: CustomButton(
                               onTap: () {
-                                Get.toNamed(
-                                    AppRoutes.appliedSearchEventListScreen);
+                                Get.toNamed(AppRoutes.appliedSearchEventListScreen, arguments: event);
                               },
                               text: "Apply",
                               textColor: Colors.white,
@@ -789,8 +541,6 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                       ],
                     ),
                     SizedBox(height: 20.h),
-
-                    // Delete Button
                     CustomButton(
                         color: AppColors.colorD9A951,
                         borderColor: AppColors.colorD9A951,
@@ -806,38 +556,23 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
       ),
     );
   }
-  // Helper methods to ensure consistent alignment
+
   Widget _buildInfoRow(String label, String value) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-       Column(
-         children: [
-           SizedBox(
-             height: 4.h,
-           ),
-           SvgPicture.asset(
-             AppIcons.dotIconForFamily,
-             height: 12.h,
-             width: 12.h,
-           )
-         ],
-       )
-        ,
+        Column(children: [
+          SizedBox(height: 4.h),
+          SvgPicture.asset(AppIcons.dotIconForFamily, height: 12.h, width: 12.h)
+        ]),
         SizedBox(width: 5.w),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                label,
-                style:TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600),
-              ),
+              Text(label, style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
               SizedBox(height: 5.h),
-              Text(
-                value,
-                style: AppStyles.fieldContent(color: Colors.grey.shade600),
-              ),
+              Text(value, style: AppStyles.fieldContent(color: Colors.grey.shade600)),
             ],
           ),
         ),
@@ -849,42 +584,22 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Column(
-          children: [
-            SizedBox(
-              height: 4.h,
-            ),
-            SvgPicture.asset(
-              AppIcons.dotIconForFamily,
-              height: 12.h,
-              width: 12.h,
-            )
-          ],
-        )
-        ,
+        Column(children: [
+          SizedBox(height: 4.h),
+          SvgPicture.asset(AppIcons.dotIconForFamily, height: 12.h, width: 12.h)
+        ]),
         SizedBox(width: 5.w),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                label,
-                style:TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600),
-              ),
+              Text(label, style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
               SizedBox(height: 5.h),
-              Row(
-                children: [
-                  Text(
-                    date,
-                    style: AppStyles.fieldContent(color: Colors.grey.shade600),
-                  ),
-                  SizedBox(width: 5.w),
-                  Text(
-                    time,
-                    style: AppStyles.fieldContent(color: Colors.grey.shade600),
-                  ),
-                ],
-              ),
+              Row(children: [
+                Text(date, style: AppStyles.fieldContent(color: Colors.grey.shade600)),
+                SizedBox(width: 5.w),
+                Text(time, style: AppStyles.fieldContent(color: Colors.grey.shade600)),
+              ]),
             ],
           ),
         ),
@@ -899,40 +614,24 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Column(
-              children: [
-                SizedBox(
-                  height: 4.h,
-                ),
-                SvgPicture.asset(
-                  AppIcons.dotIconForFamily,
-                  height: 12.h,
-                  width: 12.h,
-                )
-              ],
-            )
-            ,
+            Column(children: [
+              SizedBox(height: 4.h),
+              SvgPicture.asset(AppIcons.dotIconForFamily, height: 12.h, width: 12.h)
+            ]),
             SizedBox(width: 5.w),
             Expanded(
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    label,
-                    style:TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600),
-                  ),
+                  Text(label, style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
                   Container(
                     decoration: BoxDecoration(
                       color: Colors.blueGrey,
                       shape: BoxShape.rectangle,
                       borderRadius: BorderRadius.circular(4),
                     ),
-                    child: Icon(
-                      Icons.check,
-                      color: Colors.white,
-                      size: 10,
-                    ),
+                    child: Icon(Icons.check, color: Colors.white, size: 10),
                     padding: EdgeInsets.all(4),
                   ),
                 ],
@@ -942,11 +641,8 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
         ),
         SizedBox(height: 5.h),
         Padding(
-          padding: EdgeInsets.only(left: 17.w), // 12.w (icon) + 5.w (spacing)
-          child: Text(
-            value,
-            style: AppStyles.fieldContent(color: Colors.grey.shade600),
-          ),
+          padding: EdgeInsets.only(left: 17.w),
+          child: Text(value, style: AppStyles.fieldContent(color: Colors.grey.shade600)),
         ),
       ],
     );

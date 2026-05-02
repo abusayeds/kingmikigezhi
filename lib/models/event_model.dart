@@ -20,6 +20,7 @@ class EventModel {
   final RepeatConfig? repeatConfig;
   final Creator? creator;
   final Schedule? schedule;
+  final List<EventApplied>? eventApplieds;
 
   EventModel({
     this.id,
@@ -43,6 +44,7 @@ class EventModel {
     this.repeatConfig,
     this.creator,
     this.schedule,
+    this.eventApplieds,
   });
 
   factory EventModel.fromJson(Map<String, dynamic> json) => EventModel(
@@ -67,6 +69,34 @@ class EventModel {
         repeatConfig: json["repeatConfig"] == null ? null : RepeatConfig.fromJson(json["repeatConfig"]),
         creator: json["creator"] == null ? null : Creator.fromJson(json["creator"]),
         schedule: json["schedule"] == null ? null : Schedule.fromJson(json["schedule"]),
+        eventApplieds: json["eventApplieds"] == null ? null : List<EventApplied>.from(json["eventApplieds"].map((x) => EventApplied.fromJson(x))),
+      );
+}
+
+class EventApplied {
+  final String? id;
+  final String? userId;
+  final String? note;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+  final Creator? user;
+
+  EventApplied({
+    this.id,
+    this.userId,
+    this.note,
+    this.createdAt,
+    this.updatedAt,
+    this.user,
+  });
+
+  factory EventApplied.fromJson(Map<String, dynamic> json) => EventApplied(
+        id: json["id"],
+        userId: json["userId"],
+        note: json["note"],
+        createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+        updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+        user: json["user"] == null ? null : Creator.fromJson(json["user"]),
       );
 }
 
@@ -76,8 +106,9 @@ class Creator {
   final String? lastName;
   final String? username;
   final String? profilePicture;
+  final int? contributionScore;
 
-  Creator({this.id, this.firstName, this.lastName, this.username, this.profilePicture});
+  Creator({this.id, this.firstName, this.lastName, this.username, this.profilePicture, this.contributionScore});
 
   factory Creator.fromJson(Map<String, dynamic> json) => Creator(
         id: json["id"],
@@ -85,6 +116,7 @@ class Creator {
         lastName: json["lastName"],
         username: json["username"],
         profilePicture: json["profilePicture"],
+        contributionScore: json["contributionScore"],
       );
 }
 
