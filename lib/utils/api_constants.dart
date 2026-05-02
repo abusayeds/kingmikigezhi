@@ -84,11 +84,10 @@ class ApiConstants {
 
   // Categories
   static const String categoriesEvent = '$apiUrl/categories';
-  static String subCategoriesEvent(String categoryId) => '$apiUrl/subcategories?categoryId=\$categoryId';
-  static String getProgrambySubCategory(String subcategoryId) => '$apiUrl/programs?subcategoryId=\$subcategoryId';
-  static String getProgrambyCategory(String categoryId) => '$apiUrl/programs?categoryId=\$categoryId';
-  static String categorieDetailsEvent(String categoryId) => '$apiUrl/categories/\$categoryId';
-
+  static String subCategoriesEvent(String categoryId) => '$apiUrl/subcategories?categoryId=$categoryId';
+  static String getProgrambySubCategory(String subcategoryId) => '$apiUrl/programs?subcategoryId=$subcategoryId';
+  static String getProgrambyCategory(String categoryId) => '$apiUrl/programs?categoryId=$categoryId';
+  static String categorieDetailsEvent(String categoryId) => '$apiUrl/categories/$categoryId';
 
 
 

@@ -81,7 +81,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         position: RelativeRect.fromLTRB(100, 100, 0, 0),
                         // Adjust position as needed
                         items: <String>[
-                          'All',
                           'Self',
                           'Spouse',
                           'Child Stephanie',
@@ -92,6 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             case 'Self':
                               backgroundColor = AppColors.color67AB9F;
                               break;
+
                             case 'Spouse':
                               backgroundColor = AppColors.colorE5CCFF;
                               break;

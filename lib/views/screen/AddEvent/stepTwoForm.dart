@@ -36,7 +36,7 @@ class _StepTwoFormState extends State<StepTwoForm> {
   String? _selectedCostOption;
   final List<String> competitionLevel = ['Preliminary', 'SemiFinal', 'Final'];
   final List<String> type = ['Onsite', 'Online', 'Hybrid'];
-  final List<String> costOptions = ['Has Final Deadline', 'Has Late Fee'];
+  final List<String> costOptions = ['Yes', 'No'];
 
   @override
   void initState() {
@@ -53,9 +53,7 @@ class _StepTwoFormState extends State<StepTwoForm> {
     monthCRTL.text = addEventController.finalDeadlineMonth ?? "";
     dayCRTL.text = addEventController.finalDeadlineDay ?? "";
     lateFeeCRTL.text = addEventController.lateFee?.toString() ?? "";
-    if (addEventController.hasFinalDeadline) {
-      _selectedCostOption = 'Has Final Deadline';
-    }
+    _selectedCostOption = addEventController.hasFinalDeadline ? 'Yes' : 'No';
   }
 
   void _saveDataToController() {
@@ -66,7 +64,7 @@ class _StepTwoFormState extends State<StepTwoForm> {
     addEventController.deadlineDate = _endsDateCTRL.text;
     addEventController.deadlineTime = _endsTimeCTRL.text;
     addEventController.cost = double.tryParse(costCRTL.text);
-    addEventController.hasFinalDeadline = _selectedCostOption == 'Has Final Deadline';
+    addEventController.hasFinalDeadline = _selectedCostOption == 'Yes';
     addEventController.finalDeadlineYear = yearCRTL.text;
     addEventController.finalDeadlineMonth = monthCRTL.text;
     addEventController.finalDeadlineDay = dayCRTL.text;
@@ -183,12 +181,12 @@ class _StepTwoFormState extends State<StepTwoForm> {
           SizedBox(height: 12.h),
           _buildDropdown(
             value: _selectedCostOption,
-            hint: "Select Cost Type",
+            hint: "Has Final Round?",
             items: costOptions,
             onChanged: (v) => setState(() => _selectedCostOption = v),
           ),
 
-          if (_selectedCostOption == 'Has Final Deadline') ...[
+          if (_selectedCostOption == 'Yes') ...[
             SizedBox(height: 12.h),
             Text('Final Deadline',
                 style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
@@ -202,7 +200,7 @@ class _StepTwoFormState extends State<StepTwoForm> {
               ],
             ),
             SizedBox(height: 16.h),
-            Text('Late fee',
+            Text('No',
                 style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
             SizedBox(height: 12.h),
             CustomTextField(
