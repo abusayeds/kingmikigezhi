@@ -55,30 +55,28 @@ class EventCardWidget extends StatelessWidget {
             padding: EdgeInsets.all(12.w),
             child: Row(
               children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.5),
-                    borderRadius: BorderRadius.circular(16.r),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 20.w, vertical: 10.h),
-                    child: eventModel?.coverImage != null
-                        ? Image.network(
-                            eventModel!.coverImage!,
-                            width: 85.w,
-                            height: 104.h,
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) =>
-                                Icon(Icons.image, size: 50.w),
-                          )
-                        : Image.asset(
-                            imagePath ?? '',
-                            width: 85.w,
-                            height: 104.h,
-                            fit: BoxFit.contain,
-                          ),
-                  ),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(16.r),
+                  child: eventModel?.coverImage != null
+                      ? Image.network(
+                          eventModel!.coverImage!,
+                          width: 95.w,
+                          height: 104.h,
+                          fit: BoxFit.fill,
+                          errorBuilder: (context, error, stackTrace) =>
+                              Container(
+                                width: 95.w,
+                                height: 104.h,
+                                color: Colors.grey[300],
+                                child: Icon(Icons.image, size: 30.w)
+                              ),
+                        )
+                      : Image.asset(
+                          imagePath ?? '',
+                          width: 95.w,
+                          height: 104.h,
+                          fit: BoxFit.fill,
+                        ),
                 ),
                 SizedBox(width: 12.w),
                 Expanded(

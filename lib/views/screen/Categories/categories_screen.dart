@@ -10,7 +10,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/get.dart';
-import 'package:provider/provider.dart';
 
 import '../../base/bottom_menu..dart';
 import '../../base/custom_text.dart';
@@ -63,7 +62,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     });
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
+      final apiService = Get.find<ApiService>();
       final response = await apiService.get(
         '${ApiConstants.categoriesEvent}?page=$_page&limit=$_limit',
       );
@@ -95,7 +94,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     });
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
+      final apiService = Get.find<ApiService>();
       final response = await apiService.get(
         '${ApiConstants.categoriesEvent}?page=$_page&limit=$_limit',
       );
@@ -224,6 +223,10 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                     right: 0,
                     child: Container(
                       decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(16.r),
+                          bottomRight: Radius.circular(16.r),
+                        ),
                         gradient: LinearGradient(
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,

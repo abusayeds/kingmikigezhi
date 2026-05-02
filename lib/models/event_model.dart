@@ -16,6 +16,8 @@ class EventModel {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final String? sessionId;
+  final List<dynamic>? results;
+  final int? applicationCount;
   final Program? program;
   final RepeatConfig? repeatConfig;
   final Creator? creator;
@@ -39,6 +41,8 @@ class EventModel {
     this.createdAt,
     this.updatedAt,
     this.sessionId,
+    this.results,
+    this.applicationCount,
     this.program,
     this.repeatConfig,
     this.creator,
@@ -63,6 +67,8 @@ class EventModel {
         createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
         updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
         sessionId: json["sessionId"],
+        results: json["results"] == null ? null : List<dynamic>.from(json["results"].map((x) => x)),
+        applicationCount: json["_count"] == null ? null : json["_count"]["applications"],
         program: json["program"] == null ? null : Program.fromJson(json["program"]),
         repeatConfig: json["repeatConfig"] == null ? null : RepeatConfig.fromJson(json["repeatConfig"]),
         creator: json["creator"] == null ? null : Creator.fromJson(json["creator"]),

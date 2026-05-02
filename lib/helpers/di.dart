@@ -26,7 +26,8 @@ Future<Map<String, Map<String, String>>> init() async {
   Get.put(ThemeController(sharedPreferences: Get.find()), permanent: true);
   Get.put(LocalizationController(sharedPreferences: Get.find()),
       permanent: true);
-  Get.put(SplashController(sharedPreferences: Get.find()), permanent: true);
+  Get.put(SplashController(sharedPreferences: Get.find(), apiService: Get.find()),
+      permanent: true);
   Get.put(HomeController(apiService: Get.find(), sharedPreferences: Get.find()),
       permanent: true);
   Get.put(
