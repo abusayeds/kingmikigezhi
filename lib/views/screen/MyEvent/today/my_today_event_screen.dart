@@ -243,13 +243,27 @@ class _MyTodayEventScreenState extends State<MyTodayEventScreen> {
             contenpaddingHorizontal: 12.w,
             contenpaddingVertical: 12.h,
             hintText: "Search Event",
+            onFieldSubmitted: (value) {
+              if (value.isNotEmpty) {
+                Get.toNamed(AppRoutes.searchEventScreen,
+                    arguments: {'searchTerm': value});
+              }
+            },
             sufixicons: Padding(
               padding: EdgeInsets.symmetric(horizontal: 8.w),
-              child: SvgPicture.asset(
-                AppIcons.search,
-                width: 24.w,
-                height: 24.h,
-                color: AppColors.primaryColor,
+              child: GestureDetector(
+                onTap: () {
+                  if (_searchController.text.isNotEmpty) {
+                    Get.toNamed(AppRoutes.searchEventScreen,
+                        arguments: {'searchTerm': _searchController.text});
+                  }
+                },
+                child: SvgPicture.asset(
+                  AppIcons.search,
+                  width: 24.w,
+                  height: 24.h,
+                  color: AppColors.primaryColor,
+                ),
               ),
             ),
           ),
@@ -275,6 +289,7 @@ class _MyTodayEventScreenState extends State<MyTodayEventScreen> {
           ),
         )
       ],
+
     );
   }
 }

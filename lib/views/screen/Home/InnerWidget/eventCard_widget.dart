@@ -60,21 +60,21 @@ class EventCardWidget extends StatelessWidget {
                   child: eventModel?.coverImage != null
                       ? Image.network(
                           eventModel!.coverImage!,
-                          width: 95.w,
-                          height: 104.h,
+                           width: 125.w,
+                           height: 125.h,
                           fit: BoxFit.fill,
                           errorBuilder: (context, error, stackTrace) =>
                               Container(
-                                width: 95.w,
-                                height: 104.h,
+                                  width: 125.w,
+                                  height: 125.h,
                                 color: Colors.grey[300],
                                 child: Icon(Icons.image, size: 30.w)
                               ),
                         )
                       : Image.asset(
                           imagePath ?? '',
-                          width: 95.w,
-                          height: 104.h,
+                          width: 125.w,
+                          height: 125.h,
                           fit: BoxFit.fill,
                         ),
                 ),

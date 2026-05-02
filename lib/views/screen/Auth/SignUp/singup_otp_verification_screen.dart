@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:event_sharing/helpers/route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,10 +25,13 @@ class _SignUpOtpVerificationScreenState extends State<SignUpOtpVerificationScree
   final AuthController authController = Get.find<AuthController>();
   
   String sessionId = '';
+  int _secondsRemaining = 30;
+  Timer? _timer;
 
   @override
   void initState() {
     super.initState();
+    _startTimer();
     // Get email and sessionId from arguments or stored values
     final args = Get.arguments as Map<String, dynamic>? ?? {};
     
@@ -43,8 +48,23 @@ class _SignUpOtpVerificationScreenState extends State<SignUpOtpVerificationScree
     }
   }
 
+  void _startTimer() {
+    _secondsRemaining = 30;
+    _timer?.cancel();
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        if (_secondsRemaining > 0) {
+          _secondsRemaining--;
+        } else {
+          _timer?.cancel();
+        }
+      });
+    });
+  }
+
   @override
   void dispose() {
+    _timer?.cancel();
     otpController.dispose();
     emailCTRl.dispose();
     super.dispose();
@@ -103,10 +123,11 @@ class _SignUpOtpVerificationScreenState extends State<SignUpOtpVerificationScree
                     text: 'Code Time',
                   ),
                   CustomText(
-                    text: '00.60s',
+                    text: '00.${_secondsRemaining.toString().padLeft(2, '0')}s',
                   ),
                   //================================> Resend code Button <======================================
                   SizedBox(height: 32.h),
+                  if (_secondsRemaining == 0)
                   Obx(() => CustomButton(
                     onTap: authController.isLoading.value ? () {} : () async {
                       if (sessionId.isEmpty) {
@@ -116,9 +137,12 @@ class _SignUpOtpVerificationScreenState extends State<SignUpOtpVerificationScree
                         return;
                       }
 
-                      await authController.resendVerificationOTP(
+                      bool success = await authController.resendVerificationOTP(
                         sessionId: sessionId,
                       );
+                      if (success) {
+                        _startTimer();
+                      }
                     },
                     text: 'Resend code',
                     textColor: Colors.white,
