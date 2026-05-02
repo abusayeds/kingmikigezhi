@@ -62,24 +62,38 @@ class _CategoriesSearchAppliedScreenState
 
     try {
       final apiService = Get.find<ApiService>();
-      final categoryId = widget.category['id'];
+      final String? categoryId = widget.category['id']?.toString();
+      
+      if (categoryId == null) {
+        setState(() {
+          error = "Category ID is missing";
+          isLoading = false;
+        });
+        return;
+      }
+
       final response = await apiService.get(
-        '${ApiConstants.categoriesEvent}/$categoryId/events?page=$_page&limit=$_limit',
+        '${ApiConstants.createEvent}?categoryId=$categoryId&page=$_page&limit=$_limit',
       );
 
       if (response['success'] == true) {
-        final data = response['data'] ?? [];
-        final meta = response['meta'] ?? {};
+        final List<dynamic> data = response['data'] ?? [];
+        final Map<String, dynamic> meta = response['meta'] ?? {};
 
         setState(() {
-          events = data.map((e) => EventModel.fromJson(e)).toList();
+          events = data.map<EventModel>((json) => EventModel.fromJson(json)).toList();
           _hasMore = meta['hasNext'] == true;
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+          error = response['message'] ?? "Failed to fetch subcategories";
           isLoading = false;
         });
       }
     } catch (e) {
       setState(() {
-        error = 'Failed to load events';
+        error = e.toString();
         isLoading = false;
       });
     }
@@ -95,18 +109,26 @@ class _CategoriesSearchAppliedScreenState
 
     try {
       final apiService = Get.find<ApiService>();
-      final categoryId = widget.category['id'];
+      final String? categoryId = widget.category['id']?.toString();
+      
+      if (categoryId == null) return;
+
       final response = await apiService.get(
-        '${ApiConstants.categoriesEvent}/$categoryId/events?page=$_page&limit=$_limit',
+        '${ApiConstants.createEvent}?categoryId=$categoryId&page=$_page&limit=$_limit',
       );
 
       if (response['success'] == true) {
-        final data = response['data'] ?? [];
-        final meta = response['meta'] ?? {};
+        final List<dynamic> data = response['data'] ?? [];
+        final Map<String, dynamic> meta = response['meta'] ?? {};
 
         setState(() {
-          events.addAll(data.map((e) => EventModel.fromJson(e)));
+          events.addAll(data.map<EventModel>((json) => EventModel.fromJson(json)));
           _hasMore = meta['hasNext'] == true;
+          _isLoadingMore = false;
+        });
+      } else {
+        setState(() {
+          _page--;
           _isLoadingMore = false;
         });
       }
