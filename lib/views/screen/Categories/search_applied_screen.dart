@@ -9,7 +9,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:provider/provider.dart';
 import '../../base/custom_text.dart';
 
 class CategoriesSearchAppliedScreen extends StatefulWidget {
@@ -62,7 +61,7 @@ class _CategoriesSearchAppliedScreenState
     });
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
+      final apiService = Get.find<ApiService>();
       final categoryId = widget.category['id'];
       final response = await apiService.get(
         '${ApiConstants.categoriesEvent}/$categoryId/events?page=$_page&limit=$_limit',
@@ -95,7 +94,7 @@ class _CategoriesSearchAppliedScreenState
     });
 
     try {
-      final apiService = Provider.of<ApiService>(context, listen: false);
+      final apiService = Get.find<ApiService>();
       final categoryId = widget.category['id'];
       final response = await apiService.get(
         '${ApiConstants.categoriesEvent}/$categoryId/events?page=$_page&limit=$_limit',

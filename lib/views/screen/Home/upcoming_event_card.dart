@@ -50,7 +50,7 @@ class EventCard extends StatelessWidget {
                           eventModel!.coverImage!,
                           height: 144.h,
                           width: double.infinity,
-                          fit: BoxFit.cover,
+                          fit: BoxFit.fill,
                           errorBuilder: (context, error, stackTrace) =>
                               Container(height: 144.h, color: Colors.grey, child: const Icon(Icons.image)),
                         )
@@ -58,7 +58,7 @@ class EventCard extends StatelessWidget {
                           'assets/images/shoot.png',
                           height: 144.h,
                           width: double.infinity,
-                          fit: BoxFit.cover,
+                          fit: BoxFit.fill,
                         ),
                 ),
                 Positioned(

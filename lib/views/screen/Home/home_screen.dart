@@ -367,7 +367,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: 160.h,
+      height: 180.h,
       child: Obx(() {
         if (_homeController.isLoadingFamily.value) {
           return const Center(child: CircularProgressIndicator());
