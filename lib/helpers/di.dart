@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../controllers/connection_controller.dart';
 import '../controllers/event_controller.dart';
 import '../controllers/auth_controller.dart';
 import '../controllers/family_controller.dart';
@@ -26,13 +27,16 @@ Future<Map<String, Map<String, String>>> init() async {
   Get.put(ThemeController(sharedPreferences: Get.find()), permanent: true);
   Get.put(LocalizationController(sharedPreferences: Get.find()),
       permanent: true);
-  Get.put(SplashController(sharedPreferences: Get.find()), permanent: true);
+  Get.put(SplashController(sharedPreferences: Get.find(), apiService: Get.find()),
+      permanent: true);
   Get.put(HomeController(apiService: Get.find(), sharedPreferences: Get.find()),
       permanent: true);
   Get.put(
       FamilyController(apiService: Get.find(), sharedPreferences: Get.find()),
       permanent: true);
   Get.put(EventController(apiService: Get.find(), sharedPreferences: Get.find()),
+      permanent: true);
+  Get.put(ConnectionController(sharedPreferences: Get.find(), apiService: Get.find()),
       permanent: true);
 
   //Retrieving localized data

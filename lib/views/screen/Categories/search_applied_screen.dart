@@ -73,12 +73,14 @@ class _CategoriesSearchAppliedScreenState
       }
 
       final response = await apiService.get(
-        '${ApiConstants.createEvent}?categoryId=$categoryId&page=$_page&limit=$_limit',
+        '${ApiConstants.categorieDetailsEvent(categoryId)}?page=$_page&limit=$_limit',
       );
 
       if (response['success'] == true) {
-        final List<dynamic> data = response['data'] ?? [];
-        final Map<String, dynamic> meta = response['meta'] ?? {};
+        final categoryData = response['data'] ?? {};
+        final eventsData = categoryData['events'] ?? {};
+        final List<dynamic> data = eventsData['data'] ?? [];
+        final Map<String, dynamic> meta = eventsData['meta'] ?? {};
 
         setState(() {
           events = data.map<EventModel>((json) => EventModel.fromJson(json)).toList();
@@ -87,7 +89,7 @@ class _CategoriesSearchAppliedScreenState
         });
       } else {
         setState(() {
-          error = response['message'] ?? "Failed to fetch subcategories";
+          error = response['message'] ?? "Failed to fetch events";
           isLoading = false;
         });
       }
@@ -114,12 +116,14 @@ class _CategoriesSearchAppliedScreenState
       if (categoryId == null) return;
 
       final response = await apiService.get(
-        '${ApiConstants.createEvent}?categoryId=$categoryId&page=$_page&limit=$_limit',
+        '${ApiConstants.categorieDetailsEvent(categoryId)}?page=$_page&limit=$_limit',
       );
 
       if (response['success'] == true) {
-        final List<dynamic> data = response['data'] ?? [];
-        final Map<String, dynamic> meta = response['meta'] ?? {};
+        final categoryData = response['data'] ?? {};
+        final eventsData = categoryData['events'] ?? {};
+        final List<dynamic> data = eventsData['data'] ?? [];
+        final Map<String, dynamic> meta = eventsData['meta'] ?? {};
 
         setState(() {
           events.addAll(data.map<EventModel>((json) => EventModel.fromJson(json)));
