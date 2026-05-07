@@ -91,7 +91,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             case 'Self':
                               backgroundColor = AppColors.color67AB9F;
                               break;
-
                             case 'Spouse':
                               backgroundColor = AppColors.colorE5CCFF;
                               break;
@@ -288,6 +287,11 @@ class _HomeScreenState extends State<HomeScreen> {
         Expanded(
           child: TextFormField(
             controller: _searchController,
+            onFieldSubmitted: (value) {
+              if (value.isNotEmpty) {
+                Get.toNamed(AppRoutes.searchEventScreen, arguments: {'searchTerm': value});
+              }
+            },
             decoration: InputDecoration(
               filled: true,
               fillColor: AppColors.fillColor,
@@ -297,10 +301,17 @@ class _HomeScreenState extends State<HomeScreen> {
               hintStyle: AppStyles.fontSize14(color: AppColors.greyColor),
               suffixIcon: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8.w),
-                child: SvgPicture.asset(
-                  AppIcons.search,
-                  width: 24.w,
-                  height: 24.h,
+                child: GestureDetector(
+                  onTap: () {
+                    if (_searchController.text.isNotEmpty) {
+                      Get.toNamed(AppRoutes.searchEventScreen, arguments: {'searchTerm': _searchController.text});
+                    }
+                  },
+                  child: SvgPicture.asset(
+                    AppIcons.search,
+                    width: 24.w,
+                    height: 24.h,
+                  ),
                 ),
               ),
               border: OutlineInputBorder(
@@ -321,8 +332,11 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         SizedBox(width: 18.w),
         GestureDetector(
-          onTap: () {
-            Get.toNamed(AppRoutes.filterScreen);
+          onTap: () async {
+            final result = await Get.toNamed(AppRoutes.filterScreen);
+            if (result != null) {
+              Get.toNamed(AppRoutes.searchEventScreen, arguments: result);
+            }
           },
           child: Container(
             height: 53.h,
@@ -367,7 +381,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: 160.h,
+      height: 180.h,
       child: Obx(() {
         if (_homeController.isLoadingFamily.value) {
           return const Center(child: CircularProgressIndicator());
