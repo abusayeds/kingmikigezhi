@@ -69,6 +69,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
         final state = profile?['state'] ?? '';
         final city = profile?['city'] ?? '';
         final skills = profile?['skills'] as List? ?? [];
+        final profilePicture = profile?['profilePicture'] ?? profile?['image'];
 
         String genderDisplay = '';
         if (gender.isNotEmpty) {

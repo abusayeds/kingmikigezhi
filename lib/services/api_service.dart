@@ -38,13 +38,16 @@ class ApiService {
     }
   }
 
-  // Multipart POST request
-  Future<dynamic> multipartPost(String url,
-      {Map<String, String>? fields,
-      Map<String, String>? files,
-      Map<String, String>? headers}) async {
+  // Multipart request (supports POST, PATCH, etc.)
+  Future<dynamic> multipartRequest(
+    String url, {
+    String method = 'POST',
+    Map<String, String>? fields,
+    Map<String, String>? files,
+    Map<String, String>? headers,
+  }) async {
     try {
-      var request = http.MultipartRequest('POST', Uri.parse(url));
+      var request = http.MultipartRequest(method, Uri.parse(url));
 
       // Add headers
       var defaultHeaders = await _getHeaders();
@@ -62,12 +65,14 @@ class ApiService {
       // Add files
       if (files != null) {
         for (var entry in files.entries) {
-          String? mimeType = mime(entry.value);
-          request.files.add(await http.MultipartFile.fromPath(
-            entry.key,
-            entry.value,
-            contentType: mimeType != null ? MediaType.parse(mimeType) : null,
-          ));
+          if (entry.value.isNotEmpty) {
+            String? mimeType = mime(entry.value);
+            request.files.add(await http.MultipartFile.fromPath(
+              entry.key,
+              entry.value,
+              contentType: mimeType != null ? MediaType.parse(mimeType) : null,
+            ));
+          }
         }
       }
 
@@ -77,6 +82,15 @@ class ApiService {
     } catch (e) {
       throw _handleError(e);
     }
+  }
+
+  // Multipart POST request (deprecated in favor of multipartRequest)
+  Future<dynamic> multipartPost(String url,
+      {Map<String, String>? fields,
+      Map<String, String>? files,
+      Map<String, String>? headers}) async {
+    return multipartRequest(url,
+        method: 'POST', fields: fields, files: files, headers: headers);
   }
 
   // PUT request

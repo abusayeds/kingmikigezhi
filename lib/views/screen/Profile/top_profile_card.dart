@@ -34,7 +34,7 @@ class _TopProfileCardState extends State<TopProfileCard> {
       final profile = _authController.userProfile.value;
       final firstName = profile?['firstName'] ?? '';
       final lastName = profile?['lastName'] ?? '';
-      final profilePicture = profile?['profilePicture'];
+      final profilePicture = profile?['profilePicture'] ?? profile?['image'];
 
       return Container(
         height: 306.h,
@@ -64,15 +64,20 @@ class _TopProfileCardState extends State<TopProfileCard> {
               width: 120.w,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8.r),
-                  shape: BoxShape.rectangle,
-                  image: DecorationImage(
-                      image: profilePicture != null &&
-                              profilePicture.toString().isNotEmpty
-                          ? NetworkImage(profilePicture)
-                          : const AssetImage('assets/images/ownerImage.png')
-                              as ImageProvider,
-                      fit: BoxFit.cover)),
-              //   border: Border.all(width: 2.w, color: AppColors.white)
+                  color: Colors.grey[200],
+                  shape: BoxShape.rectangle),
+              child: profilePicture != null &&
+                      profilePicture.toString().isNotEmpty
+                  ? ClipRRect(
+                      borderRadius: BorderRadius.circular(8.r),
+                      child: Image.network(
+                        profilePicture,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) =>
+                            Icon(Icons.person, size: 60.w, color: Colors.grey),
+                      ),
+                    )
+                  : Icon(Icons.person, size: 60.w, color: Colors.grey),
             ),
             //=======================> Profile Image <===========================
             CustomText(

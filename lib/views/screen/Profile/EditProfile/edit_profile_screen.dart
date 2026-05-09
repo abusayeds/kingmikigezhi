@@ -130,36 +130,41 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     child: Stack(
                       clipBehavior: Clip.none,
                       children: [
-                        _image != null
-                            ? Container(
-                                width: 120.w,
-                                height: 120.h,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.rectangle,
-                                    border: Border.all(
-                                        width: 2.w, color: AppColors.white),
-                                    image: DecorationImage(
-                                        image: MemoryImage(_image!),
-                                        fit: BoxFit.cover)),
-                              )
-                            : Container(
-                                width: 120.w,
-                                height: 120.h,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.rectangle,
-                                    border: Border.all(
-                                        width: 2.w, color: AppColors.white),
-                                    image: DecorationImage(
-                                        image: existingProfilePicture != null &&
-                                                existingProfilePicture!
-                                                    .isNotEmpty
-                                            ? NetworkImage(
-                                                existingProfilePicture!)
-                                            : const AssetImage(
-                                                    'assets/images/ownerImage.png')
-                                                as ImageProvider,
-                                        fit: BoxFit.cover)),
-                              ),
+                        Obx(() {
+                          final profile = _authController.userProfile.value;
+                          final profilePicture = profile?['profilePicture'] ?? profile?['image'];
+                          
+                          return _image != null
+                              ? Container(
+                                  width: 120.w,
+                                  height: 120.h,
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.rectangle,
+                                      border: Border.all(
+                                          width: 2.w, color: AppColors.white),
+                                      image: DecorationImage(
+                                          image: MemoryImage(_image!),
+                                          fit: BoxFit.cover)),
+                                )
+                              : Container(
+                                  width: 120.w,
+                                  height: 120.h,
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.rectangle,
+                                      color: Colors.grey[200],
+                                      border: Border.all(
+                                          width: 2.w, color: AppColors.white)),
+                                  child: profilePicture != null &&
+                                          profilePicture.toString().isNotEmpty
+                                      ? Image.network(
+                                          profilePicture,
+                                          fit: BoxFit.cover,
+                                          errorBuilder: (context, error, stackTrace) =>
+                                              Icon(Icons.person, size: 60.w, color: Colors.grey),
+                                        )
+                                      : Icon(Icons.person, size: 60.w, color: Colors.grey),
+                                );
+                        }),
                         Positioned(
                             bottom: -5.h,
                             right: -5.w,
@@ -726,6 +731,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       state: locationStateController.text,
       city: locationCityController.text,
       username: _usernameController.text,
+      imagePath: selectedIMage?.path,
       skills: skills,
     );
 
