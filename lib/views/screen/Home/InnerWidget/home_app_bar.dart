@@ -105,11 +105,15 @@ PreferredSize customHomeAppBar() {
               },
               child: CircleAvatar(
                 radius: 20.r,
-                backgroundImage: user?['profilePicture'] != null &&
-                        user!['profilePicture'].toString().isNotEmpty
-                    ? NetworkImage(user['profilePicture'])
-                    : const AssetImage('assets/images/ownerImage.png')
-                        as ImageProvider,
+                backgroundColor: Colors.grey[200],
+                backgroundImage: (user?['profilePicture'] ?? user?['image']) != null &&
+                        (user!['profilePicture'] ?? user!['image']).toString().isNotEmpty
+                    ? NetworkImage(user['profilePicture'] ?? user['image'])
+                    : null,
+                child: (user?['profilePicture'] ?? user?['image']) == null ||
+                        (user!['profilePicture'] ?? user!['image']).toString().isEmpty
+                    ? Icon(Icons.person, size: 24.r, color: Colors.grey)
+                    : null,
               ),
             ),
           ],
