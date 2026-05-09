@@ -23,7 +23,7 @@ class TopProfileSection extends StatelessWidget {
       final profile = authController.userProfile.value;
       final firstName = profile?['firstName'] ?? '';
       final lastName = profile?['lastName'] ?? '';
-      final profilePicture = profile?['profilePicture'];
+      final profilePicture = profile?['profilePicture'] ?? profile?['image'];
 
       return Container(
         decoration: BoxDecoration(
@@ -50,9 +50,13 @@ class TopProfileSection extends StatelessWidget {
                             width: 2.w, color: AppColors.primaryColor)),
                     child: profilePicture != null &&
                             profilePicture.toString().isNotEmpty
-                        ? Image.network(profilePicture, fit: BoxFit.cover)
-                        : Image.asset('assets/images/ownerImage.png',
-                            fit: BoxFit.cover),
+                        ? Image.network(
+                            profilePicture,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) =>
+                                Icon(Icons.person, size: 60.w, color: Colors.grey),
+                          )
+                        : Icon(Icons.person, size: 60.w, color: Colors.grey),
                   ),
                   SizedBox(width: 8),
                   Expanded(

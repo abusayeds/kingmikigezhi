@@ -682,43 +682,80 @@ class AuthController extends GetxController {
     String? state,
     String? city,
     String? username,
-    String? profilePicture,
+    String? imagePath,
     List<String>? skills,
   }) async {
     try {
       isLoading.value = true;
       update();
 
-      final Map<String, dynamic> requestBody = {};
-      if (firstName != null) requestBody['firstName'] = firstName;
-      if (lastName != null) requestBody['lastName'] = lastName;
-      if (gender != null) requestBody['gender'] = gender;
-      if (birthDate != null) requestBody['birthDate'] = birthDate;
-      if (phoneNumber != null) requestBody['phoneNumber'] = phoneNumber;
-      if (country != null) requestBody['country'] = country;
-      if (state != null) requestBody['state'] = state;
-      if (city != null) requestBody['city'] = city;
-      if (username != null) requestBody['username'] = username;
-      if (profilePicture != null)
-        requestBody['profilePicture'] = profilePicture;
-      if (skills != null) requestBody['skills'] = skills;
+      dynamic response;
+      // Construct location string as backend likely expects a single string or uses it as a label
+      String? location;
+      if (city != null || state != null || country != null) {
+        location = "${city ?? ''}, ${state ?? ''}, ${country ?? ''}".trim();
+        // Clean up leading/trailing commas if some parts are null
+        location = location.replaceAll(RegExp(r'^,\s*'), '').replaceAll(RegExp(r',\s*$'), '');
+      }
 
-      final response = await apiService.patch(
-        ApiConstants.updateProfile,
-        body: requestBody,
-      );
+      if (imagePath != null && imagePath.isNotEmpty) {
+        final Map<String, String> fields = {};
+        if (firstName != null) fields['firstName'] = firstName;
+        if (lastName != null) fields['lastName'] = lastName;
+        if (gender != null) fields['gender'] = gender;
+        if (birthDate != null) fields['birthDate'] = birthDate;
+        if (phoneNumber != null) fields['phoneNumber'] = phoneNumber;
+        if (location != null) fields['location'] = location;
+        if (state != null) fields['state'] = state;
+        if (city != null) fields['city'] = city;
+        if (username != null) fields['username'] = username;
+        if (skills != null) fields['skills'] = skills.join(',');
+
+        response = await apiService.multipartRequest(
+          ApiConstants.updateProfile,
+          method: 'PATCH',
+          fields: fields,
+          files: {'profilePicture': imagePath},
+        );
+      } else {
+        final Map<String, dynamic> requestBody = {};
+        if (firstName != null) requestBody['firstName'] = firstName;
+        if (lastName != null) requestBody['lastName'] = lastName;
+        if (gender != null) requestBody['gender'] = gender;
+        if (birthDate != null) requestBody['birthDate'] = birthDate;
+        if (phoneNumber != null) requestBody['phoneNumber'] = phoneNumber;
+        if (location != null) requestBody['location'] = location;
+        if (state != null) requestBody['state'] = state;
+        if (city != null) requestBody['city'] = city;
+        if (username != null) requestBody['username'] = username;
+        if (skills != null) requestBody['skills'] = skills;
+
+        response = await apiService.patch(
+          ApiConstants.updateProfile,
+          body: requestBody,
+        );
+      }
 
       isLoading.value = false;
       update();
 
       if (response != null && response['success'] == true) {
-        userProfile.value = response['data'];
-        await apiService.saveUserData(response['data']);
+        // Merge with existing profile
+        Map<String, dynamic> currentProfile = Map<String, dynamic>.from(userProfile.value ?? {});
+        Map<String, dynamic> updatedData = Map<String, dynamic>.from(response['data']);
+        
+        currentProfile.addAll(updatedData);
+        userProfile.value = currentProfile;
+        
+        await apiService.saveUserData(userProfile.value!);
+        
         Fluttertoast.showToast(
           msg: response['message'] ?? "Profile updated successfully!",
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.BOTTOM,
         );
+        
+        await fetchUserProfile();
         return true;
       }
 
