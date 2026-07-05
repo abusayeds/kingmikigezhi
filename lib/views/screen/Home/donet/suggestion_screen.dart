@@ -5,6 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../../utils/style.dart';
+import '../../../../services/api_service.dart';
+import '../../../../utils/api_constants.dart';
 
 class SuggestionScreen extends StatelessWidget {
   final TextEditingController _describtionCTRL = TextEditingController();
@@ -68,7 +70,48 @@ class SuggestionScreen extends StatelessWidget {
                 SizedBox(width: 16.w),
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      final desc = _describtionCTRL.text.trim();
+                      if (desc.isEmpty) {
+                        Get.snackbar('Error', 'Please enter suggestion',
+                            snackPosition: SnackPosition.BOTTOM);
+                        return;
+                      }
+
+                      // show loading dialog
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (_) => const Center(child: CircularProgressIndicator()),
+                      );
+
+                      try {
+                        final api = Get.find<ApiService>();
+                        final res = await api.post(ApiConstants.createFeedback,
+                            body: {'message': desc});
+
+                        // close loading
+                        Navigator.of(context).pop();
+
+                        final message = (res != null && res['message'] != null)
+                            ? res['message'].toString()
+                            : 'Feedback sent successfully';
+
+                        Get.snackbar('Success', message,
+                            snackPosition: SnackPosition.BOTTOM);
+
+                        _describtionCTRL.clear();
+
+                        // Give user time to see the snackbar before closing the screen
+                        await Future.delayed(const Duration(seconds: 2));
+                        Get.back();
+                      } catch (e) {
+                        // close loading
+                        Navigator.of(context).pop();
+                        Get.snackbar('Error', e.toString(),
+                            snackPosition: SnackPosition.BOTTOM);
+                      }
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF815B48),
                       padding: EdgeInsets.symmetric(vertical: 16.h),
