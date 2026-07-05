@@ -7,61 +7,56 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import '../../../../utils/app_strings.dart';
 import '../../../base/custom_text.dart';
+import '../../../../controllers/privacy_policy_controller.dart';
 
 class PrivacyPolicyScreen extends StatelessWidget {
-  PrivacyPolicyScreen({super.key});
+  PrivacyPolicyScreen({super.key}){
+    _policyController.getPrivacy();
+  }
 
-  /*final PrivacyPolicyController _policyController =
-  Get.put(PrivacyPolicyController());*/
+  final PrivacyPolicyController _policyController = Get.put(
+      PrivacyPolicyController(apiService: Get.find(), sharedPreferences: Get.find()));
 
   @override
   Widget build(BuildContext context) {
-    //_policyController.getPrivacy();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       extendBody: true,
       //===========================================> AppBar Section <=============================================
       appBar: AppBar(
-        leading:  IconButton(
-          icon: Icon(Icons.arrow_back_ios,
-              color: Colors.black, size: 18.w),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: Colors.black, size: 18.w),
           onPressed: () {
             Get.back();
           },
         ),
-        title: CustomText(
-          text: 'Privacy Policy',
-          fontWeight: FontWeight.bold,
-          fontsize: 18.sp,
-        ),
+        title: Obx(() => CustomText(
+              text: _policyController.title.value.isNotEmpty
+                  ? _policyController.title.value
+                  : 'Privacy Policy',
+              fontWeight: FontWeight.bold,
+              fontsize: 18.sp,
+            )),
         centerTitle: true,
       ),
-      body: // Obx(
-      /*() => _policyController.isLoading.value
-            ? const CustomCircleLoader()
-            : */
-      SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
-          child: Column(
-            children: [
-              //===========================================> Text Section <=============================================
-              Text('Lorem ipsum dolor sit amet consectetur. Ultrices id feugiat venenatis habitant mattis viverra elementum purus volutpat. Lacus eu molestie pulvinar rhoncus integer proin elementum. Pretium sit fringilla massa tristique aenean commodo leo. Aliquet viverra amet sit porta elementum et pellentesque posuere. Ullamcorper viverra tortor lobortis viverra auctor egestas. Nulla condimentum ac metus quam turpis gravida ut velit. Porta justo lacus consequat sed platea. Ut dui massa quam elit faucibus consectetur sapien aenean auctor. Felis ipsum amet justo in. Netus amet in egestas sed auctor lorem. Justo ullamcorper velit habitasse lorem eu arcu. Non enim a elit urna eget nibh quisque donec condimentum. Elit ut pellentesque neque in quis at viverra. Nisl etiam tristique odio eget convallis.',
-                maxLines: 20,
-                textAlign: TextAlign.justify,
-                style: AppStyles.fontSize14(color: AppColors.color20353F),
-              )
-              /*Obx(
-                      () => Html(
-                    data:
-                    _policyController.content.value,
-                  ),
-                ),*/
-            ],
-          ),
-        ),
-      ),
+      body: Obx(() => _policyController.isLoading.value
+          ? const Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+                child: Column(
+                  children: [
+                    //===========================================> Text Section <=============================================
+                    Html(
+                      data: _policyController.content.value.isNotEmpty
+                          ? _policyController.content.value
+                          : '<p>No content available.</p>',
+                      shrinkWrap: true,
+                    ),
+                  ],
+                ),
+              ),
+            )),
     );
-    //);
   }
 }

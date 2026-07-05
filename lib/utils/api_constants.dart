@@ -1,6 +1,6 @@
 class ApiConstants {
   // TODO: Change this to your actual backend API base URL
-  static const String baseUrl = 'http://10.10.11.17:8057'; // Replace with your actual base URL
+  static const String baseUrl = 'http://206.162.244.11:7788'; // Replace with your actual base URL
   static const String apiUrl = '$baseUrl/api/v1';
 
 
@@ -115,6 +115,18 @@ class ApiConstants {
 
 
   static const String appliedEvents = '$apiUrl/event-applications/my';
+
+  //Settings
+  static const String getAboutSettings = '$apiUrl/settings/about';
+  static const String getTermsSettings = '$apiUrl/settings/terms';
+  static const String getPrivacySettings = '$apiUrl/settings/privacy';
+
+  
+  
+  
+  
+    //Feedback
+  static const String createFeedback = '$apiUrl/feedbacks';
 
 
 
