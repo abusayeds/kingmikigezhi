@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ConnectionController extends GetxController {
   final SharedPreferences sharedPreferences;
-  final ApiService apiService;
+  final ApiService apiService; 
 
   ConnectionController(
       {required this.sharedPreferences, required this.apiService});
