@@ -8,6 +8,8 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 
 class SuggestionDonationPage extends StatelessWidget {
+  const SuggestionDonationPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

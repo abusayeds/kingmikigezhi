@@ -28,8 +28,6 @@ class ConnectionController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchInvitations();
-    fetchConnections();
   }
 
   // Fetch received connection requests

@@ -1,7 +1,6 @@
 
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_icons.dart';
-import 'package:event_sharing/utils/app_strings.dart';
 import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +10,7 @@ import 'package:get/get.dart';
 
 
 class SettingsScreen extends StatefulWidget {
-   SettingsScreen({super.key});
+   const SettingsScreen({super.key});
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
@@ -365,7 +364,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   color: AppColors.primaryColor,
                                 ),
                                 isExpanded: true,
-                                underline: SizedBox(),
+                                underline: const SizedBox(),
                                 hint: Text('', style: TextStyle(color: AppColors.color414141, fontSize: 14.sp),),
                                 items: <String>['Option 1', 'Option 2', 'Option 3']
                                     .map((String value) {
@@ -406,7 +405,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   color: AppColors.primaryColor,
                                 ),
                                 isExpanded: true,
-                                underline: SizedBox(),
+                                underline: const SizedBox(),
                                 hint: Text('', style: TextStyle(color: AppColors.color414141, fontSize: 14.sp),),
                                 items: <String>['Option 1', 'Option 2', 'Option 3']
                                     .map((String value) {
@@ -458,7 +457,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   color: AppColors.primaryColor,
                                 ),
                                 isExpanded: true,
-                                underline: SizedBox(),
+                                underline: const SizedBox(),
                                 hint: Text('', style: TextStyle(color: AppColors.color414141, fontSize: 14.sp),),
                                 items: <String>['Option 1', 'Option 2', 'Option 3']
                                     .map((String value) {
@@ -473,7 +472,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           ],
                         ),
                       ),
-                      SizedBox(width: 16),
+                      const SizedBox(width: 16),
                       Expanded(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -486,7 +485,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             SizedBox(height: 8.h),
                             Container(
                               height: 52.h,
-                              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                               decoration: BoxDecoration(
                                 border: Border.all(color: AppColors.borderColor),
                                 borderRadius: BorderRadius.circular(8),
@@ -500,7 +499,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   color: AppColors.primaryColor,
                                 ),
                                 isExpanded: true,
-                                underline: SizedBox(),
+                                underline: const SizedBox(),
                                 hint: Text('', style: TextStyle(color: AppColors.color414141, fontSize: 14.sp),),
                                 items: <String>['Option 1', 'Option 2', 'Option 3']
                                     .map((String value) {

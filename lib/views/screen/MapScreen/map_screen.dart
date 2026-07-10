@@ -22,7 +22,7 @@ class _MapScreenState extends State<MapScreen> {
   Marker? _selectedLocationMarker;
   final LatLng _center = const LatLng(23.8103, 90.4125);
   final TextEditingController _locationController = TextEditingController();
-  CameraPosition _kGooglePlex = CameraPosition(
+  final CameraPosition _kGooglePlex = const CameraPosition(
     target: LatLng(23.791275582872142, 90.39232734518325),
     zoom: 14.4746,
   );
@@ -34,7 +34,7 @@ class _MapScreenState extends State<MapScreen> {
   void _confirmLocation() async {
     String location = _locationController.text;
     try {
-      List<Location> locations = await locationFromAddress(location);
+      List<Location> locations = await Geocoding().locationFromAddress(location);
       if (locations.isEmpty) {
         final LatLng position =
             LatLng(locations.first.latitude, locations.first.longitude);

@@ -149,7 +149,7 @@ class _CreateFamilyGroupState extends State<CreateFamilyGroup> {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 8.h),
-                    child: Text('Family Name',
+                    child: const Text('Family Name',
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w600)),
                   ),
@@ -159,7 +159,7 @@ class _CreateFamilyGroupState extends State<CreateFamilyGroup> {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 8.h),
-                    child: Text('Description',
+                    child: const Text('Description',
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w600)),
                   ),
@@ -167,7 +167,7 @@ class _CreateFamilyGroupState extends State<CreateFamilyGroup> {
                     controller: descriptionController,
                     hintText: 'Enter description (optional)',
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Obx(() => CustomButton(
                         color: AppColors.buttonA47059,
                         borderColor: AppColors.buttonA47059,
@@ -214,7 +214,7 @@ class _CreateFamilyGroupState extends State<CreateFamilyGroup> {
                             size: 50.w,
                             color: AppColors.primaryColor,
                           ),
-                          CustomText(text: 'Gallery'),
+                          const CustomText(text: 'Gallery'),
                         ],
                       ),
                     ),
@@ -230,7 +230,7 @@ class _CreateFamilyGroupState extends State<CreateFamilyGroup> {
                         children: [
                           Icon(Icons.camera_alt,
                               size: 50.w, color: AppColors.primaryColor),
-                          CustomText(text: 'Camera'),
+                          const CustomText(text: 'Camera'),
                         ],
                       ),
                     ),

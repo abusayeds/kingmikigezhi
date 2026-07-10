@@ -24,8 +24,8 @@ class _ErrorScreenState extends State<ErrorScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Image.asset(AppImages.errorPageImage),
-              Text('Oops!', style: TextStyle(fontSize: 32, fontWeight: FontWeight.w600)),
-              Text('The page you were looking for can’t be found.',
+              const Text('Oops!', style: TextStyle(fontSize: 32, fontWeight: FontWeight.w600)),
+              const Text('The page you were looking for can’t be found.',
                 style: TextStyle(fontSize: 10, fontWeight: FontWeight.w400)),
               Padding(
                 padding: const EdgeInsets.all(8.0),

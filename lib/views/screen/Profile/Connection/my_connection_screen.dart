@@ -27,6 +27,10 @@ class _MyConnectionScreenState extends State<MyConnectionScreen>
     _tabController.addListener(() {
       setState(() {});
     });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      connectionController.fetchInvitations();
+      connectionController.fetchConnections();
+    });
   }
 
   @override
@@ -61,7 +65,7 @@ class _MyConnectionScreenState extends State<MyConnectionScreen>
             unselectedLabelColor: Colors.grey,
             indicatorWeight: 1,
             //dividerColor: Color(0xFFFFFFFF),
-            dividerColor: Color(0xFFC8D7DE),
+            dividerColor: const Color(0xFFC8D7DE),
             tabs: [
               //========================> Tab 01  <====================
               Tab(

@@ -8,10 +8,9 @@ import '../../../../helpers/route.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_icons.dart';
 import '../../../../utils/style.dart';
-import '../../../base/custom_text.dart';
 
 class MyContributionScreen extends StatefulWidget {
-  MyContributionScreen({super.key});
+  const MyContributionScreen({super.key});
 
   @override
   State<MyContributionScreen> createState() => _MyContributionScreenState();

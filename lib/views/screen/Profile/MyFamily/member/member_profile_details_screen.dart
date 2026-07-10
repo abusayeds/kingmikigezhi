@@ -12,7 +12,7 @@ import 'package:get/get.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class MemberProfileDetailsScreen extends StatefulWidget {
-  MemberProfileDetailsScreen({super.key});
+  const MemberProfileDetailsScreen({super.key});
 
   @override
   State<MemberProfileDetailsScreen> createState() =>
@@ -83,7 +83,7 @@ class _MemberProfileDetailsScreenState
           ? Center(
               child: CircularProgressIndicator(color: AppColors.primaryColor))
           : _userData == null
-              ? Center(child: Text('No data found'))
+              ? const Center(child: Text('No data found'))
               : SingleChildScrollView(
                   child: Padding(
                     padding:
@@ -152,7 +152,7 @@ class _MemberProfileDetailsScreenState
                                               ),
                                       ),
                                     ),
-                                    SizedBox(width: 8),
+                                    const SizedBox(width: 8),
                                     Expanded(
                                       child: Column(
                                         crossAxisAlignment:
@@ -238,7 +238,7 @@ class _MemberProfileDetailsScreenState
                             decoration: BoxDecoration(
                               color: AppColors.colorEDF2F4,
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(8)),
+                                  const BorderRadius.all(Radius.circular(8)),
                               border: Border.all(
                                   color: AppColors.primaryColor, width: 1),
                             ),
@@ -284,7 +284,7 @@ class _MemberProfileDetailsScreenState
     return Padding(
       padding: const EdgeInsets.all(4),
       child: Text(label,
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
     );
   }
 }

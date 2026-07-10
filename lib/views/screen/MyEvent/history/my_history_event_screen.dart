@@ -1,4 +1,3 @@
-import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:event_sharing/views/base/custom_text_field.dart';
 
 import 'package:flutter/material.dart';
@@ -16,7 +15,7 @@ import '../../../../../models/event_model.dart';
 
 
 class MyHistoryEventScreen extends StatefulWidget {
-  MyHistoryEventScreen({super.key});
+  const MyHistoryEventScreen({super.key});
 
   @override
   State<MyHistoryEventScreen> createState() => _MyHistoryEventScreenState();

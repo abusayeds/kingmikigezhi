@@ -1,4 +1,3 @@
-import 'package:event_sharing/utils/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -35,7 +34,7 @@ class MemberProfileScreen extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
           child: Column(
             children: [
-              TopCard(),
+              const TopCard(),
               SizedBox(height: 24.h),
               //=================================> Profile Name <==========================
               CustomListTile(

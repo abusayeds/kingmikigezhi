@@ -1,7 +1,6 @@
 import 'package:event_sharing/utils/app_strings.dart';
 import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/profile_ListTile.dart';
-import 'package:event_sharing/views/screen/Profile/LogOut/logout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -154,11 +153,11 @@ class ProfileScreen extends StatelessWidget {
             color: AppColors.backgroundColor,
           ),
           height: 265.h,
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Column(
             children: [
 
-              Container(height: 3.h,width: 38.w,color: Color(0xFF4C7E95),),
+              Container(height: 3.h,width: 38.w,color: const Color(0xFF4C7E95),),
               SizedBox(height: 16.h),
               Divider(thickness: 1, color: AppColors.primaryColor),
               SizedBox(height: 16.h),
@@ -175,7 +174,7 @@ class ProfileScreen extends StatelessWidget {
                         Get.back();
                       },
                       style: ElevatedButton.styleFrom(
-                        minimumSize: Size(double.infinity, 58),
+                        minimumSize: const Size(double.infinity, 58),
                         backgroundColor:  AppColors.colorEDF2F4,
                         side: BorderSide(
                           width: 1,
@@ -196,7 +195,7 @@ class ProfileScreen extends StatelessWidget {
                        Get.offAllNamed(AppRoutes.signInScreen);
                       },
                       style: ElevatedButton.styleFrom(
-                        minimumSize: Size(double.infinity, 58),
+                        minimumSize: const Size(double.infinity, 58),
                         backgroundColor: AppColors.primaryColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(100.r),

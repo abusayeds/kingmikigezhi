@@ -20,7 +20,7 @@ class LogoutDialog extends StatelessWidget {
           "Confirm Logout !",
           style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w600),
         ),
-        content: CustomText(
+        content: const CustomText(
           text: "Are you sure that you want to log out?",
           color: Colors.black,
           fontWeight: FontWeight.w500,

@@ -16,6 +16,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 class EventDetailsScreen extends StatefulWidget {
+  const EventDetailsScreen({super.key});
+
   @override
   State<EventDetailsScreen> createState() => _EventDetailsScreenState();
 }
@@ -93,15 +95,15 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
-      return Scaffold(body: Center(child: CircularProgressIndicator()));
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
     if (error != null) {
-      return Scaffold(body: Center(child: Text(error!, style: TextStyle(color: Colors.red))));
+      return Scaffold(body: Center(child: Text(error!, style: const TextStyle(color: Colors.red))));
     }
 
     if (event == null) {
-      return Scaffold(body: Center(child: Text('Event not found')));
+      return const Scaffold(body: Center(child: Text('Event not found')));
     }
 
     final schedule = event!.schedule;
@@ -147,7 +149,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                       image: DecorationImage(
                         image: event!.coverImage != null && event!.coverImage!.isNotEmpty
                             ? NetworkImage(event!.coverImage!)
-                            : AssetImage('assets/images/concert.jpg') as ImageProvider,
+                            : const AssetImage('assets/images/concert.jpg') as ImageProvider,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -395,11 +397,11 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                         Row(
                                           children: [
                                             SvgPicture.asset(AppIcons.dotIconForFamily),
-                                            SizedBox(width: 5),
+                                            const SizedBox(width: 5),
                                             Text('Cost: ',
                                                 style: AppStyles.fontSize12(fontWeight: FontWeight.w600)),
                                             Text('\$${round.cost ?? '0'}', style: AppStyles.fontSize12()),
-                                            SizedBox(width: 10),
+                                            const SizedBox(width: 10),
                                           ],
                                         ),
                                         if (round.hasFinalDeadline == true)
@@ -409,8 +411,8 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                               shape: BoxShape.rectangle,
                                               borderRadius: BorderRadius.circular(4),
                                             ),
-                                            child: Icon(Icons.check, color: Colors.white, size: 10),
-                                            padding: EdgeInsets.all(4),
+                                            padding: const EdgeInsets.all(4),
+                                            child: const Icon(Icons.check, color: Colors.white, size: 10),
                                           ),
                                       ],
                                     ),
@@ -418,7 +420,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                     Row(
                                       children: [
                                         SvgPicture.asset(AppIcons.dotIconForFamily),
-                                        SizedBox(width: 5),
+                                        const SizedBox(width: 5),
                                         Text('Description: ',
                                             style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12.sp)),
                                         Expanded(
@@ -433,10 +435,10 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                               const Divider(thickness: 1, color: Colors.grey),
                             ],
                           );
-                        }).toList(),
+                        }),
                     ],
                   );
-                }).toList(),
+                }),
               SizedBox(height: 16.h),
               Padding(
                 padding: EdgeInsets.only(left: 7.w),
@@ -481,7 +483,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                               radius: 30.r,
                               backgroundImage: creator?.profilePicture != null
                                   ? NetworkImage(creator!.profilePicture!)
-                                  : NetworkImage('https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg'),
+                                  : const NetworkImage('https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg'),
                             ),
                           ],
                         ),
@@ -504,7 +506,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                               offset: Offset(-(event!.eventApplieds!.indexOf(applied) * 15.0), 0),
                               child: CircleAvatar(
                                 radius: 25.r,
-                                backgroundImage: NetworkImage('https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg'),
+                                backgroundImage: const NetworkImage('https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg'),
                               ),
                             );
                           }).toList() ??
@@ -631,8 +633,8 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                       shape: BoxShape.rectangle,
                       borderRadius: BorderRadius.circular(4),
                     ),
-                    child: Icon(Icons.check, color: Colors.white, size: 10),
-                    padding: EdgeInsets.all(4),
+                    padding: const EdgeInsets.all(4),
+                    child: const Icon(Icons.check, color: Colors.white, size: 10),
                   ),
                 ],
               ),

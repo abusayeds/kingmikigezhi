@@ -65,7 +65,7 @@ class _OwnershipScreenState extends State<OwnershipScreen> {
                           size: 16.h,
                         ),
                         SizedBox(width: 5.w),
-                        CustomText(
+                        const CustomText(
                           text: 'Add Ownership',
                           color: Colors.white,
                         ),
@@ -150,7 +150,7 @@ class _OwnershipScreenState extends State<OwnershipScreen> {
                                   showDialog(
                                     context: context,
                                     builder: (context) {
-                                      return RemoveAlert();
+                                      return const RemoveAlert();
                                     },
                                   );
                                 },
@@ -167,7 +167,7 @@ class _OwnershipScreenState extends State<OwnershipScreen> {
                                   showDialog(
                                     context: context,
                                     builder: (context) {
-                                      return MakeOwnerAlert();
+                                      return const MakeOwnerAlert();
                                     },
                                   );
                                 },
@@ -179,7 +179,7 @@ class _OwnershipScreenState extends State<OwnershipScreen> {
                                   ),
                                   child: Padding(
                                     padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-                                    child: CustomText(
+                                    child: const CustomText(
                                       text: 'Owner',
                                       color: Colors.white,
                                     ),

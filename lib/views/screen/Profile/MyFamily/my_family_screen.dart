@@ -74,7 +74,7 @@ class _MyFamilyScreenState extends State<MyFamilyScreen>
           labelColor: Colors.black,
           unselectedLabelColor: Colors.grey,
           indicatorWeight: 1,
-          dividerColor: Color(0xFFC8D7DE),
+          dividerColor: const Color(0xFFC8D7DE),
           tabs: [
             Tab(
               child: Container(

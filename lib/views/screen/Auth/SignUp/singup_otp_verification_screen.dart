@@ -103,7 +103,7 @@ class _SignUpOtpVerificationScreenState extends State<SignUpOtpVerificationScree
                   SizedBox(
                     height: 8.h,
                   ),
-                  CustomText(
+                  const CustomText(
                     text: 'We just send you authentication code',
                     maxline: 2,
                   ),
@@ -119,7 +119,7 @@ class _SignUpOtpVerificationScreenState extends State<SignUpOtpVerificationScree
                     textEditingController: otpController,
                   ),
                   SizedBox(height: 48.h),
-                  CustomText(
+                  const CustomText(
                     text: 'Code Time',
                   ),
                   CustomText(

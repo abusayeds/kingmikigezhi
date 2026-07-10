@@ -34,7 +34,7 @@ class BottomMenu extends StatelessWidget {
       child: Container(
         width: 58.h,
         height: 58.h,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           shape: BoxShape.circle,
           color: Colors.white, //
         ),

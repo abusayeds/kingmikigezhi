@@ -1,4 +1,3 @@
-import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

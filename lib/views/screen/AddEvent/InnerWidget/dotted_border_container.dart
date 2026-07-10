@@ -6,15 +6,17 @@ import '../../../../utils/app_colors.dart';
 class DottedBorderContainer extends StatelessWidget {
   final Widget child;
 
-  const DottedBorderContainer({required this.child});
+  const DottedBorderContainer({super.key, required this.child});
   @override
   Widget build(BuildContext context) {
     return DottedBorder(
-      color: AppColors.primaryColor,
-      strokeWidth: 1.w,
-      borderType: BorderType.RRect,
-      radius: Radius.circular(8.r),
-      dashPattern: [6, 3],
+      options: RoundedRectDottedBorderOptions(
+        color: AppColors.primaryColor,
+        strokeWidth: 1.w,
+        radius: Radius.circular(8.r),
+        dashPattern: const [6, 3],
+        padding: EdgeInsets.zero,
+      ),
       child: ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(8.r)),
         child: child,

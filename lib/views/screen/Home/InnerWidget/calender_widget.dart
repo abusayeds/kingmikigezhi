@@ -1,6 +1,5 @@
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_icons.dart';
-import 'package:event_sharing/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -10,6 +9,8 @@ import 'package:table_calendar/table_calendar.dart';
 
 
 class CalendarWithDropdown extends StatefulWidget {
+  const CalendarWithDropdown({super.key});
+
   @override
   _CalendarWithDropdownState createState() => _CalendarWithDropdownState();
 }
@@ -19,7 +20,7 @@ class _CalendarWithDropdownState extends State<CalendarWithDropdown> {
   DateTime? _selectedDay;
   CalendarFormat _calendarFormat = CalendarFormat.month;
 
-  List<String> _months = [
+  final List<String> _months = [
     'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
   ];
 
@@ -59,7 +60,7 @@ class _CalendarWithDropdownState extends State<CalendarWithDropdown> {
                   child: Text("$month ${_focusedDay.year}", style: GoogleFonts.poppins(
                     fontSize: 15.sp,
                     fontWeight: FontWeight.w500,
-                    color: Color(0xFF202020)
+                    color: const Color(0xFF202020)
                   )),
                 );
               }).toList(),

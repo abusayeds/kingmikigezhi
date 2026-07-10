@@ -35,7 +35,7 @@ class VerificationCodeScreen extends StatelessWidget {
               ),
               SizedBox(height: 77.h),
               //==============================> Pin Code Text Field <=====================
-              CustomPinCodeTextField(),
+              const CustomPinCodeTextField(),
               SizedBox(height: 22.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

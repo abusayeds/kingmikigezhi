@@ -63,7 +63,7 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                 height: 50,
                 decoration: BoxDecoration(
                   color: AppColors.colorEDF2F4,
-                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                  borderRadius: const BorderRadius.all(Radius.circular(8)),
                   border: Border.all(color: AppColors.primaryColor, width: 1.0),
                 ),
                 child: Padding(
@@ -117,7 +117,7 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
               return ListView.builder(
                 itemCount: _familyController.familyMembers.length,
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   final member = _familyController.familyMembers[index];
                   return Padding(
@@ -169,7 +169,7 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
             color: AppColors.backgroundColor,
           ),
           height: 265,
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Column(
             children: [
               SizedBox(height: 20.h),
@@ -192,7 +192,7 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                         Get.back(); // Close the bottom sheet
                       },
                       style: ElevatedButton.styleFrom(
-                        minimumSize: Size(double.infinity, 58),
+                        minimumSize: const Size(double.infinity, 58),
                         backgroundColor: AppColors.colorEDF2F4,
                         side:
                             BorderSide(width: 1, color: AppColors.primaryColor),
@@ -214,7 +214,7 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                         Navigator.of(context).pop(true);
                       },
                       style: ElevatedButton.styleFrom(
-                        minimumSize: Size(double.infinity, 58),
+                        minimumSize: const Size(double.infinity, 58),
                         backgroundColor: AppColors.primaryColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(100.r),
@@ -357,7 +357,7 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
             color: AppColors.backgroundColor,
           ),
           height: 320, // increased height
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Column(
             children: [
               SizedBox(height: 20.h),
@@ -390,7 +390,7 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                             });
                       },
                       style: ElevatedButton.styleFrom(
-                        minimumSize: Size(double.infinity, 58),
+                        minimumSize: const Size(double.infinity, 58),
                         backgroundColor: AppColors.primaryColor,
                         side: BorderSide(width: 1, color: AppColors.greyColor),
                         shape: RoundedRectangleBorder(
@@ -443,7 +443,7 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        minimumSize: Size(double.infinity, 58),
+                        minimumSize: const Size(double.infinity, 58),
                         backgroundColor: AppColors.primaryColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(100.r),
@@ -495,7 +495,7 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    minimumSize: Size(double.infinity, 58),
+                    minimumSize: const Size(double.infinity, 58),
                     backgroundColor: AppColors.primaryColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(100.r),

@@ -11,7 +11,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class StepTwoForm extends StatefulWidget {
-  const StepTwoForm({Key? key}) : super(key: key);
+  const StepTwoForm({super.key});
 
   @override
   State<StepTwoForm> createState() => _StepTwoFormState();

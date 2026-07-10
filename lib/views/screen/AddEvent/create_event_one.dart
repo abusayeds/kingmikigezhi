@@ -4,7 +4,6 @@ import 'package:event_sharing/utils/app_colors.dart';
 
 import 'package:event_sharing/views/screen/AddEvent/controller/addEventController.dart';
 import 'package:event_sharing/views/screen/AddEvent/stepFiveForm.dart';
-import 'package:event_sharing/views/screen/AddEvent/stepFourForm.dart';
 import 'package:event_sharing/views/screen/AddEvent/stepOneForm.dart';
 import 'package:event_sharing/views/screen/AddEvent/stepThreeForm.dart';
 import 'package:event_sharing/views/screen/AddEvent/stepTwoForm.dart';
@@ -209,9 +208,9 @@ class _CreateEventOneState extends State<CreateEventOne> {
             )),
             // Wrap the step content in Obx to make it reactive
             Obx(() {
-              if (addEventController.activeStepIndex.value == 0)
+              if (addEventController.activeStepIndex.value == 0) {
                 return const Steponeform();
-              else if (addEventController.activeStepIndex.value == 1)
+              } else if (addEventController.activeStepIndex.value == 1)
                 return const StepTwoForm();
               else if (addEventController.activeStepIndex.value == 2)
                 return const StepThreeForm();

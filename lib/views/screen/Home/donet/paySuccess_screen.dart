@@ -1,18 +1,18 @@
-import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'dart:async';
 
-import 'package:get/get.dart';
 
 class PaymentSuccessScreen extends StatefulWidget {
+  const PaymentSuccessScreen({super.key});
+
   @override
   _PaymentSuccessScreenState createState() => _PaymentSuccessScreenState();
 }
 
 class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
-  int _countdown = 5;
+  final int _countdown = 5;
   late Timer _timer;
 
   @override
@@ -94,8 +94,8 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
             const SizedBox(height: 40),
             // Countdown
             Text(
-              '$_countdown' + 's',
-              style:  TextStyle(fontSize: 18, color: Colors.black87,fontWeight:FontWeight.bold),
+              '$_countdown' 's',
+              style:  const TextStyle(fontSize: 18, color: Colors.black87,fontWeight:FontWeight.bold),
             ),
           ],
         ),

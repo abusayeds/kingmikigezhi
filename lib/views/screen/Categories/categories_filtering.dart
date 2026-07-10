@@ -1,4 +1,3 @@
-import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_icons.dart';
 import 'package:event_sharing/utils/app_strings.dart';
@@ -8,8 +7,6 @@ import 'package:event_sharing/views/base/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/get_navigation.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CategoriesFilterScreen extends StatefulWidget {
@@ -26,7 +23,7 @@ class _CategoriesFilterScreenState extends State<CategoriesFilterScreen> {
   final List<String> _type = ['Onsite', 'Online', 'Hybrid'];
   final List<String> _category = ['6 Year - 10 Year', '11 Year - 16 Year', '17 Year+'];
 
-  RangeValues _currentRangeValues = RangeValues(50, 80);
+  RangeValues _currentRangeValues = const RangeValues(50, 80);
   String? _selectedProgram;
   String? _selectedType;
   String? _selectedCategory;
@@ -289,14 +286,14 @@ class _CategoriesFilterScreenState extends State<CategoriesFilterScreen> {
                     Text('\$${_currentRangeValues.start.round()}',style: GoogleFonts.poppins(
                         fontWeight: FontWeight.w400,
                         fontSize: 8.sp,
-                        color: Color(0xFF20353F)
+                        color: const Color(0xFF20353F)
                     ),),
                     //CustomText(text: '\$${_currentRangeValues.start.round()}'),
                     //CustomText(text: '\$${_currentRangeValues.end.round()}'),
                     Text('\$${_currentRangeValues.end.round()}',style: GoogleFonts.poppins(
                         fontWeight: FontWeight.w400,
                         fontSize: 8.sp,
-                        color: Color(0xFF20353F)
+                        color: const Color(0xFF20353F)
                     ),),
                   ],
                 ),

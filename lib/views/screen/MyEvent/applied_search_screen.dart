@@ -4,7 +4,6 @@ import 'package:event_sharing/utils/app_icons.dart';
 
 import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
-import 'package:event_sharing/views/base/custom_text_field.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,7 +14,7 @@ import '../../base/custom_network_image.dart';
 import 'controller/applied_event_controller.dart';
 
 class AppliedSearchEventListScreen extends StatefulWidget {
-  AppliedSearchEventListScreen({super.key});
+  const AppliedSearchEventListScreen({super.key});
 
   @override
   State<AppliedSearchEventListScreen> createState() => _AppliedSearchEventListScreenState();

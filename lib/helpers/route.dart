@@ -141,11 +141,11 @@ class AppRoutes {
     GetPage(name: splashScreen, page: () => const SplashScreen()),
     GetPage(
         name: homeScreen,
-        page: () => HomeScreen(),
+        page: () => const HomeScreen(),
         transition: Transition.noTransition),
     GetPage(
         name: categoriesScreen,
-        page: () => CategoriesScreen(),
+        page: () => const CategoriesScreen(),
         transition: Transition.noTransition),
     // GetPage(
     //     name: createAccountScreen,
@@ -157,7 +157,7 @@ class AppRoutes {
         transition: Transition.noTransition),
     GetPage(
         name: profileScreen,
-        page: () => ProfileScreen(),
+        page: () => const ProfileScreen(),
         transition: Transition.noTransition),
     GetPage(name: walletScreen, page: () => const WalletScreen()),
     GetPage(name: onboardScreen, page: () => const OnboardScreen()),
@@ -171,63 +171,63 @@ class AppRoutes {
     GetPage(name: resetPasswordScreen, page: () => const ResetPasswordScreen()),
     GetPage(
         name: personalInformationScreen,
-        page: () => PersonalInformationScreen()),
+        page: () => const PersonalInformationScreen()),
     GetPage(name: editProfileScreen, page: () => const EditProfileScreen()),
     GetPage(name: memberProfileScreen, page: () => const MemberProfileScreen()),
-    GetPage(name: settingsScreen, page: () => SettingsScreen()),
+    GetPage(name: settingsScreen, page: () => const SettingsScreen()),
     GetPage(
         name: changePasswordScreen, page: () => const ChangePasswordScreen()),
     GetPage(name: privacyPolicyScreen, page: () => PrivacyPolicyScreen()),
     GetPage(name: termsConditionScreen, page: () => TermsConditionScreen()),
     GetPage(name: aboutusScreen, page: () => AboutusScreen()),
-    GetPage(name: upcomingEventScreen, page: () => UpcomingEventScreen()),
-    GetPage(name: eventDetailsScreen, page: () => EventDetailsScreen()),
-    GetPage(name: searchEventScreen, page: () => SearchEventScreen()),
-    GetPage(name: notificationsScreen, page: () => NotificationsScreen()),
-    GetPage(name: filterScreen, page: () => FilterScreen()),
+    GetPage(name: upcomingEventScreen, page: () => const UpcomingEventScreen()),
+    GetPage(name: eventDetailsScreen, page: () => const EventDetailsScreen()),
+    GetPage(name: searchEventScreen, page: () => const SearchEventScreen()),
+    GetPage(name: notificationsScreen, page: () => const NotificationsScreen()),
+    GetPage(name: filterScreen, page: () => const FilterScreen()),
 
-    GetPage(name: createEventOne, page: () => CreateEventOne()),
-    GetPage(name: stepTwoContent, page: () => StepTwoForm()),
-    GetPage(name: inviteEventScreen, page: () => InviteEventScreen()),
-    GetPage(name: ownershipScreen, page: () => OwnershipScreen()),
-    GetPage(name: mapScreen, page: () => MapScreen()),
-    GetPage(name: familyGroupScreen, page: () => FamilyGroupScreen()),
-    GetPage(name: createFamilyGroup, page: () => CreateFamilyGroup()),
-    GetPage(name: updateFamilyGroup, page: () => UpdateFamilyGroup()),
+    GetPage(name: createEventOne, page: () => const CreateEventOne()),
+    GetPage(name: stepTwoContent, page: () => const StepTwoForm()),
+    GetPage(name: inviteEventScreen, page: () => const InviteEventScreen()),
+    GetPage(name: ownershipScreen, page: () => const OwnershipScreen()),
+    GetPage(name: mapScreen, page: () => const MapScreen()),
+    GetPage(name: familyGroupScreen, page: () => const FamilyGroupScreen()),
+    GetPage(name: createFamilyGroup, page: () => const CreateFamilyGroup()),
+    GetPage(name: updateFamilyGroup, page: () => const UpdateFamilyGroup()),
     //GetPage(name:bottomMenu, page: ()=> BottomMenu()),
 
     //==============================>>>> Profile section <<<<< ============
-    GetPage(name: myFamilyScreen, page: () => MyFamilyScreen()),
+    GetPage(name: myFamilyScreen, page: () => const MyFamilyScreen()),
     GetPage(
         name: createMemberProfileScreen,
-        page: () => CreateMemberProfileScreen()),
+        page: () => const CreateMemberProfileScreen()),
     GetPage(
         name: myEventScreen,
-        page: () => MyEventScreen(),
+        page: () => const MyEventScreen(),
         transition: Transition.noTransition),
     GetPage(
         name: myTodayEventScreen,
-        page: () => MyTodayEventScreen(),
+        page: () => const MyTodayEventScreen(),
         transition: Transition.noTransition),
-    GetPage(name: myEventFilterScreen, page: () => MyEventFilterScreen()),
-    GetPage(name: myConnectionScreen, page: () => MyConnectionScreen()),
+    GetPage(name: myEventFilterScreen, page: () => const MyEventFilterScreen()),
+    GetPage(name: myConnectionScreen, page: () => const MyConnectionScreen()),
 
-    GetPage(name: myContributionScreen, page: () => MyContributionScreen()),
+    GetPage(name: myContributionScreen, page: () => const MyContributionScreen()),
     GetPage(
-        name: contributionFilterScreen, page: () => ContributionFilterScreen()),
-    GetPage(name: myInvitationPage, page: () => MyInvitationPage()),
-    GetPage(name: shareInvitationPage, page: () => ShareInvitationPage()),
-    GetPage(name: errorScreen, page: () => ErrorScreen()),
+        name: contributionFilterScreen, page: () => const ContributionFilterScreen()),
+    GetPage(name: myInvitationPage, page: () => const MyInvitationPage()),
+    GetPage(name: shareInvitationPage, page: () => const ShareInvitationPage()),
+    GetPage(name: errorScreen, page: () => const ErrorScreen()),
 
     GetPage(
         name: memberProfileDetailsScreen,
-        page: () => MemberProfileDetailsScreen()),
+        page: () => const MemberProfileDetailsScreen()),
     GetPage(
         name: ownerProfileDetailsScreen,
-        page: () => OwnerProfileDetailsScreen()),
+        page: () => const OwnerProfileDetailsScreen()),
     GetPage(
         name: appliedSearchEventListScreen,
-        page: () => AppliedSearchEventListScreen()),
+        page: () => const AppliedSearchEventListScreen()),
 
     //home
     GetPage(name: suggestionDonationPage, page: () => SuggestionDonationPage()),
@@ -235,16 +235,16 @@ class AppRoutes {
     GetPage(name: donationScreen, page: () => DonationScreen()),
     GetPage(name: donationMoodScreen, page: () => DonationMoodScreen()),
 
-    GetPage(name: makePaymentScreen, page: () => MakePaymentScreen()),
+    GetPage(name: makePaymentScreen, page: () => const MakePaymentScreen()),
     GetPage(name: paymentSuccessScreen, page: () => PaymentSuccessScreen()),
     GetPage(
-        name: forgetPasswordOtpScreen, page: () => ForgetPasswordOtpScreen()),
+        name: forgetPasswordOtpScreen, page: () => const ForgetPasswordOtpScreen()),
     GetPage(
         name: signUpOtpVerificationScreen,
-        page: () => SignUpOtpVerificationScreen()),
+        page: () => const SignUpOtpVerificationScreen()),
 
     //category
-    GetPage(name: categoriesFilterScreen, page: () => CategoriesFilterScreen()),
+    GetPage(name: categoriesFilterScreen, page: () => const CategoriesFilterScreen()),
     GetPage(
         name: categoriesSearchAppliedScreen,
         page: () => CategoriesSearchAppliedScreen(category: Get.arguments),
