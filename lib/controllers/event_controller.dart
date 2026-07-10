@@ -25,7 +25,6 @@ class EventController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchUpcomingEvents();
   }
 
   Future<void> fetchUpcomingEvents({bool isLoadMore = false, String? search}) async {

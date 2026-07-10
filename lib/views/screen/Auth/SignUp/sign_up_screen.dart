@@ -11,6 +11,7 @@ import '../../../../helpers/route.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_icons.dart';
 import '../../../../utils/app_strings.dart';
+import '../../../../utils/app_constants.dart';
 import '../../../base/custom_button.dart';
 import '../../../base/custom_text.dart';
 import '../../../base/custom_text_field.dart';
@@ -41,6 +42,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
   String? selectedCountry;
   String? selectedState;
   String? selectedCity;
+
+  String? _termsError;
+  String? _genderError;
+  String? _birthdayError;
+  String? _countryError;
+  String? _passwordMatchError;
 
   // Auth controller instance
   final AuthController authController = Get.find<AuthController>();
@@ -80,25 +87,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
     
     final username = userNameController.text.trim();
     
-    // Clear error if username is empty
+    setState(() {
+      _usernameError = null;
+      _isCheckingUsername = false;
+    });
+    
     if (username.isEmpty) {
-      setState(() {
-        _usernameError = null;
-        _isCheckingUsername = false;
-      });
       return;
     }
     
-    // Validate minimum length
     if (username.length < 3) {
       setState(() {
         _usernameError = 'Username must be at least 3 characters';
-        _isCheckingUsername = false;
       });
       return;
     }
     
-    // Set debounce timer to avoid excessive API calls
     _usernameDebounce = Timer(const Duration(milliseconds: 800), () async {
       setState(() {
         _isCheckingUsername = true;
@@ -306,6 +310,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           padding: EdgeInsets.symmetric(horizontal: 24.w),
           child: Form(
             key: _formKey,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -324,7 +329,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 //=================================> Email Text Field <=========================
 
                 _textFieldSection('Email', emailController,
-                    AppIcons.mailIcon, 'Enter your Email'),
+                    AppIcons.mailIcon, 'Enter your Email', false, true),
                 // CustomTextField(
                 //   controller: emailController,
                 //   hintText: AppStrings.email,
@@ -360,8 +365,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     AppStrings.confirmPassword,
                     confirmPasswordController,
                     AppIcons.lockIcon,
-                    AppStrings.confirmpasswords,
-                    true),
+                     AppStrings.confirmpasswords,
+                     true, false, (value) {
+                  setState(() {
+                    _passwordMatchError = null;
+                  });
+                }),
+                if (_passwordMatchError != null)
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 16.h, top: 4.h),
+                    child: Text(
+                      _passwordMatchError!,
+                      style: TextStyle(color: Colors.red, fontSize: 12.sp),
+                    ),
+                  ),
                 //==========================> Check Box Section <=======================
                 _checkboxSection(),
                 SizedBox(height: 24.h),
@@ -442,11 +459,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
               onChanged: (newValue) {
                 setState(() {
                   selectedGender = newValue;
+                  if (newValue != null) {
+                    _genderError = null;
+                  }
                 });
               },
             ),
           ),
         ),
+        if (_genderError != null)
+          Padding(
+            padding: EdgeInsets.only(top: 4.h),
+            child: Text(
+              _genderError!,
+              style: TextStyle(color: Colors.red, fontSize: 12.sp),
+            ),
+          ),
       ],
     );
   }
@@ -475,6 +503,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
               onChanged: (value) {
                 setState(() {
                   selectedYear = value;
+                  if (value != null) {
+                    _birthdayError = null;
+                  }
                 });
               },
             ),
@@ -486,6 +517,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
               onChanged: (value) {
                 setState(() {
                   selectedMonth = value;
+                  if (value != null) {
+                    _birthdayError = null;
+                  }
                 });
               },
             ),
@@ -497,11 +531,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
               onChanged: (value) {
                 setState(() {
                   selectedDay = value;
+                  if (value != null) {
+                    _birthdayError = null;
+                  }
                 });
               },
             ),
           ],
         ),
+        if (_birthdayError != null)
+          Padding(
+            padding: EdgeInsets.only(top: 4.h),
+            child: Text(
+              _birthdayError!,
+              style: TextStyle(color: Colors.red, fontSize: 12.sp),
+            ),
+          ),
       ],
     );
   }
@@ -528,8 +573,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
               onChanged: (value) {
                 setState(() {
                   selectedCountry = value;
-                  selectedState = null; // Reset state when country changes
-                  selectedCity = null; // Reset city when country changes
+                  selectedState = null;
+                  selectedCity = null;
+                  if (value != null) {
+                    _countryError = null;
+                  }
                 });
               },
             ),
@@ -541,7 +589,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               onChanged: (value) {
                 setState(() {
                   selectedState = value;
-                  selectedCity = null; // Reset city when state changes
+                  selectedCity = null;
                 });
               },
             ),
@@ -558,6 +606,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
           ],
         ),
+        if (_countryError != null)
+          Padding(
+            padding: EdgeInsets.only(top: 4.h),
+            child: Text(
+              _countryError!,
+              style: TextStyle(color: Colors.red, fontSize: 12.sp),
+            ),
+          ),
       ],
     );
   }
@@ -691,7 +747,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   //==========================> Text Field Widget <=======================
   _textFieldSection(String label, TextEditingController controller,
       String? icon, String hintText,
-      [bool isPassword = false]) {
+      [bool isPassword = false, bool isEmail = false, ValueChanged<String>? onChanged]) {
     return Padding(
       padding: EdgeInsets.only(bottom: 16.h),
       child: Column(
@@ -707,15 +763,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
             controller: controller,
             hintText: hintText,
             isPassword: isPassword,
+            isEmail: isEmail,
             prifixicon: icon != null
                 ? Padding(
               padding: EdgeInsets.symmetric(horizontal: 12.h),
               child: SvgPicture.asset(icon, color: AppColors.primaryColor),
             )
                 : null,
+            onChanged: onChanged,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return "Please enter your $label";
+              }
+              if (isEmail) {
+                bool data = AppConstants.emailValidator.hasMatch(value);
+                if (!data) {
+                  return "Please check your email!";
+                }
               }
               return null;
             },
@@ -727,67 +791,87 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   //==========================> Checkbox Section Widget <=======================
   _checkboxSection() {
-    return Row(
+    return Column(
       children: [
-        GestureDetector(
-          onTap: () {
-            setState(() {
-              isChecked = !isChecked;
-            });
-          },
-          child: Container(
-            width: 20.w,
-            height: 20.w,
-            decoration: BoxDecoration(
-              color: isChecked ? AppColors.primaryColor : Colors.transparent,
-              border: Border.all(
-                color: AppColors.primaryColor,
-                width: 1.w,
+        Row(
+          children: [
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  isChecked = !isChecked;
+                  if (isChecked) {
+                    _termsError = null;
+                  }
+                });
+              },
+              child: Container(
+                width: 20.w,
+                height: 20.w,
+                decoration: BoxDecoration(
+                  color: isChecked ? AppColors.primaryColor : Colors.transparent,
+                  border: Border.all(
+                    color: AppColors.primaryColor,
+                    width: 1.w,
+                  ),
+                  borderRadius: BorderRadius.circular(4.r),
+                ),
+                child: isChecked
+                    ? Icon(
+                  Icons.check,
+                  color: Colors.white,
+                  size: 14.sp,
+                )
+                    : null,
               ),
-              borderRadius: BorderRadius.circular(4.r),
             ),
-            child: isChecked
-                ? Icon(
-              Icons.check,
-              color: Colors.white,
-              size: 14.sp,
-            )
-                : null,
-          ),
-        ),
-        SizedBox(width: 10.w),
-        Text.rich(
-          maxLines: 2,
-          TextSpan(
-            text: 'By creating an account, I accept the',
-            style: TextStyle(fontSize: 14.w, fontWeight: FontWeight.w500),
-            children: [
-              TextSpan(
-                text: 'Terms\n& Conditions',
-                style: TextStyle(
-                    color: AppColors.primaryColor,
-                    fontSize: 14.w,
-                    fontWeight: FontWeight.w500),
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () {
-                    Get.toNamed(AppRoutes.termsConditionScreen);
-                  },
+            SizedBox(width: 10.w),
+            Expanded(
+              child: Text.rich(
+                maxLines: 2,
+                TextSpan(
+                  text: 'By creating an account, I accept the',
+                  style: TextStyle(fontSize: 14.w, fontWeight: FontWeight.w500),
+                  children: [
+                    TextSpan(
+                      text: 'Terms\n& Conditions',
+                      style: TextStyle(
+                          color: AppColors.primaryColor,
+                          fontSize: 14.w,
+                          fontWeight: FontWeight.w500),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          Get.toNamed(AppRoutes.termsConditionScreen);
+                        },
+                    ),
+                    const TextSpan(text: ' & '),
+                    TextSpan(
+                      text: 'Privacy Policy.',
+                      style: TextStyle(
+                          color: AppColors.primaryColor,
+                          fontSize: 14.w,
+                          fontWeight: FontWeight.w500),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          Get.toNamed(AppRoutes.privacyPolicyScreen);
+                        },
+                    ),
+                  ],
+                ),
               ),
-              const TextSpan(text: ' & '),
-              TextSpan(
-                text: 'Privacy Policy.',
-                style: TextStyle(
-                    color: AppColors.primaryColor,
-                    fontSize: 14.w,
-                    fontWeight: FontWeight.w500),
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () {
-                    Get.toNamed(AppRoutes.privacyPolicyScreen);
-                  },
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
+        if (_termsError != null)
+          Padding(
+            padding: EdgeInsets.only(top: 4.h, left: 30.w),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                _termsError!,
+                style: TextStyle(color: Colors.red, fontSize: 12.sp),
+              ),
+            ),
+          ),
       ],
     );
   }
@@ -797,73 +881,66 @@ class _SignUpScreenState extends State<SignUpScreen> {
   _signUpButton() {
     return Obx(() => CustomButton(
       onTap: () async {
-        // Prevent multiple taps while loading
         if (authController.isLoading.value) return;
-        
-        // Validate form
+
+        setState(() {
+          _termsError = null;
+          _genderError = null;
+          _birthdayError = null;
+          _countryError = null;
+          _passwordMatchError = null;
+        });
+
         if (!_formKey.currentState!.validate()) {
           return;
         }
 
-        // Check if checkbox is checked
         if (!isChecked) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Please accept the Terms & Conditions and Privacy Policy')),
-          );
+          setState(() {
+            _termsError = 'Please accept the Terms & Conditions and Privacy Policy';
+          });
           return;
         }
 
-        // Validate dropdowns
         if (selectedGender == null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Please select your gender')),
-          );
+          setState(() {
+            _genderError = 'Please select your gender';
+          });
           return;
         }
 
         if (selectedYear == null || selectedMonth == null || selectedDay == null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Please select your complete birthday')),
-          );
+          setState(() {
+            _birthdayError = 'Please select your complete birthday';
+          });
           return;
         }
 
         if (selectedCountry == null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Please select your country')),
-          );
+          setState(() {
+            _countryError = 'Please select your country';
+          });
           return;
         }
 
-        // Check if passwords match
         if (passwordController.text != confirmPasswordController.text) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Passwords do not match')),
-          );
-          return;
-        }
-        
-        // Check if username is available
-        if (_usernameError != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Please choose a different username')),
-          );
-          return;
-        }
-        
-        // Check if still checking username
-        if (_isCheckingUsername) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Please wait while checking username')),
-          );
+          setState(() {
+            _passwordMatchError = 'Passwords do not match';
+          });
           return;
         }
 
-        // Convert month name to number for API
+        if (_usernameError != null) {
+          return;
+        }
+
+        if (_isCheckingUsername) {
+          return;
+        }
+
         int monthIndex = monthList.indexOf(selectedMonth!) + 1;
         String formattedBirthday = '$selectedYear-${monthIndex.toString().padLeft(2, '0')}-$selectedDay';
 
-        // Call API
         bool success = await authController.registerUser(
           username: userNameController.text.trim(),
           email: emailController.text.trim(),
@@ -879,9 +956,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           acceptTerms: isChecked,
         );
 
-        // Navigate to OTP verification screen if successful
         if (success) {
-          // Pass sessionId to OTP verification screen
           Get.toNamed(
             AppRoutes.signUpOtpVerificationScreen, 
             arguments: {

@@ -8,6 +8,8 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 
 class DonationMoodScreen extends StatelessWidget {
+  const DonationMoodScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +32,7 @@ class DonationMoodScreen extends StatelessWidget {
             Text('Donation helps us to grow',style: TextStyle(fontSize: 22.sp,fontWeight: FontWeight.w600),),
             SizedBox(height: 12.h),
             Text('We do not sell or trade your information to anyone. \nBy donating, you agree to share your personal information with Savorboard Co..',textAlign: TextAlign.center,style: TextStyle(fontSize: 10.sp),),
-            Spacer(),
+            const Spacer(),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: CustomButton(
@@ -38,7 +40,7 @@ class DonationMoodScreen extends StatelessWidget {
                   Get.toNamed(AppRoutes.donationScreen);
                 },
                 text: 'Just Once',
-                textStyle:TextStyle(color: Colors.black),
+                textStyle:const TextStyle(color: Colors.black),
                 color: AppColors.fillColor,
                 borderColor: AppColors.buttonColor,
               ),
@@ -51,7 +53,7 @@ class DonationMoodScreen extends StatelessWidget {
                 },
                 text: 'Give Monthly',
 
-                textStyle:TextStyle(color: Colors.black),
+                textStyle:const TextStyle(color: Colors.black),
                 color: AppColors.buttonColor,
                 borderColor: AppColors.buttonColor,
                 textColor: AppColors.textColor,

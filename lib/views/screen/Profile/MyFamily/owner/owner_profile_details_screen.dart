@@ -12,7 +12,7 @@ import 'package:get/get.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class OwnerProfileDetailsScreen extends StatefulWidget {
-  OwnerProfileDetailsScreen({super.key});
+  const OwnerProfileDetailsScreen({super.key});
 
   @override
   State<OwnerProfileDetailsScreen> createState() =>
@@ -79,7 +79,7 @@ class _OwnerProfileDetailsScreenState extends State<OwnerProfileDetailsScreen> {
           ? Center(
               child: CircularProgressIndicator(color: AppColors.primaryColor))
           : _userData == null
-              ? Center(child: Text('No data found'))
+              ? const Center(child: Text('No data found'))
               : SingleChildScrollView(
                   child: Padding(
                     padding:
@@ -89,11 +89,11 @@ class _OwnerProfileDetailsScreenState extends State<OwnerProfileDetailsScreen> {
                       children: [
                         Container(
                           decoration: BoxDecoration(
-                            color: Color(0xFF285B75),
+                            color: const Color(0xFF285B75),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Padding(
-                            padding: EdgeInsets.all(16),
+                            padding: const EdgeInsets.all(16),
                             child: Row(
                               children: [
                                 ClipRRect(
@@ -133,7 +133,7 @@ class _OwnerProfileDetailsScreenState extends State<OwnerProfileDetailsScreen> {
                                               color: AppColors.greyColor),
                                         ),
                                 ),
-                                SizedBox(width: 16),
+                                const SizedBox(width: 16),
                                 Expanded(
                                   child: Column(
                                     crossAxisAlignment:
@@ -146,7 +146,7 @@ class _OwnerProfileDetailsScreenState extends State<OwnerProfileDetailsScreen> {
                                           Expanded(
                                             child: Text(
                                               '${_userData!['firstName']} ${_userData!['lastName']}',
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 fontSize: 18,
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.w500,
@@ -160,7 +160,7 @@ class _OwnerProfileDetailsScreenState extends State<OwnerProfileDetailsScreen> {
                                       SizedBox(height: 4.h),
                                       Text(
                                         '@${_userData!['username'] ?? ''}',
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontSize: 14,
                                           color: Colors.white70,
                                         ),
@@ -227,7 +227,7 @@ class _OwnerProfileDetailsScreenState extends State<OwnerProfileDetailsScreen> {
                             decoration: BoxDecoration(
                               color: AppColors.colorEDF2F4,
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(8)),
+                                  const BorderRadius.all(Radius.circular(8)),
                               border: Border.all(
                                   color: AppColors.primaryColor, width: 1),
                             ),
@@ -251,7 +251,7 @@ class _OwnerProfileDetailsScreenState extends State<OwnerProfileDetailsScreen> {
                                           child: Text(
                                             skill.toString(),
                                             style:
-                                                TextStyle(color: Colors.black),
+                                                const TextStyle(color: Colors.black),
                                           ),
                                         ),
                                       ],
@@ -273,7 +273,7 @@ class _OwnerProfileDetailsScreenState extends State<OwnerProfileDetailsScreen> {
     return Padding(
       padding: const EdgeInsets.all(4),
       child: Text(label,
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
     );
   }
 }

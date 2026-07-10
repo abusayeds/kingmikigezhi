@@ -134,7 +134,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 8.h),
-                    child: Text('Relationship',
+                    child: const Text('Relationship',
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w600)),
                   ),
@@ -180,7 +180,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 8.h),
-                    child: Text('Account Id',
+                    child: const Text('Account Id',
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w600)),
                   ),
@@ -190,7 +190,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 8.h),
-                    child: Text('Full Name',
+                    child: const Text('Full Name',
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w600)),
                   ),
@@ -200,7 +200,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 8.h),
-                    child: Text('Last Name',
+                    child: const Text('Last Name',
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w600)),
                   ),
@@ -211,7 +211,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
 
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 8.h),
-                    child: Text('Public Display name',
+                    child: const Text('Public Display name',
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w600)),
                   ),
@@ -221,7 +221,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 8.h),
-                    child: Text('Gender',
+                    child: const Text('Gender',
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w600)),
                   ),
@@ -231,7 +231,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 8.h),
-                    child: Text('Birthday',
+                    child: const Text('Birthday',
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w600)),
                   ),
@@ -287,7 +287,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 8.h),
-                    child: Text('Email',
+                    child: const Text('Email',
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w600)),
                   ),
@@ -299,7 +299,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 8.h),
-                    child: Text('Phone Number',
+                    child: const Text('Phone Number',
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w600)),
                   ),
@@ -325,14 +325,14 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                                 });
                               },
                               initialSelection: 'BD',
-                              favorite: ['+880', 'BD'],
+                              favorite: const ['+880', 'BD'],
                               showCountryOnly: false,
                               showOnlyCountryWhenClosed: false,
                               alignLeft: false,
                             ),
                             Padding(
                                 padding: EdgeInsets.only(right: 5.w),
-                                child: Icon(Icons.arrow_drop_down_sharp))
+                                child: const Icon(Icons.arrow_drop_down_sharp))
                           ],
                         ),
                       ),
@@ -348,7 +348,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 8.h),
-                    child: Text('Location',
+                    child: const Text('Location',
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w600)),
                   ),
@@ -423,7 +423,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                                     SizedBox(height: 8.h),
                                     Container(
                                       height: 52.h,
-                                      padding: EdgeInsets.symmetric(
+                                      padding: const EdgeInsets.symmetric(
                                           horizontal: 12, vertical: 8),
                                       decoration: BoxDecoration(
                                         border: Border.all(
@@ -437,7 +437,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                                           color: AppColors.primaryColor,
                                         ),
                                         isExpanded: true,
-                                        underline: SizedBox(),
+                                        underline: const SizedBox(),
                                         hint: Text('Select Year',
                                             style: AppStyles.fontSize14(
                                                 fontWeight: FontWeight.w400,
@@ -470,7 +470,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                                     SizedBox(height: 8.h),
                                     Container(
                                       height: 52.h,
-                                      padding: EdgeInsets.symmetric(
+                                      padding: const EdgeInsets.symmetric(
                                           horizontal: 12, vertical: 8),
                                       decoration: BoxDecoration(
                                         border: Border.all(
@@ -484,7 +484,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                                           color: AppColors.primaryColor,
                                         ),
                                         isExpanded: true,
-                                        underline: SizedBox(),
+                                        underline: const SizedBox(),
                                         hint: Text('Select Program',
                                             style: AppStyles.fontSize14(
                                                 fontWeight: FontWeight.w400,
@@ -516,12 +516,12 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                             textColor: Colors.white,
                           ),
                           SizedBox(height: 16.h),
-                          Text(
+                          const Text(
                             'Added Skill',
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.w600),
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           Container(
                             decoration: BoxDecoration(
                               color: AppColors.colorEDF2F4,
@@ -537,20 +537,20 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                                 children: [
                                   SkillRowWidget(
                                       leadingText: 'Chess since 2020',
-                                      editIconPath: '${AppIcons.editIcon}',
-                                      deleteIconPath: '${AppIcons.trashIcon}',
+                                      editIconPath: AppIcons.editIcon,
+                                      deleteIconPath: AppIcons.trashIcon,
                                       onEditTap: () {},
                                       onDeleteTap: () {}),
                                   SkillRowWidget(
                                       leadingText: 'Math since 2021',
-                                      editIconPath: '${AppIcons.editIcon}',
-                                      deleteIconPath: '${AppIcons.trashIcon}',
+                                      editIconPath: AppIcons.editIcon,
+                                      deleteIconPath: AppIcons.trashIcon,
                                       onEditTap: () {},
                                       onDeleteTap: () {}),
                                   SkillRowWidget(
                                       leadingText: 'Piano since 2023',
-                                      editIconPath: '${AppIcons.editIcon}',
-                                      deleteIconPath: '${AppIcons.trashIcon}',
+                                      editIconPath: AppIcons.editIcon,
+                                      deleteIconPath: AppIcons.trashIcon,
                                       onEditTap: () {},
                                       onDeleteTap: () {}),
                                 ],
@@ -562,7 +562,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   //======================>>User Name / Password Section
                   DottedBorderContainer(
                     child: Padding(
@@ -579,7 +579,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                           ),
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: 8.h),
-                            child: Text('User Name',
+                            child: const Text('User Name',
                                 style: TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.w600)),
                           ),
@@ -591,7 +591,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                           ),
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: 8.h),
-                            child: Text('Password',
+                            child: const Text('Password',
                                 style: TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.w600)),
                           ),
@@ -615,7 +615,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                           ),
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: 8.h),
-                            child: Text('Confirm Password',
+                            child: const Text('Confirm Password',
                                 style: TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.w600)),
                           ),
@@ -641,7 +641,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Obx(() => CustomButton(
                         color: AppColors.buttonA47059,
                         borderColor: AppColors.buttonA47059,
@@ -701,7 +701,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                               size: 50.w,
                               color: AppColors.primaryColor,
                             ),
-                            CustomText(text: 'Gallery')
+                            const CustomText(text: 'Gallery')
                           ],
                         ),
                       ),
@@ -717,7 +717,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                           children: [
                             Icon(Icons.camera_alt,
                                 size: 50.w, color: AppColors.primaryColor),
-                            CustomText(text: 'Camera')
+                            const CustomText(text: 'Camera')
                           ],
                         ),
                       ),

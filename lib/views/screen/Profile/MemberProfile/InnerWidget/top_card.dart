@@ -9,7 +9,7 @@ class TopCard extends StatelessWidget {
   final String? image;
   final VoidCallback? ontap;
 
-  TopCard({this.name, this.image, this.ontap});
+  const TopCard({super.key, this.name, this.image, this.ontap});
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +64,7 @@ class TopCard extends StatelessWidget {
                           ),
                           child: Padding(
                             padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-                            child: CustomText(
+                            child: const CustomText(
                               text: 'User ID: 2010',
                               color: Colors.white,
                             ),

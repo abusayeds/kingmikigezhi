@@ -10,6 +10,8 @@ import '../../base/custom_text.dart';
 import '../../base/custom_text_field.dart';
 
 class SearchEventScreen extends StatefulWidget {
+  const SearchEventScreen({super.key});
+
   @override
   State<SearchEventScreen> createState() => _SearchEventScreenState();
 }
@@ -164,7 +166,7 @@ class _SearchEventScreenState extends State<SearchEventScreen> {
                                         height: 76.h,
                                         fit: BoxFit.cover,
                                         errorBuilder: (context, error, stackTrace) => 
-                                          Container(width: 77.w, height: 76.h, color: Colors.grey[300], child: Icon(Icons.image)),
+                                          Container(width: 77.w, height: 76.h, color: Colors.grey[300], child: const Icon(Icons.image)),
                                       )
                                     : Container(
                                         width: 77.w,

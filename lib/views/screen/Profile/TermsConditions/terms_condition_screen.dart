@@ -1,18 +1,16 @@
-import 'package:event_sharing/utils/app_colors.dart';
-import 'package:event_sharing/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
-import '../../../../utils/app_strings.dart';
 import '../../../base/custom_text.dart';
 import '../../../../controllers/terms_conditions_controller.dart';
 
 class TermsConditionScreen extends StatelessWidget {
   TermsConditionScreen({super.key}){
     _termsConditionsController.getTermsCondition();
+
   }
+
 
   final TermsConditionsController _termsConditionsController = Get.put(
       TermsConditionsController(apiService: Get.find(), sharedPreferences: Get.find()));

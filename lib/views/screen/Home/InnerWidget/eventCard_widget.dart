@@ -1,4 +1,3 @@
-import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_icons.dart';
 import 'package:event_sharing/utils/style.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +18,7 @@ class EventCardWidget extends StatelessWidget {
   final EventModel? eventModel;
 
   const EventCardWidget({
-    Key? key,
+    super.key,
     this.eventTitle,
     this.imagePath,
     this.name,
@@ -29,7 +28,7 @@ class EventCardWidget extends StatelessWidget {
     this.history,
     required this.backgroundColor,
     this.eventModel,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

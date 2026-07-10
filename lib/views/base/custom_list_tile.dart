@@ -14,7 +14,7 @@ class CustomListTile extends StatelessWidget {
   final VoidCallback? onTap;
   final Color? backgroundColor;
 
-  CustomListTile({
+  const CustomListTile({
     super.key,
     required this.title,
     this.onTap,

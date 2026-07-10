@@ -76,7 +76,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
             ListView.builder(
               itemCount: 2,
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
                 return Padding(
                   padding:  EdgeInsets.symmetric(vertical: 10.w),

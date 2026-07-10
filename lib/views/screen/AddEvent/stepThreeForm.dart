@@ -161,7 +161,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
                   border: Border.all(color: AppColors.primaryColor, width: 1),
                 ),
                 child: addeventcontroller.groups.isEmpty 
-                  ? Padding(padding: EdgeInsets.all(16), child: Text("No groups added yet"))
+                  ? const Padding(padding: EdgeInsets.all(16), child: Text("No groups added yet"))
                   : Column(
                       children: addeventcontroller.groups.asMap().entries.map((entry) {
                         int idx = entry.key;
@@ -324,14 +324,14 @@ class _StepThreeFormState extends State<StepThreeForm> {
                       SizedBox(height: 8.h),
                       Obx(() => Container(
                         width: double.infinity,
-                        padding: EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(8),
                           border: Border.all(color: Colors.grey.shade300),
                         ),
                         child: addeventcontroller.tempRounds.isEmpty 
-                          ? Text("No rounds added")
+                          ? const Text("No rounds added")
                           : Column(
                               children: addeventcontroller.tempRounds.map((r) => Text("• ${r['roundType']} - ${r['deadline']}")).toList(),
                             ),

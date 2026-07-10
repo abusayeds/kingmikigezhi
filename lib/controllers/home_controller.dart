@@ -38,10 +38,6 @@ class HomeController extends GetxController implements GetxService {
   @override
   void onInit() {
     super.onInit();
-    fetchTodayEvents();
-    fetchFamilyEvents('Self');
-    fetchUpcomingEvents();
-    fetchHistoryEvents();
   }
 
   Future<void> searchEvents({

@@ -7,8 +7,6 @@ import 'package:event_sharing/views/base/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/get.dart';
 
 import '../../base/bottom_menu..dart';
@@ -168,7 +166,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     }
 
     if (error != null && categories.isEmpty) {
-      return Center(child: Text(error!, style: TextStyle(color: Colors.red)));
+      return Center(child: Text(error!, style: const TextStyle(color: Colors.red)));
     }
 
     if (categories.isEmpty) {
@@ -188,7 +186,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
         itemCount: categories.length + (_isLoadingMore ? 1 : 0),
         itemBuilder: (context, index) {
           if (index == categories.length) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
 
           final category = categories[index];

@@ -93,7 +93,7 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
               return ListView.builder(
                 itemCount: _familyController.familyOwners.length,
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   final member = _familyController.familyOwners[index];
                   return Padding(
@@ -158,7 +158,7 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
                 Container(
                   height: 3.h,
                   width: 38.w,
-                  color: Color(0xFF4C7E95),
+                  color: const Color(0xFF4C7E95),
                 ),
                 SizedBox(
                   height: 16.h,
@@ -182,7 +182,7 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
                           Get.back();
                         },
                         style: ElevatedButton.styleFrom(
-                          minimumSize: Size(double.infinity, 58),
+                          minimumSize: const Size(double.infinity, 58),
                           backgroundColor: AppColors.colorEDF2F4,
                           side: BorderSide(
                               width: 1, color: AppColors.primaryColor),
@@ -204,7 +204,7 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
                           Navigator.of(context).pop(true);
                         },
                         style: ElevatedButton.styleFrom(
-                          minimumSize: Size(double.infinity, 58),
+                          minimumSize: const Size(double.infinity, 58),
                           backgroundColor: AppColors.primaryColor,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(100.r),
@@ -352,7 +352,7 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
             color: AppColors.backgroundColor,
           ),
           height: 265,
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Column(
             children: [
               SizedBox(height: 20.h),
@@ -371,7 +371,7 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
                         Get.toNamed(AppRoutes.ownerProfileDetailsScreen);
                       },
                       style: ElevatedButton.styleFrom(
-                        minimumSize: Size(double.infinity, 58),
+                        minimumSize: const Size(double.infinity, 58),
                         backgroundColor: AppColors.primaryColor,
                         side: BorderSide(width: 1, color: AppColors.greyColor),
                         shape: RoundedRectangleBorder(
@@ -399,7 +399,7 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
                     child: ElevatedButton(
                       onPressed: () {},
                       style: ElevatedButton.styleFrom(
-                        minimumSize: Size(double.infinity, 58),
+                        minimumSize: const Size(double.infinity, 58),
                         backgroundColor: AppColors.primaryColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(100.r),

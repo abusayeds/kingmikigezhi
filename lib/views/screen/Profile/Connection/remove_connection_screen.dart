@@ -1,5 +1,4 @@
 import 'package:event_sharing/controllers/connection_controller.dart';
-import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_icons.dart';
 import 'package:event_sharing/utils/style.dart';
@@ -19,7 +18,7 @@ class AddedConneectionScreen extends StatefulWidget {
 
 class _AddedConneectionScreenState extends State<AddedConneectionScreen> {
   late ConnectionController connectionController;
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -118,7 +117,7 @@ class _AddedConneectionScreenState extends State<AddedConneectionScreen> {
                                   CircleAvatar(
                                     radius: 45.r,
                                     backgroundColor: Colors.grey.shade300,
-                                    child: Icon(Icons.person,
+                                    child: const Icon(Icons.person,
                                         size: 40, color: Colors.white),
                                   ),
                                   SizedBox(width: 12.w),
@@ -134,13 +133,13 @@ class _AddedConneectionScreenState extends State<AddedConneectionScreen> {
                                             color: AppColors.color414141,
                                           ),
                                         ),
-                                        SizedBox(height: 8),
+                                        const SizedBox(height: 8),
                                         Row(
                                           children: [
                                             SvgPicture.asset(
                                               AppIcons.dotIconForFamily,
                                             ),
-                                            SizedBox(width: 4),
+                                            const SizedBox(width: 4),
                                             Expanded(
                                               child: Text(
                                                 'Username: $username',
@@ -154,13 +153,13 @@ class _AddedConneectionScreenState extends State<AddedConneectionScreen> {
                                             ),
                                           ],
                                         ),
-                                        SizedBox(height: 8),
+                                        const SizedBox(height: 8),
                                         Row(
                                           children: [
                                             SvgPicture.asset(
                                               AppIcons.dotIconForFamily,
                                             ),
-                                            SizedBox(width: 4),
+                                            const SizedBox(width: 4),
                                             Expanded(
                                               child: Text(
                                                 'Email: $email',
@@ -179,7 +178,7 @@ class _AddedConneectionScreenState extends State<AddedConneectionScreen> {
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               CustomButton(
                                 onTap: () {
                                   _showCustomDeleteBottomSheet(
@@ -189,7 +188,7 @@ class _AddedConneectionScreenState extends State<AddedConneectionScreen> {
                                   );
                                 },
                                 text: 'Remove',
-                                textStyle: TextStyle(
+                                textStyle: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -197,7 +196,7 @@ class _AddedConneectionScreenState extends State<AddedConneectionScreen> {
                                 borderColor: AppColors.colorD9A951,
                                 textColor: AppColors.textColor,
                               ),
-                              SizedBox(width: 10),
+                              const SizedBox(width: 10),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Divider(
@@ -243,7 +242,7 @@ class _AddedConneectionScreenState extends State<AddedConneectionScreen> {
             color: AppColors.backgroundColor,
           ),
           height: 265,
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Column(
             children: [
               SizedBox(height: 20.h),
@@ -269,7 +268,7 @@ class _AddedConneectionScreenState extends State<AddedConneectionScreen> {
                         Get.back();
                       },
                       style: ElevatedButton.styleFrom(
-                        minimumSize: Size(double.infinity, 58),
+                        minimumSize: const Size(double.infinity, 58),
                         backgroundColor: AppColors.colorEDF2F4,
                         side: BorderSide(width: 1, color: AppColors.greyColor),
                         shape: RoundedRectangleBorder(
@@ -292,7 +291,7 @@ class _AddedConneectionScreenState extends State<AddedConneectionScreen> {
                         Get.back();
                       },
                       style: ElevatedButton.styleFrom(
-                        minimumSize: Size(double.infinity, 58),
+                        minimumSize: const Size(double.infinity, 58),
                         backgroundColor: AppColors.primaryColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(100.r),

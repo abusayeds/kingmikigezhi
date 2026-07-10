@@ -15,7 +15,7 @@ class CustomDropdown extends StatelessWidget {
   final double height;
 
   const CustomDropdown({
-    Key? key,
+    super.key,
     required this.items,
     required this.selectedValue,
     required this.hintText,
@@ -23,7 +23,7 @@ class CustomDropdown extends StatelessWidget {
     required this.fillColor,
     required this.borderColor,
     this.height = 54, // Default height
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

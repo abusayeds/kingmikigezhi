@@ -11,7 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class MyEventScreen extends StatefulWidget {
-  MyEventScreen({super.key});
+  const MyEventScreen({super.key});
 
   @override
   State<MyEventScreen> createState() => _MyEventScreenState();
@@ -64,7 +64,7 @@ class _MyEventScreenState extends State<MyEventScreen>
             indicatorWeight: 1,
 
             //dividerColor: Color(0xFFFFFFFF),
-            dividerColor: Color(0xFFC8D7DE),
+            dividerColor: const Color(0xFFC8D7DE),
             //tabAlignment: TabAlignment.fill,
             tabs: [
               //========================> Tab 01  <====================
@@ -149,7 +149,7 @@ class _MyEventScreenState extends State<MyEventScreen>
         ),
         body: TabBarView(
           controller: _tabController,
-          children: [
+          children: const [
             MyTodayEventScreen(),
             MyUpcomingEventScreen(),
             MyHistoryEventScreen(),

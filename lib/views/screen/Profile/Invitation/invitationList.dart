@@ -1,4 +1,3 @@
-import 'package:event_sharing/utils/app_images.dart';
 import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/screen/Profile/Invitation/invitationListController.dart';
 import 'package:flutter/material.dart';
@@ -141,7 +140,7 @@ class _InvitationlistState extends State<Invitationlist> {
                             Row(
                               children: [
                                 SvgPicture.asset(AppIcons.dotIconForFamily),
-                                SizedBox(width: 4),
+                                const SizedBox(width: 4),
                                 Text("Account ID: ${invitation['accountID']}",
                                   style: AppStyles.fontSize10(color: AppColors.color414141),
                                 ),
@@ -151,7 +150,7 @@ class _InvitationlistState extends State<Invitationlist> {
                             Row(
                               children: [
                                 SvgPicture.asset(AppIcons.dotIconForFamily),
-                                SizedBox(width: 4),
+                                const SizedBox(width: 4),
                                 Text("Contribution: ${invitation['contribution']}",
                                   style: AppStyles.fontSize10(color: AppColors.color414141),
                                 ),
@@ -167,7 +166,7 @@ class _InvitationlistState extends State<Invitationlist> {
                         Expanded(
                             child:CustomButton(
                               onTap: (){},
-                              text: 'Ignore',textStyle: TextStyle(fontSize: 16,fontWeight: FontWeight.w500),
+                              text: 'Ignore',textStyle: const TextStyle(fontSize: 16,fontWeight: FontWeight.w500),
                               color: AppColors.fillColor,
                               borderColor: AppColors.buttonA47059,
                               textColor: AppColors.blackColor,
@@ -177,7 +176,7 @@ class _InvitationlistState extends State<Invitationlist> {
                         Expanded(
                             child:CustomButton(
                               onTap: (){},
-                              text: 'Accept',textStyle: TextStyle(fontSize: 16,fontWeight: FontWeight.w500),
+                              text: 'Accept',textStyle: const TextStyle(fontSize: 16,fontWeight: FontWeight.w500),
                               color: AppColors.buttonA47059,
                               borderColor: AppColors.buttonA47059,
                               textColor: AppColors.textColor,
@@ -215,7 +214,7 @@ class _InvitationlistState extends State<Invitationlist> {
                     Expanded(
                         child:CustomButton(
                           onTap: (){},
-                          text: 'Ignore All',textStyle: TextStyle(fontSize: 16,fontWeight: FontWeight.w500),
+                          text: 'Ignore All',textStyle: const TextStyle(fontSize: 16,fontWeight: FontWeight.w500),
                           color: AppColors.fillColor,
                           borderColor: AppColors.buttonColor,
                           textColor: AppColors.blackColor,
@@ -225,7 +224,7 @@ class _InvitationlistState extends State<Invitationlist> {
                     Expanded(
                         child:CustomButton(
                           onTap: (){},
-                          text: 'Accept All',textStyle: TextStyle(fontSize: 16,fontWeight: FontWeight.w500),
+                          text: 'Accept All',textStyle: const TextStyle(fontSize: 16,fontWeight: FontWeight.w500),
                           color: AppColors.buttonColor,
                           borderColor: AppColors.buttonA47059,
                           textColor: AppColors.textColor,
@@ -252,9 +251,9 @@ class _InvitationlistState extends State<Invitationlist> {
             width: double.infinity,
             padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),
             decoration: BoxDecoration(
-              color: Color(0xFF28AC4B).withOpacity(0.1),
+              color: const Color(0xFF28AC4B).withOpacity(0.1),
               borderRadius: BorderRadius.circular(10.r),
-              border: Border.all(color: Color(0xFF28AC4B)),
+              border: Border.all(color: const Color(0xFF28AC4B)),
             ),
             child: Center(
               child: Text(
@@ -262,7 +261,7 @@ class _InvitationlistState extends State<Invitationlist> {
                 style: GoogleFonts.poppins(
                   fontWeight: FontWeight.w500,
                   fontSize: 12.sp,
-                  color: Color(0xFF28AC4B),
+                  color: const Color(0xFF28AC4B),
                 ),
               ),
             ),
@@ -273,9 +272,9 @@ class _InvitationlistState extends State<Invitationlist> {
             width: double.infinity,
             padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),
             decoration: BoxDecoration(
-              color: Color(0xFFD54444).withOpacity(0.1),
+              color: const Color(0xFFD54444).withOpacity(0.1),
               borderRadius: BorderRadius.circular(10.r),
-              border: Border.all(color: Color(0xFFD54444)),
+              border: Border.all(color: const Color(0xFFD54444)),
             ),
             child: Center(
               child: Text(
@@ -283,7 +282,7 @@ class _InvitationlistState extends State<Invitationlist> {
                 style: GoogleFonts.poppins(
                   fontWeight: FontWeight.w500,
                   fontSize: 12.sp,
-                  color: Color(0xFFD54444),
+                  color: const Color(0xFFD54444),
                 ),
               ),
             ),

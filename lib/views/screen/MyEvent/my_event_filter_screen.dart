@@ -1,4 +1,3 @@
-import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_icons.dart';
 import 'package:event_sharing/utils/app_strings.dart';
@@ -8,8 +7,6 @@ import 'package:event_sharing/views/base/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/get_navigation.dart';
 
 class MyEventFilterScreen extends StatefulWidget {
   const MyEventFilterScreen({super.key});
@@ -24,7 +21,7 @@ class _MyEventFilterScreenState extends State<MyEventFilterScreen> {
   final List<String> _program = ['Musical Instrument', 'Keyboard', 'Piano', 'Chess', 'Ballet'];
   final List<String> _type = ['Onsite', 'Online', 'Hybrid'];
   final List<String> _category = ['6 Year - 10 Year', '11 Year - 16 Year', '17 Year+'];
-  RangeValues _currentRangeValues = RangeValues(20, 80);
+  RangeValues _currentRangeValues = const RangeValues(20, 80);
   String? _selectedProgram;
   String? _selectedType;
   String? _selectedCategory;

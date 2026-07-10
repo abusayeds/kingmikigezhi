@@ -9,7 +9,7 @@ class ProfileListTile extends StatelessWidget {
   final Widget? suffixIcon;
   final Color? borderColor;
   final VoidCallback? onTap;
-  ProfileListTile({
+  const ProfileListTile({
     super.key,
     required this.title,
     this.onTap,

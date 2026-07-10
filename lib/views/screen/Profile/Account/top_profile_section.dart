@@ -13,7 +13,7 @@ class TopProfileSection extends StatelessWidget {
   final String? image;
   final VoidCallback? ontap;
 
-  TopProfileSection({this.name, this.image, this.ontap});
+  const TopProfileSection({super.key, this.name, this.image, this.ontap});
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +58,7 @@ class TopProfileSection extends StatelessWidget {
                           )
                         : Icon(Icons.person, size: 60.w, color: Colors.grey),
                   ),
-                  SizedBox(width: 8),
+                  const SizedBox(width: 8),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -79,7 +79,7 @@ class TopProfileSection extends StatelessWidget {
                                 },
                                 child: SvgPicture.asset(AppIcons.editIcon,
                                     color: Colors.white)),
-                            SizedBox(width: 8),
+                            const SizedBox(width: 8),
                             InkWell(
                                 onTap: () {
                                   Get.toNamed(AppRoutes.changePasswordScreen);

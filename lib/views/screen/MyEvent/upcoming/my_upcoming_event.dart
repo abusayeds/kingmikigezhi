@@ -1,4 +1,3 @@
-import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:event_sharing/views/base/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,7 +13,7 @@ import '../../../../../controllers/home_controller.dart';
 import '../../../../../models/event_model.dart';
 
 class MyUpcomingEventScreen extends StatefulWidget {
-  MyUpcomingEventScreen({super.key});
+  const MyUpcomingEventScreen({super.key});
 
   @override
   State<MyUpcomingEventScreen> createState() => _MyUpcomingEventScreenState();

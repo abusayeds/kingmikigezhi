@@ -3,7 +3,6 @@ import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_icons.dart';
 import 'package:event_sharing/utils/style.dart';
-import 'package:event_sharing/views/screen/Profile/MyFamily/member/member_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -23,6 +22,9 @@ class _FamilyGroupScreenState extends State<FamilyGroupScreen> {
   void initState() {
     super.initState();
     _familyController = Get.find<FamilyController>();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _familyController.fetchFamilies();
+    });
   }
 
   @override
@@ -88,14 +90,14 @@ class _FamilyGroupScreenState extends State<FamilyGroupScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.family_restroom, size: 64, color: Colors.grey),
+            const Icon(Icons.family_restroom, size: 64, color: Colors.grey),
             SizedBox(height: 16.h),
-            Text(
+            const Text(
               'No families yet',
               style: TextStyle(fontSize: 16, color: Colors.grey),
             ),
             SizedBox(height: 8.h),
-            Text(
+            const Text(
               'Create your first family',
               style: TextStyle(fontSize: 14, color: Colors.grey),
             ),
@@ -147,7 +149,7 @@ class _FamilyGroupScreenState extends State<FamilyGroupScreen> {
                   SizedBox(width: 16.w),
                   Text(
                     'Page ${_familyController.currentPage}/${_familyController.totalPages}',
-                    style: TextStyle(fontSize: 14),
+                    style: const TextStyle(fontSize: 14),
                   ),
                   SizedBox(width: 16.w),
                   if (_familyController.hasNext)
@@ -297,7 +299,7 @@ class _FamilyGroupScreenState extends State<FamilyGroupScreen> {
                         ),
                       ),
                       child:
-                          Text('Cancel', style: TextStyle(color: Colors.black)),
+                          const Text('Cancel', style: TextStyle(color: Colors.black)),
                     ),
                   ),
                   SizedBox(width: 12.w),
@@ -311,7 +313,7 @@ class _FamilyGroupScreenState extends State<FamilyGroupScreen> {
                         ),
                       ),
                       child:
-                          Text('Remove', style: TextStyle(color: Colors.white)),
+                          const Text('Remove', style: TextStyle(color: Colors.white)),
                     ),
                   ),
                 ],
@@ -342,7 +344,7 @@ class _FamilyGroupScreenState extends State<FamilyGroupScreen> {
             color: AppColors.backgroundColor,
           ),
           height: 320,
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Column(
             children: [
               SizedBox(height: 20.h),
@@ -363,7 +365,7 @@ class _FamilyGroupScreenState extends State<FamilyGroupScreen> {
                             arguments: {'familyId': familyId});
                       },
                       style: ElevatedButton.styleFrom(
-                        minimumSize: Size(double.infinity, 58),
+                        minimumSize: const Size(double.infinity, 58),
                         backgroundColor: AppColors.primaryColor,
                         side: BorderSide(width: 1, color: AppColors.greyColor),
                         shape: RoundedRectangleBorder(
@@ -401,7 +403,7 @@ class _FamilyGroupScreenState extends State<FamilyGroupScreen> {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        minimumSize: Size(double.infinity, 58),
+                        minimumSize: const Size(double.infinity, 58),
                         backgroundColor: AppColors.primaryColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(100.r),

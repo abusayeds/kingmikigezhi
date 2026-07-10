@@ -2,13 +2,14 @@ import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/custom_button.dart';
-import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 
 class DonationScreen extends StatefulWidget {
+  const DonationScreen({super.key});
+
   @override
   _DonationScreenState createState() => _DonationScreenState();
 }
@@ -82,7 +83,7 @@ class _DonationScreenState extends State<DonationScreen> {
             ),
             CustomButton(
                 onTap: (){
-              print('Donated: \$${selectedAmount}');
+              print('Donated: \$$selectedAmount');
               Get.toNamed(AppRoutes.makePaymentScreen);
               },
                 color: AppColors.buttonColor,

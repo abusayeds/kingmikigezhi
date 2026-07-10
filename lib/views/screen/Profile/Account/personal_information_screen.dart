@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_navigation/get_navigation.dart';
 
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_icons.dart';
@@ -16,7 +15,7 @@ import '../../../base/custom_text.dart';
 import '../../../base/custom_list_tile.dart';
 
 class PersonalInformationScreen extends StatefulWidget {
-  PersonalInformationScreen({super.key});
+  const PersonalInformationScreen({super.key});
 
   @override
   State<PersonalInformationScreen> createState() =>
@@ -96,7 +95,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TopProfileSection(),
+                const TopProfileSection(),
                 SizedBox(height: 24.h),
                 Padding(
                   padding: EdgeInsets.all(4.r),
@@ -119,7 +118,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                     backgroundColor: AppColors.colorEDF2F4,
                     titleColor: AppColors.color414141),
                 Padding(
-                  padding: EdgeInsets.all(4),
+                  padding: const EdgeInsets.all(4),
                   child: Text('Last Name',
                       style: TextStyle(
                           fontSize: 13.sp, fontWeight: FontWeight.w600)),

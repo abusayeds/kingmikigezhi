@@ -146,7 +146,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
                 ],
               ),
 
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Padding(
                 padding: EdgeInsets.all(4.r),
                 child: Text('History', style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
@@ -154,7 +154,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
               Container(
                 decoration: BoxDecoration(
                   color: AppColors.colorEDF2F4,
-                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                  borderRadius: const BorderRadius.all(Radius.circular(8)),
                   border: Border.all(color: AppColors.primaryColor, width: 1.w),
                 ),
                 child: Padding(
@@ -217,7 +217,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
                                       Get.back();
                                     },
                                     child: SvgPicture.asset(AppIcons.editIcon)),
-                                SizedBox(width: 4),
+                                const SizedBox(width: 4),
                                 InkWell(
                                     onTap: () {
                                       Get.back();
@@ -229,7 +229,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -250,7 +250,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
                                       //  Get.back();
                                     },
                                     child: SvgPicture.asset(AppIcons.editIcon)),
-                                SizedBox(width: 4),
+                                const SizedBox(width: 4),
                                 InkWell(
                                     onTap: () {
                                       //Get.back();
@@ -281,7 +281,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
                             border: Border.all(color: Colors.blueGrey),
                             borderRadius: BorderRadius.circular(4.r),
                           ),
-                          padding: EdgeInsets.all(4),
+                          padding: const EdgeInsets.all(4),
                           child: Icon(
                             Icons.check,
                             color: addEventController.isSharedToCommunity.value ? Colors.white : Colors.transparent,
@@ -345,7 +345,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
                   SizedBox(width: 10.w),
                   Expanded(
                     child: addEventController.isLoading.value 
-                      ? Center(child: CircularProgressIndicator())
+                      ? const Center(child: CircularProgressIndicator())
                       : CustomButton(
                           onTap: addEventController.createEvent,
                           text: "Add & Share",

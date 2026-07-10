@@ -30,7 +30,6 @@ class FamilyController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchFamilies();
   }
 
   Future<void> fetchFamilies({int page = 1}) async {

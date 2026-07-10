@@ -10,6 +10,8 @@ import '../../../../utils/api_constants.dart';
 
 class SuggestionScreen extends StatelessWidget {
   final TextEditingController _describtionCTRL = TextEditingController();
+
+  SuggestionScreen({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(

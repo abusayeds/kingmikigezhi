@@ -12,6 +12,8 @@ import '../../base/custom_text.dart';
 import '../../base/custom_text_field.dart';
 
 class UpcomingEventScreen extends StatefulWidget {
+  const UpcomingEventScreen({super.key});
+
   @override
   State<UpcomingEventScreen> createState() => _UpcomingEventScreenState();
 }

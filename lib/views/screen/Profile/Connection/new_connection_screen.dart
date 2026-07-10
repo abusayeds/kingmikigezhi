@@ -83,7 +83,7 @@ class _NewInvitationScreenState extends State<NewInvitationScreen> {
                           CircleAvatar(
                             radius: 45.r,
                             backgroundColor: Colors.grey.shade300,
-                            child: Icon(Icons.person, size: 40, color: Colors.white),
+                            child: const Icon(Icons.person, size: 40, color: Colors.white),
                           ),
                           SizedBox(width: 12.w),
                           Expanded(
@@ -101,7 +101,7 @@ class _NewInvitationScreenState extends State<NewInvitationScreen> {
                                 Row(
                                   children: [
                                     SvgPicture.asset(AppIcons.dotIconForFamily),
-                                    SizedBox(width: 4),
+                                    const SizedBox(width: 4),
                                     Expanded(
                                       child: Text(
                                         requester['email'] ?? 'N/A',
@@ -117,7 +117,7 @@ class _NewInvitationScreenState extends State<NewInvitationScreen> {
                                 Row(
                                   children: [
                                     SvgPicture.asset(AppIcons.dotIconForFamily),
-                                    SizedBox(width: 4),
+                                    const SizedBox(width: 4),
                                     Text(
                                       "Username: ${requester['username'] ?? 'N/A'}",
                                       style: AppStyles.fontSize10(
@@ -141,7 +141,7 @@ class _NewInvitationScreenState extends State<NewInvitationScreen> {
                                     .rejectConnection(invitation['id']);
                               },
                               text: 'Ignore',
-                              textStyle: TextStyle(
+                              textStyle: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -158,7 +158,7 @@ class _NewInvitationScreenState extends State<NewInvitationScreen> {
                                     .acceptConnection(invitation['id']);
                               },
                               text: 'Accept',
-                              textStyle: TextStyle(
+                              textStyle: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -196,7 +196,7 @@ class _NewInvitationScreenState extends State<NewInvitationScreen> {
                           connectionController.rejectAllConnections();
                         },
                         text: 'Ignore All',
-                        textStyle: TextStyle(
+                        textStyle: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
                         ),
@@ -212,7 +212,7 @@ class _NewInvitationScreenState extends State<NewInvitationScreen> {
                           connectionController.acceptAllConnections();
                         },
                         text: 'Accept All',
-                        textStyle: TextStyle(
+                        textStyle: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
                         ),

@@ -10,6 +10,8 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class MyInvitationPage extends StatefulWidget {
+  const MyInvitationPage({super.key});
+
   @override
   _MyInvitationPageState createState() => _MyInvitationPageState();
 }
@@ -44,7 +46,7 @@ class _MyInvitationPageState extends State<MyInvitationPage> {
     {
       'name': 'Bashar Iskam',
       'location': 'Canada, Elm St',
-      'avatarColor': Color(0xFFd9d9d9),
+      'avatarColor': const Color(0xFFd9d9d9),
       'checked': false
     },
   ];

@@ -11,7 +11,7 @@ class SkillRowWidget extends StatelessWidget {
   final VoidCallback onDeleteTap;
 
   const SkillRowWidget({
-    Key? key,
+    super.key,
     required this.leadingText,
     this.leadingTextColor = Colors.black,
     this.bulletColor = Colors.blue, // Default bullet color
@@ -19,7 +19,7 @@ class SkillRowWidget extends StatelessWidget {
     required this.deleteIconPath,
     required this.onEditTap,
     required this.onDeleteTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

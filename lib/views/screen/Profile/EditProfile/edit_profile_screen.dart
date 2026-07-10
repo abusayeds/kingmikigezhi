@@ -345,7 +345,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   });
                                 },
                                 initialSelection: 'BD',
-                                favorite: ['+880', 'BD'],
+                                favorite: const ['+880', 'BD'],
                                 showCountryOnly: false,
                                 showOnlyCountryWhenClosed: false,
                                 alignLeft: false,
@@ -353,7 +353,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             ),
                             Padding(
                                 padding: EdgeInsets.only(right: 5.w),
-                                child: Icon(Icons.arrow_drop_down_sharp))
+                                child: const Icon(Icons.arrow_drop_down_sharp))
                           ],
                         ),
                       ),
@@ -461,7 +461,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     SizedBox(height: 8.h),
                                     Container(
                                       height: 52.h,
-                                      padding: EdgeInsets.symmetric(
+                                      padding: const EdgeInsets.symmetric(
                                           horizontal: 12, vertical: 8),
                                       decoration: BoxDecoration(
                                         border: Border.all(
@@ -475,7 +475,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                           color: AppColors.primaryColor,
                                         ),
                                         isExpanded: true,
-                                        underline: SizedBox(),
+                                        underline: const SizedBox(),
                                         hint: Text(
                                           '',
                                           style: TextStyle(
@@ -509,7 +509,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     SizedBox(height: 8.h),
                                     Container(
                                       height: 52.h,
-                                      padding: EdgeInsets.symmetric(
+                                      padding: const EdgeInsets.symmetric(
                                           horizontal: 12, vertical: 8),
                                       decoration: BoxDecoration(
                                         border: Border.all(
@@ -523,7 +523,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                           color: AppColors.primaryColor,
                                         ),
                                         isExpanded: true,
-                                        underline: SizedBox(),
+                                        underline: const SizedBox(),
                                         hint: Text(
                                           '',
                                           style: TextStyle(
@@ -588,9 +588,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                         return SkillRowWidget(
                                             leadingText: skill,
                                             editIconPath:
-                                                '${AppIcons.editIcon}',
+                                                AppIcons.editIcon,
                                             deleteIconPath:
-                                                '${AppIcons.trashIcon}',
+                                                AppIcons.trashIcon,
                                             onEditTap: () {},
                                             onDeleteTap: () {
                                               setState(() {
@@ -606,7 +606,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Obx(() => CustomButton(
                         color: AppColors.buttonA47059,
                         borderColor: Colors.white,
@@ -675,7 +675,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           }
                         : null,
                   ),
-                  Text('Male'),
+                  const Text('Male'),
                 ],
               ),
             ),
@@ -693,7 +693,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           }
                         : null,
                   ),
-                  Text('Female'),
+                  const Text('Female'),
                 ],
               ),
             ),
@@ -777,7 +777,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               size: 50.w,
                               color: AppColors.primaryColor,
                             ),
-                            CustomText(text: 'Gallery')
+                            const CustomText(text: 'Gallery')
                           ],
                         ),
                       ),
@@ -793,7 +793,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           children: [
                             Icon(Icons.camera_alt,
                                 size: 50.w, color: AppColors.primaryColor),
-                            CustomText(text: 'Camera')
+                            const CustomText(text: 'Camera')
                           ],
                         ),
                       ),

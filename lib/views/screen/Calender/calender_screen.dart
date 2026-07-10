@@ -79,7 +79,7 @@ class _CalenderScreenState extends State<CalenderScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomMenu(2),
+      bottomNavigationBar: const BottomMenu(2),
       appBar: AppBar(
         title: CustomText(
           text: 'Calender',
@@ -147,7 +147,7 @@ class _CalenderScreenState extends State<CalenderScreen> {
               ),
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-                child: CustomText(
+                child: const CustomText(
                   text: "Search Result",
                   color: Colors.white,
                 ),

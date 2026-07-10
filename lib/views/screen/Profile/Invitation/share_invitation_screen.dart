@@ -9,6 +9,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class ShareInvitationPage extends StatefulWidget {
+  const ShareInvitationPage({super.key});
+
   @override
   _ShareInvitationPageState createState() => _ShareInvitationPageState();
 }

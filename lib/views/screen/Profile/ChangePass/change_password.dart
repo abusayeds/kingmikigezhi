@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import '../../../../helpers/route.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_icons.dart';
 import '../../../../utils/app_strings.dart';
@@ -96,6 +95,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       isPassword: true,
                       hintText: AppStrings.reNewPassword,
                       validator: (value) {
+                        return null;
+                      
                         /* if (value == null) {
                           return "Please re-enter new password";
                         } else if (value !=

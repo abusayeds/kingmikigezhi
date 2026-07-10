@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import '../../base/custom_text.dart';
 
 class CategoriesSearchAppliedScreen extends StatefulWidget {
@@ -237,7 +236,7 @@ class _CategoriesSearchAppliedScreenState
     }
 
     if (error != null && events.isEmpty) {
-      return Center(child: Text(error!, style: TextStyle(color: Colors.red)));
+      return Center(child: Text(error!, style: const TextStyle(color: Colors.red)));
     }
 
     if (events.isEmpty) {
@@ -252,7 +251,7 @@ class _CategoriesSearchAppliedScreenState
         if (index == events.length) {
           return Container(
             padding: EdgeInsets.symmetric(vertical: 16.h),
-            child: Center(child: CircularProgressIndicator()),
+            child: const Center(child: CircularProgressIndicator()),
           );
         }
 

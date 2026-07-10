@@ -10,6 +10,8 @@ import 'package:intl/intl.dart';
 
 
 class HomePageAddBottomSheetWidget extends StatefulWidget {
+  const HomePageAddBottomSheetWidget({super.key});
+
   @override
   State<HomePageAddBottomSheetWidget> createState() => _HomePageAddBottomSheetWidgetState();
   /// HomePage AddBottomSheet
@@ -17,13 +19,13 @@ class HomePageAddBottomSheetWidget extends StatefulWidget {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(20),
         ),
       ),
       builder: (BuildContext context) {
-        return HomePageAddBottomSheetWidget();
+        return const HomePageAddBottomSheetWidget();
       },
     );
   }
@@ -52,13 +54,13 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
       child: SingleChildScrollView(
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(20),
               topRight: Radius.circular(20),
             ),
             color: AppColors.backgroundColor,
           ),
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -133,7 +135,7 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
                     child: CustomTextField(
                       prifixicon: IconButton(
                           onPressed: () => _selectDate(context, _startsDateCTRL),
-                          icon: Icon(Icons.calendar_today_rounded)),
+                          icon: const Icon(Icons.calendar_today_rounded)),
                       controller: _startsDateCTRL,
                       hintText: 'Date',
 
@@ -148,7 +150,7 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
                     child: CustomTextField(
                       prifixicon: IconButton(
                           onPressed: () => _selectTime(context, _startsTimeCTRL),
-                          icon: Icon(Icons.watch_later_rounded)),
+                          icon: const Icon(Icons.watch_later_rounded)),
                       controller: _startsTimeCTRL,
                       hintText: 'Time',
                       readOnly: true,
@@ -171,7 +173,7 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
                     child: CustomTextField(
                       prifixicon: IconButton(
                           onPressed: () => _selectDate(context, _endsDateCTRL),
-                          icon: Icon(Icons.calendar_today_rounded)),
+                          icon: const Icon(Icons.calendar_today_rounded)),
                       controller: _endsDateCTRL,
                       hintText: 'Date',
                       readOnly: true,
@@ -185,7 +187,7 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
                     child: CustomTextField(
                       prifixicon: IconButton(
                           onPressed: () => _selectTime(context, _endsTimeCTRL),
-                          icon: Icon(Icons.watch_later_rounded)),
+                          icon: const Icon(Icons.watch_later_rounded)),
                       controller: _endsTimeCTRL,
                       hintText: 'Time',
                       readOnly: true,

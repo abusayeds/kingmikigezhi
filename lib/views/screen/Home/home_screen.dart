@@ -2,7 +2,6 @@ import 'package:event_sharing/controllers/auth_controller.dart';
 import 'package:event_sharing/controllers/home_controller.dart';
 import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/utils/app_colors.dart';
-import 'package:event_sharing/utils/app_images.dart';
 import 'package:event_sharing/utils/style.dart';
 
 import 'package:event_sharing/views/screen/Home/InnerWidget/calender_widget.dart';
@@ -78,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       // Show dropdown menu
                       showMenu<String>(
                         context: context,
-                        position: RelativeRect.fromLTRB(100, 100, 0, 0),
+                        position: const RelativeRect.fromLTRB(100, 100, 0, 0),
                         // Adjust position as needed
                         items: <String>[
                           'Self',
@@ -154,9 +153,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(left: 10),
+                    padding: const EdgeInsets.only(left: 10),
                     child: IconButton(
-                      icon: Icon(Icons.add, size: 30),
+                      icon: const Icon(Icons.add, size: 30),
                       onPressed: () {
                         HomePageAddBottomSheetWidget.addBottomSheet(context);
                       },
@@ -169,7 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
             // _tableCalendar(),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 24.h),
-              child: CalendarWithDropdown(),
+              child: const CalendarWithDropdown(),
             ),
             SizedBox(height: 16.h),
             //today events
@@ -193,7 +192,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         padding: EdgeInsets.only(right: 8.w),
                         child: EventCardWidget(
                           eventModel: event,
-                          backgroundColor: Color(0xffAAAFAE),
+                          backgroundColor: const Color(0xffAAAFAE),
                         ),
                       );
                     },
@@ -220,7 +219,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: GoogleFonts.poppins(
                       fontWeight: FontWeight.w500,
                       fontSize: 20.sp,
-                      color: Color(0xFF20353F),
+                      color: const Color(0xFF20353F),
                     ),
                   ),
                   InkWell(
@@ -232,7 +231,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: GoogleFonts.poppins(
                         fontWeight: FontWeight.w500,
                         fontSize: 12.sp,
-                        color: Color(0xFF414141),
+                        color: const Color(0xFF414141),
                       ),
                     ),
                   ),
@@ -376,10 +375,10 @@ class _HomeScreenState extends State<HomeScreen> {
         selectedColor = AppColors.colorFFF2CC;
         break;
       default:
-        selectedColor = Color(0xffAAAFAE);
+        selectedColor = const Color(0xffAAAFAE);
     }
 
-    return Container(
+    return SizedBox(
       width: MediaQuery.of(context).size.width,
       height: 180.h,
       child: Obx(() {

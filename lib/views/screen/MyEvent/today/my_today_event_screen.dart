@@ -12,7 +12,7 @@ import '../../../../../controllers/home_controller.dart';
 import '../../../../../models/event_model.dart';
 
 class MyTodayEventScreen extends StatefulWidget {
-   MyTodayEventScreen({super.key});
+   const MyTodayEventScreen({super.key});
 
   @override
   State<MyTodayEventScreen> createState() => _MyTodayEventScreenState();
