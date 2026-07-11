@@ -65,7 +65,7 @@ dependencies:
   easy_stepper:
   syncfusion_flutter_calendar:
   flutter_launcher_icons:
-  flutter_keyboard_visibility:
+  flutter_keyboard_visibility: 6.0.0
   flutter_typeahead:
   google_fonts:
   http:

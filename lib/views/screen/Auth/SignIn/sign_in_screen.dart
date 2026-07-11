@@ -50,7 +50,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   //=================================> Email Text Field <=========================
                   CustomTextField(
                     controller: emailCTRl,
-                    hintText: AppStrings.userName,
+                    hintText: AppStrings.email,
                     prifixicon: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 12.w),
                       child: SvgPicture.asset(

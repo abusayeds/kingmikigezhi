@@ -3,6 +3,13 @@ allprojects {
         google()
         mavenCentral()
     }
+    afterEvaluate { project ->
+        if (project.hasProperty('android')) {
+            project.android {
+                compileSdk = 36
+            }
+        }
+    }
 }
 
 rootProject.buildDir = "../build"

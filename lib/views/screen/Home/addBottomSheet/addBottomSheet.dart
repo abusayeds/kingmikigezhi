@@ -6,7 +6,10 @@ import 'package:event_sharing/views/base/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:get/get.dart';
+import '../../../../controllers/event_controller.dart';
 
 
 class HomePageAddBottomSheetWidget extends StatefulWidget {
@@ -33,6 +36,9 @@ class HomePageAddBottomSheetWidget extends StatefulWidget {
 
 class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWidget> {
   final TextEditingController _typeCTRL = TextEditingController();
+  final TextEditingController _locationCTRL = TextEditingController();
+  final TextEditingController _urlCTRL = TextEditingController();
+  final TextEditingController _noteCTRL = TextEditingController();
   final TextEditingController _startsDateCTRL = TextEditingController();
   final TextEditingController _startsTimeCTRL = TextEditingController();
   final TextEditingController _endsDateCTRL = TextEditingController();
@@ -42,6 +48,9 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
   String? _selectedRepeat;
   final List<String> _member = ['Family', 'Member', 'Owner'];
   final List<String> _repeat = ['Never', 'One', 'Two'];
+
+  final EventController _eventController = Get.find<EventController>();
+  bool _isLoading = false;
   @override
   Widget build(BuildContext context) {
     double sheetHeight = MediaQuery
@@ -81,7 +90,7 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
                   bottom: 8),
               CustomTextField(
                 contenpaddingVertical: 16.w,
-                controller: _typeCTRL,
+                controller: _locationCTRL,
                 hintText: 'Type Location',
               ),
               SizedBox(height: 8.h),
@@ -243,7 +252,7 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
                   fontsize: 16.sp,
                   bottom: 8),
               CustomTextField(
-                controller: _typeCTRL,
+                controller: _urlCTRL,
                 hintText: 'Type URL',
               ),
               SizedBox(height: 8.h),
@@ -253,7 +262,7 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
                   fontsize: 16.sp,
                   bottom: 8),
               CustomTextField(
-                controller: _typeCTRL,
+                controller: _noteCTRL,
                 maxLines: 2,
                 hintText: 'Type Note',
               ),
@@ -265,7 +274,7 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
                   Expanded(
                     child: CustomButton(
                       borderColor: AppColors.buttonColor,
-                      onTap: () {},
+                      onTap: () => Navigator.pop(context),
                       text: "Cancel",
                       color: AppColors.colorEDF2F4,
                       textColor: Colors.black,
@@ -274,7 +283,10 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
                   SizedBox(width: 16.w),
                   Expanded(
                     child: CustomButton(
-                      onTap: () {},
+                      loading: _isLoading,
+                      onTap: () {
+                        if (!_isLoading) _createEvent();
+                      },
                       text: "Add",
                       textColor: Colors.white,
                       color: AppColors.buttonColor,
@@ -289,7 +301,95 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
       ),
     );
   }
+
+  Future<void> _createEvent() async {
+    if (_typeCTRL.text.trim().isEmpty) {
+      Fluttertoast.showToast(
+        msg: "Please enter event title",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+      );
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      String? startDateTimeStr;
+      if (_startsDateCTRL.text.isNotEmpty && _startsTimeCTRL.text.isNotEmpty) {
+        startDateTimeStr = _combineDateAndTime(_startsDateCTRL.text, _startsTimeCTRL.text);
+      }
+
+      String? endDateTimeStr;
+      if (_endsDateCTRL.text.isNotEmpty && _endsTimeCTRL.text.isNotEmpty) {
+        endDateTimeStr = _combineDateAndTime(_endsDateCTRL.text, _endsTimeCTRL.text);
+      }
+
+      final Map<String, dynamic> requestBody = {
+        "eventName": _typeCTRL.text.trim(),
+        "location": _locationCTRL.text.trim(),
+        "organizer": _selectedMember ?? "Self",
+        "eventPortal": _urlCTRL.text.trim(),
+        "note": _noteCTRL.text.trim(),
+        "isPublished": true,
+        "isActive": true,
+        if (startDateTimeStr != null)
+          "schedule": {
+            "eventType": "Onsite",
+            "registrationDate": startDateTimeStr,
+            "deadline": endDateTimeStr ?? startDateTimeStr,
+          },
+        if (_selectedRepeat != null && _selectedRepeat!.toLowerCase() != "never")
+          "repeatConfig": {
+            "frequency": _selectedRepeat,
+            "startDate": startDateTimeStr,
+          },
+      };
+
+      final success = await _eventController.createEvent(requestBody);
+
+      setState(() {
+        _isLoading = false;
+      });
+
+      if (success) {
+        Fluttertoast.showToast(
+          msg: "Event created successfully",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+        );
+        if (mounted) {
+          Navigator.pop(context);
+        }
+      }
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
+      Fluttertoast.showToast(
+        msg: "Failed to create event: $e",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+    }
+  }
+
+  String? _combineDateAndTime(String dateStr, String timeStr) {
+    try {
+      final date = DateFormat('yyyy-MM-dd').parse(dateStr);
+      final time = DateFormat('hh:mm a').parse(timeStr);
+      final combined = DateTime(date.year, date.month, date.day, time.hour, time.minute);
+      return combined.toIso8601String();
+    } catch (e) {
+      return null;
+    }
+  }
 }
+
 Future<void> _selectDate(BuildContext context, TextEditingController controller) async {
   final DateTime? picked = await showDatePicker(
     context: context,
