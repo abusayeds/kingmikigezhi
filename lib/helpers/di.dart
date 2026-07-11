@@ -8,6 +8,7 @@ import '../controllers/auth_controller.dart';
 import '../controllers/family_controller.dart';
 import '../controllers/home_controller.dart';
 import '../controllers/localization_controller.dart';
+import '../controllers/notification_controller.dart';
 import '../controllers/theme_controller.dart';
 import '../controllers/splash_controller.dart';
 import '../models/language_model.dart';
@@ -36,6 +37,8 @@ Future<Map<String, Map<String, String>>> init() async {
       FamilyController(apiService: Get.find(), sharedPreferences: Get.find()),
       permanent: true);
   Get.put(EventController(apiService: Get.find(), sharedPreferences: Get.find()),
+      permanent: true);
+  Get.put(NotificationController(apiService: Get.find(), sharedPreferences: Get.find()),
       permanent: true);
   Get.put(ConnectionController(sharedPreferences: Get.find(), apiService: Get.find()),
       permanent: true);

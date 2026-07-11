@@ -121,6 +121,14 @@ class ApiConstants {
   static const String getTermsSettings = '$apiUrl/settings/terms';
   static const String getPrivacySettings = '$apiUrl/settings/privacy';
 
+
+
+
+  //notification
+  static const String getMyNotification = '$apiUrl/notifications/my';
+  static const String readAllNotification = '$apiUrl/notifications/my/read-all';
+
+
   
   
   

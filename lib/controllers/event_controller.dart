@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/event_model.dart';
@@ -79,6 +80,42 @@ class EventController extends GetxController {
       debugPrint("Error fetching event details: $e");
     } finally {
       isLoadingDetails.value = false;
+    }
+  }
+
+  Future<bool> createEvent(Map<String, dynamic> requestBody) async {
+    try {
+      isLoadingDetails.value = true;
+      update();
+
+      final response = await apiService.post(
+        ApiConstants.createEvent,
+        body: requestBody,
+      );
+
+      isLoadingDetails.value = false;
+      update();
+
+      if (response != null && response['success'] == true) {
+        Fluttertoast.showToast(
+          msg: response['message'] ?? "Event created successfully!",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+        );
+        return true;
+      }
+      return false;
+    } catch (e) {
+      isLoadingDetails.value = false;
+      update();
+      Fluttertoast.showToast(
+        msg: "Failed to create event: $e",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+      return false;
     }
   }
 }
