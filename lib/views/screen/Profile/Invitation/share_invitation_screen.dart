@@ -54,8 +54,8 @@ class _ShareInvitationPageState extends State<ShareInvitationPage> {
         ),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 24.w),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
         child: Column(
           children: [
             CustomTextField(
