@@ -1,4 +1,6 @@
-
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:event_sharing/controllers/auth_controller.dart';
+import 'package:event_sharing/controllers/invitation_controller.dart';
 import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/style.dart';
@@ -13,47 +15,38 @@ class MyInvitationPage extends StatefulWidget {
   const MyInvitationPage({super.key});
 
   @override
-  _MyInvitationPageState createState() => _MyInvitationPageState();
+  State<MyInvitationPage> createState() => _MyInvitationPageState();
 }
 
 class _MyInvitationPageState extends State<MyInvitationPage> {
-  // List of invitees
-  final List<Map<String, dynamic>> invitees = [
-    {
-      'name': 'Bashar Iskam',
-      'location': 'Canada, Elm St',
-      'avatarColor': AppColors.color67AB9F,
-      'checked': false
-    },
-    {
-      'name': 'Iskam',
-      'location': 'Canada, Elm St',
-      'avatarColor': AppColors.colorE5CCFF,
-      'checked': false
-    },
-    {
-      'name': 'Alax Tom',
-      'location': 'Canada, Elm St',
-      'avatarColor':AppColors.colorCCFFE6,
-      'checked': false
-    },
-    {
-      'name': 'Jihon',
-      'location': 'Canada, Elm St',
-      'avatarColor': AppColors.colorFFF2CC,
-      'checked': false
-    },
-    {
-      'name': 'Bashar Iskam',
-      'location': 'Canada, Elm St',
-      'avatarColor': const Color(0xFFd9d9d9),
-      'checked': false
-    },
-  ];
+  final InvitationController _invitationController =
+      Get.find<InvitationController>();
+  final AuthController _authController = Get.find<AuthController>();
 
-  void _toggleCheckbox(int index, bool? value) {
+  // eventId passed via Get.arguments (optional)
+  String get _eventId => Get.arguments?['eventId'] ?? '';
+
+  // Tracks which connection IDs are checked
+  final Set<String> _selectedIds = {};
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _invitationController.fetchMyConnections();
+    });
+  }
+
+  String get _currentUserId =>
+      _authController.userProfile.value?['id'] ?? '';
+
+  void _toggleCheckbox(String userId, bool? value) {
     setState(() {
-      invitees[index]['checked'] = value ?? false;
+      if (value == true) {
+        _selectedIds.add(userId);
+      } else {
+        _selectedIds.remove(userId);
+      }
     });
   }
 
@@ -61,14 +54,12 @@ class _MyInvitationPageState extends State<MyInvitationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading:  Padding(
-          padding:  EdgeInsets.only(left: 24.w),
+        leading: Padding(
+          padding: EdgeInsets.only(left: 24.w),
           child: IconButton(
             icon: Icon(Icons.arrow_back_ios,
                 color: Colors.black, size: 18.w),
-            onPressed: () {
-              Get.back();
-            },
+            onPressed: () => Get.back(),
           ),
         ),
         title: CustomText(
@@ -79,92 +70,144 @@ class _MyInvitationPageState extends State<MyInvitationPage> {
         centerTitle: true,
       ),
       body: Padding(
-        padding:  EdgeInsets.symmetric(horizontal:24.w ),
+        padding: EdgeInsets.symmetric(horizontal: 24.w),
         child: Column(
           children: [
             Expanded(
-              child: ListView.builder(
-                padding: const EdgeInsetsGeometry.all(0),
-                itemCount: invitees.length,
-                itemBuilder: (context, index) {
-                  final invitee = invitees[index];
-                  return Container(
-                    padding: EdgeInsets.symmetric( vertical: 8.h),
-                    child: Row(
-                      children: [
-                        // Leading - CircleAvatar
-                        // CircleAvatar(
-                        //   radius: 64,
-                        //   backgroundColor: invitee['avatarColor'],
-                        // ),
-                        Container(
-                          height: 64.w,
-                          width: 64.w,
-                          decoration: BoxDecoration(
-                            color: invitee['avatarColor'],
-                            borderRadius: BorderRadius.circular(100.r),
+              child: Obx(() {
+                if (_invitationController.isLoadingConnections.value) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (_invitationController.myConnections.isEmpty) {
+                  return const Center(
+                      child: Text('No connections found'));
+                }
+                return ListView.builder(
+                  padding: EdgeInsets.zero,
+                  itemCount: _invitationController.myConnections.length,
+                  itemBuilder: (context, index) {
+                    final connection =
+                        _invitationController.myConnections[index]
+                            as Map<String, dynamic>;
+                    final peer = _invitationController
+                        .getConnectionPeer(connection, _currentUserId);
+                    final userId = peer['id'] as String? ?? '';
+                    final name =
+                        '${peer['firstName'] ?? ''} ${peer['lastName'] ?? ''}'
+                            .trim();
+                    final location =
+                        peer['location'] as String? ?? 'Unknown location';
+                    final profilePicture =
+                        peer['profilePicture'] as String? ?? '';
 
+                    // Avatar background colors cycling
+                    final colors = [
+                      AppColors.color67AB9F,
+                      AppColors.colorE5CCFF,
+                      AppColors.colorCCFFE6,
+                      AppColors.colorFFF2CC,
+                      const Color(0xFFd9d9d9),
+                    ];
+                    final avatarColor = colors[index % colors.length];
+
+                    return Container(
+                      padding: EdgeInsets.symmetric(vertical: 8.h),
+                      child: Row(
+                        children: [
+                          // Avatar
+                          Container(
+                            height: 64.w,
+                            width: 64.w,
+                            decoration: BoxDecoration(
+                              color: avatarColor,
+                              borderRadius:
+                                  BorderRadius.circular(100.r),
+                            ),
+                            child: ClipRRect(
+                              borderRadius:
+                                  BorderRadius.circular(100.r),
+                              child: profilePicture.isNotEmpty
+                                  ? CachedNetworkImage(
+                                      imageUrl: profilePicture,
+                                      fit: BoxFit.cover,
+                                      errorWidget: (_, __, ___) =>
+                                          Icon(Icons.person,
+                                              size: 32.w,
+                                              color: Colors.white),
+                                    )
+                                  : Icon(Icons.person,
+                                      size: 32.w, color: Colors.white),
+                            ),
                           ),
-                        ),
-                        SizedBox(width: 16.w), // Space between avatar and text
-
-                        // Title and Subtitle - Expanded to take available space
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              // Title
-                              Text(
-                                invitee['name'],
-                                style: AppStyles.fontSize14(
-                                  color: AppColors.color414141,
-                                  fontWeight: FontWeight.w500,
-                                ).copyWith(fontSize: 15.sp),
-                              ),
-                              SizedBox(height: 4.h), // Small space between title and subtitle
-
-                              // Subtitle
-                              Text(
-                                invitee['location'],
-                                style: GoogleFonts.poppins(
+                          SizedBox(width: 16.w),
+                          // Name + location
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment:
+                                  CrossAxisAlignment.start,
+                              mainAxisAlignment:
+                                  MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  name.isEmpty ? 'Unknown' : name,
+                                  style: AppStyles.fontSize14(
+                                    color: AppColors.color414141,
+                                    fontWeight: FontWeight.w500,
+                                  ).copyWith(fontSize: 15.sp),
+                                ),
+                                SizedBox(height: 4.h),
+                                Text(
+                                  location,
+                                  style: GoogleFonts.poppins(
                                     fontSize: 9.sp,
                                     fontWeight: FontWeight.w400,
-                                    color: AppColors.color414141
+                                    color: AppColors.color414141,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-
-                        // Trailing - Checkbox
-                        Checkbox(
-                          activeColor: AppColors.primaryColor,
-                          side: BorderSide(
-                            color: AppColors.primaryColor,
-                            width: 1.w,
+                          // Checkbox
+                          Checkbox(
+                            activeColor: AppColors.primaryColor,
+                            side: BorderSide(
+                              color: AppColors.primaryColor,
+                              width: 1.w,
+                            ),
+                            value: _selectedIds.contains(userId),
+                            onChanged: userId.isNotEmpty
+                                ? (v) => _toggleCheckbox(userId, v)
+                                : null,
                           ),
-                          value: invitee['checked'],
-                          onChanged: (bool? value) {
-                            _toggleCheckbox(index, value);
-                          },
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              }),
             ),
-         CustomButton(
-           onTap: (){
-             Get.toNamed(AppRoutes.shareInvitationPage);
-           },
-           text: 'Share',
-           borderColor: AppColors.buttonA47059,
-           color: AppColors.buttonA47059,
-           textColor: AppColors.textColor,
-         ),
-            SizedBox(height: 41.h)
+            // Share button — navigates to share page with selected IDs
+            Obx(() => CustomButton(
+                  onTap: _selectedIds.isEmpty
+                      ? () {}
+                      : () {
+                          Get.toNamed(
+                            AppRoutes.shareInvitationPage,
+                            arguments: {
+                              'eventId': _eventId,
+                              'inviteeIds': _selectedIds.toList(),
+                            },
+                          );
+                        },
+                  text: 'Share',
+                  borderColor: AppColors.buttonA47059,
+                  color: _selectedIds.isEmpty
+                      ? AppColors.greyColor
+                      : AppColors.buttonA47059,
+                  textColor: AppColors.textColor,
+                  loading: _invitationController.isSending.value,
+                )),
+            SizedBox(height: 41.h),
           ],
         ),
       ),

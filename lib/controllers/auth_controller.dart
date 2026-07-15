@@ -649,6 +649,12 @@ class AuthController extends GetxController {
   // User profile data
   var userProfile = Rxn<Map<String, dynamic>>();
 
+  // Edit options from API
+  final RxList<int> editOptionYears = <int>[].obs;
+  final RxList<Map<String, String>> editOptionPrograms = <Map<String, String>>[].obs;
+  final RxList<Map<String, String>> editOptionGenders = <Map<String, String>>[].obs;
+  final RxBool isLoadingEditOptions = false.obs;
+
   // Fetch user profile
   Future<void> fetchUserProfile() async {
     try {
@@ -817,6 +823,47 @@ class AuthController extends GetxController {
         textColor: Colors.white,
       );
       return false;
+    }
+  }
+
+  // Fetch edit options (skills/programs, years, genders)
+  Future<void> fetchEditOptions() async {
+    try {
+      isLoadingEditOptions.value = true;
+      update();
+
+      final response = await apiService.get(ApiConstants.getSkills);
+
+      if (response != null && response['success'] == true) {
+        final data = response['data'];
+
+        // Parse years
+        final List<dynamic> years = data['startYears'] ?? [];
+        editOptionYears.value = years.map((e) => e as int).toList();
+
+        // Parse programs
+        final List<dynamic> programs = data['programs'] ?? [];
+        editOptionPrograms.value = programs
+            .map<Map<String, String>>((e) => {
+                  'id': e['id']?.toString() ?? '',
+                  'name': e['name']?.toString() ?? '',
+                })
+            .toList();
+
+        // Parse genders
+        final List<dynamic> genders = data['genders'] ?? [];
+        editOptionGenders.value = genders
+            .map<Map<String, String>>((e) => {
+                  'value': e['value']?.toString() ?? '',
+                  'label': e['label']?.toString() ?? '',
+                })
+            .toList();
+      }
+    } catch (e) {
+      print('fetchEditOptions error: $e');
+    } finally {
+      isLoadingEditOptions.value = false;
+      update();
     }
   }
 }
