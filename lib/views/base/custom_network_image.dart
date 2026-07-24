@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:event_sharing/utils/app_images.dart';
 
 class CustomNetworkImage extends StatelessWidget {
   final String imageUrl;
@@ -61,11 +62,14 @@ class CustomNetworkImage extends StatelessWidget {
               width: width,
               decoration: BoxDecoration(
                 border: border,
-                color: Colors.grey.withOpacity(0.6),
                 borderRadius: borderRadius,
                 shape: boxShape,
+                image: DecorationImage(
+                  image: AssetImage(AppImages.logo),
+                  fit: BoxFit.cover,
+                ),
               ),
-              child: const Icon(Icons.error),
+              child: child,
             ));
   }
 }

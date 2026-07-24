@@ -105,7 +105,7 @@ class _AppliedSearchEventListScreenState extends State<AppliedSearchEventListScr
                     final event = appliedEvent.event;
                     return GestureDetector(
                         onTap: () {
-                          Get.toNamed(AppRoutes.eventDetailsScreen, arguments: event.id);
+                          Get.toNamed(AppRoutes.eventDetailsScreen, arguments: event);
                         },
                         child: Stack(
                           children: [

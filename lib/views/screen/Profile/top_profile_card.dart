@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../../utils/app_colors.dart';
+import '../../../../utils/app_images.dart';
 import '../../../../utils/app_strings.dart';
 
 class TopProfileCard extends StatefulWidget {
@@ -66,18 +67,30 @@ class _TopProfileCardState extends State<TopProfileCard> {
                   borderRadius: BorderRadius.circular(8.r),
                   color: Colors.grey[200],
                   shape: BoxShape.rectangle),
-              child: profilePicture != null &&
-                      profilePicture.toString().isNotEmpty
-                  ? ClipRRect(
-                      borderRadius: BorderRadius.circular(8.r),
-                      child: Image.network(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8.r),
+                child: profilePicture != null &&
+                        profilePicture.toString().isNotEmpty
+                    ? Image.network(
                         profilePicture,
                         fit: BoxFit.cover,
+                        width: 120.w,
+                        height: 120.h,
                         errorBuilder: (context, error, stackTrace) =>
-                            Icon(Icons.person, size: 60.w, color: Colors.grey),
+                            Image.asset(
+                          AppImages.logo,
+                          fit: BoxFit.cover,
+                          width: 120.w,
+                          height: 120.h,
+                        ),
+                      )
+                    : Image.asset(
+                        AppImages.logo,
+                        fit: BoxFit.cover,
+                        width: 120.w,
+                        height: 120.h,
                       ),
-                    )
-                  : Icon(Icons.person, size: 60.w, color: Colors.grey),
+              ),
             ),
             //=======================> Profile Image <===========================
             CustomText(

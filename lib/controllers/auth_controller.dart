@@ -422,10 +422,12 @@ class AuthController extends GetxController {
 
       if (response != null && response['success'] == true) {
         // Store sessionId for forgot password flow
-        String sessionId = response['data']['sessionId'] ?? '';
+        String sessionId = response['data']?['sessionId']?.toString() ?? '';
         forgotPasswordSessionId.value = sessionId;
-        await sharedPreferences.setString(
-            'forgot_password_session_id', sessionId);
+        if (sessionId.isNotEmpty) {
+          await sharedPreferences.setString(
+              'forgot_password_session_id', sessionId);
+        }
 
         // Store email for forgot password flow
         storedEmail.value = email;
@@ -438,7 +440,7 @@ class AuthController extends GetxController {
           gravity: ToastGravity.BOTTOM,
         );
 
-        return true;
+        return sessionId.isNotEmpty;
       }
 
       return false;

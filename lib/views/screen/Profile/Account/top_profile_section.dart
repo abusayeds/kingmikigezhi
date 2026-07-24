@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import '../../../../utils/app_colors.dart';
+import '../../../../utils/app_images.dart';
 import '../../../base/custom_text.dart';
 
 class TopProfileSection extends StatelessWidget {
@@ -48,15 +49,30 @@ class TopProfileSection extends StatelessWidget {
                         shape: BoxShape.rectangle,
                         border: Border.all(
                             width: 2.w, color: AppColors.primaryColor)),
-                    child: profilePicture != null &&
-                            profilePicture.toString().isNotEmpty
-                        ? Image.network(
-                            profilePicture,
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) =>
-                                Icon(Icons.person, size: 60.w, color: Colors.grey),
-                          )
-                        : Icon(Icons.person, size: 60.w, color: Colors.grey),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(5.r),
+                      child: profilePicture != null &&
+                              profilePicture.toString().isNotEmpty
+                          ? Image.network(
+                              profilePicture,
+                              fit: BoxFit.cover,
+                              width: 120.w,
+                              height: 120.h,
+                              errorBuilder: (context, error, stackTrace) =>
+                                  Image.asset(
+                                AppImages.logo,
+                                fit: BoxFit.cover,
+                                width: 120.w,
+                                height: 120.h,
+                              ),
+                            )
+                          : Image.asset(
+                              AppImages.logo,
+                              fit: BoxFit.cover,
+                              width: 120.w,
+                              height: 120.h,
+                            ),
+                    ),
                   ),
                   const SizedBox(width: 8),
                   Expanded(

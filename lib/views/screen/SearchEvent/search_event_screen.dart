@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import '../../../helpers/route.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_icons.dart';
+import '../../../utils/app_images.dart';
 import '../../base/custom_text.dart';
 import '../../base/custom_text_field.dart';
 
@@ -147,7 +148,7 @@ class _SearchEventScreenState extends State<SearchEventScreen> {
                     final event = _homeController.searchedEvents[index];
                     return GestureDetector(
                       onTap: () {
-                        Get.toNamed(AppRoutes.eventDetailsScreen, arguments: event.id);
+                        Get.toNamed(AppRoutes.eventDetailsScreen, arguments: event);
                       },
                       child: Card(
                         color: const Color(0xffedf2f4),
@@ -165,14 +166,19 @@ class _SearchEventScreenState extends State<SearchEventScreen> {
                                         width: 77.w,
                                         height: 76.h,
                                         fit: BoxFit.cover,
-                                        errorBuilder: (context, error, stackTrace) => 
-                                          Container(width: 77.w, height: 76.h, color: Colors.grey[300], child: const Icon(Icons.image)),
+                                        errorBuilder: (context, error, stackTrace) =>
+                                          Image.asset(
+                                            AppImages.logo,
+                                            width: 77.w,
+                                            height: 76.h,
+                                            fit: BoxFit.cover,
+                                          ),
                                       )
-                                    : Container(
+                                    : Image.asset(
+                                        AppImages.logo,
                                         width: 77.w,
                                         height: 76.h,
-                                        color: AppColors.primaryColor.withOpacity(0.2),
-                                        child: Icon(Icons.event, color: AppColors.primaryColor),
+                                        fit: BoxFit.cover,
                                       ),
                               ),
                               SizedBox(width: 16.h),

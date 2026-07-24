@@ -1,4 +1,5 @@
 import 'package:event_sharing/utils/app_icons.dart';
+import 'package:event_sharing/utils/app_images.dart';
 import 'package:event_sharing/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -56,22 +57,25 @@ class EventCardWidget extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(16.r),
-                  child: eventModel?.coverImage != null
+                  child: eventModel?.coverImage != null &&
+                          eventModel!.coverImage!.isNotEmpty
                       ? Image.network(
                           eventModel!.coverImage!,
-                           width: 125.w,
-                           height: 125.h,
+                          width: 125.w,
+                          height: 125.h,
                           fit: BoxFit.fill,
                           errorBuilder: (context, error, stackTrace) =>
-                              Container(
-                                  width: 125.w,
-                                  height: 125.h,
-                                color: Colors.grey[300],
-                                child: Icon(Icons.image, size: 30.w)
-                              ),
+                              Image.asset(
+                            AppImages.logo,
+                            width: 125.w,
+                            height: 125.h,
+                            fit: BoxFit.fill,
+                          ),
                         )
                       : Image.asset(
-                          imagePath ?? '',
+                          imagePath?.isNotEmpty == true
+                              ? imagePath!
+                              : AppImages.logo,
                           width: 125.w,
                           height: 125.h,
                           fit: BoxFit.fill,

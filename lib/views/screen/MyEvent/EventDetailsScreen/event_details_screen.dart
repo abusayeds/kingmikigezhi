@@ -4,6 +4,7 @@ import 'package:event_sharing/services/api_service.dart';
 import 'package:event_sharing/utils/api_constants.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_icons.dart';
+import 'package:event_sharing/utils/app_images.dart';
 import 'package:event_sharing/utils/app_strings.dart';
 import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/custom_button.dart';
@@ -26,6 +27,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
   EventModel? event;
   bool isLoading = true;
   String? error;
+  String? _createdAtDisplay;
 
   final List<String> _agesList = [
     'Age up to 10 years old',
@@ -39,14 +41,38 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
     _fetchEventDetails();
   }
 
+  String? _formatCreatedAtOnly(dynamic value) {
+    if (value == null) return null;
+    if (value is DateTime) {
+      return DateFormat('yyyy-MM-dd').format(value.toUtc());
+    }
+    final raw = value.toString().trim();
+    if (raw.isEmpty) return null;
+    final parsed = DateTime.tryParse(raw);
+    if (parsed != null) {
+      return DateFormat('yyyy-MM-dd').format(parsed.toUtc());
+    }
+    // Fallback for ISO strings like 2026-06-22T09:28:46.091Z
+    if (raw.length >= 10 && RegExp(r'^\d{4}-\d{2}-\d{2}').hasMatch(raw)) {
+      return raw.substring(0, 10);
+    }
+    return null;
+  }
+
   Future<void> _fetchEventDetails() async {
     final dynamic args = Get.arguments;
     String? eventId;
+    EventModel? argEvent;
 
     if (args is EventModel) {
       eventId = args.id;
+      argEvent = args;
+      _createdAtDisplay = _formatCreatedAtOnly(args.createdAt);
     } else if (args is String) {
       eventId = args;
+    } else if (args is Map) {
+      eventId = args['id']?.toString() ?? args['eventId']?.toString();
+      _createdAtDisplay = _formatCreatedAtOnly(args['createdAt'] ?? args['created_at']);
     }
 
     if (eventId == null) {
@@ -64,8 +90,21 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
       );
 
       if (response['success'] == true) {
+        final rawData = response['data'];
+        final Map<String, dynamic> data = rawData is Map<String, dynamic>
+            ? rawData
+            : Map<String, dynamic>.from(rawData as Map);
+
+        final parsedEvent = EventModel.fromJson(data);
+        final createdAtFromApi = _formatCreatedAtOnly(
+          parsedEvent.createdAt ?? data['createdAt'] ?? data['created_at'],
+        );
+
         setState(() {
-          event = EventModel.fromJson(response['data']);
+          event = parsedEvent;
+          _createdAtDisplay = createdAtFromApi ??
+              _formatCreatedAtOnly(argEvent?.createdAt) ??
+              _createdAtDisplay;
           isLoading = false;
         });
       } else {
@@ -140,19 +179,29 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
               //=======================> Event Image Section <============================
               Stack(
                 children: [
-                  Container(
-                    height: 180.h,
-                    width: 345.w,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16.r),
-                      color: Colors.transparent,
-                      image: DecorationImage(
-                        image: event!.coverImage != null && event!.coverImage!.isNotEmpty
-                            ? NetworkImage(event!.coverImage!)
-                            : const AssetImage('assets/images/concert.jpg') as ImageProvider,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(16.r),
+                    child: event!.coverImage != null &&
+                            event!.coverImage!.isNotEmpty
+                        ? Image.network(
+                            event!.coverImage!,
+                            height: 180.h,
+                            width: 345.w,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) =>
+                                Image.asset(
+                              AppImages.logo,
+                              height: 180.h,
+                              width: 345.w,
+                              fit: BoxFit.cover,
+                            ),
+                          )
+                        : Image.asset(
+                            AppImages.logo,
+                            height: 180.h,
+                            width: 345.w,
+                            fit: BoxFit.cover,
+                          ),
                   ),
                 ],
               ),
@@ -481,14 +530,16 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                             SizedBox(width: 8.w),
                             CircleAvatar(
                               radius: 30.r,
-                              backgroundImage: creator?.profilePicture != null
+                              backgroundImage: AssetImage(AppImages.logo),
+                              foregroundImage: (creator?.profilePicture?.isNotEmpty ?? false)
                                   ? NetworkImage(creator!.profilePicture!)
-                                  : const NetworkImage('https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg'),
+                                  : null,
+                              onForegroundImageError: (_, __) {},
                             ),
                           ],
                         ),
                         Text(
-                          'Created at\n${_formatDate(event!.createdAt)}',
+                          'Created at\n${_createdAtDisplay ?? 'N/A'}',
                           textAlign: TextAlign.right,
                           style: GoogleFonts.poppins(fontSize: 12.sp, color: AppColors.color414141),
                         ),
@@ -506,7 +557,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                               offset: Offset(-(event!.eventApplieds!.indexOf(applied) * 15.0), 0),
                               child: CircleAvatar(
                                 radius: 25.r,
-                                backgroundImage: const NetworkImage('https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg'),
+                                backgroundImage: AssetImage(AppImages.logo),
                               ),
                             );
                           }).toList() ??

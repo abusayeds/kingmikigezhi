@@ -66,8 +66,8 @@ class EventModel {
         isActive: json["isActive"],
         isVerified: json["isVerified"],
         isDeleted: json["isDeleted"],
-        createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-        updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+        createdAt: _parseDateTime(json["createdAt"] ?? json["created_at"]),
+        updatedAt: _parseDateTime(json["updatedAt"] ?? json["updated_at"]),
         sessionId: json["sessionId"],
         results: json["results"] == null ? null : List<dynamic>.from(json["results"].map((x) => x)),
         applicationCount: json["_count"] == null ? null : json["_count"]["applications"],
@@ -77,6 +77,18 @@ class EventModel {
         schedule: json["schedule"] == null ? null : Schedule.fromJson(json["schedule"]),
         eventApplieds: json["eventApplieds"] == null ? null : List<EventApplied>.from(json["eventApplieds"].map((x) => EventApplied.fromJson(x))),
       );
+
+  static DateTime? _parseDateTime(dynamic value) {
+    if (value == null) return null;
+    if (value is DateTime) return value;
+    if (value is int) {
+      return DateTime.fromMillisecondsSinceEpoch(value);
+    }
+    if (value is String && value.isNotEmpty) {
+      return DateTime.tryParse(value);
+    }
+    return DateTime.tryParse(value.toString());
+  }
 }
 
 class EventApplied {

@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import '../../../../../helpers/route.dart';
 import '../../../../../utils/app_colors.dart';
 import '../../../../../utils/app_icons.dart';
+import '../../../../../utils/app_images.dart';
 import '../../../../utils/style.dart';
 import '../../../../../controllers/home_controller.dart';
 import '../../../../../models/event_model.dart';
@@ -79,7 +80,7 @@ class _MyHistoryEventScreenState extends State<MyHistoryEventScreen> {
 
                     return GestureDetector(
                         onTap: () {
-                          Get.toNamed(AppRoutes.eventDetailsScreen, arguments: event.id);
+                          Get.toNamed(AppRoutes.eventDetailsScreen, arguments: event);
                         },
                         child: Stack(
                           children: [
@@ -98,17 +99,23 @@ class _MyHistoryEventScreenState extends State<MyHistoryEventScreen> {
                                     //=====================> Event Image Section <=========================
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(10.r),
-                                      child: event.coverImage != null
+                                      child: event.coverImage != null &&
+                                              event.coverImage!.isNotEmpty
                                           ? Image.network(
                                               event.coverImage!,
                                               height: 75.0.h,
                                               width: 75.0.w,
                                               fit: BoxFit.cover,
                                               errorBuilder: (context, error, stackTrace) =>
-                                                  Container(height: 75.h, width: 75.w, color: Colors.grey, child: const Icon(Icons.image)),
+                                                  Image.asset(
+                                                AppImages.logo,
+                                                height: 75.0.h,
+                                                width: 75.0.w,
+                                                fit: BoxFit.cover,
+                                              ),
                                             )
                                           : Image.asset(
-                                              "assets/images/music.png",
+                                              AppImages.logo,
                                               height: 75.0.h,
                                               width: 75.0.w,
                                               fit: BoxFit.cover,

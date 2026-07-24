@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import '../../../models/event_model.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_icons.dart';
+import '../../../utils/app_images.dart';
 
 class EventCard extends StatelessWidget {
   final EventModel? eventModel;
@@ -44,17 +45,23 @@ class EventCard extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(24.r),
-                  child: eventModel?.coverImage != null
+                  child: eventModel?.coverImage != null &&
+                          eventModel!.coverImage!.isNotEmpty
                       ? Image.network(
                           eventModel!.coverImage!,
                           height: 154.h,
                           width: double.infinity,
                           fit: BoxFit.fill,
                           errorBuilder: (context, error, stackTrace) =>
-                              Container(height: 144.h, color: Colors.grey, child: const Icon(Icons.image)),
+                              Image.asset(
+                            AppImages.logo,
+                            height: 154.h,
+                            width: double.infinity,
+                            fit: BoxFit.fill,
+                          ),
                         )
                       : Image.asset(
-                          'assets/images/shoot.png',
+                          AppImages.logo,
                           height: 154.h,
                           width: double.infinity,
                           fit: BoxFit.fill,

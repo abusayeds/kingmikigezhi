@@ -3,6 +3,7 @@ import 'package:event_sharing/models/event_model.dart';
 import 'package:event_sharing/services/api_service.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_icons.dart';
+import 'package:event_sharing/utils/app_images.dart';
 import 'package:event_sharing/utils/api_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -196,22 +197,28 @@ class _CategoriesSearchAppliedScreenState
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               //=======================> Event Image Section <============================
-              Container(
-                height: 180.h,
-                width: 345.w,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16.r),
-                  color: Colors.transparent,
-                  image: categoryImage != null && categoryImage.isNotEmpty
-                      ? DecorationImage(
-                          image: NetworkImage(categoryImage),
-                          fit: BoxFit.cover,
-                        )
-                      : const DecorationImage(
-                          image: AssetImage('assets/images/concert.jpg'),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(16.r),
+                child: categoryImage != null && categoryImage.isNotEmpty
+                    ? Image.network(
+                        categoryImage,
+                        height: 180.h,
+                        width: 345.w,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) =>
+                            Image.asset(
+                          AppImages.logo,
+                          height: 180.h,
+                          width: 345.w,
                           fit: BoxFit.cover,
                         ),
-                ),
+                      )
+                    : Image.asset(
+                        AppImages.logo,
+                        height: 180.h,
+                        width: 345.w,
+                        fit: BoxFit.cover,
+                      ),
               ),
               SizedBox(height: 16.h),
               CustomText(
@@ -286,10 +293,20 @@ class _CategoriesSearchAppliedScreenState
                                 width: 75.w,
                                 fit: BoxFit.cover,
                                 errorBuilder: (context, error, stackTrace) {
-                                  return _buildEventPlaceholder(event.eventName);
+                                  return Image.asset(
+                                    AppImages.logo,
+                                    height: 75.h,
+                                    width: 75.w,
+                                    fit: BoxFit.cover,
+                                  );
                                 },
                               )
-                            : _buildEventPlaceholder(event.eventName),
+                            : Image.asset(
+                                AppImages.logo,
+                                height: 75.h,
+                                width: 75.w,
+                                fit: BoxFit.cover,
+                              ),
                       ),
                       SizedBox(width: 12.w),
                       //===================== >> Event Details Section << =========================

@@ -98,7 +98,7 @@ class _UpcomingEventScreenState extends State<UpcomingEventScreen> {
                       final event = _eventController.upcomingEvents[index];
                       return GestureDetector(
                         onTap: () {
-                          Get.toNamed(AppRoutes.eventDetailsScreen, arguments: event.id);
+                          Get.toNamed(AppRoutes.eventDetailsScreen, arguments: event);
                         },
                         child: EventCard(eventModel: event),
                       );
