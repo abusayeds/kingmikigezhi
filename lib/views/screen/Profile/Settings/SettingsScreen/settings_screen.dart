@@ -1,34 +1,37 @@
-
+import 'package:event_sharing/controllers/settings_controller.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_icons.dart';
 import 'package:event_sharing/utils/style.dart';
+import 'package:event_sharing/views/base/custom_button.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
-
 class SettingsScreen extends StatefulWidget {
-   const SettingsScreen({super.key});
+  const SettingsScreen({super.key});
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  final List<String> _language = ['Bangla', 'English', 'English (US)'];
-  final List<String> _currency = ['USD', 'EURO', 'TAKA'];
-  final List<String> _notification = ['ON', 'OFF'];
-  final List<String> _timeZone = ['Dhaka(+6)', 'Canada(-6)'];
+  final SettingsController _controller = Get.find<SettingsController>();
 
+  // Language is always English (US) — backend only accepts en-US
+  final String _language = 'English (US)';
 
-
-  String? _selectedlanguage;
-  String? _selectedCurrency;
-  String? _selectedNotification;
-  String? _selectedTimeZone;
-
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await Future.wait([
+        _controller.fetchSettingsOptions(),
+        _controller.fetchSettings(),
+      ]);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,12 +40,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
       extendBody: true,
       appBar: AppBar(
         scrolledUnderElevation: 0,
-        leading:  IconButton(
-          icon: Icon(Icons.arrow_back_ios,
-              color: Colors.black, size: 18.w),
-          onPressed: () {
-            Get.back();
-          },
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: Colors.black, size: 18.w),
+          onPressed: () => Get.back(),
         ),
         title: CustomText(
           text: 'Settings',
@@ -51,478 +51,293 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w,),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              //=================================> Language Section <=======================
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 6.h),
-                child: Text('Display language',style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
-              ),
-              SizedBox(
-                height: AppStyles.standardHeight,
-                child: InputDecorator(
-                  decoration: InputDecoration(
-                    fillColor: AppColors.fillColor,
-                    filled: true,
-                    // labelText: 'Select',
-                    border: OutlineInputBorder(
-                      borderSide:
-                      BorderSide(color: AppColors.primaryColor, width: 1.w),
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide:
-                      BorderSide(color: AppColors.primaryColor, width: 1.w),
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide:
-                      BorderSide(color: AppColors.primaryColor, width: 1.w),
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                    contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
-                  ),
-                  child: DropdownButtonHideUnderline(
+      body: Obx(() {
+        if (_controller.isLoadingSettings.value ||
+            _controller.isLoadingOptions.value) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        return SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 8.h),
 
-                    child: DropdownButton<String>(
-                      padding: EdgeInsets.symmetric(vertical: 5.h),
-                      //focusColor:  AppColors.primaryColor,
-                      iconDisabledColor: AppColors.primaryColor,
-                      iconEnabledColor: AppColors.primaryColor,
-                      icon: SvgPicture.asset(AppIcons.downArrowIcon,color: AppColors.primaryColor),
-                      isExpanded: true,
-                      value: _selectedlanguage,
-                      hint: CustomText(text: 'Select language',fontsize: 14.sp,color: AppColors.color666666),
-                      items: _language.map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _selectedlanguage = newValue;
-                        });
-                      },
-                    ),
-                  ),
-                ),
-              ),
-              //=================================> Date time format Section <=======================
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 6.h),
-                child: Text('Date time format',style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
-              ),
-              SizedBox(
-                height: AppStyles.standardHeight,
-                child: InputDecorator(
-                  decoration: InputDecoration(
-                    fillColor: AppColors.fillColor,
-                    filled: true,
-                    // labelText: 'Select',
-                    border: OutlineInputBorder(
-                      borderSide:
-                      BorderSide(color: AppColors.primaryColor, width: 1.w),
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide:
-                      BorderSide(color: AppColors.primaryColor, width: 1.w),
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide:
-                      BorderSide(color: AppColors.primaryColor, width: 1.w),
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                    contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
-                  ),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      padding: EdgeInsets.symmetric(vertical: 5.h),
-                      //focusColor:  AppColors.primaryColor,
-                      iconDisabledColor: AppColors.primaryColor,
-                      iconEnabledColor: AppColors.primaryColor,
-                      icon: SvgPicture.asset(AppIcons.downArrowIcon,color: AppColors.primaryColor),
-                      isExpanded: true,
-                      value: _selectedlanguage,
-                      hint: CustomText(text: 'Select Date Time', fontsize: 14.sp,color: AppColors.color666666),
-                      items: _language.map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _selectedlanguage = newValue;
-                        });
-                      },
-                    ),
-                  ),
-                ),
-              ),
-              //=================================> Time zone Section <=======================
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 6.h),
-                child: Text('Time zone',style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
-              ),
-              SizedBox(
-                height: AppStyles.standardHeight,
-                child: InputDecorator(
-                  decoration: InputDecoration(
-                    fillColor: AppColors.fillColor,
-                    filled: true,
-                    // labelText: 'Select',
-                    border: OutlineInputBorder(
-                      borderSide:
-                      BorderSide(color: AppColors.primaryColor, width: 1.w),
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide:
-                      BorderSide(color: AppColors.primaryColor, width: 1.w),
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide:
-                      BorderSide(color: AppColors.primaryColor, width: 1.w),
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                    contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
-                  ),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      padding: EdgeInsets.symmetric(vertical: 5.h),
-                      //focusColor:  AppColors.primaryColor,
-                      iconDisabledColor: AppColors.primaryColor,
-                      iconEnabledColor: AppColors.primaryColor,
-                      icon: SvgPicture.asset(AppIcons.downArrowIcon,color: AppColors.primaryColor),
-                      isExpanded: true,
-                      value: _selectedTimeZone,
-                      hint: CustomText(text: 'Select Time Zone', fontsize: 14.sp,color: AppColors.color666666),
-                      items: _timeZone.map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _selectedTimeZone = newValue;
-                        });
-                      },
-                    ),
-                  ),
-                ),
-              ),
-              //=================================> Currency Section <=======================
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 6.h),
-                child: Text('Currency',style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
-              ),
-              SizedBox(
-                height: AppStyles.standardHeight,
-                child: InputDecorator(
-                  decoration: InputDecoration(
-                    fillColor: AppColors.fillColor,
-                    filled: true,
-                    // labelText: 'Select',
-                    border: OutlineInputBorder(
-                      borderSide:
-                      BorderSide(color: AppColors.primaryColor, width: 1.w),
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide:
-                      BorderSide(color: AppColors.primaryColor, width: 1.w),
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide:
-                      BorderSide(color: AppColors.primaryColor, width: 1.w),
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                    contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
-                  ),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      padding: EdgeInsets.symmetric(vertical: 5.h),
-                      //focusColor:  AppColors.primaryColor,
-                      iconDisabledColor: AppColors.primaryColor,
-                      iconEnabledColor: AppColors.primaryColor,
-                      icon: SvgPicture.asset(AppIcons.downArrowIcon,color: AppColors.primaryColor),
-                      isExpanded: true,
-                      value: _selectedCurrency,
-                      hint: CustomText(text: 'Select Currency', fontsize: 14.sp, color: AppColors.color666666 ,
-                      ),
-                      items: _currency.map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _selectedCurrency = newValue;
-                        });
-                      },
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 14.h),
-              Divider(thickness: .5,color: AppColors.color808080),
-              //=================================> Notifications Section <=======================
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 6.h),
-                child: Text('Notifications',style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
-              ),
-              SizedBox(
-               height: AppStyles.standardHeight,
-                child: InputDecorator(
-                  decoration: InputDecoration(
-                    fillColor: AppColors.fillColor,
-                    filled: true,
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: AppColors.primaryColor, width: 1.w),
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                    contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
-                  ),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      padding: EdgeInsets.symmetric(vertical: 5.h),
-                      icon: SvgPicture.asset(AppIcons.downArrowIcon,color: AppColors.primaryColor),
-                      isExpanded: true,
-                      value: _selectedNotification,
-                      hint: CustomText(
-                        text: 'Select Notifications',
-                        color: AppColors.color666666 ,
-                        fontsize: 14.sp,
-                      ),
-                      items: _notification.map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _selectedNotification = newValue;
-                        });
-                      },
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 14.h),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Event Share Section
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 8.h),
-                    child: Text('Event Share',style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Email',
-                              style: AppStyles.fontSize14()
-                            ),
-                            SizedBox(height: 8.h),
-                            Container(
-                              height: 52.h,
-                              padding: EdgeInsets.symmetric(horizontal: 12.w, ),
-                              decoration: BoxDecoration(
-                                border: Border.all(color:AppColors.borderColor),
-                                borderRadius: BorderRadius.circular(8.r),
-                                color: AppColors.fillColor,
-                              ),
-                              child: DropdownButton<String>(
-                                padding: EdgeInsets.symmetric(vertical: 5.h),
-                                icon: SvgPicture.asset(
-                                  AppIcons.downArrowIcon,
-                                  color: AppColors.primaryColor,
-                                ),
-                                isExpanded: true,
-                                underline: const SizedBox(),
-                                hint: Text('', style: TextStyle(color: AppColors.color414141, fontSize: 14.sp),),
-                                items: <String>['Option 1', 'Option 2', 'Option 3']
-                                    .map((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
-                                onChanged: (String? newValue) {},
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(width: 16.w),
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'SMS',
-                                style: AppStyles.fontSize14()
-                            ),
-                            SizedBox(height: 8.h),
-                            Container(
-                              height: 52.h,
-                              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 5.h),
-                              decoration: BoxDecoration(
-                                border: Border.all(color: AppColors.borderColor),
-                                borderRadius: BorderRadius.circular(8),
-                                color: AppColors.fillColor,
-                              ),
-                              child: DropdownButton<String>(
-                                padding: EdgeInsets.symmetric(vertical: 5.h),
-                                icon: SvgPicture.asset(
-                                  AppIcons.downArrowIcon,
-                                  color: AppColors.primaryColor,
-                                ),
-                                isExpanded: true,
-                                underline: const SizedBox(),
-                                hint: Text('', style: TextStyle(color: AppColors.color414141, fontSize: 14.sp),),
-                                items: <String>['Option 1', 'Option 2', 'Option 3']
-                                    .map((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
-                                onChanged: (String? newValue) {},
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 8.h),
-                  // Applied Event Update Section
+                //============ Display Language (read-only, always English US) ============
+                _sectionLabel('Display language'),
+                _staticField(_language),
 
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 8.w),
-                    child: Text('Applied Event Update',style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
-                  ),
-                  SizedBox(height: 8.h),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Email',
-                                style: AppStyles.fontSize14()
-                            ),
-                            SizedBox(height: 8.h),
-                            Container(
-                              height: 52.h,
-                              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
-                              decoration: BoxDecoration(
-                                border: Border.all(color:AppColors.borderColor),
-                                borderRadius: BorderRadius.circular(8),
-                                color: AppColors.fillColor,
-                              ),
-                              child: DropdownButton<String>(
-                                padding: EdgeInsets.symmetric(vertical: 5.h),
-                                icon: SvgPicture.asset(
-                                  AppIcons.downArrowIcon,
-                                  color: AppColors.primaryColor,
-                                ),
-                                isExpanded: true,
-                                underline: const SizedBox(),
-                                hint: Text('', style: TextStyle(color: AppColors.color414141, fontSize: 14.sp),),
-                                items: <String>['Option 1', 'Option 2', 'Option 3']
-                                    .map((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
-                                onChanged: (String? newValue) {},
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'SMS',
-                                style: AppStyles.fontSize14()
-                            ),
-                            SizedBox(height: 8.h),
-                            Container(
-                              height: 52.h,
-                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                              decoration: BoxDecoration(
-                                border: Border.all(color: AppColors.borderColor),
-                                borderRadius: BorderRadius.circular(8),
-                                color: AppColors.fillColor,
-                              ),
-                              child: DropdownButton<String>(
-                                padding: EdgeInsets.symmetric(vertical: 5.h),
+                //============ Date Time Format ============
+                _sectionLabel('Date time format'),
+                _dropdown(
+                  hint: 'Select Date Time',
+                  value: _controller.dateTimeFormat.value.isEmpty
+                      ? null
+                      : _controller.dateTimeFormat.value,
+                  options: _controller.dateTimeFormatOptions,
+                  onChanged: (v) => _controller.dateTimeFormat.value = v ?? '',
+                ),
 
-                                icon: SvgPicture.asset(
-                                  AppIcons.downArrowIcon,
-                                  color: AppColors.primaryColor,
-                                ),
-                                isExpanded: true,
-                                underline: const SizedBox(),
-                                hint: Text('', style: TextStyle(color: AppColors.color414141, fontSize: 14.sp),),
-                                items: <String>['Option 1', 'Option 2', 'Option 3']
-                                    .map((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
-                                onChanged: (String? newValue) {},
-                              ),
-                            ),
-                          ],
-                        ),
+                //============ Time Zone ============
+                _sectionLabel('Time zone'),
+                _dropdown(
+                  hint: 'Select Time Zone',
+                  value: _controller.timeZone.value.isEmpty
+                      ? null
+                      : _controller.timeZone.value,
+                  options: _controller.timeZoneOptions,
+                  onChanged: (v) => _controller.timeZone.value = v ?? '',
+                ),
+
+                //============ Currency ============
+                _sectionLabel('Currency'),
+                _dropdown(
+                  hint: 'Select Currency',
+                  value: _controller.currency.value.isEmpty
+                      ? null
+                      : _controller.currency.value,
+                  options: _controller.currencyOptions,
+                  onChanged: (v) => _controller.currency.value = v ?? '',
+                ),
+
+                SizedBox(height: 14.h),
+                Divider(thickness: .5, color: AppColors.color808080),
+
+                //============ Notifications ============
+                _sectionLabel('Notifications'),
+                _dropdown(
+                  hint: 'Select Notifications',
+                  value: _controller.notifications.value.isEmpty
+                      ? null
+                      : _controller.notifications.value,
+                  options: _controller.notificationOptions,
+                  onChanged: (v) => _controller.notifications.value = v ?? '',
+                ),
+
+                SizedBox(height: 14.h),
+
+                //============ Event Share ============
+                _sectionLabel('Event Share'),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Email', style: AppStyles.fontSize14()),
+                          SizedBox(height: 8.h),
+                          _compactDropdown(
+                            hint: 'Select',
+                            value: _controller.eventShareEmail.value.isEmpty
+                                ? null
+                                : _controller.eventShareEmail.value,
+                            options: _controller.eventShareEmailOptions,
+                            onChanged: (v) =>
+                                _controller.eventShareEmail.value = v ?? '',
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  SizedBox(height: 8.h),
-                ],
-              ),
-              SizedBox(height: 16.h),
-            ],
+                    ),
+                    SizedBox(width: 16.w),
+                    // SMS not supported by backend — show disabled
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('SMS', style: AppStyles.fontSize14()),
+                          SizedBox(height: 8.h),
+                          _staticField('Not available', small: true),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 8.h),
+
+                //============ Applied Event Update ============
+                _sectionLabel('Applied Event Update'),
+                SizedBox(height: 8.h),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Email', style: AppStyles.fontSize14()),
+                          SizedBox(height: 8.h),
+                          _compactDropdown(
+                            hint: 'Select',
+                            value: _controller
+                                    .appliedEventUpdateEmail.value.isEmpty
+                                ? null
+                                : _controller.appliedEventUpdateEmail.value,
+                            options:
+                                _controller.appliedEventUpdateEmailOptions,
+                            onChanged: (v) => _controller
+                                .appliedEventUpdateEmail.value = v ?? '',
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(width: 16.w),
+                    // SMS not supported by backend
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('SMS', style: AppStyles.fontSize14()),
+                          SizedBox(height: 8.h),
+                          _staticField('Not available', small: true),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 24.h),
+
+                //============ Save Button ============
+                Obx(() => CustomButton(
+                      onTap: () => _controller.saveSettings(),
+                      text: 'Save Settings',
+                      color: AppColors.buttonColor,
+                      textColor: Colors.white,
+                      loading: _controller.isSaving.value,
+                    )),
+                SizedBox(height: 24.h),
+              ],
+            ),
           ),
-        ),
+        );
+      }),
+    );
+  }
+
+  // ── Helpers ──────────────────────────────────────────────
+
+  Widget _sectionLabel(String text) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 6.h),
+      child: Text(
+        text,
+        style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600),
+      ),
+    );
+  }
+
+  /// Full-height dropdown (for top sections)
+  Widget _dropdown({
+    required String hint,
+    required String? value,
+    required RxList<String> options,
+    required ValueChanged<String?> onChanged,
+  }) {
+    return Obx(() => SizedBox(
+          height: AppStyles.standardHeight,
+          child: InputDecorator(
+            decoration: InputDecoration(
+              fillColor: AppColors.fillColor,
+              filled: true,
+              border: OutlineInputBorder(
+                borderSide:
+                    BorderSide(color: AppColors.primaryColor, width: 1.w),
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide:
+                    BorderSide(color: AppColors.primaryColor, width: 1.w),
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide:
+                    BorderSide(color: AppColors.primaryColor, width: 1.w),
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+              contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
+            ),
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton<String>(
+                padding: EdgeInsets.symmetric(vertical: 5.h),
+                iconDisabledColor: AppColors.primaryColor,
+                iconEnabledColor: AppColors.primaryColor,
+                icon: SvgPicture.asset(
+                  AppIcons.downArrowIcon,
+                  colorFilter: ColorFilter.mode(
+                      AppColors.primaryColor, BlendMode.srcIn),
+                ),
+                isExpanded: true,
+                value: options.contains(value) ? value : null,
+                hint: CustomText(
+                    text: hint,
+                    fontsize: 14.sp,
+                    color: AppColors.color666666),
+                items: options
+                    .map((o) =>
+                        DropdownMenuItem<String>(value: o, child: Text(o)))
+                    .toList(),
+                onChanged: options.isNotEmpty ? onChanged : null,
+              ),
+            ),
+          ),
+        ));
+  }
+
+  /// Compact dropdown (for side-by-side sections)
+  Widget _compactDropdown({
+    required String hint,
+    required String? value,
+    required RxList<String> options,
+    required ValueChanged<String?> onChanged,
+  }) {
+    return Obx(() => Container(
+          height: 52.h,
+          padding: EdgeInsets.symmetric(horizontal: 12.w),
+          decoration: BoxDecoration(
+            border: Border.all(color: AppColors.borderColor),
+            borderRadius: BorderRadius.circular(8.r),
+            color: AppColors.fillColor,
+          ),
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton<String>(
+              padding: EdgeInsets.symmetric(vertical: 5.h),
+              icon: SvgPicture.asset(
+                AppIcons.downArrowIcon,
+                colorFilter: ColorFilter.mode(
+                    AppColors.primaryColor, BlendMode.srcIn),
+              ),
+              isExpanded: true,
+              value: options.contains(value) ? value : null,
+              hint: Text(
+                hint,
+                style: TextStyle(
+                    color: AppColors.color414141, fontSize: 14.sp),
+              ),
+              items: options
+                  .map((o) =>
+                      DropdownMenuItem<String>(value: o, child: Text(o)))
+                  .toList(),
+              onChanged: options.isNotEmpty ? onChanged : null,
+            ),
+          ),
+        ));
+  }
+
+  /// Static read-only display field
+  Widget _staticField(String text, {bool small = false}) {
+    return Container(
+      height: small ? 52.h : AppStyles.standardHeight,
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(horizontal: 12.w),
+      decoration: BoxDecoration(
+        color: AppColors.fillColor,
+        border: Border.all(color: AppColors.primaryColor, width: 1.w),
+        borderRadius: BorderRadius.circular(8.r),
+      ),
+      alignment: Alignment.centerLeft,
+      child: Text(
+        text,
+        style: TextStyle(
+            fontSize: 14.sp, color: AppColors.color414141),
       ),
     );
   }

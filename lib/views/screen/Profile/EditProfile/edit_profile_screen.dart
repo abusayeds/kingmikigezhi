@@ -52,6 +52,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   String selectedGender = '';
   List<String> skills = [];
 
+  // Skill dropdown selections
+  String? _selectedStartYear;
+  String? _selectedProgramId;
+
   bool isAccountIdEditable = false;
   bool isFirstNameEditable = false;
   bool isLastNameEditable = false;
@@ -64,6 +68,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void initState() {
     super.initState();
     _loadProfileData();
+    // Fetch API-driven options if not yet loaded
+    if (_authController.editOptionPrograms.isEmpty ||
+        _authController.editOptionYears.isEmpty) {
+      _authController.fetchEditOptions();
+    }
   }
 
   void _loadProfileData() {
@@ -94,7 +103,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       locationStateController.text = profile['state'] ?? '';
       locationCityController.text = profile['city'] ?? '';
 
-      final skillsList = profile['skills'] as List?;
+      // Pre-fill phone number
+      final phoneNumber = profile['phoneNumber'] ?? '';
+      if (phoneNumber.isNotEmpty) {
+        phoneNumberController.text = phoneNumber;
+      }
+
+      final skillsList = profile['skillLabels'] as List?;
       if (skillsList != null) {
         skills = skillsList.map((e) => e.toString()).toList();
       }
@@ -472,39 +487,54 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                           fontWeight: FontWeight.w600),
                                     ),
                                     SizedBox(height: 8.h),
-                                    Container(
-                                      height: 52.h,
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 12, vertical: 8),
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: AppColors.borderColor),
-                                        borderRadius: BorderRadius.circular(8),
-                                        color: AppColors.fillColor,
-                                      ),
-                                      child: DropdownButton<String>(
-                                        icon: SvgPicture.asset(
-                                          AppIcons.downArrowIcon,
-                                          color: AppColors.primaryColor,
+                                    Obx(() {
+                                      final years = _authController
+                                          .editOptionYears;
+                                      return Container(
+                                        height: 52.h,
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 12, vertical: 8),
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: AppColors.borderColor),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          color: AppColors.fillColor,
                                         ),
-                                        isExpanded: true,
-                                        underline: const SizedBox(),
-                                        hint: Text(
-                                          '',
-                                          style: TextStyle(
-                                              color: AppColors.color414141,
-                                              fontSize: 14.sp),
+                                        child: DropdownButtonHideUnderline(
+                                          child: DropdownButton<String>(
+                                            icon: SvgPicture.asset(
+                                              AppIcons.downArrowIcon,
+                                              colorFilter: ColorFilter.mode(
+                                                  AppColors.primaryColor,
+                                                  BlendMode.srcIn),
+                                            ),
+                                            isExpanded: true,
+                                            value: _selectedStartYear,
+                                            hint: Text(
+                                              'Year',
+                                              style: TextStyle(
+                                                  color:
+                                                      AppColors.color414141,
+                                                  fontSize: 14.sp),
+                                            ),
+                                            items: years
+                                                .map((y) =>
+                                                    DropdownMenuItem<String>(
+                                                      value: y.toString(),
+                                                      child:
+                                                          Text(y.toString()),
+                                                    ))
+                                                .toList(),
+                                            onChanged: years.isNotEmpty
+                                                ? (v) => setState(
+                                                    () => _selectedStartYear =
+                                                        v)
+                                                : null,
+                                          ),
                                         ),
-                                        items: <String>['2020', '2021', '2023']
-                                            .map((String value) {
-                                          return DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Text(value),
-                                          );
-                                        }).toList(),
-                                        onChanged: (String? newValue) {},
-                                      ),
-                                    ),
+                                      );
+                                    }),
                                   ],
                                 ),
                               ),
@@ -520,42 +550,54 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                           fontWeight: FontWeight.w600),
                                     ),
                                     SizedBox(height: 8.h),
-                                    Container(
-                                      height: 52.h,
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 12, vertical: 8),
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: AppColors.borderColor),
-                                        borderRadius: BorderRadius.circular(8),
-                                        color: AppColors.fillColor,
-                                      ),
-                                      child: DropdownButton<String>(
-                                        icon: SvgPicture.asset(
-                                          AppIcons.downArrowIcon,
-                                          color: AppColors.primaryColor,
+                                    Obx(() {
+                                      final programs = _authController
+                                          .editOptionPrograms;
+                                      return Container(
+                                        height: 52.h,
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 12, vertical: 8),
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: AppColors.borderColor),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          color: AppColors.fillColor,
                                         ),
-                                        isExpanded: true,
-                                        underline: const SizedBox(),
-                                        hint: Text(
-                                          '',
-                                          style: TextStyle(
-                                              color: AppColors.color414141,
-                                              fontSize: 14.sp),
+                                        child: DropdownButtonHideUnderline(
+                                          child: DropdownButton<String>(
+                                            icon: SvgPicture.asset(
+                                              AppIcons.downArrowIcon,
+                                              colorFilter: ColorFilter.mode(
+                                                  AppColors.primaryColor,
+                                                  BlendMode.srcIn),
+                                            ),
+                                            isExpanded: true,
+                                            value: _selectedProgramId,
+                                            hint: Text(
+                                              'Program',
+                                              style: TextStyle(
+                                                  color:
+                                                      AppColors.color414141,
+                                                  fontSize: 14.sp),
+                                            ),
+                                            items: programs
+                                                .map((p) =>
+                                                    DropdownMenuItem<String>(
+                                                      value: p['id'],
+                                                      child: Text(
+                                                          p['name'] ?? ''),
+                                                    ))
+                                                .toList(),
+                                            onChanged: programs.isNotEmpty
+                                                ? (v) => setState(
+                                                    () => _selectedProgramId =
+                                                        v)
+                                                : null,
+                                          ),
                                         ),
-                                        items: <String>[
-                                          'Option 1',
-                                          'Option 2',
-                                          'Option 3'
-                                        ].map((String value) {
-                                          return DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Text(value),
-                                          );
-                                        }).toList(),
-                                        onChanged: (String? newValue) {},
-                                      ),
-                                    ),
+                                      );
+                                    }),
                                   ],
                                 ),
                               ),
@@ -567,7 +609,28 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             child: CustomButton(
                               color: AppColors.buttonA47059,
                               borderColor: Colors.white,
-                              onTap: () {},
+                              onTap: () {
+                                if (_selectedProgramId != null &&
+                                    _selectedStartYear != null) {
+                                  final programName = _authController
+                                      .editOptionPrograms
+                                      .firstWhere(
+                                        (p) =>
+                                            p['id'] == _selectedProgramId,
+                                        orElse: () => {'name': ''},
+                                      )['name'] ??
+                                      '';
+                                  final label =
+                                      '$programName since $_selectedStartYear';
+                                  if (!skills.contains(label)) {
+                                    setState(() {
+                                      skills.add(label);
+                                      _selectedProgramId = null;
+                                      _selectedStartYear = null;
+                                    });
+                                  }
+                                }
+                              },
                               text: "Add",
                               textColor: Colors.white,
                             ),

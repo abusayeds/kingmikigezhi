@@ -28,21 +28,25 @@ class SkillRowWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text.rich(
-            TextSpan(
-              children: [
-                TextSpan(
-                  text: '\u2022 ',
-                  style: TextStyle(color: bulletColor),
-                ),
-                TextSpan(
-                  text: leadingText,
-                  style: TextStyle(color: leadingTextColor),
-                ),
-              ],
+          Expanded(
+            child: Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(
+                    text: '\u2022 ',
+                    style: TextStyle(color: bulletColor),
+                  ),
+                  TextSpan(
+                    text: leadingText,
+                    style: TextStyle(color: leadingTextColor),
+                  ),
+                ],
+              ),
+              overflow: TextOverflow.ellipsis,
             ),
           ),
           Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
               InkWell(
                 onTap: onEditTap,
