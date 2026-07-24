@@ -56,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
       //     child: HomeAppBar(),
       //   ),
       // ),
-       appBar: customHomeAppBar(),
+      appBar: customHomeAppBar(),
       bottomNavigationBar: const BottomMenu(0),
       body: SingleChildScrollView(
         child: Column(
@@ -256,7 +256,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       final event = _homeController.upcomingEvents[index];
                       return GestureDetector(
                         onTap: () {
-                          Get.toNamed(AppRoutes.eventDetailsScreen, arguments: event.id);
+                          Get.toNamed(AppRoutes.eventDetailsScreen, arguments: event);
                         },
                         child: SizedBox(
                           width: 369.w,

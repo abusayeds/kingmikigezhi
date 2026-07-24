@@ -2,6 +2,7 @@ import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/services/api_service.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_icons.dart';
+import 'package:event_sharing/utils/app_images.dart';
 import 'package:event_sharing/utils/api_constants.dart';
 import 'package:event_sharing/views/base/custom_text_field.dart';
 import 'package:flutter/material.dart';
@@ -209,10 +210,16 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                               imageUrl,
                               fit: BoxFit.cover,
                               errorBuilder: (context, error, stackTrace) {
-                                return _buildPlaceholder(name);
+                                return Image.asset(
+                                  AppImages.logo,
+                                  fit: BoxFit.cover,
+                                );
                               },
                             )
-                          : _buildPlaceholder(name),
+                          : Image.asset(
+                              AppImages.logo,
+                              fit: BoxFit.cover,
+                            ),
                     ),
                   ),
                   Positioned(

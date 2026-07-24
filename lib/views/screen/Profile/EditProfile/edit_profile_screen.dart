@@ -12,6 +12,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_icons.dart';
+import '../../../../utils/app_images.dart';
 import '../../../../utils/app_strings.dart';
 import '../../../base/custom_button.dart';
 import '../../../base/custom_text.dart';
@@ -159,10 +160,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                       ? Image.network(
                                           profilePicture,
                                           fit: BoxFit.cover,
+                                          width: 120.w,
+                                          height: 120.h,
                                           errorBuilder: (context, error, stackTrace) =>
-                                              Icon(Icons.person, size: 60.w, color: Colors.grey),
+                                              Image.asset(
+                                            AppImages.logo,
+                                            fit: BoxFit.cover,
+                                            width: 120.w,
+                                            height: 120.h,
+                                          ),
                                         )
-                                      : Icon(Icons.person, size: 60.w, color: Colors.grey),
+                                      : Image.asset(
+                                          AppImages.logo,
+                                          fit: BoxFit.cover,
+                                          width: 120.w,
+                                          height: 120.h,
+                                        ),
                                 );
                         }),
                         Positioned(

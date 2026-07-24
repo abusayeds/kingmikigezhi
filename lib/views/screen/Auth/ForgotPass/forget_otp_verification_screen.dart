@@ -89,10 +89,23 @@ class _ForgetPasswordOtpScreenState extends State<ForgetPasswordOtpScreen> {
                       );
 
                       if (success) {
+                        final sessionId =
+                            authController.forgotPasswordSessionId.value;
+                        if (sessionId.isEmpty) {
+                          Get.snackbar(
+                            'Error',
+                            'Session not found. Please try again.',
+                            snackPosition: SnackPosition.BOTTOM,
+                            backgroundColor: Colors.red,
+                            colorText: Colors.white,
+                          );
+                          return;
+                        }
+
                         // Navigate to OTP verification screen with email and sessionId
-                        Get.toNamed(AppRoutes.forgetPasswordOtpScreen, arguments: {
+                        Get.toNamed(AppRoutes.forgotPasswordScreen, arguments: {
                           'email': emailCTRl.text.trim(),
-                          'sessionId': authController.forgotPasswordSessionId.value,
+                          'sessionId': sessionId,
                         });
                       }
                     },

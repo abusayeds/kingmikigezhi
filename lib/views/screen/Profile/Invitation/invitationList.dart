@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_icons.dart';
+import '../../../../utils/app_images.dart';
 import '../../../base/custom_button.dart';
 import '../../../base/custom_text.dart';
 
@@ -110,10 +111,11 @@ class _InvitationlistState extends State<Invitationlist> {
                               width: 90.r,
                               height: 90.r,
                               errorBuilder: (context, error, stackTrace) {
-                                return Icon(
-                                  Icons.person,
-                                  size: 45.r,
-                                  color: Colors.grey.shade600,
+                                return Image.asset(
+                                  AppImages.logo,
+                                  fit: BoxFit.cover,
+                                  width: 90.r,
+                                  height: 90.r,
                                 );
                               },
                               loadingBuilder: (context, child, loadingProgress) {
