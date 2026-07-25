@@ -48,7 +48,11 @@ class _StepThreeFormState extends State<StepThreeForm> {
   @override
   void initState() {
     super.initState();
-    addeventcontroller.clearTempRounds();
+    // Defer Rx mutation until after build to avoid setState during build.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      addeventcontroller.clearTempRounds();
+    });
   }
 
   @override

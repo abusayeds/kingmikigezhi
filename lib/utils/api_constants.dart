@@ -108,6 +108,7 @@ class ApiConstants {
   static const String getUpcomingEvents = '$apiUrl/events/feed/upcoming';
   static const String getHistoryEvents = '$apiUrl/events/feed/history';
   static const String getEventsDetails = '$apiUrl/events/:eventId';
+  static const String updateEvents = '$apiUrl/events/:eventId';
 
 
 

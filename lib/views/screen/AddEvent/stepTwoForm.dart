@@ -34,9 +34,9 @@ class _StepTwoFormState extends State<StepTwoForm> {
   String? _selectedCompetitionLevel;
   String? _selectedType;
   String? _selectedCostOption;
-  final List<String> competitionLevel = ['Preliminary', 'SemiFinal', 'Final'];
+  final List<String> competitionLevel = ['Local-Easy', 'Local-Medium', 'Local-Difficult','Regional-Easy', 'Regional-Medium', 'Regional-Difficult','State-Easy', 'State-Medium', 'State-Difficult','National-Easy', 'National-Medium', 'National-Difficult','International-Easy', 'International-Medium', 'International-Difficult'];
   final List<String> type = ['Onsite', 'Online', 'Hybrid'];
-  final List<String> costOptions = ['Yes', 'No'];
+  final List<String> costOptions = ['Has Final Deadline', 'No Final Deadline'];
 
   @override
   void initState() {
@@ -53,7 +53,7 @@ class _StepTwoFormState extends State<StepTwoForm> {
     monthCRTL.text = addEventController.finalDeadlineMonth ?? "";
     dayCRTL.text = addEventController.finalDeadlineDay ?? "";
     lateFeeCRTL.text = addEventController.lateFee?.toString() ?? "";
-    _selectedCostOption = addEventController.hasFinalDeadline ? 'Yes' : 'No';
+    _selectedCostOption = addEventController.hasFinalDeadline ? 'Has Final Deadline' : 'No Final Deadline';
   }
 
   void _saveDataToController() {
@@ -64,7 +64,7 @@ class _StepTwoFormState extends State<StepTwoForm> {
     addEventController.deadlineDate = _endsDateCTRL.text;
     addEventController.deadlineTime = _endsTimeCTRL.text;
     addEventController.cost = double.tryParse(costCRTL.text);
-    addEventController.hasFinalDeadline = _selectedCostOption == 'Yes';
+    addEventController.hasFinalDeadline = _selectedCostOption == 'Has Final Deadline';
     addEventController.finalDeadlineYear = yearCRTL.text;
     addEventController.finalDeadlineMonth = monthCRTL.text;
     addEventController.finalDeadlineDay = dayCRTL.text;

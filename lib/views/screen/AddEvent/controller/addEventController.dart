@@ -50,6 +50,32 @@ class Addeventcontroller extends GetxController {
   // Step 5: History & Agreements
   RxBool isSharedToCommunity = true.obs;
   RxBool isUserAgreementAccepted = false.obs;
+  RxBool isLoadingHistory = false.obs;
+  RxList<Map<String, dynamic>> historyEvents = <Map<String, dynamic>>[].obs;
+  String? selectedHistoryEventId;
+
+  Future<void> fetchHistoryEvents() async {
+    isLoadingHistory.value = true;
+    try {
+      final response = await _apiService.get(
+        "${ApiConstants.getHistoryEvents}?page=1&limit=100",
+      );
+      if (response['success'] == true) {
+        final List<dynamic> data = response['data'] ?? [];
+        historyEvents.assignAll(
+          data.map((e) => Map<String, dynamic>.from(e as Map)),
+        );
+      } else {
+        Fluttertoast.showToast(
+          msg: response['message'] ?? "Failed to fetch history events",
+        );
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
+    } finally {
+      isLoadingHistory.value = false;
+    }
+  }
 
   Future<void> createEvent() async {
     if (!isUserAgreementAccepted.value) {

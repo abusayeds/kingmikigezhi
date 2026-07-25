@@ -19,12 +19,9 @@ class StepFiveForm extends StatefulWidget {
 
 class _StepFiveFormState extends State<StepFiveForm> {
   final List<String> roundList = ['1st', '2nd','Silver','Gold'];
-  final List<String> typeSession = ['Online', 'Offline','Hybrid'];
-
 
   final TextEditingController dateController = TextEditingController();
   final TextEditingController timeController = TextEditingController();
-
 
   final TextEditingController finalDatelineMonthController = TextEditingController();
   final TextEditingController finalDatelineDayController = TextEditingController();
@@ -32,8 +29,18 @@ class _StepFiveFormState extends State<StepFiveForm> {
 
   final Addeventcontroller addEventController = Get.find<Addeventcontroller>();
 
-  String? _selectedType;
+  String? _selectedHistoryEventId;
   String? _selectedRound;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedHistoryEventId = addEventController.selectedHistoryEventId;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      addEventController.fetchHistoryEvents();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,42 +59,66 @@ class _StepFiveFormState extends State<StepFiveForm> {
               SizedBox(height: 12.h),
              Text('Session', style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
               SizedBox(height: 12.h),
-              Container(
-                height: AppStyles.standardHeight,
-                padding: EdgeInsets.symmetric(horizontal: 20.w),
-                decoration: BoxDecoration(
-                  color: AppColors.fillColor,
-                  borderRadius: BorderRadius.circular(8.r),
-                  border: Border.all(color: AppColors.primaryColor, width: 1),
-                ),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton<String>(
+              Obx(() {
+                if (addEventController.isLoadingHistory.value) {
+                  return SizedBox(
+                    height: AppStyles.standardHeight,
+                    child: const Center(child: CircularProgressIndicator()),
+                  );
+                }
 
-                    value: _selectedType,
-                    dropdownColor: AppColors.fillColor,
-                    menuWidth: 240.w,
+                final events = addEventController.historyEvents;
+                final selectedId = _selectedHistoryEventId != null &&
+                        events.any((e) => e['id']?.toString() == _selectedHistoryEventId)
+                    ? _selectedHistoryEventId
+                    : null;
+
+                return Container(
+                  height: AppStyles.standardHeight,
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  decoration: BoxDecoration(
+                    color: AppColors.fillColor,
                     borderRadius: BorderRadius.circular(8.r),
-                    hint: Text("Type Session", style: AppStyles.fontSize14(color: AppColors.color414141)),
-                    icon: SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor,
-                    ),
-                    isExpanded: true,
-                    items:typeSession.map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(
-                          value,
-                          style: const TextStyle(color: Colors.black),
-                        ),
-                      );
-                    }).toList(),
-                    onChanged: (newValue) {
-                      setState(() {
-                        _selectedType = newValue;
-                      });
-                    },
+                    border: Border.all(color: AppColors.primaryColor, width: 1),
                   ),
-                ),
-              ),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      value: selectedId,
+                      dropdownColor: AppColors.fillColor,
+                      menuWidth: 240.w,
+                      borderRadius: BorderRadius.circular(8.r),
+                      hint: Text(
+                        "Select History Event",
+                        style: AppStyles.fontSize14(color: AppColors.color414141),
+                      ),
+                      icon: SvgPicture.asset(
+                        AppIcons.downArrowIcon,
+                        width: 16.w,
+                        color: AppColors.primaryColor,
+                      ),
+                      isExpanded: true,
+                      items: events.map((event) {
+                        final id = event['id']?.toString() ?? '';
+                        final name = event['eventName']?.toString() ?? '';
+                        return DropdownMenuItem<String>(
+                          value: id,
+                          child: Text(
+                            name,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(color: Colors.black),
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (newValue) {
+                        setState(() {
+                          _selectedHistoryEventId = newValue;
+                          addEventController.selectedHistoryEventId = newValue;
+                        });
+                      },
+                    ),
+                  ),
+                );
+              }),
               SizedBox(height: 8.h),
               Padding(
                 padding: const EdgeInsets.all(4),
