@@ -30,6 +30,9 @@ class ApiConstants {
   static const String myProfile = '$apiUrl/users/me';
   static const String updateProfile = '$apiUrl/users/update-me';
   static const String deleteAccount = '$apiUrl/users/me';
+  static const String getSkills = '$apiUrl/users/edit-options';
+
+
 
   //Get User
   static const String getUserProfile = '$apiUrl/users/:userId';
@@ -128,6 +131,30 @@ class ApiConstants {
   //notification
   static const String getMyNotification = '$apiUrl/notifications/my';
   static const String readAllNotification = '$apiUrl/notifications/my/read-all';
+
+
+
+  //contributions
+  static const String getAllContributions = '$apiUrl/contributions';
+  static const String getFilterContributions = '$apiUrl/contributions/filter-options';
+
+  // User Settings
+  static const String getUserSettings = '$apiUrl/user-settings';
+  static const String updateUserSettings = '$apiUrl/user-settings';
+  static const String getUserSettingsOptions = '$apiUrl/user-settings/options';
+
+
+  // Invitations
+  static const String getMyConnections = '$apiUrl/connections/my-connections';
+  static String sendInvitations(String eventId) => '$apiUrl/event-invitations/share/$eventId';
+  static const String getSentInvitation = '$apiUrl/event-invitations/sent';
+  static const String getReceiveInvitation = '$apiUrl/event-invitations/received';
+  static String acceptById(String userId) => '$apiUrl/event-invitations/$userId/accept';
+  static String declineById(String userId) => '$apiUrl/event-invitations/$userId/decline';
+  static String acceptByAll(String userId) => '$apiUrl/event-invitations/$userId/accept-all';
+  static String declineByAll(String userId) => '$apiUrl/event-invitations/$userId/decline-all';
+
+
 
 
   

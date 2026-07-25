@@ -3,12 +3,15 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../controllers/connection_controller.dart';
+import '../controllers/contribution_controller.dart';
 import '../controllers/event_controller.dart';
 import '../controllers/auth_controller.dart';
 import '../controllers/family_controller.dart';
 import '../controllers/home_controller.dart';
+import '../controllers/invitation_controller.dart';
 import '../controllers/localization_controller.dart';
 import '../controllers/notification_controller.dart';
+import '../controllers/settings_controller.dart';
 import '../controllers/theme_controller.dart';
 import '../controllers/splash_controller.dart';
 import '../models/language_model.dart';
@@ -41,6 +44,12 @@ Future<Map<String, Map<String, String>>> init() async {
   Get.put(NotificationController(apiService: Get.find(), sharedPreferences: Get.find()),
       permanent: true);
   Get.put(ConnectionController(sharedPreferences: Get.find(), apiService: Get.find()),
+      permanent: true);
+  Get.put(ContributionController(sharedPreferences: Get.find(), apiService: Get.find()),
+      permanent: true);
+  Get.put(SettingsController(sharedPreferences: Get.find(), apiService: Get.find()),
+      permanent: true);
+  Get.put(InvitationController(sharedPreferences: Get.find(), apiService: Get.find()),
       permanent: true);
 
   //Retrieving localized data
