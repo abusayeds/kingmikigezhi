@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:easy_stepper/easy_stepper.dart';
+import 'package:event_sharing/models/event_model.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 
 import 'package:event_sharing/views/screen/AddEvent/controller/addEventController.dart';
@@ -42,15 +43,28 @@ class _CreateEventOneState extends State<CreateEventOne> {
   final Addeventcontroller addEventController = Get.put(Addeventcontroller());
 
   @override
+  void initState() {
+    super.initState();
+    final dynamic args = Get.arguments;
+    if (args is EventModel) {
+      addEventController.loadFromEvent(args);
+    } else {
+      addEventController.resetForm();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         scrolledUnderElevation: 0,
-        title: CustomText(
-          text: AppStrings.createNewEvent,
+        title: Obx(() => CustomText(
+          text: addEventController.isEditMode.value
+              ? 'Update Event'
+              : AppStrings.createNewEvent,
           fontsize: 18.sp,
           fontWeight: FontWeight.w500,
-        ),
+        )),
         centerTitle: true,
       ),
       body: SingleChildScrollView(

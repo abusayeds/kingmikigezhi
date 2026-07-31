@@ -843,15 +843,6 @@ class AuthController extends GetxController {
         final List<dynamic> years = data['startYears'] ?? [];
         editOptionYears.value = years.map((e) => e as int).toList();
 
-        // Parse programs
-        final List<dynamic> programs = data['programs'] ?? [];
-        editOptionPrograms.value = programs
-            .map<Map<String, String>>((e) => {
-                  'id': e['id']?.toString() ?? '',
-                  'name': e['name']?.toString() ?? '',
-                })
-            .toList();
-
         // Parse genders
         final List<dynamic> genders = data['genders'] ?? [];
         editOptionGenders.value = genders
@@ -861,11 +852,35 @@ class AuthController extends GetxController {
                 })
             .toList();
       }
+
+      // Programs come from the programs API (GET /programs) — show "name" in dropdown
+      await fetchPrograms();
     } catch (e) {
       print('fetchEditOptions error: $e');
     } finally {
       isLoadingEditOptions.value = false;
       update();
+    }
+  }
+
+  // Fetch programs list from GET /programs and fill editOptionPrograms
+  Future<void> fetchPrograms() async {
+    try {
+      final response =
+          await apiService.get("${ApiConstants.programs}?page=1&limit=100");
+
+      if (response != null && response['success'] == true) {
+        final List<dynamic> programs = response['data'] ?? [];
+        editOptionPrograms.value = programs
+            .map<Map<String, String>>((e) => {
+                  'id': e['id']?.toString() ?? '',
+                  'name': e['name']?.toString() ?? '',
+                })
+            .where((p) => p['id']!.isNotEmpty && p['name']!.isNotEmpty)
+            .toList();
+      }
+    } catch (e) {
+      print('fetchPrograms error: $e');
     }
   }
 }

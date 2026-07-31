@@ -48,11 +48,16 @@ class _StepThreeFormState extends State<StepThreeForm> {
   @override
   void initState() {
     super.initState();
-    // Defer Rx mutation until after build to avoid setState during build.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       addeventcontroller.clearTempRounds();
     });
+  }
+
+  void _saveDataToController() {
+    // Groups and rounds are saved directly via addGroup() and addTempRound(),
+    // so no additional save is needed here. This method exists for consistency
+    // with StepOneForm and StepTwoForm.
   }
 
   @override
@@ -170,13 +175,48 @@ class _StepThreeFormState extends State<StepThreeForm> {
                       children: addeventcontroller.groups.asMap().entries.map((entry) {
                         int idx = entry.key;
                         var group = entry.value;
-                        return ListTile(
-                          title: Text("${group['name']}"),
-                          subtitle: Text("${group['rounds'].length} rounds"),
-                          trailing: IconButton(
-                            icon: SvgPicture.asset(AppIcons.trashIcon),
-                            onPressed: () => addeventcontroller.removeGroup(idx),
-                          ),
+                        var rounds = (group['rounds'] as List<dynamic>?) ?? [];
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ListTile(
+                              title: Text("${group['name']}"),
+                              subtitle: Text("${group['criteria']} ${group['condition']} ${group['value']}"),
+                              trailing: IconButton(
+                                icon: SvgPicture.asset(AppIcons.trashIcon),
+                                onPressed: () => addeventcontroller.removeGroup(idx),
+                              ),
+                            ),
+                            if (rounds.isNotEmpty)
+                              Padding(
+                                padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 8.h),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: rounds.asMap().entries.map((roundEntry) {
+                                    int roundIdx = roundEntry.key;
+                                    var round = roundEntry.value;
+                                    return Padding(
+                                      padding: EdgeInsets.symmetric(vertical: 4.h),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              "${round['roundType']} - ${round['deadline'] ?? 'No deadline'} - \$${round['cost'] ?? 0}",
+                                              style: TextStyle(fontSize: 12.sp),
+                                            ),
+                                          ),
+                                          IconButton(
+                                            icon: SvgPicture.asset(AppIcons.trashIcon, width: 14.w),
+                                            onPressed: () => addeventcontroller.removeRoundFromGroup(idx, roundIdx),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                          ],
                         );
                       }).toList(),
                     ),
@@ -364,6 +404,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
                   Expanded(
                     child: CustomButton(
                       onTap: () {
+                        _saveDataToController();
                         if (addeventcontroller.activeStepIndex.value < 4) {
                           addeventcontroller.activeStepIndex.value++;
                         }

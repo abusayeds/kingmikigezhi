@@ -62,7 +62,7 @@ class _MyContributionScreenState extends State<MyContributionScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Obx(() => Text(
-              'Total ${_controller.total.value} Contribution',
+              'Total ${_controller.total.value} Contribution | Score: ${_controller.contributionScore.value}',
               style: TextStyle(
                   fontSize: 18.sp, fontWeight: FontWeight.bold),
             )),

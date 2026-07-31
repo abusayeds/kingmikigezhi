@@ -41,24 +41,43 @@ class _StepTwoFormState extends State<StepTwoForm> {
   @override
   void initState() {
     super.initState();
-    // Initialize with existing data if any
-    _selectedCompetitionLevel = addEventController.competitionLevel;
-    _selectedType = addEventController.eventType;
+    // Initialize with existing data if any.
+    // Guard dropdown values: if the API value isn't in the list, keep it null
+    // to avoid DropdownButton assertion errors (e.g. "Preliminary").
+    _selectedCompetitionLevel =
+        competitionLevel.contains(addEventController.competitionLevel)
+            ? addEventController.competitionLevel
+            : null;
+    _selectedType =
+        type.contains(addEventController.eventType) ? addEventController.eventType : null;
     _startsDateCTRL.text = addEventController.registrationDate ?? "";
     _startsTimeCTRL.text = addEventController.registrationTime ?? "";
     _endsDateCTRL.text = addEventController.deadlineDate ?? "";
     _endsTimeCTRL.text = addEventController.deadlineTime ?? "";
-    costCRTL.text = addEventController.cost?.toString() ?? "";
+    costCRTL.text = _formatNumber(addEventController.cost);
     yearCRTL.text = addEventController.finalDeadlineYear ?? "";
     monthCRTL.text = addEventController.finalDeadlineMonth ?? "";
     dayCRTL.text = addEventController.finalDeadlineDay ?? "";
-    lateFeeCRTL.text = addEventController.lateFee?.toString() ?? "";
+    lateFeeCRTL.text = _formatNumber(addEventController.lateFee);
     _selectedCostOption = addEventController.hasFinalDeadline ? 'Has Final Deadline' : 'No Final Deadline';
   }
 
+  // Show 500 instead of 500.0
+  String _formatNumber(double? value) {
+    if (value == null) return "";
+    if (value == value.roundToDouble()) return value.toInt().toString();
+    return value.toString();
+  }
+
   void _saveDataToController() {
-    addEventController.competitionLevel = _selectedCompetitionLevel;
-    addEventController.eventType = _selectedType;
+    // Keep the original value (e.g. from the API in edit mode) if the user
+    // didn't pick a new one from the dropdown.
+    if (_selectedCompetitionLevel != null) {
+      addEventController.competitionLevel = _selectedCompetitionLevel;
+    }
+    if (_selectedType != null) {
+      addEventController.eventType = _selectedType;
+    }
     addEventController.registrationDate = _startsDateCTRL.text;
     addEventController.registrationTime = _startsTimeCTRL.text;
     addEventController.deadlineDate = _endsDateCTRL.text;
@@ -186,7 +205,7 @@ class _StepTwoFormState extends State<StepTwoForm> {
             onChanged: (v) => setState(() => _selectedCostOption = v),
           ),
 
-          if (_selectedCostOption == 'Yes') ...[
+          if (_selectedCostOption == 'Has Final Deadline') ...[
             SizedBox(height: 12.h),
             Text('Final Deadline',
                 style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
@@ -200,7 +219,7 @@ class _StepTwoFormState extends State<StepTwoForm> {
               ],
             ),
             SizedBox(height: 16.h),
-            Text('No',
+            Text('Late Fee',
                 style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
             SizedBox(height: 12.h),
             CustomTextField(

@@ -77,6 +77,7 @@ class ContributionController extends GetxController {
   final RxBool isLoading = false.obs;
   final RxInt currentPage = 1.obs;
   final RxInt total = 0.obs;
+  final RxInt contributionScore = 0.obs;
   final RxBool hasNext = false.obs;
   final RxString metaLabel = ''.obs;
 
@@ -150,6 +151,7 @@ class ContributionController extends GetxController {
         final meta = response['meta'];
         if (meta != null) {
           total.value = meta['total'] ?? 0;
+          contributionScore.value = meta['contributionScore'] ?? 0;
           hasNext.value = meta['hasNext'] ?? false;
           metaLabel.value = meta['label'] ?? '';
         }

@@ -108,6 +108,14 @@ class _SteponeformState extends State<Steponeform> {
     registrationPortalController.text = addEventController.registrationPortal ?? "";
     descriptionCRTL.text = addEventController.description ?? "";
     noteCRTL.text = addEventController.note ?? "";
+    // Edit mode: prefill program name from the existing event
+    if (addEventController.programId != null && addEventController.programName != null) {
+      _selectedProgram = ProgramModel(
+        id: addEventController.programId!,
+        name: addEventController.programName!,
+      );
+      programController.text = addEventController.programName!;
+    }
   }
 
   // ─── API calls ────────────────────────────────────────────────────────────
@@ -306,7 +314,18 @@ class _SteponeformState extends State<Steponeform> {
               aspectRatio: 16 / 9,
               child: coverImage != null
                   ? Image.memory(coverImage!, fit: BoxFit.cover)
-                  : _addImageButton(() => _pickImage((img) => setState(() => coverImage = img))),
+                  : (addEventController.existingCoverImageUrl != null &&
+                          addEventController.existingCoverImageUrl!.isNotEmpty)
+                      ? GestureDetector(
+                          onTap: () => _pickImage((img) => setState(() => coverImage = img)),
+                          child: Image.network(
+                            addEventController.existingCoverImageUrl!,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) =>
+                                _addImageButton(() => _pickImage((img) => setState(() => coverImage = img))),
+                          ),
+                        )
+                      : _addImageButton(() => _pickImage((img) => setState(() => coverImage = img))),
             ),
           ),
           SizedBox(height: 16.h),

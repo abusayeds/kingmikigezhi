@@ -328,33 +328,24 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
       }
 
       final Map<String, dynamic> requestBody = {
-        "eventName": _typeCTRL.text.trim(),
+        "title": _typeCTRL.text.trim(),
         "location": _locationCTRL.text.trim(),
-        "organizer": _selectedMember ?? "Self",
-        "eventPortal": _urlCTRL.text.trim(),
+        "member": _selectedMember ?? "Self",
+        "startsAt": startDateTimeStr,
+        "endsAt": endDateTimeStr,
+        "repeatFunction": _selectedRepeat ?? "Never",
+        "url": _urlCTRL.text.trim(),
         "note": _noteCTRL.text.trim(),
-        "isPublished": true,
-        "isActive": true,
-        if (startDateTimeStr != null)
-          "schedule": {
-            "eventType": "Onsite",
-            "registrationDate": startDateTimeStr,
-            "deadline": endDateTimeStr ?? startDateTimeStr,
-          },
-        if (_selectedRepeat != null && _selectedRepeat!.toLowerCase() != "never")
-          "repeatConfig": {
-            "frequency": _selectedRepeat,
-            "startDate": startDateTimeStr,
-          },
       };
 
-      final success = await _eventController.createEvent(requestBody);
+      final success = await _eventController.createHomeEvent(requestBody);
 
       setState(() {
         _isLoading = false;
       });
 
       if (success) {
+        _eventController.fetchHomeEvents();
         Fluttertoast.showToast(
           msg: "Event created successfully",
           toastLength: Toast.LENGTH_SHORT,
@@ -383,7 +374,7 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
       final date = DateFormat('yyyy-MM-dd').parse(dateStr);
       final time = DateFormat('hh:mm a').parse(timeStr);
       final combined = DateTime(date.year, date.month, date.day, time.hour, time.minute);
-      return combined.toIso8601String();
+      return combined.toUtc().toIso8601String();
     } catch (e) {
       return null;
     }

@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/event_model.dart';
+import '../models/home_event_model.dart';
 import '../services/api_service.dart';
 import '../utils/api_constants.dart';
 
@@ -17,6 +18,9 @@ class EventController extends GetxController {
   final RxInt upcomingPage = 1.obs;
   final RxBool upcomingHasNext = false.obs;
   final RxInt totalUpcomingEvents = 0.obs;
+
+  final RxList<HomeEventModel> homeEvents = <HomeEventModel>[].obs;
+  final RxBool isLoadingHomeEvents = false.obs;
 
   final Rx<EventModel?> eventDetails = Rx<EventModel?>(null);
   final RxBool isLoadingDetails = false.obs;
@@ -80,6 +84,49 @@ class EventController extends GetxController {
       debugPrint("Error fetching event details: $e");
     } finally {
       isLoadingDetails.value = false;
+    }
+  }
+
+  Future<void> fetchHomeEvents() async {
+    isLoadingHomeEvents.value = true;
+    try {
+      final response = await apiService.get(ApiConstants.getHomeEvents);
+      if (response['success'] == true) {
+        final List<dynamic> data = response['data'];
+        homeEvents.value = data.map((json) => HomeEventModel.fromJson(json)).toList();
+      }
+    } catch (e) {
+      debugPrint("Error fetching home events: $e");
+    } finally {
+      isLoadingHomeEvents.value = false;
+    }
+  }
+
+  Future<bool> createHomeEvent(Map<String, dynamic> requestBody) async {
+    try {
+      final response = await apiService.post(
+        ApiConstants.createHomeEvent,
+        body: requestBody,
+      );
+
+      if (response != null && response['success'] == true) {
+        Fluttertoast.showToast(
+          msg: response['message'] ?? "Home event created successfully!",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+        );
+        return true;
+      }
+      return false;
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: "Failed to create event: $e",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+      return false;
     }
   }
 

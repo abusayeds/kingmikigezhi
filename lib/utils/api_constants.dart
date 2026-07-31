@@ -1,6 +1,6 @@
 class ApiConstants {
   // TODO: Change this to your actual backend API base URL
-  static const String baseUrl = 'http://206.162.244.11:7788'; // Replace with your actual base URL
+  static const String baseUrl = 'http://10.10.28.139:8080'; // Replace with your actual base URL
   static const String apiUrl = '$baseUrl/api/v1';
 
 
@@ -21,7 +21,6 @@ class ApiConstants {
   static const String resetpassVerifyOTP = '$apiUrl/auth/reset-password/verify-otp';
   static const String resetPass = '$apiUrl/auth/reset-password';
   static const String changePass = '$apiUrl/auth/change-password';
-
   static const String logout = '$apiUrl/auth/logout';
 
 
@@ -113,6 +112,10 @@ class ApiConstants {
   static const String getEventsDetails = '$apiUrl/events/:eventId';
   static const String updateEvents = '$apiUrl/events/:eventId';
 
+
+  //Home Events
+  static const String createHomeEvent = '$apiUrl/home-events';
+  static const String getHomeEvents = '$apiUrl/home-events';
 
 
 
