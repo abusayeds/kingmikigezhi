@@ -68,8 +68,17 @@ class _StepFiveFormState extends State<StepFiveForm> {
                 }
 
                 final events = addEventController.historyEvents;
+                // Only valid entries, unique by id — dropdown shows eventName only
+                final seenIds = <String>{};
+                final validEvents = events.where((e) {
+                  final id = e['id']?.toString() ?? '';
+                  final name = e['eventName']?.toString() ?? '';
+                  if (id.isEmpty || name.isEmpty) return false;
+                  return seenIds.add(id);
+                }).toList();
+
                 final selectedId = _selectedHistoryEventId != null &&
-                        events.any((e) => e['id']?.toString() == _selectedHistoryEventId)
+                        validEvents.any((e) => e['id']?.toString() == _selectedHistoryEventId)
                     ? _selectedHistoryEventId
                     : null;
 
@@ -97,9 +106,9 @@ class _StepFiveFormState extends State<StepFiveForm> {
                         color: AppColors.primaryColor,
                       ),
                       isExpanded: true,
-                      items: events.map((event) {
-                        final id = event['id']?.toString() ?? '';
-                        final name = event['eventName']?.toString() ?? '';
+                      items: validEvents.map((event) {
+                        final id = event['id'].toString();
+                        final name = event['eventName'].toString();
                         return DropdownMenuItem<String>(
                           value: id,
                           child: Text(
@@ -379,7 +388,9 @@ class _StepFiveFormState extends State<StepFiveForm> {
                       ? const Center(child: CircularProgressIndicator())
                       : CustomButton(
                           onTap: addEventController.createEvent,
-                          text: "Add & Share",
+                          text: addEventController.isEditMode.value
+                              ? "Update & Share"
+                              : "Add & Share",
                           textColor: Colors.white,
                           borderColor: AppColors.buttonColor,
                           color: AppColors.buttonColor,

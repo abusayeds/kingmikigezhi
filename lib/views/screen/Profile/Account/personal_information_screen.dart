@@ -522,64 +522,64 @@ class _PersonalInformationScreenState
                 SizedBox(height: 12.h),
 
                 // ── Add Skill: Program + Year dropdowns from API ──
-                Obx(() {
-                  if (_authController.isLoadingEditOptions.value) {
-                    return Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8.h),
-                      child: const Center(
-                          child: CircularProgressIndicator()),
-                    );
-                  }
-                  return Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: AppColors.colorEDF2F4,
-                      borderRadius:
-                          BorderRadius.all(Radius.circular(8.r)),
-                      border: Border.all(
-                          color: AppColors.primaryColor, width: 1.w),
-                    ),
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 12.w, vertical: 12.h),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Add Skill',
-                          style: AppStyles.fontSize14(
-                              color: AppColors.color414141,
-                              fontWeight: FontWeight.w600),
-                        ),
-                        SizedBox(height: 10.h),
-                        _buildDropdown<String>(
-                          hint: 'Select Program',
-                          value: _selectedProgramId,
-                          items: programs
-                              .map((p) => DropdownMenuItem<String>(
-                                    value: p['id'],
-                                    child: Text(p['name'] ?? ''),
-                                  ))
-                              .toList(),
-                          onChanged: (v) =>
-                              setState(() => _selectedProgramId = v),
-                        ),
-                        SizedBox(height: 10.h),
-                        _buildDropdown<int>(
-                          hint: 'Select Year',
-                          value: _selectedYear,
-                          items: years
-                              .map((y) => DropdownMenuItem<int>(
-                                    value: y,
-                                    child: Text(y.toString()),
-                                  ))
-                              .toList(),
-                          onChanged: (v) =>
-                              setState(() => _selectedYear = v),
-                        ),
-                      ],
-                    ),
-                  );
-                }),
+                // Obx(() {
+                //   if (_authController.isLoadingEditOptions.value) {
+                //     return Padding(
+                //       padding: EdgeInsets.symmetric(vertical: 8.h),
+                //       child: const Center(
+                //           child: CircularProgressIndicator()),
+                //     );
+                //   }
+                //   return Container(
+                //     width: double.infinity,
+                //     decoration: BoxDecoration(
+                //       color: AppColors.colorEDF2F4,
+                //       borderRadius:
+                //           BorderRadius.all(Radius.circular(8.r)),
+                //       border: Border.all(
+                //           color: AppColors.primaryColor, width: 1.w),
+                //     ),
+                //     padding: EdgeInsets.symmetric(
+                //         horizontal: 12.w, vertical: 12.h),
+                //     child: Column(
+                //       crossAxisAlignment: CrossAxisAlignment.start,
+                //       children: [
+                //         Text(
+                //           'Add Skill',
+                //           style: AppStyles.fontSize14(
+                //               color: AppColors.color414141,
+                //               fontWeight: FontWeight.w600),
+                //         ),
+                //         SizedBox(height: 10.h),
+                //         _buildDropdown<String>(
+                //           hint: 'Select Program',
+                //           value: _selectedProgramId,
+                //           items: programs
+                //               .map((p) => DropdownMenuItem<String>(
+                //                     value: p['id'],
+                //                     child: Text(p['name'] ?? ''),
+                //                   ))
+                //               .toList(),
+                //           onChanged: (v) =>
+                //               setState(() => _selectedProgramId = v),
+                //         ),
+                //         SizedBox(height: 10.h),
+                //         _buildDropdown<int>(
+                //           hint: 'Select Year',
+                //           value: _selectedYear,
+                //           items: years
+                //               .map((y) => DropdownMenuItem<int>(
+                //                     value: y,
+                //                     child: Text(y.toString()),
+                //                   ))
+                //               .toList(),
+                //           onChanged: (v) =>
+                //               setState(() => _selectedYear = v),
+                //         ),
+                //       ],
+                //     ),
+                //   );
+                // }),
                 SizedBox(height: 24.h),
               ],
             ),

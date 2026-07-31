@@ -30,6 +30,7 @@ class _MyHistoryEventScreenState extends State<MyHistoryEventScreen> {
   @override
   void initState() {
     super.initState();
+    _homeController.fetchHistoryEvents();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
         _homeController.fetchHistoryEvents(isLoadMore: true);

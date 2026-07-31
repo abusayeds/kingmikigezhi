@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import '../../../../models/event_model.dart';
 import '../../../../services/api_service.dart';
 import '../../../../utils/api_constants.dart';
 
@@ -10,6 +11,12 @@ class Addeventcontroller extends GetxController {
 
   RxInt activeStepIndex = 0.obs;
   RxBool isLoading = false.obs;
+
+  // Edit mode (update existing event)
+  RxBool isEditMode = false.obs;
+  String? editingEventId;
+  String? existingCoverImageUrl;
+  String? programName;
 
   // Step 1: Basic
   String? coverImagePath;
@@ -53,6 +60,126 @@ class Addeventcontroller extends GetxController {
   RxBool isLoadingHistory = false.obs;
   RxList<Map<String, dynamic>> historyEvents = <Map<String, dynamic>>[].obs;
   String? selectedHistoryEventId;
+
+  // Reset everything for a fresh create flow
+  void resetForm() {
+    activeStepIndex.value = 0;
+    isEditMode.value = false;
+    editingEventId = null;
+    existingCoverImageUrl = null;
+    programName = null;
+    coverImagePath = null;
+    isRepeated.value = false;
+    repeatOption = null;
+    sessionNumber = null;
+    year = null;
+    sessionFrequency = null;
+    sessionSubOption = null;
+    programId = null;
+    organizer = null;
+    eventName = null;
+    eventPortal = null;
+    registrationPortal = null;
+    description = null;
+    note = null;
+    competitionLevel = null;
+    eventType = null;
+    registrationDate = null;
+    registrationTime = null;
+    deadlineDate = null;
+    deadlineTime = null;
+    cost = null;
+    hasFinalDeadline = false;
+    finalDeadlineYear = null;
+    finalDeadlineMonth = null;
+    finalDeadlineDay = null;
+    lateFee = null;
+    groups.isNotEmpty ? groups.clear() : null;
+    tempRounds.isNotEmpty ? tempRounds.clear() : null;
+    isSharedToCommunity.value = true;
+    isUserAgreementAccepted.value = false;
+    selectedHistoryEventId = null;
+  }
+
+  // Prefill all steps from an existing event (Edit & Verify flow)
+  void loadFromEvent(EventModel event) {
+    resetForm();
+    isEditMode.value = true;
+    editingEventId = event.id;
+
+    // Step 1: Basic
+    existingCoverImageUrl = event.coverImage;
+    programId = event.programId ?? event.program?.id;
+    programName = event.program?.name;
+    organizer = event.organizer;
+    eventName = event.eventName;
+    eventPortal = event.eventPortal;
+    registrationPortal = event.registrationPortal;
+    description = event.description;
+    note = event.note;
+
+    final frequency = event.repeatConfig?.frequency;
+    if (frequency != null && frequency.isNotEmpty && frequency != 'DontRepeat') {
+      isRepeated.value = true;
+      repeatOption = _mapRepeatOptionToUI(frequency);
+    }
+
+    // Step 2: Details
+    final schedule = event.schedule;
+    if (schedule != null) {
+      competitionLevel = schedule.competitionLevel;
+      eventType = schedule.eventType;
+      if (schedule.registrationDate != null) {
+        registrationDate = DateFormat('yyyy-MM-dd').format(schedule.registrationDate!);
+        registrationTime = DateFormat('hh:mm a').format(schedule.registrationDate!);
+      }
+      if (schedule.deadline != null) {
+        deadlineDate = DateFormat('yyyy-MM-dd').format(schedule.deadline!);
+        deadlineTime = DateFormat('hh:mm a').format(schedule.deadline!);
+      }
+      cost = double.tryParse(schedule.cost ?? '');
+      hasFinalDeadline = schedule.hasFinalDeadline ?? false;
+      if (schedule.finalDeadline != null) {
+        finalDeadlineYear = schedule.finalDeadline!.year.toString();
+        finalDeadlineMonth = schedule.finalDeadline!.month.toString();
+        finalDeadlineDay = schedule.finalDeadline!.day.toString();
+      }
+      lateFee = double.tryParse(schedule.lateFee ?? '');
+
+      // Step 3: Groups
+      if (schedule.groups != null) {
+        groups.assignAll(schedule.groups!.map((g) => {
+              "name": g.name ?? '',
+              "criteria": g.criteria ?? 'Age',
+              "condition": g.condition ?? 'UpTo',
+              "value": g.value ?? 0,
+              "rounds": (g.rounds ?? [])
+                  .map((r) => {
+                        "roundType": r.roundType ?? 'Preliminary',
+                        "deadline": r.deadline?.toUtc().toIso8601String(),
+                        "cost": double.tryParse(r.cost ?? '') ?? 0,
+                        "hasFinalDeadline": r.hasFinalDeadline ?? false,
+                        "finalDeadline": r.finalDeadline?.toUtc().toIso8601String(),
+                        "lateFee": double.tryParse(r.lateFee ?? '') ?? 0,
+                        "description": r.description,
+                      })
+                  .toList(),
+            }));
+      }
+    }
+  }
+
+  String _mapRepeatOptionToUI(String frequency) {
+    switch (frequency) {
+      case "DontRepeat": return "Don't Repeat";
+      case "Daily": return "Daily";
+      case "Weekly": return "Weekly";
+      case "Monthly": return "Monthly";
+      case "Quarterly": return "Quarterly";
+      case "Yearly": return "Yearly";
+      default: return "Don't Repeat";
+    }
+  }
 
   Future<void> fetchHistoryEvents() async {
     isLoadingHistory.value = true;
@@ -138,17 +265,37 @@ class Addeventcontroller extends GetxController {
         files["coverImage"] = coverImagePath!;
       }
 
-      final response = await _apiService.multipartPost(
-        ApiConstants.createEvent,
-        fields: fields,
-        files: files.isNotEmpty ? files : null,
-      );
+      final dynamic response;
+      if (isEditMode.value && editingEventId != null) {
+        // Update existing event (Edit & Verify flow)
+        response = await _apiService.multipartRequest(
+          ApiConstants.updateEvents.replaceAll(':eventId', editingEventId!),
+          method: 'PATCH',
+          fields: fields,
+          files: files.isNotEmpty ? files : null,
+        );
+      } else {
+        // Create new event (previous logic kept same)
+        response = await _apiService.multipartPost(
+          ApiConstants.createEvent,
+          fields: fields,
+          files: files.isNotEmpty ? files : null,
+        );
+      }
 
       if (response['success'] == true) {
-        Fluttertoast.showToast(msg: response['message'] ?? "Event created successfully");
+        Fluttertoast.showToast(
+            msg: response['message'] ??
+                (isEditMode.value
+                    ? "Event updated successfully"
+                    : "Event created successfully"));
         Get.back(); // Go back after success
       } else {
-        Fluttertoast.showToast(msg: response['message'] ?? "Failed to create event");
+        Fluttertoast.showToast(
+            msg: response['message'] ??
+                (isEditMode.value
+                    ? "Failed to update event"
+                    : "Failed to create event"));
       }
     } catch (e) {
       Fluttertoast.showToast(msg: e.toString());
@@ -210,6 +357,15 @@ class Addeventcontroller extends GetxController {
   void removeGroup(int index) {
     if (index >= 0 && index < groups.length) {
       groups.removeAt(index);
+    }
+  }
+
+  void removeRoundFromGroup(int groupIndex, int roundIndex) {
+    if (groupIndex >= 0 && groupIndex < groups.length) {
+      final rounds = groups[groupIndex]['rounds'] as List<dynamic>?;
+      if (rounds != null && roundIndex >= 0 && roundIndex < rounds.length) {
+        rounds.removeAt(roundIndex);
+      }
     }
   }
 

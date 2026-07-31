@@ -576,7 +576,9 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                             width: 164.w,
                             child: CustomButton(
                               borderColor: AppColors.buttonColor,
-                              onTap: () {},
+                              onTap: () {
+                                Get.toNamed(AppRoutes.createEventOne, arguments: event);
+                              },
                               text: "Edit & Verify",
                               color: AppColors.fillColor,
                               textColor: Colors.black,
