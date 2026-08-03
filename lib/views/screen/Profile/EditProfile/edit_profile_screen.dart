@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:event_sharing/controllers/auth_controller.dart';
+import 'package:event_sharing/utils/phone_utils.dart';
 import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/skillItem.dart';
 import 'package:event_sharing/views/screen/AddEvent/InnerWidget/dotted_border_container.dart';
@@ -49,6 +50,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final TextEditingController phoneNumberController = TextEditingController();
 
   String selectedCountryCodes = '+880';
+  String selectedCountryIso = 'BD';
   String selectedGender = '';
   List<String> skills = [];
 
@@ -107,12 +109,28 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       final phoneNumber = profile['phoneNumber'] ?? '';
       if (phoneNumber.isNotEmpty) {
         phoneNumberController.text = phoneNumber;
+        final detected = PhoneUtils.detectCountry(phoneNumber);
+        if (detected != null) {
+          selectedCountryIso = detected.iso;
+          selectedCountryCodes = detected.dialCode;
+        }
       }
 
       final skillsList = profile['skillLabels'] as List?;
       if (skillsList != null) {
         skills = skillsList.map((e) => e.toString()).toList();
       }
+    }
+  }
+
+  /// Auto-detect country flag when user types a number like "+880177..."
+  void _onPhoneNumberChanged(String value) {
+    final detected = PhoneUtils.detectCountry(value);
+    if (detected != null && detected.iso != selectedCountryIso) {
+      setState(() {
+        selectedCountryIso = detected.iso;
+        selectedCountryCodes = detected.dialCode;
+      });
     }
   }
 
@@ -364,15 +382,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             SizedBox(
                               height: 55.h,
                               child: CountryCodePicker(
-                                showFlag: false,
+                                showFlag: true,
+                                hideMainText: true,
                                 showFlagDialog: true,
                                 onChanged: (countryCode) {
                                   setState(() {
                                     selectedCountryCodes =
                                         countryCode.dialCode!;
+                                    selectedCountryIso = countryCode.code!;
                                   });
                                 },
-                                initialSelection: 'BD',
+                                initialSelection: selectedCountryIso,
                                 favorite: const ['+880', 'BD'],
                                 showCountryOnly: false,
                                 showOnlyCountryWhenClosed: false,
@@ -391,6 +411,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           controller: phoneNumberController,
                           keyboardType: TextInputType.phone,
                           hintText: AppStrings.phoneNumberHintText,
+                          onChanged: _onPhoneNumberChanged,
                         ),
                       ),
                     ],
