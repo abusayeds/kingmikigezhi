@@ -1,6 +1,7 @@
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:event_sharing/controllers/auth_controller.dart';
 import 'package:event_sharing/utils/app_strings.dart';
+import 'package:event_sharing/utils/phone_utils.dart';
 import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/custom_text_field.dart';
 import 'package:event_sharing/views/screen/Profile/Account/top_profile_section.dart';
@@ -42,6 +43,7 @@ class _PersonalInformationScreenState
       TextEditingController();
 
   String selectedCountryCodes = '+880';
+  String selectedCountryIso = 'BD';
 
   // Skill dropdown state
   String? _selectedProgramId;
@@ -126,6 +128,12 @@ class _PersonalInformationScreenState
             phoneNumberController.text.isEmpty) {
           // Strip dial code prefix if present, show local part
           phoneNumberController.text = phoneNumber;
+          // Detect country from saved number so the flag matches
+          final detected = PhoneUtils.detectCountry(phoneNumber);
+          if (detected != null) {
+            selectedCountryIso = detected.iso;
+            selectedCountryCodes = detected.dialCode;
+          }
         }
 
         final programs = _authController.editOptionPrograms;
@@ -227,18 +235,10 @@ class _PersonalInformationScreenState
                       child: CustomTextField(
                         controller: birthDayDayController..text = day,
                         hintText: 'Day',
+                        readOnly: true,
                         hintTextStyle: TextStyle(
                             color: AppColors.color414141,
                             fontSize: 14.sp),
-                        sufixicons: Padding(
-                          padding: EdgeInsets.only(right: 12.w),
-                          child: SvgPicture.asset(
-                            AppIcons.downArrowIcon,
-                            width: 16.w,
-                            colorFilter: ColorFilter.mode(
-                                AppColors.primaryColor, BlendMode.srcIn),
-                          ),
-                        ),
                       ),
                     ),
                     SizedBox(
@@ -247,18 +247,10 @@ class _PersonalInformationScreenState
                         controller:
                             birthDayMonthController..text = month,
                         hintText: 'Month',
+                        readOnly: true,
                         hintTextStyle: TextStyle(
                             color: AppColors.color414141,
                             fontSize: 14.sp),
-                        sufixicons: Padding(
-                          padding: EdgeInsets.only(right: 12.w),
-                          child: SvgPicture.asset(
-                            AppIcons.downArrowIcon,
-                            width: 16.w,
-                            colorFilter: ColorFilter.mode(
-                                AppColors.primaryColor, BlendMode.srcIn),
-                          ),
-                        ),
                       ),
                     ),
                     SizedBox(
@@ -266,18 +258,10 @@ class _PersonalInformationScreenState
                       child: CustomTextField(
                         controller: birthDayYearController..text = year,
                         hintText: 'Year',
+                        readOnly: true,
                         hintTextStyle: TextStyle(
                             color: AppColors.color414141,
                             fontSize: 14.sp),
-                        sufixicons: Padding(
-                          padding: EdgeInsets.only(right: 12.w),
-                          child: SvgPicture.asset(
-                            AppIcons.downArrowIcon,
-                            width: 16.w,
-                            colorFilter: ColorFilter.mode(
-                                AppColors.primaryColor, BlendMode.srcIn),
-                          ),
-                        ),
                       ),
                     ),
                   ],
@@ -331,15 +315,11 @@ class _PersonalInformationScreenState
                                 child: CountryCodePicker(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 4.0),
-                                  showFlag: false,
+                                  enabled: false,
+                                  showFlag: true,
+                                  hideMainText: true,
                                   showFlagDialog: true,
-                                  onChanged: (countryCode) {
-                                    setState(() {
-                                      selectedCountryCodes =
-                                          countryCode.dialCode!;
-                                    });
-                                  },
-                                  initialSelection: 'BD',
+                                  initialSelection: selectedCountryIso,
                                   favorite: const ['+880', 'BD'],
                                   showCountryOnly: false,
                                   showOnlyCountryWhenClosed: false,
@@ -365,6 +345,7 @@ class _PersonalInformationScreenState
                           controller: phoneNumberController,
                           keyboardType: TextInputType.phone,
                           hintText: AppStrings.phoneNumberHintText,
+                          readOnly: true,
                           hintTextStyle: TextStyle(
                             color: AppColors.color414141,
                             fontSize: 14.sp,
@@ -393,15 +374,10 @@ class _PersonalInformationScreenState
                         controller:
                             locationCountryController..text = country,
                         hintText: 'Country',
+                        readOnly: true,
                         hintTextStyle: TextStyle(
                             color: AppColors.color414141,
                             fontSize: 14.sp),
-                        sufixicons: Padding(
-                          padding: EdgeInsets.only(right: 12.w),
-                          child: SvgPicture.asset(
-                              AppIcons.downArrowIcon,
-                              width: 16.w),
-                        ),
                       ),
                     ),
                     SizedBox(
@@ -410,15 +386,10 @@ class _PersonalInformationScreenState
                         controller:
                             locationStateController..text = state,
                         hintText: 'State',
+                        readOnly: true,
                         hintTextStyle: TextStyle(
                             color: AppColors.color414141,
                             fontSize: 14.sp),
-                        sufixicons: Padding(
-                          padding: EdgeInsets.only(right: 12.w),
-                          child: SvgPicture.asset(
-                              AppIcons.downArrowIcon,
-                              width: 16.w),
-                        ),
                       ),
                     ),
                     SizedBox(
@@ -427,15 +398,10 @@ class _PersonalInformationScreenState
                         controller:
                             locationCityController..text = city,
                         hintText: 'City',
+                        readOnly: true,
                         hintTextStyle: TextStyle(
                             color: AppColors.color414141,
                             fontSize: 14.sp),
-                        sufixicons: Padding(
-                          padding: EdgeInsets.only(right: 12.w),
-                          child: SvgPicture.asset(
-                              AppIcons.downArrowIcon,
-                              width: 16.w),
-                        ),
                       ),
                     ),
                   ],
