@@ -5,6 +5,7 @@ import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_icons.dart';
@@ -176,7 +177,33 @@ class _StepFiveFormState extends State<StepFiveForm> {
                   SizedBox(width: 15.w),
                   Expanded(
                     child: CustomButton(
-                      onTap: (){},
+                      onTap: () {
+                        if (_selectedHistoryEventId == null) {
+                          Fluttertoast.showToast(msg: "Please select a history event");
+                          return;
+                        }
+                        if (_selectedRound == null) {
+                          Fluttertoast.showToast(msg: "Please select a record");
+                          return;
+                        }
+                        final selectedEvent = addEventController.historyEvents.firstWhereOrNull(
+                          (e) => e['id']?.toString() == _selectedHistoryEventId,
+                        );
+                        final eventName = selectedEvent?['eventName']?.toString() ?? '';
+                        final year = selectedEvent?['eventYear']?.toString() ??
+                            (selectedEvent?['createdAt'] != null
+                                ? selectedEvent!['createdAt'].toString().split('-').first
+                                : '');
+                        addEventController.addOwnHistory(
+                          eventId: _selectedHistoryEventId!,
+                          eventName: eventName,
+                          year: year,
+                          placement: _selectedRound!,
+                        );
+                        setState(() {
+                          _selectedRound = null;
+                        });
+                      },
                       text: 'Add',
                       textColor: AppColors.textColor,
                       borderColor: AppColors.buttonA47059,
@@ -191,7 +218,8 @@ class _StepFiveFormState extends State<StepFiveForm> {
                 padding: EdgeInsets.all(4.r),
                 child: Text('History', style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
               ),
-              Container(
+              Obx(() => Container(
+                width: double.infinity,
                 decoration: BoxDecoration(
                   color: AppColors.colorEDF2F4,
                   borderRadius: const BorderRadius.all(Radius.circular(8)),
@@ -199,112 +227,70 @@ class _StepFiveFormState extends State<StepFiveForm> {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8.w),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                SvgPicture.asset(AppIcons.dotIconForFamily),
-                                SizedBox(width: 4.w),
-                                CustomText(
-                                  text: '2021 - 1st place winner',
-                                  color: AppColors.color414141,
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                InkWell(
-                                    onTap: () {
-                                      Get.back();
-                                    },
-                                    child: SvgPicture.asset(AppIcons.editIcon)),
-                                SizedBox(width: 4.w),
-                                InkWell(
-                                    onTap: () {
-                                      Get.back();
-                                    },
-                                    child: SvgPicture.asset(AppIcons.trashIcon))
-                              ],
-                            ),
-                          ],
+                  child: addEventController.ownHistories.isEmpty
+                      ? Padding(
+                          padding: EdgeInsets.all(8.r),
+                          child: CustomText(
+                            text: 'No history added yet',
+                            color: AppColors.color414141,
+                          ),
+                        )
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: List.generate(addEventController.ownHistories.length, (index) {
+                            final history = addEventController.ownHistories[index];
+                            final year = history['year']?.toString() ?? '';
+                            final placement = history['placement']?.toString() ?? '';
+                            return Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: Row(
+                                      children: [
+                                        SvgPicture.asset(AppIcons.dotIconForFamily),
+                                        SizedBox(width: 4.w),
+                                        Flexible(
+                                          child: CustomText(
+                                            text: year.isNotEmpty
+                                                ? '$year - $placement place winner'
+                                                : '$placement place winner',
+                                            color: AppColors.color414141,
+                                            maxline: 1,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Row(
+                                    children: [
+                                      InkWell(
+                                          onTap: () {
+                                            // Edit: load back into dropdowns and remove from list
+                                            setState(() {
+                                              _selectedHistoryEventId = history['eventId']?.toString();
+                                              addEventController.selectedHistoryEventId = _selectedHistoryEventId;
+                                              _selectedRound = placement;
+                                            });
+                                            addEventController.removeOwnHistory(index);
+                                          },
+                                          child: SvgPicture.asset(AppIcons.editIcon)),
+                                      SizedBox(width: 4.w),
+                                      InkWell(
+                                          onTap: () {
+                                            addEventController.removeOwnHistory(index);
+                                          },
+                                          child: SvgPicture.asset(AppIcons.trashIcon))
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            );
+                          }),
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8.w,vertical: 8.w),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                SvgPicture.asset(AppIcons.dotIconForFamily),
-                                SizedBox(width: 4.w),
-                                CustomText(
-                                  text: '2022 - 1st place winner',
-                                  color: AppColors.color414141,
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                InkWell(
-                                    onTap: () {
-                                      Get.back();
-                                    },
-                                    child: SvgPicture.asset(AppIcons.editIcon)),
-                                const SizedBox(width: 4),
-                                InkWell(
-                                    onTap: () {
-                                      Get.back();
-                                    },
-                                    child: SvgPicture.asset(AppIcons.trashIcon))
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                SvgPicture.asset(AppIcons.dotIconForFamily),
-                                SizedBox(width: 4.w),
-                                CustomText(
-                                  text: '2023 - 1st place winner',
-                                  color: AppColors.color414141,
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                InkWell(
-                                    onTap: () {
-                                      //  Get.back();
-                                    },
-                                    child: SvgPicture.asset(AppIcons.editIcon)),
-                                const SizedBox(width: 4),
-                                InkWell(
-                                    onTap: () {
-                                      //Get.back();
-                                    },
-                                    child: SvgPicture.asset(AppIcons.trashIcon))
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
                 ),
-              ),
+              )),
               SizedBox(height: 16.h),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

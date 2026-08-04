@@ -48,16 +48,42 @@ class _StepThreeFormState extends State<StepThreeForm> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) return;
-      addeventcontroller.clearTempRounds();
-    });
+    // DO NOT clear tempRounds here — IndexedStack keeps this widget alive,
+    // so initState is only called once when the screen first loads.
+    // Clearing here would wipe rounds only on first load, not on re-entry.
   }
 
   void _saveDataToController() {
-    // Groups and rounds are saved directly via addGroup() and addTempRound(),
-    // so no additional save is needed here. This method exists for consistency
-    // with StepOneForm and StepTwoForm.
+    // If the user added rounds but never pressed "Add" on the group,
+    // auto-save them into a group so data isn't lost on Next.
+    if (addeventcontroller.tempRounds.isNotEmpty) {
+      final criteria = _selectedCriteria ?? 'Age';
+      final condition = _selectedCondition ?? 'UpTo';
+      final value = int.tryParse(groupValueController.text) ?? 100;
+      String generatedName = "$criteria $condition $value";
+      if (criteria == 'Age') {
+        generatedName += " years old";
+      }
+
+      // Deep-copy before clearing
+      final snapshotRounds = addeventcontroller.tempRounds
+          .map((r) => Map<String, dynamic>.from(r))
+          .toList();
+
+      addeventcontroller.addGroup(
+        generatedName,
+        criteria,
+        condition,
+        value,
+        snapshotRounds,
+      );
+      addeventcontroller.clearTempRounds();
+      groupValueController.clear();
+      setState(() {
+        _selectedCriteria = null;
+        _selectedCondition = null;
+      });
+    }
   }
 
   @override
@@ -137,20 +163,26 @@ class _StepThreeFormState extends State<StepThreeForm> {
                           generatedName += " years old";
                         }
 
+                        // Snapshot the rounds NOW (deep copy) before anything is cleared
+                        final snapshotRounds = addeventcontroller.tempRounds
+                            .map((r) => Map<String, dynamic>.from(r))
+                            .toList();
+
                         addeventcontroller.addGroup(
                           generatedName,
                           _selectedCriteria!,
                           _selectedCondition!,
                           int.parse(groupValueController.text),
-                          addeventcontroller.tempRounds,
+                          snapshotRounds,
                         );
-                        // Reset
+
+                        // Clear temp state AFTER group is safely stored
+                        addeventcontroller.clearTempRounds();
                         groupValueController.clear();
                         setState(() {
                           _selectedCriteria = null;
                           _selectedCondition = null;
                         });
-                        addeventcontroller.clearTempRounds();
                       },
                       text: 'Add',
                       textColor: AppColors.textColor,
@@ -202,7 +234,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
                                         children: [
                                           Expanded(
                                             child: Text(
-                                              "${round['roundType']} - ${round['deadline'] ?? 'No deadline'} - \$${round['cost'] ?? 0}",
+                                              "${round['roundType']} - ${_formatDeadline(round['deadline'])} - \$${round['cost'] ?? 0}",
                                               style: TextStyle(fontSize: 12.sp),
                                             ),
                                           ),
@@ -377,7 +409,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
                         child: addeventcontroller.tempRounds.isEmpty 
                           ? const Text("No rounds added")
                           : Column(
-                              children: addeventcontroller.tempRounds.map((r) => Text("• ${r['roundType']} - ${r['deadline']}")).toList(),
+                              children: addeventcontroller.tempRounds.map((r) => Text("• ${r['roundType']} - ${_formatDeadline(r['deadline'])}")).toList(),
                             ),
                       )),
                     ],
@@ -423,6 +455,15 @@ class _StepThreeFormState extends State<StepThreeForm> {
         )
       ]),
     );
+  }
+
+  // Show "2026-09-01T11:53" instead of "2026-09-01T11:53:00.000Z"
+  String _formatDeadline(dynamic deadline) {
+    final raw = deadline?.toString() ?? '';
+    if (raw.isEmpty) return 'No deadline';
+    final parsed = DateTime.tryParse(raw);
+    if (parsed == null) return raw;
+    return DateFormat("yyyy-MM-dd'T'HH:mm").format(parsed);
   }
 
   Widget _buildDropdown({

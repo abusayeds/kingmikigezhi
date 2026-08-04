@@ -103,16 +103,17 @@ PreferredSize customHomeAppBar() {
               onTap: () {
                 Get.toNamed(AppRoutes.personalInformationScreen);
               },
-              child: CircleAvatar(
-                radius: 20.r,
-                backgroundColor: Colors.grey[200],
-                backgroundImage: AssetImage(AppImages.logo),
-                foregroundImage: (user?['profilePicture'] ?? user?['image']) != null &&
-                        (user!['profilePicture'] ?? user['image']).toString().isNotEmpty
-                    ? NetworkImage(user['profilePicture'] ?? user['image'])
-                    : null,
-                onForegroundImageError: (_, __) {},
-              ),
+              child: Builder(builder: (context) {
+                final dynamic imageUrl = user?['profilePicture'] ?? user?['image'];
+                final bool hasImage = imageUrl != null && imageUrl.toString().isNotEmpty;
+                return CircleAvatar(
+                  radius: 20.r,
+                  backgroundColor: Colors.grey[200],
+                  backgroundImage: AssetImage(AppImages.logo),
+                  foregroundImage: hasImage ? NetworkImage(imageUrl.toString()) : null,
+                  onForegroundImageError: hasImage ? (_, __) {} : null,
+                );
+              }),
             ),
           ],
         );
