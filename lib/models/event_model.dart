@@ -1,6 +1,7 @@
 class EventModel {
   final String? id;
   final String? eventName;
+  final String? baseEventName;
   final String? coverImage;
   final String? programId;
   final String? organizer;
@@ -12,21 +13,34 @@ class EventModel {
   final bool? isPublished;
   final bool? isActive;
   final bool? isVerified;
+  final bool? isDisabled;
   final bool? isDeleted;
+  final bool? isSharedToCommunity;
+  final bool? isUserAgreementAccepted;
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final String? sessionId;
+  // Session fields returned at the top level of the event
+  final String? year;
+  final String? session;        // e.g. "Daily"
+  final String? sessionValue;   // e.g. "Tuesday"
+  final String? sessionLevel;   // e.g. "2026-Tuesday"
   final List<dynamic>? results;
   final int? applicationCount;
   final Program? program;
   final RepeatConfig? repeatConfig;
   final Creator? creator;
   final Schedule? schedule;
+  // Groups are returned at the top level of the event (not inside schedule)
+  final List<Group>? groups;
+  // Previous events (history records linked to this event)
+  final List<PreviousEvent>? previousEvents;
   final List<EventApplied>? eventApplieds;
 
   EventModel({
     this.id,
     this.eventName,
+    this.baseEventName,
     this.coverImage,
     this.programId,
     this.organizer,
@@ -38,22 +52,32 @@ class EventModel {
     this.isPublished,
     this.isActive,
     this.isVerified,
+    this.isDisabled,
     this.isDeleted,
+    this.isSharedToCommunity,
+    this.isUserAgreementAccepted,
     this.createdAt,
     this.updatedAt,
     this.sessionId,
+    this.year,
+    this.session,
+    this.sessionValue,
+    this.sessionLevel,
     this.results,
     this.applicationCount,
     this.program,
     this.repeatConfig,
     this.creator,
     this.schedule,
+    this.groups,
+    this.previousEvents,
     this.eventApplieds,
   });
 
   factory EventModel.fromJson(Map<String, dynamic> json) => EventModel(
         id: json["id"],
         eventName: json["eventName"],
+        baseEventName: json["baseEventName"],
         coverImage: json["coverImage"],
         programId: json["programId"],
         organizer: json["organizer"],
@@ -65,16 +89,30 @@ class EventModel {
         isPublished: json["isPublished"],
         isActive: json["isActive"],
         isVerified: json["isVerified"],
+        isDisabled: json["isDisabled"],
         isDeleted: json["isDeleted"],
+        isSharedToCommunity: json["isSharedToCommunity"],
+        isUserAgreementAccepted: json["isUserAgreementAccepted"],
         createdAt: _parseDateTime(json["createdAt"] ?? json["created_at"]),
         updatedAt: _parseDateTime(json["updatedAt"] ?? json["updated_at"]),
         sessionId: json["sessionId"],
+        year: json["year"],
+        session: json["session"],
+        sessionValue: json["sessionValue"],
+        sessionLevel: json["sessionLevel"],
         results: json["results"] == null ? null : List<dynamic>.from(json["results"].map((x) => x)),
-        applicationCount: json["_count"] == null ? null : json["_count"]["applications"],
+        applicationCount: json["_count"] == null ? null : json["_count"]["eventApplieds"] ?? json["_count"]["applications"],
         program: json["program"] == null ? null : Program.fromJson(json["program"]),
         repeatConfig: json["repeatConfig"] == null ? null : RepeatConfig.fromJson(json["repeatConfig"]),
         creator: json["creator"] == null ? null : Creator.fromJson(json["creator"]),
         schedule: json["schedule"] == null ? null : Schedule.fromJson(json["schedule"]),
+        // Groups live at the event top level
+        groups: json["groups"] == null
+            ? null
+            : List<Group>.from((json["groups"] as List).map((x) => Group.fromJson(x))),
+        previousEvents: json["previousEvents"] == null
+            ? null
+            : List<PreviousEvent>.from((json["previousEvents"] as List).map((x) => PreviousEvent.fromJson(x))),
         eventApplieds: json["eventApplieds"] == null ? null : List<EventApplied>.from(json["eventApplieds"].map((x) => EventApplied.fromJson(x))),
       );
 
@@ -178,7 +216,6 @@ class Schedule {
   final bool? hasFinalDeadline;
   final DateTime? finalDeadline;
   final String? lateFee;
-  final List<Group>? groups;
   final EstimatedCost? estimatedCost;
 
   Schedule({
@@ -191,7 +228,6 @@ class Schedule {
     this.hasFinalDeadline,
     this.finalDeadline,
     this.lateFee,
-    this.groups,
     this.estimatedCost,
   });
 
@@ -205,7 +241,6 @@ class Schedule {
         hasFinalDeadline: json["hasFinalDeadline"],
         finalDeadline: json["finalDeadline"] == null ? null : DateTime.parse(json["finalDeadline"]),
         lateFee: json["lateFee"],
-        groups: json["groups"] == null ? null : List<Group>.from(json["groups"].map((x) => Group.fromJson(x))),
         estimatedCost: json["estimatedCost"] == null ? null : EstimatedCost.fromJson(json["estimatedCost"]),
       );
 }
@@ -269,5 +304,21 @@ class EstimatedCost {
         roundsTotalCost: json["roundsTotalCost"],
         groupsTotalCost: json["groupsTotalCost"],
         totalEstimatedCost: json["totalEstimatedCost"],
+      );
+}
+
+class PreviousEvent {
+  final String? id;
+  final String? recordName;
+  final String? eventName;
+  final DateTime? date;
+
+  PreviousEvent({this.id, this.recordName, this.eventName, this.date});
+
+  factory PreviousEvent.fromJson(Map<String, dynamic> json) => PreviousEvent(
+        id: json["id"],
+        recordName: json["recordName"],
+        eventName: json["eventName"],
+        date: json["date"] == null ? null : DateTime.parse(json["date"]),
       );
 }

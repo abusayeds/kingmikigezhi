@@ -383,7 +383,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                       width: 16.w,
                       color: AppColors.blackColor,
                     ),
-                    items: (schedule?.groups?.map((g) => g.name ?? 'Group').toList() ?? [])
+                    items: (event?.groups?.map((g) => g.name ?? 'Group').toList() ?? [])
                         .map((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
@@ -399,8 +399,12 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                 ),
               ),
               SizedBox(height: 16.h),
-              if (schedule?.groups != null)
-                ...schedule!.groups!.map((group) {
+              if (event?.groups != null)
+                ...event!.groups!
+                    .where((group) =>
+                        _selectedAge == null ||
+                        _selectedAge == (group.name ?? 'Group'))
+                    .map((group) {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -481,7 +485,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                   ],
                                 ),
                               ),
-                              const Divider(thickness: 1, color: Colors.grey),
+
                             ],
                           );
                         }),
@@ -489,6 +493,48 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                   );
                 }),
               SizedBox(height: 16.h),
+              // ── Previous Events / History ──────────────────────────
+              if (event!.previousEvents != null && event!.previousEvents!.isNotEmpty) ...[
+                const Divider(thickness: 1, color: Colors.grey),
+                SizedBox(height: 8.h),
+                Text(
+                  'History :',
+                  style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600),
+                ),
+                SizedBox(height: 8.h),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: event!.previousEvents!.map((prev) {
+                    // Extract year from the date field if available
+                    final yearStr = prev.date != null
+                        ? prev.date!.year.toString()
+                        : '';
+                    final record = prev.recordName ?? '';
+                    return Padding(
+                      padding: EdgeInsets.symmetric(vertical: 4.h),
+                      child: Row(
+                        children: [
+                          SvgPicture.asset(AppIcons.dotIconForFamily),
+                          SizedBox(width: 4.w),
+                          Flexible(
+                            child: Text(
+                              yearStr.isNotEmpty
+                                  ? '$yearStr - $record'
+                                  : record,
+                              style: AppStyles.fieldContent(
+                                  color: AppColors.color414141),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                ),
+                SizedBox(height: 15.h),
+              ],
+              const Divider(thickness: 1, color: Colors.grey),
               Padding(
                 padding: EdgeInsets.only(left: 7.w),
                 child: Column(
@@ -520,6 +566,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                       ),
                     ),
                     SizedBox(height: 15.h),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -576,8 +623,27 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                             width: 164.w,
                             child: CustomButton(
                               borderColor: AppColors.buttonColor,
-                              onTap: () {
-                                Get.toNamed(AppRoutes.createEventOne, arguments: event);
+                              onTap: () async {
+                                // Wait for the edit screen to finish.
+                                // If the update succeeded, the controller passes
+                                // back the fresh EventModel as the navigation result.
+                                final result = await Get.toNamed(
+                                  AppRoutes.createEventOne,
+                                  arguments: event,
+                                );
+                                if (!mounted) return;
+                                if (result is EventModel) {
+                                  // Instantly update the UI with the fresh data
+                                  // returned from the update API response.
+                                  setState(() {
+                                    event = result;
+                                    _createdAtDisplay = _formatCreatedAtOnly(result.createdAt);
+                                  });
+                                } else {
+                                  // Fallback: re-fetch from API in case result
+                                  // wasn't an EventModel (e.g. back without saving)
+                                  _fetchEventDetails();
+                                }
                               },
                               text: "Edit & Verify",
                               color: AppColors.fillColor,

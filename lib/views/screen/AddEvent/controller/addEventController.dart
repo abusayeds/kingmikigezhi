@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -61,6 +62,46 @@ class Addeventcontroller extends GetxController {
   RxList<Map<String, dynamic>> historyEvents = <Map<String, dynamic>>[].obs;
   String? selectedHistoryEventId;
 
+  // Own history records added by user (shown in History box, sent as results)
+  RxList<Map<String, dynamic>> ownHistories = <Map<String, dynamic>>[].obs;
+
+  void addOwnHistory({
+    required String eventId,
+    required String eventName,
+    required String year,
+    required String placement,
+  }) {
+    // placement is unique per event on backend (@@unique([eventId, placement]))
+    final exists = ownHistories.any((h) => h['placement'] == placement);
+    if (exists) {
+      Fluttertoast.showToast(msg: "This record is already added");
+      return;
+    }
+    ownHistories.add({
+      "eventId": eventId,
+      "eventName": eventName,
+      "year": year,
+      "placement": placement,
+    });
+  }
+
+  void removeOwnHistory(int index) {
+    if (index >= 0 && index < ownHistories.length) {
+      ownHistories.removeAt(index);
+    }
+  }
+
+  // Map UI placement label to backend PlacementType enum
+  String _mapPlacement(String placement) {
+    switch (placement) {
+      case "1st": return "First";
+      case "2nd": return "Second";
+      case "Silver": return "Silver";
+      case "Gold": return "Gold";
+      default: return placement;
+    }
+  }
+
   // Reset everything for a fresh create flow
   void resetForm() {
     activeStepIndex.value = 0;
@@ -99,6 +140,7 @@ class Addeventcontroller extends GetxController {
     isSharedToCommunity.value = true;
     isUserAgreementAccepted.value = false;
     selectedHistoryEventId = null;
+    ownHistories.isNotEmpty ? ownHistories.clear() : null;
   }
 
   // Prefill all steps from an existing event (Edit & Verify flow)
@@ -117,6 +159,12 @@ class Addeventcontroller extends GetxController {
     registrationPortal = event.registrationPortal;
     description = event.description;
     note = event.note;
+
+    // Session fields from top-level event
+    year = event.year;
+    sessionFrequency = event.session;       // "Daily", "Weekly", etc.
+    sessionSubOption = event.sessionValue;  // "Tuesday", "Week 1", etc.
+    sessionNumber = event.sessionLevel;     // "2026-Tuesday"
 
     final frequency = event.repeatConfig?.frequency;
     if (frequency != null && frequency.isNotEmpty && frequency != 'DontRepeat') {
@@ -145,27 +193,28 @@ class Addeventcontroller extends GetxController {
         finalDeadlineDay = schedule.finalDeadline!.day.toString();
       }
       lateFee = double.tryParse(schedule.lateFee ?? '');
+    }
 
-      // Step 3: Groups
-      if (schedule.groups != null) {
-        groups.assignAll(schedule.groups!.map((g) => {
-              "name": g.name ?? '',
-              "criteria": g.criteria ?? 'Age',
-              "condition": g.condition ?? 'UpTo',
-              "value": g.value ?? 0,
-              "rounds": (g.rounds ?? [])
-                  .map((r) => {
-                        "roundType": r.roundType ?? 'Preliminary',
-                        "deadline": r.deadline?.toUtc().toIso8601String(),
-                        "cost": double.tryParse(r.cost ?? '') ?? 0,
-                        "hasFinalDeadline": r.hasFinalDeadline ?? false,
-                        "finalDeadline": r.finalDeadline?.toUtc().toIso8601String(),
-                        "lateFee": double.tryParse(r.lateFee ?? '') ?? 0,
-                        "description": r.description,
-                      })
-                  .toList(),
-            }));
-      }
+    // Step 3: Groups — API returns groups at the TOP LEVEL of the event,
+    // not inside schedule.
+    if (event.groups != null) {
+      groups.assignAll(event.groups!.map((g) => {
+            "name": g.name ?? '',
+            "criteria": g.criteria ?? 'Age',
+            "condition": g.condition ?? 'UpTo',
+            "value": g.value ?? 0,
+            "rounds": (g.rounds ?? [])
+                .map((r) => {
+                      "roundType": r.roundType ?? 'Preliminary',
+                      "deadline": r.deadline?.toUtc().toIso8601String(),
+                      "cost": double.tryParse(r.cost ?? '') ?? 0,
+                      "hasFinalDeadline": r.hasFinalDeadline ?? false,
+                      "finalDeadline": r.finalDeadline?.toUtc().toIso8601String(),
+                      "lateFee": double.tryParse(r.lateFee ?? '') ?? 0,
+                      "description": r.description,
+                    })
+                .toList(),
+          }));
     }
   }
 
@@ -240,11 +289,15 @@ class Addeventcontroller extends GetxController {
         "isUserAgreementAccepted": isUserAgreementAccepted.value.toString(),
       };
 
-      if (note != null) fields["note"] = note!;
-      if (year != null) fields["year"] = year!;
-      if (sessionFrequency != null) fields["session"] = sessionFrequency!;
-      if (sessionSubOption != null) fields["sessionValue"] = sessionSubOption!;
-      if (sessionNumber != null) fields["sessionLevel"] = sessionNumber!;
+      if (note != null && note!.isNotEmpty) fields["note"] = note!;
+
+      // Session fields — must match backend field names exactly:
+      // year → "year", sessionFrequency → "session",
+      // sessionSubOption → "sessionValue", sessionNumber → "sessionLevel"
+      if (year != null && year!.isNotEmpty) fields["year"] = year!;
+      if (sessionFrequency != null && sessionFrequency!.isNotEmpty) fields["session"] = sessionFrequency!;
+      if (sessionSubOption != null && sessionSubOption!.isNotEmpty) fields["sessionValue"] = sessionSubOption!;
+      if (sessionNumber != null && sessionNumber!.isNotEmpty) fields["sessionLevel"] = sessionNumber!;
       
       if (isRepeated.value && repeatOption != null) {
         // Map UI repeat option to Backend Enum
@@ -255,8 +308,68 @@ class Addeventcontroller extends GetxController {
         });
       }
 
+      // Groups are sent at the TOP LEVEL (not inside schedule).
+      // cost and lateFee must be strings (backend stores them as Decimal).
+      // Only include optional fields when they carry a real value.
       if (groups.isNotEmpty) {
-        fields["groups"] = jsonEncode(groups);
+        final plainGroups = groups.map((g) {
+          final rawRounds = (g['rounds'] as List?)?.cast<Map<String, dynamic>>() ?? [];
+          return {
+            "name": g['name']?.toString() ?? '',
+            "criteria": g['criteria']?.toString() ?? 'Age',
+            "condition": g['condition']?.toString() ?? 'UpTo',
+            "value": g['value'] is int
+                ? g['value']
+                : int.tryParse(g['value'].toString()) ?? 0,
+            "rounds": rawRounds.map((r) {
+              // Convert numeric cost/lateFee to string — backend expects Decimal as string
+              final rawCost = r['cost'];
+              final rawLateFee = r['lateFee'];
+              final costNum = rawCost is num
+                  ? rawCost.toDouble()
+                  : double.tryParse(rawCost?.toString() ?? '') ?? 0.0;
+              final lateFeeNum = rawLateFee is num
+                  ? rawLateFee.toDouble()
+                  : double.tryParse(rawLateFee?.toString() ?? '') ?? 0.0;
+
+              // Format as integer string when whole (100.0 → "100"), else decimal string
+              String formatDecimal(double v) =>
+                  v == v.roundToDouble() ? v.toInt().toString() : v.toString();
+
+              final Map<String, dynamic> round = {
+                "roundType": r['roundType']?.toString() ?? 'Preliminary',
+                "deadline": r['deadline']?.toString() ?? '',
+                "cost": formatDecimal(costNum),
+              };
+
+              // Optional fields — only add when meaningful
+              if (r['hasFinalDeadline'] == true) {
+                round["hasFinalDeadline"] = true;
+                if (r['finalDeadline'] != null) {
+                  round["finalDeadline"] = r['finalDeadline'].toString();
+                }
+                round["lateFee"] = formatDecimal(lateFeeNum);
+              }
+              if (r['description'] != null &&
+                  r['description'].toString().isNotEmpty) {
+                round["description"] = r['description'].toString();
+              }
+
+              return round;
+            }).toList(),
+          };
+        }).toList();
+        fields["groups"] = jsonEncode(plainGroups);
+      }
+
+      // Own history records -> EventResult (placement + note)
+      if (ownHistories.isNotEmpty) {
+        fields["results"] = jsonEncode(ownHistories
+            .map((h) => {
+                  "placement": _mapPlacement(h['placement']?.toString() ?? ''),
+                  "note": "${h['year']} - ${h['placement']} place winner",
+                })
+            .toList());
       }
 
       // Prepare Files
@@ -264,6 +377,10 @@ class Addeventcontroller extends GetxController {
       if (coverImagePath != null) {
         files["coverImage"] = coverImagePath!;
       }
+
+      debugPrint("=== CREATE EVENT REQUEST ===");
+      fields.forEach((k, v) => debugPrint("$k: $v"));
+      debugPrint("files: $files");
 
       final dynamic response;
       if (isEditMode.value && editingEventId != null) {
@@ -289,8 +406,24 @@ class Addeventcontroller extends GetxController {
                 (isEditMode.value
                     ? "Event updated successfully"
                     : "Event created successfully"));
-        Get.back(); // Go back after success
+
+        // Parse the updated event from the response so the caller screen
+        // can refresh itself without an extra API call.
+        EventModel? updatedEvent;
+        try {
+          final rawData = response['data'];
+          if (rawData != null) {
+            final Map<String, dynamic> data = rawData is Map<String, dynamic>
+                ? rawData
+                : Map<String, dynamic>.from(rawData as Map);
+            updatedEvent = EventModel.fromJson(data);
+          }
+        } catch (_) {}
+
+        // Pass the updated model back so EventDetailsScreen can update itself
+        Get.back(result: updatedEvent);
       } else {
+        debugPrint("=== CREATE EVENT FAILED: $response");
         Fluttertoast.showToast(
             msg: response['message'] ??
                 (isEditMode.value
@@ -298,6 +431,7 @@ class Addeventcontroller extends GetxController {
                     : "Failed to create event"));
       }
     } catch (e) {
+      debugPrint("=== CREATE EVENT ERROR: $e");
       Fluttertoast.showToast(msg: e.toString());
     } finally {
       isLoading.value = false;
@@ -345,13 +479,20 @@ class Addeventcontroller extends GetxController {
   }
 
   void addGroup(String name, String criteria, String condition, int value, List<Map<String, dynamic>> rounds) {
+    // Deep-copy each round map so clearing tempRounds has zero effect on what
+    // is stored inside the group.
+    final copiedRounds = rounds
+        .map((r) => Map<String, dynamic>.from(r))
+        .toList();
     groups.add({
       "name": name,
-      "criteria": criteria, // Age or Score
-      "condition": condition, // UpTo, DownTo, etc.
+      "criteria": criteria,
+      "condition": condition,
       "value": value,
-      "rounds": List<Map<String, dynamic>>.from(rounds),
+      "rounds": copiedRounds,
     });
+    // Reassign so GetX triggers a reactive rebuild on all Obx listeners.
+    groups.refresh();
   }
 
   void removeGroup(int index) {
@@ -362,9 +503,13 @@ class Addeventcontroller extends GetxController {
 
   void removeRoundFromGroup(int groupIndex, int roundIndex) {
     if (groupIndex >= 0 && groupIndex < groups.length) {
-      final rounds = groups[groupIndex]['rounds'] as List<dynamic>?;
+      final group = groups[groupIndex];
+      final rounds = (group['rounds'] as List?)?.cast<Map<String, dynamic>>();
       if (rounds != null && roundIndex >= 0 && roundIndex < rounds.length) {
         rounds.removeAt(roundIndex);
+        // Reassign the whole entry so GetX sees the change and redraws.
+        groups[groupIndex] = Map<String, dynamic>.from(group);
+        groups.refresh();
       }
     }
   }

@@ -289,6 +289,7 @@ class _SteponeformState extends State<Steponeform> {
     addEventController.sessionFrequency = _selectedSessionFrequency;
     addEventController.sessionSubOption = _selectedSessionSubOption;
     addEventController.programId = _selectedProgram?.id;
+    addEventController.programName = _selectedProgram?.name; // keep name for re-init
     addEventController.organizer = organizerController.text;
     addEventController.eventName = eventNameController.text;
     addEventController.eventPortal = eventPortalController.text;

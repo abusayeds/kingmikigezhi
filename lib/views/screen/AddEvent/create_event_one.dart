@@ -1,14 +1,11 @@
-import 'dart:io';
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:event_sharing/models/event_model.dart';
 import 'package:event_sharing/utils/app_colors.dart';
-
 import 'package:event_sharing/views/screen/AddEvent/controller/addEventController.dart';
 import 'package:event_sharing/views/screen/AddEvent/stepFiveForm.dart';
 import 'package:event_sharing/views/screen/AddEvent/stepOneForm.dart';
 import 'package:event_sharing/views/screen/AddEvent/stepThreeForm.dart';
 import 'package:event_sharing/views/screen/AddEvent/stepTwoForm.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -24,33 +21,33 @@ class CreateEventOne extends StatefulWidget {
 }
 
 class _CreateEventOneState extends State<CreateEventOne> {
-  final TextEditingController organizerController = TextEditingController();
-  final TextEditingController eventName = TextEditingController();
-  final TextEditingController eventPortal = TextEditingController();
-  final TextEditingController registrationPortal = TextEditingController();
-  final TextEditingController descriptionCRTL = TextEditingController();
-  final TextEditingController noteCRTL = TextEditingController();
-
   var parameter = Get.parameters;
-  Uint8List? coverImage;
-  List<Uint8List?> eventImages = [null, null, null, null];
-  File? selectedImage;
 
-  // final List<String> numberList = ['Concert', 'Sports', 'Show', 'Olympic game'];
-  // final List<String> programList = ['Program One', 'Program Two', 'Program Three'];
-  //  final List<String> yearList = ['2020', '2021', '2024'];
-  // final List<String> sessionList = ['One', 'Two', 'Three'];
-  final Addeventcontroller addEventController = Get.put(Addeventcontroller());
+  // Force a fresh controller every time this screen opens so stale state
+  // from a previous create/edit session is never carried over.
+  late final Addeventcontroller addEventController;
 
   @override
   void initState() {
     super.initState();
+    // Delete any existing instance before putting a new one so we always
+    // start clean regardless of how many times the screen is pushed.
+    Get.delete<Addeventcontroller>(force: true);
+    addEventController = Get.put(Addeventcontroller());
+
     final dynamic args = Get.arguments;
     if (args is EventModel) {
       addEventController.loadFromEvent(args);
     } else {
       addEventController.resetForm();
     }
+  }
+
+  @override
+  void dispose() {
+    // Clean up so the next open always gets a fresh instance.
+    Get.delete<Addeventcontroller>(force: true);
+    super.dispose();
   }
 
   @override
@@ -220,21 +217,18 @@ class _CreateEventOneState extends State<CreateEventOne> {
                 onStepReached: (index) => addEventController.activeStepIndex.value = index,
               ),
             )),
-            // Wrap the step content in Obx to make it reactive
-            Obx(() {
-              if (addEventController.activeStepIndex.value == 0) {
-                return const Steponeform();
-              } else if (addEventController.activeStepIndex.value == 1)
-                return const StepTwoForm();
-              else if (addEventController.activeStepIndex.value == 2)
-                return const StepThreeForm();
-              else if (addEventController.activeStepIndex.value == 3)
-                return const StepFiveForm();
-              // else if (addEventController.activeStepIndex.value == 4)
-              //   return const StepFiveForm();
-              else
-                return const Steponeform(); // Default fallback
-            }),
+            // Use IndexedStack so all step widgets stay alive — their State
+            // (text controllers, dropdown values, tempRounds, etc.) is never
+            // destroyed when the user navigates between steps.
+            Obx(() => IndexedStack(
+              index: addEventController.activeStepIndex.value.clamp(0, 3),
+              children: const [
+                Steponeform(),
+                StepTwoForm(),
+                StepThreeForm(),
+                StepFiveForm(),
+              ],
+            )),
           ],
         ),
       ),
