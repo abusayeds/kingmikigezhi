@@ -307,6 +307,8 @@ class FamilyController extends GetxController {
     required String password,
     required String username,
     required String relationShip,
+    String? displayName,
+    String? phone,
     List<String>? skills,
     bool isIndependent = false,
   }) async {
@@ -328,6 +330,9 @@ class FamilyController extends GetxController {
         'password': password,
         'username': username,
         'relationShip': relationShip,
+        if (displayName != null && displayName.isNotEmpty)
+          'displayName': displayName,
+        if (phone != null && phone.isNotEmpty) 'phone': phone,
         if (skills != null) 'skills': skills,
         'isIndependent': isIndependent,
         'role': 'MEMBER',

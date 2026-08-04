@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:event_sharing/controllers/family_controller.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_icons.dart';
+import 'package:event_sharing/utils/app_images.dart';
 import 'package:event_sharing/utils/app_strings.dart';
 import 'package:event_sharing/views/base/custom_button.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
@@ -127,9 +128,8 @@ class _CreateFamilyGroupState extends State<CreateFamilyGroup> {
                                   shape: BoxShape.rectangle,
                                   border: Border.all(
                                       width: 2.w, color: AppColors.white),
-                                  image: const DecorationImage(
-                                    image: NetworkImage(
-                                        'https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg'),
+                                  image: DecorationImage(
+                                    image: AssetImage(AppImages.logo),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
