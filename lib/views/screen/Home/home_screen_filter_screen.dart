@@ -43,14 +43,26 @@ class _FilterScreenState extends State<FilterScreen> {
   Future<void> _fetchPrograms() async {
     try {
       final apiService = Get.find<ApiService>();
-      final response = await apiService.get(ApiConstants.programs);
-      if (response['success'] == true) {
-        final List<dynamic> data = response['data'] ?? [];
-        setState(() {
-          _apiPrograms = data.map((json) => Program.fromJson(json)).toList();
-          _isLoadingPrograms = false;
-        });
+      final List<Program> allPrograms = [];
+      int page = 1;
+      bool hasNext = true;
+
+      while (hasNext) {
+        final response = await apiService.get("${ApiConstants.programs}?page=$page&limit=50");
+        if (response['success'] == true) {
+          final List<dynamic> data = response['data'] ?? [];
+          allPrograms.addAll(data.map((json) => Program.fromJson(json)));
+          hasNext = response['meta']?['hasNext'] == true;
+          page++;
+        } else {
+          hasNext = false;
+        }
       }
+
+      setState(() {
+        _apiPrograms = allPrograms;
+        _isLoadingPrograms = false;
+      });
     } catch (e) {
       debugPrint("Error fetching programs: $e");
       setState(() {

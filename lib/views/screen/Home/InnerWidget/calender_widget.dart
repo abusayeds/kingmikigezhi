@@ -32,16 +32,18 @@ class _CalendarWithDropdownState extends State<CalendarWithDropdown> {
   String _selectedMonth = DateFormat('MMMM yyyy').format(DateTime.now());
 
   Map<DateTime, List<HomeEventModel>> _eventsMap = {};
+  Map<DateTime, int> _feedEventsCountMap = {};
 
   @override
   void initState() {
     super.initState();
     _eventController.fetchHomeEvents();
+    _eventController.fetchCalendarEvents();
   }
 
-  List<HomeEventModel> _getEventsForDay(DateTime day) {
+  int _getEventCountForDay(DateTime day) {
     final utcDay = DateTime.utc(day.year, day.month, day.day);
-    return _eventsMap[utcDay] ?? [];
+    return (_eventsMap[utcDay]?.length ?? 0) + (_feedEventsCountMap[utcDay] ?? 0);
   }
 
   @override
@@ -58,6 +60,15 @@ class _CalendarWithDropdownState extends State<CalendarWithDropdown> {
           if (endUtc != DateTime.utc(event.startsAt!.year, event.startsAt!.month, event.startsAt!.day)) {
             _eventsMap.putIfAbsent(endUtc, () => []).add(event);
           }
+        }
+      }
+
+      _feedEventsCountMap = {};
+      for (final event in _eventController.calendarEvents) {
+        final date = event.schedule?.registrationDate;
+        if (date != null) {
+          final utcDate = DateTime.utc(date.year, date.month, date.day);
+          _feedEventsCountMap[utcDate] = (_feedEventsCountMap[utcDate] ?? 0) + 1;
         }
       }
 
@@ -142,8 +153,9 @@ class _CalendarWithDropdownState extends State<CalendarWithDropdown> {
             ),
             calendarBuilders: CalendarBuilders(
               defaultBuilder: (context, day, focusedDay) {
-                final events = _getEventsForDay(day);
-                bool hasEvents = events.isNotEmpty;
+                final eventCount = _getEventCountForDay(day);
+                bool hasEvents = eventCount > 0;
+                final dotCount = eventCount > 3 ? 3 : eventCount;
                 return Container(
                   margin: const EdgeInsets.only(bottom: 5),
                   child: Column(
@@ -166,12 +178,19 @@ class _CalendarWithDropdownState extends State<CalendarWithDropdown> {
                         ],
                       ),
                       if (hasEvents)
-                        Container(
-                          height: 5.h,
-                          width: 5.w,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.r),
-                            color: AppColors.buttonColor,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: List.generate(
+                            dotCount,
+                            (index) => Container(
+                              margin: EdgeInsets.symmetric(horizontal: 1.w),
+                              height: 5.h,
+                              width: 5.w,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.r),
+                                color: AppColors.buttonColor,
+                              ),
+                            ),
                           ),
                         ),
                     ],

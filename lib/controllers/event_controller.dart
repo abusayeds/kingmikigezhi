@@ -22,6 +22,8 @@ class EventController extends GetxController {
   final RxList<HomeEventModel> homeEvents = <HomeEventModel>[].obs;
   final RxBool isLoadingHomeEvents = false.obs;
 
+  final RxList<EventModel> calendarEvents = <EventModel>[].obs;
+
   final Rx<EventModel?> eventDetails = Rx<EventModel?>(null);
   final RxBool isLoadingDetails = false.obs;
 
@@ -99,6 +101,31 @@ class EventController extends GetxController {
       debugPrint("Error fetching home events: $e");
     } finally {
       isLoadingHomeEvents.value = false;
+    }
+  }
+
+  Future<void> fetchCalendarEvents() async {
+    try {
+      final urls = [
+        ApiConstants.getUpcomingEvents,
+        ApiConstants.getHistoryEvents,
+        ApiConstants.todayEvents,
+      ];
+
+      final responses = await Future.wait(
+        urls.map((url) => apiService.get("$url?page=1&limit=100")),
+      );
+
+      final List<EventModel> allEvents = [];
+      for (final response in responses) {
+        if (response['success'] == true) {
+          final List<dynamic> data = response['data'];
+          allEvents.addAll(data.map((json) => EventModel.fromJson(json)));
+        }
+      }
+      calendarEvents.value = allEvents;
+    } catch (e) {
+      debugPrint("Error fetching calendar events: $e");
     }
   }
 
