@@ -151,10 +151,10 @@ class AppRoutes {
     //     name: createAccountScreen,
     //     page: () => CreateAccountScreen(),
     //     transition: Transition.noTransition),
-    GetPage(
-        name: calenderScreen,
-        page: () => const CalenderScreen(),
-        transition: Transition.noTransition),
+    // GetPage(
+    //     name: calenderScreen,
+    //     page: () => const CalenderScreen(),
+    //     transition: Transition.noTransition),
     GetPage(
         name: profileScreen,
         page: () => const ProfileScreen(),

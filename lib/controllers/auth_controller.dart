@@ -866,19 +866,30 @@ class AuthController extends GetxController {
   // Fetch programs list from GET /programs and fill editOptionPrograms
   Future<void> fetchPrograms() async {
     try {
-      final response =
-          await apiService.get("${ApiConstants.programs}?page=1&limit=100");
+      final List<Map<String, String>> allPrograms = [];
+      int page = 1;
+      bool hasNext = true;
 
-      if (response != null && response['success'] == true) {
-        final List<dynamic> programs = response['data'] ?? [];
-        editOptionPrograms.value = programs
-            .map<Map<String, String>>((e) => {
-                  'id': e['id']?.toString() ?? '',
-                  'name': e['name']?.toString() ?? '',
-                })
-            .where((p) => p['id']!.isNotEmpty && p['name']!.isNotEmpty)
-            .toList();
+      while (hasNext) {
+        final response =
+            await apiService.get("${ApiConstants.programs}?page=$page&limit=100");
+
+        if (response != null && response['success'] == true) {
+          final List<dynamic> programs = response['data'] ?? [];
+          allPrograms.addAll(programs
+              .map<Map<String, String>>((e) => {
+                    'id': e['id']?.toString() ?? '',
+                    'name': e['name']?.toString() ?? '',
+                  })
+              .where((p) => p['id']!.isNotEmpty && p['name']!.isNotEmpty));
+          hasNext = response['meta']?['hasNext'] == true;
+          page++;
+        } else {
+          hasNext = false;
+        }
       }
+
+      editOptionPrograms.value = allPrograms;
     } catch (e) {
       print('fetchPrograms error: $e');
     }
