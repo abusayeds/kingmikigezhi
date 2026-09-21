@@ -1,4 +1,5 @@
 import 'package:easy_stepper/easy_stepper.dart';
+import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/models/event_model.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/views/screen/AddEvent/controller/addEventController.dart';
@@ -64,11 +65,35 @@ class _CreateEventOneState extends State<CreateEventOne> {
     super.dispose();
   }
 
+  /// Back: previous step, or leave the form if already on step 1.
+  void _onBackPressed() {
+    if (addEventController.activeStepIndex.value > 0) {
+      addEventController.activeStepIndex.value--;
+    } else {
+      Get.back();
+    }
+  }
+
+  /// Close: discard the create/edit form and return to navbar Home.
+  void _onClosePressed() {
+    Get.offAndToNamed(AppRoutes.homeScreen);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, _) {
+        if (didPop) return;
+        _onBackPressed();
+      },
+      child: Scaffold(
       appBar: AppBar(
         scrolledUnderElevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: Colors.black, size: 18.w),
+          onPressed: _onBackPressed,
+        ),
         title: Obx(() => CustomText(
           text: addEventController.isEditMode.value
               ? 'Update Event'
@@ -77,6 +102,12 @@ class _CreateEventOneState extends State<CreateEventOne> {
           fontWeight: FontWeight.w500,
         )),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.close, color: Colors.black, size: 22.w),
+            onPressed: _onClosePressed,
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         controller: _scrollController,
@@ -246,6 +277,7 @@ class _CreateEventOneState extends State<CreateEventOne> {
             )),
           ],
         ),
+      ),
       ),
     );
   }
