@@ -1,6 +1,6 @@
 class ApiConstants {
   // TODO: Change this to your actual backend API base URL
-  static const String baseUrl = 'https://sayed2001.sobhoy.com'; // Replace with your actual base URL
+  static const String baseUrl = 'https://sabbir2001.ssh.bd'; // Replace with your actual base URL
   static const String apiUrl = '$baseUrl/api/v1';
 
 
@@ -106,6 +106,8 @@ class ApiConstants {
   static const String familyChildStephanieUsersEvents = '$apiUrl/events/feed/by-family-relation?relationShip=ChildStephanie';
   static const String familyChildSophiaUsersEvents = '$apiUrl/events/feed/by-family-relation?relationShip=ChildSophia';
   static const String familyOtherUsersEvents = '$apiUrl/events/feed/by-family-relation?relationShip=Other';
+  static String familyEventsByRelation(String relationShip) =>
+      '$apiUrl/events/feed/by-family-relation?relationShip=${Uri.encodeQueryComponent(relationShip)}';
   static const String getActiveEvents = '$apiUrl/events/feed/active';
   static const String getUpcomingEvents = '$apiUrl/events/feed/upcoming';
   static const String getHistoryEvents = '$apiUrl/events/feed/history';

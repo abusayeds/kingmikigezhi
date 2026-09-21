@@ -160,7 +160,12 @@ class AppRoutes {
         page: () => const ProfileScreen(),
         transition: Transition.noTransition),
     GetPage(name: walletScreen, page: () => const WalletScreen()),
-    GetPage(name: onboardScreen, page: () => const OnboardScreen()),
+    GetPage(
+      name: onboardScreen,
+      page: () => const OnboardScreen(),
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 450),
+    ),
     GetPage(name: signInScreen, page: () => const SignInScreen()),
     GetPage(name: signUpScreen, page: () => const SignUpScreen()),
     GetPage(

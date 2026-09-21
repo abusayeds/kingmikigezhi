@@ -6,6 +6,7 @@ import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_icons.dart';
 import 'package:event_sharing/utils/app_images.dart';
 import 'package:event_sharing/utils/app_strings.dart';
+import 'package:event_sharing/utils/media_url_utils.dart';
 import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/custom_button.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
@@ -27,13 +28,19 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
   EventModel? event;
   bool isLoading = true;
   String? error;
-  String? _createdAtDisplay;
+  /// Shown under "Created at" — uses last update date (updatedAt).
+  String? _lastUpdatedDisplay;
 
-  final List<String> _agesList = [
-    'Age up to 10 years old',
-    'Age up to 15 years old'
-  ];
   String? _selectedAge;
+
+  // ── Editable cost estimate ──
+  bool _includeCost = true;
+  bool _includeLateFee = true;
+  /// Round keys currently included in the estimate (`groupId|roundId|index`).
+  final Set<String> _includedRoundKeys = {};
+  final TextEditingController _totalCostController = TextEditingController();
+  bool _isEditingTotal = false;
+  bool _manualTotalOverride = false;
 
   @override
   void initState() {
@@ -41,7 +48,109 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
     _fetchEventDetails();
   }
 
-  String? _formatCreatedAtOnly(dynamic value) {
+  @override
+  void dispose() {
+    _totalCostController.dispose();
+    super.dispose();
+  }
+
+  double _parseMoney(dynamic raw) {
+    if (raw == null) return 0;
+    if (raw is num) return raw.toDouble();
+    final cleaned = raw.toString().replaceAll(RegExp(r'[^0-9.\-]'), '');
+    return double.tryParse(cleaned) ?? 0;
+  }
+
+  String _roundKey(Group group, Round round, int roundIndex) {
+    final gId = group.id ?? group.name ?? 'g';
+    final rId = round.id ?? '${round.roundType}_$roundIndex';
+    return '$gId|$rId';
+  }
+
+  void _initCostSelection(EventModel e) {
+    _includeCost = true;
+    final lateFee = _parseMoney(e.schedule?.lateFee);
+    _includeLateFee = lateFee > 0 || e.schedule?.hasFinalDeadline == true;
+    _includedRoundKeys.clear();
+    final groups = e.groups ?? [];
+    for (final group in groups) {
+      final rounds = group.rounds ?? [];
+      for (var i = 0; i < rounds.length; i++) {
+        _includedRoundKeys.add(_roundKey(group, rounds[i], i));
+      }
+    }
+    _manualTotalOverride = false;
+    _recalculateTotal(updateController: true);
+  }
+
+  /// Sum schedule cost/late fee + included round costs for the visible group(s).
+  double _calculateEstimatedTotal() {
+    if (event == null) return 0;
+    double total = 0;
+
+    if (_includeCost) {
+      total += _parseMoney(event!.schedule?.cost);
+    }
+    if (_includeLateFee) {
+      total += _parseMoney(event!.schedule?.lateFee);
+    }
+
+    final groups = event!.groups ?? [];
+    for (final group in groups) {
+      // Only count rounds for the selected group (or all if none selected).
+      if (_selectedAge != null && _selectedAge != (group.name ?? 'Group')) {
+        continue;
+      }
+      final rounds = group.rounds ?? [];
+      for (var i = 0; i < rounds.length; i++) {
+        final round = rounds[i];
+        final key = _roundKey(group, round, i);
+        if (!_includedRoundKeys.contains(key)) continue;
+        total += _parseMoney(round.cost);
+        // Include round late fee when that round has a final deadline.
+        if (round.hasFinalDeadline == true) {
+          total += _parseMoney(round.lateFee);
+        }
+      }
+    }
+    return total;
+  }
+
+  void _recalculateTotal({bool updateController = true}) {
+    final total = _calculateEstimatedTotal();
+    _manualTotalOverride = false;
+    if (updateController) {
+      final text = total == total.roundToDouble()
+          ? total.toInt().toString()
+          : total.toStringAsFixed(2);
+      _totalCostController.text = text;
+    }
+  }
+
+  Widget _editableCheckBox({
+    required bool checked,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          color: checked ? Colors.blueGrey : Colors.transparent,
+          shape: BoxShape.rectangle,
+          border: Border.all(color: Colors.blueGrey),
+          borderRadius: BorderRadius.circular(4),
+        ),
+        padding: const EdgeInsets.all(4),
+        child: Icon(
+          Icons.check,
+          color: checked ? Colors.white : Colors.transparent,
+          size: 10,
+        ),
+      ),
+    );
+  }
+
+  String? _formatDateOnly(dynamic value) {
     if (value == null) return null;
     if (value is DateTime) {
       return DateFormat('yyyy-MM-dd').format(value.toUtc());
@@ -67,12 +176,16 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
     if (args is EventModel) {
       eventId = args.id;
       argEvent = args;
-      _createdAtDisplay = _formatCreatedAtOnly(args.createdAt);
+      _lastUpdatedDisplay =
+          _formatDateOnly(args.updatedAt) ?? _formatDateOnly(args.createdAt);
     } else if (args is String) {
       eventId = args;
     } else if (args is Map) {
       eventId = args['id']?.toString() ?? args['eventId']?.toString();
-      _createdAtDisplay = _formatCreatedAtOnly(args['createdAt'] ?? args['created_at']);
+      _lastUpdatedDisplay = _formatDateOnly(
+            args['updatedAt'] ?? args['updated_at'],
+          ) ??
+          _formatDateOnly(args['createdAt'] ?? args['created_at']);
     }
 
     if (eventId == null) {
@@ -96,16 +209,23 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
             : Map<String, dynamic>.from(rawData as Map);
 
         final parsedEvent = EventModel.fromJson(data);
-        final createdAtFromApi = _formatCreatedAtOnly(
-          parsedEvent.createdAt ?? data['createdAt'] ?? data['created_at'],
+        final updatedFromApi = _formatDateOnly(
+          parsedEvent.updatedAt ??
+              data['updatedAt'] ??
+              data['updated_at'] ??
+              parsedEvent.createdAt ??
+              data['createdAt'] ??
+              data['created_at'],
         );
 
         setState(() {
           event = parsedEvent;
-          _createdAtDisplay = createdAtFromApi ??
-              _formatCreatedAtOnly(argEvent?.createdAt) ??
-              _createdAtDisplay;
+          _lastUpdatedDisplay = updatedFromApi ??
+              _formatDateOnly(argEvent?.updatedAt) ??
+              _formatDateOnly(argEvent?.createdAt) ??
+              _lastUpdatedDisplay;
           isLoading = false;
+          _initCostSelection(parsedEvent);
         });
       } else {
         setState(() {
@@ -119,6 +239,39 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
         isLoading = false;
       });
     }
+  }
+
+  Future<void> _openEditAndVerify() async {
+    final result = await Get.toNamed(
+      AppRoutes.createEventOne,
+      arguments: event,
+    );
+    if (!mounted) return;
+    if (result is EventModel) {
+      setState(() {
+        event = result;
+        _lastUpdatedDisplay = _formatDateOnly(result.updatedAt) ??
+            _formatDateOnly(result.createdAt);
+        _initCostSelection(result);
+      });
+    } else {
+      _fetchEventDetails();
+    }
+  }
+
+  Widget _profileAvatar({
+    required String? rawUrl,
+    required double radius,
+  }) {
+    final imageUrl = MediaUrlUtils.resolve(rawUrl);
+    final hasImage = imageUrl != null && imageUrl.isNotEmpty;
+    return CircleAvatar(
+      radius: radius,
+      backgroundColor: Colors.grey[200],
+      backgroundImage: AssetImage(AppImages.logo),
+      foregroundImage: hasImage ? NetworkImage(imageUrl) : null,
+      onForegroundImageError: hasImage ? (_, __) {} : null,
+    );
   }
 
   String _formatDate(DateTime? date) {
@@ -234,7 +387,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: InkWell(
-                              onTap: () {},
+                              onTap: _openEditAndVerify,
                               child: Center(child: SvgPicture.asset(AppIcons.editIcon))),
                         ),
                       ),
@@ -320,9 +473,29 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                             SizedBox(height: 17.h),
                             _buildInfoRow('Repeat Function', event!.repeatConfig?.frequency ?? 'Never'),
                             SizedBox(height: 18.h),
-                            _buildInfoRowWithCheck('Cost', '\$${schedule?.cost ?? '0'}'),
+                            _buildInfoRowWithCheck(
+                              'Cost',
+                              '\$${schedule?.cost ?? '0'}',
+                              checked: _includeCost,
+                              onChanged: () {
+                                setState(() {
+                                  _includeCost = !_includeCost;
+                                  _recalculateTotal();
+                                });
+                              },
+                            ),
                             SizedBox(height: 18.h),
-                            _buildInfoRowWithCheck('Late Fee', '\$${schedule?.lateFee ?? '0'}'),
+                            _buildInfoRowWithCheck(
+                              'Late Fee',
+                              '\$${schedule?.lateFee ?? '0'}',
+                              checked: _includeLateFee,
+                              onChanged: () {
+                                setState(() {
+                                  _includeLateFee = !_includeLateFee;
+                                  _recalculateTotal();
+                                });
+                              },
+                            ),
                           ],
                         ),
                       ),
@@ -393,6 +566,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                     onChanged: (String? newValue) {
                       setState(() {
                         _selectedAge = newValue;
+                        _recalculateTotal();
                       });
                     },
                   ),
@@ -410,11 +584,15 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                     children: [
                       Padding(
                         padding: EdgeInsets.symmetric(vertical: 8.h),
-                        child: Text('${group.name ?? 'Group'} (Value: ${group.value ?? 0})',
+                        child: Text('${group.name ?? 'Group'} (Value: ${group.value ?? ''})',
                             style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, color: AppColors.primaryColor)),
                       ),
                       if (group.rounds != null)
-                        ...group.rounds!.map((round) {
+                        ...group.rounds!.asMap().entries.map((entry) {
+                          final roundIndex = entry.key;
+                          final round = entry.value;
+                          final key = _roundKey(group, round, roundIndex);
+                          final isIncluded = _includedRoundKeys.contains(key);
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -457,16 +635,19 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                             const SizedBox(width: 10),
                                           ],
                                         ),
-                                        if (round.hasFinalDeadline == true)
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              color: Colors.blueGrey,
-                                              shape: BoxShape.rectangle,
-                                              borderRadius: BorderRadius.circular(4),
-                                            ),
-                                            padding: const EdgeInsets.all(4),
-                                            child: const Icon(Icons.check, color: Colors.white, size: 10),
-                                          ),
+                                        _editableCheckBox(
+                                          checked: isIncluded,
+                                          onTap: () {
+                                            setState(() {
+                                              if (isIncluded) {
+                                                _includedRoundKeys.remove(key);
+                                              } else {
+                                                _includedRoundKeys.add(key);
+                                              }
+                                              _recalculateTotal();
+                                            });
+                                          },
+                                        ),
                                       ],
                                     ),
                                     SizedBox(height: 8.h),
@@ -485,7 +666,6 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                   ],
                                 ),
                               ),
-
                             ],
                           );
                         }),
@@ -546,21 +726,66 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                     Align(
                       alignment: Alignment.centerRight,
                       child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 12.h, vertical: 8.w),
+                        padding: EdgeInsets.symmetric(horizontal: 12.h, vertical: 6.w),
                         decoration: BoxDecoration(
                           color: AppColors.fillColor,
                           borderRadius: BorderRadius.circular(4.r),
+                          border: Border.all(
+                            color: _isEditingTotal
+                                ? AppColors.buttonColor
+                                : Colors.transparent,
+                          ),
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text('Estimation Total Cost: ${schedule?.estimatedCost?.totalEstimatedCost ?? 0}',
+                            Text(
+                              'Estimation Total Cost: ',
+                              style: AppStyles.fontSize14(
+                                color: AppColors.color414141,
+                                fontWeight: FontWeight.w500,
+                              ).copyWith(fontSize: 10.sp),
+                            ),
+                            SizedBox(
+                              width: 72.w,
+                              child: TextField(
+                                controller: _totalCostController,
+                                enabled: _isEditingTotal,
+                                keyboardType: const TextInputType.numberWithOptions(decimal: true),
                                 style: AppStyles.fontSize14(
                                   color: AppColors.color414141,
-                                  fontWeight: FontWeight.w500,
-                                ).copyWith(fontSize: 10.sp)),
+                                  fontWeight: FontWeight.w600,
+                                ).copyWith(fontSize: 10.sp),
+                                decoration: const InputDecoration(
+                                  isDense: true,
+                                  border: InputBorder.none,
+                                  contentPadding: EdgeInsets.zero,
+                                ),
+                                onChanged: (_) {
+                                  _manualTotalOverride = true;
+                                },
+                                onSubmitted: (_) {
+                                  setState(() => _isEditingTotal = false);
+                                },
+                              ),
+                            ),
                             SizedBox(width: 8.w),
-                            SvgPicture.asset(AppIcons.editIcon, height: 12.w, width: 12.w),
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  _isEditingTotal = !_isEditingTotal;
+                                  if (!_isEditingTotal) {
+                                    // Leaving edit mode — keep typed value as override.
+                                    _manualTotalOverride = true;
+                                  }
+                                });
+                              },
+                              child: SvgPicture.asset(
+                                AppIcons.editIcon,
+                                height: 12.w,
+                                width: 12.w,
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -575,18 +800,14 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                             Text('Created By',
                                 style: GoogleFonts.poppins(fontSize: 12.sp, color: AppColors.color414141)),
                             SizedBox(width: 8.w),
-                            CircleAvatar(
+                            _profileAvatar(
+                              rawUrl: creator?.profilePicture,
                               radius: 30.r,
-                              backgroundImage: AssetImage(AppImages.logo),
-                              foregroundImage: (creator?.profilePicture?.isNotEmpty ?? false)
-                                  ? NetworkImage(creator!.profilePicture!)
-                                  : null,
-                              onForegroundImageError: (_, __) {},
                             ),
                           ],
                         ),
                         Text(
-                          'Created at\n${_createdAtDisplay ?? 'N/A'}',
+                          'Created at\n${_lastUpdatedDisplay ?? 'N/A'}',
                           textAlign: TextAlign.right,
                           style: GoogleFonts.poppins(fontSize: 12.sp, color: AppColors.color414141),
                         ),
@@ -599,16 +820,20 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                     ),
                     SizedBox(height: 10.h),
                     Row(
-                      children: (event!.eventApplieds?.take(4).map((applied) {
-                            return Transform.translate(
-                              offset: Offset(-(event!.eventApplieds!.indexOf(applied) * 15.0), 0),
-                              child: CircleAvatar(
-                                radius: 25.r,
-                                backgroundImage: AssetImage(AppImages.logo),
-                              ),
-                            );
-                          }).toList() ??
-                          []),
+                      children: (event!.eventApplieds?.take(4).toList() ?? [])
+                          .asMap()
+                          .entries
+                          .map((entry) {
+                        final index = entry.key;
+                        final applied = entry.value;
+                        return Transform.translate(
+                          offset: Offset(-(index * 15.0), 0),
+                          child: _profileAvatar(
+                            rawUrl: applied.user?.profilePicture,
+                            radius: 25.r,
+                          ),
+                        );
+                      }).toList(),
                     ),
                     SizedBox(height: 10.h),
                     Text(
@@ -623,28 +848,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                             width: 164.w,
                             child: CustomButton(
                               borderColor: AppColors.buttonColor,
-                              onTap: () async {
-                                // Wait for the edit screen to finish.
-                                // If the update succeeded, the controller passes
-                                // back the fresh EventModel as the navigation result.
-                                final result = await Get.toNamed(
-                                  AppRoutes.createEventOne,
-                                  arguments: event,
-                                );
-                                if (!mounted) return;
-                                if (result is EventModel) {
-                                  // Instantly update the UI with the fresh data
-                                  // returned from the update API response.
-                                  setState(() {
-                                    event = result;
-                                    _createdAtDisplay = _formatCreatedAtOnly(result.createdAt);
-                                  });
-                                } else {
-                                  // Fallback: re-fetch from API in case result
-                                  // wasn't an EventModel (e.g. back without saving)
-                                  _fetchEventDetails();
-                                }
-                              },
+                              onTap: _openEditAndVerify,
                               text: "Edit & Verify",
                               color: AppColors.fillColor,
                               textColor: Colors.black,
@@ -728,7 +932,12 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
     );
   }
 
-  Widget _buildInfoRowWithCheck(String label, String value) {
+  Widget _buildInfoRowWithCheck(
+    String label,
+    String value, {
+    required bool checked,
+    required VoidCallback onChanged,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -746,15 +955,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(label, style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.blueGrey,
-                      shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    padding: const EdgeInsets.all(4),
-                    child: const Icon(Icons.check, color: Colors.white, size: 10),
-                  ),
+                  _editableCheckBox(checked: checked, onTap: onChanged),
                 ],
               ),
             ),

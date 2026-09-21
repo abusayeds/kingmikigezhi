@@ -19,7 +19,18 @@ class StepFiveForm extends StatefulWidget {
 }
 
 class _StepFiveFormState extends State<StepFiveForm> {
-  final List<String> roundList = ['1st', '2nd','Silver','Gold'];
+  final List<String> roundList = [
+    '1 Prize',
+    '2 Prize',
+    '3 Prize',
+    '4 Prize',
+    '5 Prize',
+    '6 Prize',
+    'Grand Prize',
+    'Honorable Mention',
+    'Audience Awards',
+    'Special Prize',
+  ];
 
   final TextEditingController dateController = TextEditingController();
   final TextEditingController timeController = TextEditingController();
@@ -329,13 +340,24 @@ class _StepFiveFormState extends State<StepFiveForm> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       GestureDetector(
-                        onTap: () => addEventController.isUserAgreementAccepted.value = !addEventController.isUserAgreementAccepted.value,
+                        onTap: () {
+                          addEventController.isUserAgreementAccepted.value =
+                              !addEventController.isUserAgreementAccepted.value;
+                          if (addEventController.isUserAgreementAccepted.value) {
+                            addEventController.showUserAgreementError.value = false;
+                          }
+                        },
                         child: Container(
                           width: 24.w,
                           height: 24.h,
                           decoration: BoxDecoration(
                             color: addEventController.isUserAgreementAccepted.value ? Colors.blueGrey : Colors.transparent,
-                            border: Border.all(color: Colors.blueGrey),
+                            border: Border.all(
+                              color: addEventController.showUserAgreementError.value &&
+                                      !addEventController.isUserAgreementAccepted.value
+                                  ? Colors.red
+                                  : Colors.blueGrey,
+                            ),
                             borderRadius: BorderRadius.circular(4.r),
                           ),
                           child: addEventController.isUserAgreementAccepted.value 
@@ -352,7 +374,23 @@ class _StepFiveFormState extends State<StepFiveForm> {
                   )),
                 ],
               ),
-              SizedBox(height: 50.h),
+              SizedBox(height: 24.h),
+              Obx(() {
+                if (!addEventController.showUserAgreementError.value) {
+                  return const SizedBox.shrink();
+                }
+                return Padding(
+                  padding: EdgeInsets.only(bottom: 12.h),
+                  child: Text(
+                    'Please accept the user agreement',
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontSize: 13.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                );
+              }),
               Obx(() => Row(
                 children: [
                   Expanded(

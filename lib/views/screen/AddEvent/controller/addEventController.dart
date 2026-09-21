@@ -58,6 +58,7 @@ class Addeventcontroller extends GetxController {
   // Step 5: History & Agreements
   RxBool isSharedToCommunity = true.obs;
   RxBool isUserAgreementAccepted = false.obs;
+  RxBool showUserAgreementError = false.obs;
   RxBool isLoadingHistory = false.obs;
   RxList<Map<String, dynamic>> historyEvents = <Map<String, dynamic>>[].obs;
   String? selectedHistoryEventId;
@@ -139,6 +140,7 @@ class Addeventcontroller extends GetxController {
     tempRounds.isNotEmpty ? tempRounds.clear() : null;
     isSharedToCommunity.value = true;
     isUserAgreementAccepted.value = false;
+    showUserAgreementError.value = false;
     selectedHistoryEventId = null;
     ownHistories.isNotEmpty ? ownHistories.clear() : null;
   }
@@ -202,7 +204,7 @@ class Addeventcontroller extends GetxController {
             "name": g.name ?? '',
             "criteria": g.criteria ?? 'Age',
             "condition": g.condition ?? 'UpTo',
-            "value": g.value ?? 0,
+            "value": g.value?.toString() ?? '',
             "rounds": (g.rounds ?? [])
                 .map((r) => {
                       "roundType": r.roundType ?? 'Preliminary',
@@ -255,9 +257,10 @@ class Addeventcontroller extends GetxController {
 
   Future<void> createEvent() async {
     if (!isUserAgreementAccepted.value) {
-      Fluttertoast.showToast(msg: "Please accept the user agreement");
+      showUserAgreementError.value = true;
       return;
     }
+    showUserAgreementError.value = false;
 
     isLoading.value = true;
     try {
@@ -318,9 +321,7 @@ class Addeventcontroller extends GetxController {
             "name": g['name']?.toString() ?? '',
             "criteria": g['criteria']?.toString() ?? 'Age',
             "condition": g['condition']?.toString() ?? 'UpTo',
-            "value": g['value'] is int
-                ? g['value']
-                : int.tryParse(g['value'].toString()) ?? 0,
+            "value": g['value']?.toString() ?? '',
             "rounds": rawRounds.map((r) {
               // Convert numeric cost/lateFee to string — backend expects Decimal as string
               final rawCost = r['cost'];
@@ -478,7 +479,7 @@ class Addeventcontroller extends GetxController {
     }
   }
 
-  void addGroup(String name, String criteria, String condition, int value, List<Map<String, dynamic>> rounds) {
+  void addGroup(String name, String criteria, String condition, String value, List<Map<String, dynamic>> rounds) {
     // Deep-copy each round map so clearing tempRounds has zero effect on what
     // is stored inside the group.
     final copiedRounds = rounds

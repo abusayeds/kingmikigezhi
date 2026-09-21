@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
-
 import '../models/country.dart';
 import '../models/city_state.dart';
 import '../models/city.dart';
 import '../services/geo_data_service.dart';
 
-/// A simple cascading Country -> State -> City picker built on top of
-/// [GeoDataService]. Selecting a country loads its states; selecting a
-/// state loads its cities. Calls [onChanged] whenever the final
-/// selection changes.
+/// Cascading Country -> State -> City picker built on [GeoDataService].
 class CountryStateCityPicker extends StatefulWidget {
   final void Function(Country? country, CityState? state, City? city)?
       onChanged;
+  final String? initialCountry;
+  final String? initialState;
+  final String? initialCity;
 
-  const CountryStateCityPicker({super.key, this.onChanged});
+  const CountryStateCityPicker({
+    super.key,
+    this.onChanged,
+    this.initialCountry,
+    this.initialState,
+    this.initialCity,
+  });
 
   @override
   State<CountryStateCityPicker> createState() =>
@@ -32,6 +37,8 @@ class _CountryStateCityPickerState extends State<CountryStateCityPicker> {
   City? _selectedCity;
 
   bool _loadingCountries = true;
+  bool _loadingStates = false;
+  bool _loadingCities = false;
 
   @override
   void initState() {
@@ -39,37 +46,121 @@ class _CountryStateCityPickerState extends State<CountryStateCityPicker> {
     _loadCountries();
   }
 
+  Country? _matchCountry(List<Country> countries, String? name) {
+    if (name == null || name.trim().isEmpty) return null;
+    final target = name.trim().toLowerCase();
+    return countries.cast<Country?>().firstWhere(
+          (c) => c!.name.toLowerCase() == target,
+          orElse: () => countries.cast<Country?>().firstWhere(
+                (c) => c!.name.toLowerCase().contains(target),
+                orElse: () => null,
+              ),
+        );
+  }
+
+  CityState? _matchState(List<CityState> states, String? name) {
+    if (name == null || name.trim().isEmpty) return null;
+    final target = name.trim().toLowerCase();
+    return states.cast<CityState?>().firstWhere(
+          (s) => s!.name.toLowerCase() == target,
+          orElse: () => states.cast<CityState?>().firstWhere(
+                (s) => s!.name.toLowerCase().contains(target),
+                orElse: () => null,
+              ),
+        );
+  }
+
+  City? _matchCity(List<City> cities, String? name) {
+    if (name == null || name.trim().isEmpty) return null;
+    final target = name.trim().toLowerCase();
+    return cities.cast<City?>().firstWhere(
+          (c) => c!.name.toLowerCase() == target,
+          orElse: () => cities.cast<City?>().firstWhere(
+                (c) => c!.name.toLowerCase().contains(target),
+                orElse: () => null,
+              ),
+        );
+  }
+
   Future<void> _loadCountries() async {
     final countries = await _geo.getCountries();
+    if (!mounted) return;
+
+    final matchedCountry = _matchCountry(countries, widget.initialCountry);
     setState(() {
       _countries = countries;
+      _selectedCountry = matchedCountry;
       _loadingCountries = false;
     });
+
+    if (matchedCountry != null) {
+      await _loadStatesFor(matchedCountry, selectInitial: true);
+    }
+  }
+
+  Future<void> _loadStatesFor(Country country,
+      {bool selectInitial = false}) async {
+    setState(() => _loadingStates = true);
+    final states = await _geo.getStatesByCountry(country.id);
+    if (!mounted) return;
+
+    final matchedState =
+        selectInitial ? _matchState(states, widget.initialState) : null;
+    setState(() {
+      _states = states;
+      _selectedState = matchedState;
+      _cities = [];
+      _selectedCity = null;
+      _loadingStates = false;
+    });
+
+    if (matchedState != null) {
+      await _loadCitiesFor(matchedState, selectInitial: true);
+    }
+
+    widget.onChanged?.call(_selectedCountry, _selectedState, _selectedCity);
+  }
+
+  Future<void> _loadCitiesFor(CityState state,
+      {bool selectInitial = false}) async {
+    setState(() => _loadingCities = true);
+    final cities = await _geo.getCitiesByState(state.id);
+    if (!mounted) return;
+
+    final matchedCity =
+        selectInitial ? _matchCity(cities, widget.initialCity) : null;
+    setState(() {
+      _cities = cities;
+      _selectedCity = matchedCity;
+      _loadingCities = false;
+    });
+    widget.onChanged?.call(_selectedCountry, _selectedState, _selectedCity);
   }
 
   Future<void> _onCountryChanged(Country? country) async {
-    final states = country == null
-        ? <CityState>[]
-        : await _geo.getStatesByCountry(country.id);
     setState(() {
       _selectedCountry = country;
-      _states = states;
       _selectedState = null;
-      _cities = [];
       _selectedCity = null;
+      _states = [];
+      _cities = [];
     });
     widget.onChanged?.call(_selectedCountry, _selectedState, _selectedCity);
+    if (country != null) {
+      await _loadStatesFor(country);
+    }
   }
 
   Future<void> _onStateChanged(CityState? state) async {
-    final cities =
-        state == null ? <City>[] : await _geo.getCitiesByState(state.id);
     setState(() {
       _selectedState = state;
-      _cities = cities;
       _selectedCity = null;
+      _cities = [];
     });
     widget.onChanged?.call(_selectedCountry, _selectedState, _selectedCity);
+    if (state != null) {
+      await _loadCitiesFor(state);
+    }
   }
 
   void _onCityChanged(City? city) {
@@ -87,8 +178,12 @@ class _CountryStateCityPickerState extends State<CountryStateCityPicker> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         DropdownButtonFormField<Country>(
+          key: ValueKey('country-${_selectedCountry?.id}'),
           initialValue: _selectedCountry,
-          decoration: const InputDecoration(labelText: 'Country'),
+          decoration: const InputDecoration(
+            labelText: 'Country',
+            border: OutlineInputBorder(),
+          ),
           isExpanded: true,
           items: _countries
               .map((c) => DropdownMenuItem(value: c, child: Text(c.name)))
@@ -96,31 +191,48 @@ class _CountryStateCityPickerState extends State<CountryStateCityPicker> {
           onChanged: _onCountryChanged,
         ),
         const SizedBox(height: 12),
-        DropdownButtonFormField<CityState>(
-          initialValue: _selectedState,
-          decoration: InputDecoration(
-            labelText: 'State / Province',
-            enabled: _states.isNotEmpty,
+        if (_loadingStates)
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 8),
+            child: LinearProgressIndicator(),
+          )
+        else
+          DropdownButtonFormField<CityState>(
+            key: ValueKey(
+                'state-${_selectedCountry?.id}-${_selectedState?.id}'),
+            initialValue: _selectedState,
+            decoration: InputDecoration(
+              labelText: 'State / Province',
+              border: const OutlineInputBorder(),
+              enabled: _states.isNotEmpty,
+            ),
+            isExpanded: true,
+            items: _states
+                .map((s) => DropdownMenuItem(value: s, child: Text(s.name)))
+                .toList(),
+            onChanged: _states.isEmpty ? null : _onStateChanged,
           ),
-          isExpanded: true,
-          items: _states
-              .map((s) => DropdownMenuItem(value: s, child: Text(s.name)))
-              .toList(),
-          onChanged: _states.isEmpty ? null : _onStateChanged,
-        ),
         const SizedBox(height: 12),
-        DropdownButtonFormField<City>(
-          initialValue: _selectedCity,
-          decoration: InputDecoration(
-            labelText: 'City',
-            enabled: _cities.isNotEmpty,
+        if (_loadingCities)
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 8),
+            child: LinearProgressIndicator(),
+          )
+        else
+          DropdownButtonFormField<City>(
+            key: ValueKey('city-${_selectedState?.id}-${_selectedCity?.id}'),
+            initialValue: _selectedCity,
+            decoration: InputDecoration(
+              labelText: 'City',
+              border: const OutlineInputBorder(),
+              enabled: _cities.isNotEmpty,
+            ),
+            isExpanded: true,
+            items: _cities
+                .map((c) => DropdownMenuItem(value: c, child: Text(c.name)))
+                .toList(),
+            onChanged: _cities.isEmpty ? null : _onCityChanged,
           ),
-          isExpanded: true,
-          items: _cities
-              .map((c) => DropdownMenuItem(value: c, child: Text(c.name)))
-              .toList(),
-          onChanged: _cities.isEmpty ? null : _onCityChanged,
-        ),
       ],
     );
   }

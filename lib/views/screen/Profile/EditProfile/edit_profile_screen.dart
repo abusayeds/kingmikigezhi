@@ -4,6 +4,7 @@ import 'package:event_sharing/controllers/auth_controller.dart';
 import 'package:event_sharing/utils/phone_utils.dart';
 import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/skillItem.dart';
+import 'package:event_sharing/views/geo/widgets/country_state_city_picker.dart';
 import 'package:event_sharing/views/screen/AddEvent/InnerWidget/dotted_border_container.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -39,38 +40,37 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   File? selectedIMage;
   String? existingProfilePicture;
 
-  final TextEditingController birthDayYearController = TextEditingController();
-  final TextEditingController birthDayMonthController = TextEditingController();
-  final TextEditingController birthDayDayController = TextEditingController();
+  String? selectedDay;
+  String? selectedMonth;
+  String? selectedYear;
 
-  final TextEditingController locationCountryController =
-      TextEditingController();
-  final TextEditingController locationStateController = TextEditingController();
-  final TextEditingController locationCityController = TextEditingController();
+  final List<String> _days =
+      List.generate(31, (i) => (i + 1).toString().padLeft(2, '0'));
+  final List<String> _months =
+      List.generate(12, (i) => (i + 1).toString().padLeft(2, '0'));
+  final List<String> _years =
+      List.generate(100, (i) => (DateTime.now().year - i).toString());
+
+  String locationCountry = '';
+  String locationState = '';
+  String locationCity = '';
+
   final TextEditingController phoneNumberController = TextEditingController();
 
+  // Key forces CountryCodePicker to rebuild when ISO changes via detection.
+  Key _countryPickerKey = const ValueKey('BD');
   String selectedCountryCodes = '+880';
   String selectedCountryIso = 'BD';
   String selectedGender = '';
   List<String> skills = [];
 
-  // Skill dropdown selections
   String? _selectedStartYear;
   String? _selectedProgramId;
-
-  bool isAccountIdEditable = false;
-  bool isFirstNameEditable = false;
-  bool isLastNameEditable = false;
-  bool isUsernameEditable = false;
-  bool isGenderEditable = false;
-  bool isBirthdayEditable = false;
-  bool isLocationEditable = false;
 
   @override
   void initState() {
     super.initState();
     _loadProfileData();
-    // Fetch API-driven options if not yet loaded
     if (_authController.editOptionPrograms.isEmpty ||
         _authController.editOptionYears.isEmpty) {
       _authController.fetchEditOptions();
@@ -95,24 +95,27 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       if (birthDate.isNotEmpty) {
         try {
           final date = DateTime.parse(birthDate);
-          birthDayDayController.text = date.day.toString();
-          birthDayMonthController.text = date.month.toString();
-          birthDayYearController.text = date.year.toString();
+          selectedDay = date.day.toString().padLeft(2, '0');
+          selectedMonth = date.month.toString().padLeft(2, '0');
+          selectedYear = date.year.toString();
         } catch (_) {}
       }
 
-      locationCountryController.text = profile['country'] ?? '';
-      locationStateController.text = profile['state'] ?? '';
-      locationCityController.text = profile['city'] ?? '';
+      locationCountry = profile['country']?.toString() ?? '';
+      locationState = profile['state']?.toString() ?? '';
+      locationCity = profile['city']?.toString() ?? '';
 
-      // Pre-fill phone number
-      final phoneNumber = profile['phoneNumber'] ?? '';
+      final phoneNumber = (profile['phoneNumber'] ?? '').toString();
       if (phoneNumber.isNotEmpty) {
-        phoneNumberController.text = phoneNumber;
         final detected = PhoneUtils.detectCountry(phoneNumber);
         if (detected != null) {
           selectedCountryIso = detected.iso;
           selectedCountryCodes = detected.dialCode;
+          _countryPickerKey = ValueKey(detected.iso);
+          phoneNumberController.text =
+              PhoneUtils.stripDialCode(phoneNumber, detected.dialCode);
+        } else {
+          phoneNumberController.text = phoneNumber;
         }
       }
 
@@ -123,15 +126,28 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     }
   }
 
-  /// Auto-detect country flag when user types a number like "+880177..."
   void _onPhoneNumberChanged(String value) {
     final detected = PhoneUtils.detectCountry(value);
     if (detected != null && detected.iso != selectedCountryIso) {
       setState(() {
         selectedCountryIso = detected.iso;
         selectedCountryCodes = detected.dialCode;
+        _countryPickerKey = ValueKey(detected.iso);
+        phoneNumberController.text =
+            PhoneUtils.stripDialCode(value, detected.dialCode);
       });
     }
+  }
+
+  @override
+  void dispose() {
+    _accountIdController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _usernameController.dispose();
+    _emailController.dispose();
+    phoneNumberController.dispose();
+    super.dispose();
   }
 
   @override
@@ -231,8 +247,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   _buildEditableTextField(
                     controller: _accountIdController,
                     hintText: 'Account ID',
-                    isEditable: isAccountIdEditable,
-                    onTap: () => setState(() => isAccountIdEditable = true),
+                    isEditable: true,
+                    onTap: () {},
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 4.h),
@@ -243,8 +259,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   _buildEditableTextField(
                     controller: _firstNameController,
                     hintText: 'First Name',
-                    isEditable: isFirstNameEditable,
-                    onTap: () => setState(() => isFirstNameEditable = true),
+                    isEditable: true,
+                    onTap: () {},
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 4.h),
@@ -255,8 +271,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   _buildEditableTextField(
                     controller: _lastNameController,
                     hintText: 'Last Name',
-                    isEditable: isLastNameEditable,
-                    onTap: () => setState(() => isLastNameEditable = true),
+                    isEditable: true,
+                    onTap: () {},
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 4.h),
@@ -267,8 +283,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   _buildEditableTextField(
                     controller: _usernameController,
                     hintText: 'Username',
-                    isEditable: isUsernameEditable,
-                    onTap: () => setState(() => isUsernameEditable = true),
+                    isEditable: true,
+                    onTap: () {},
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 4.h),
@@ -284,66 +300,31 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             AppStyles.fontSize16(fontWeight: FontWeight.w600)),
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      SizedBox(
-                        width: 108.w,
-                        child: CustomTextField(
-                          controller: birthDayDayController,
-                          hintText: 'Day',
-                          readOnly: !isBirthdayEditable,
-                          sufixicons: Padding(
-                            padding: EdgeInsets.only(right: 12.w),
-                            child: GestureDetector(
-                              onTap: () =>
-                                  setState(() => isBirthdayEditable = true),
-                              child: SvgPicture.asset(
-                                AppIcons.downArrowIcon,
-                                width: 16.w,
-                                color: AppColors.primaryColor,
-                              ),
-                            ),
-                          ),
+                      Expanded(
+                        child: _buildBirthdayDropdown(
+                          hint: 'Day',
+                          value: selectedDay,
+                          items: _days,
+                          onChanged: (v) => setState(() => selectedDay = v),
                         ),
                       ),
-                      SizedBox(
-                        width: 108.w,
-                        child: CustomTextField(
-                          controller: birthDayMonthController,
-                          hintText: 'Month',
-                          readOnly: !isBirthdayEditable,
-                          sufixicons: Padding(
-                            padding: EdgeInsets.only(right: 12.w),
-                            child: GestureDetector(
-                              onTap: () =>
-                                  setState(() => isBirthdayEditable = true),
-                              child: SvgPicture.asset(
-                                AppIcons.downArrowIcon,
-                                width: 16.w,
-                                color: AppColors.primaryColor,
-                              ),
-                            ),
-                          ),
+                      SizedBox(width: 8.w),
+                      Expanded(
+                        child: _buildBirthdayDropdown(
+                          hint: 'Month',
+                          value: selectedMonth,
+                          items: _months,
+                          onChanged: (v) => setState(() => selectedMonth = v),
                         ),
                       ),
-                      SizedBox(
-                        width: 108.w,
-                        child: CustomTextField(
-                          controller: birthDayYearController,
-                          hintText: 'Year',
-                          readOnly: !isBirthdayEditable,
-                          sufixicons: Padding(
-                            padding: EdgeInsets.only(right: 12.w),
-                            child: GestureDetector(
-                              onTap: () =>
-                                  setState(() => isBirthdayEditable = true),
-                              child: SvgPicture.asset(
-                                AppIcons.downArrowIcon,
-                                width: 16.w,
-                                color: AppColors.primaryColor,
-                              ),
-                            ),
-                          ),
+                      SizedBox(width: 8.w),
+                      Expanded(
+                        child: _buildBirthdayDropdown(
+                          hint: 'Year',
+                          value: selectedYear,
+                          items: _years,
+                          onChanged: (v) => setState(() => selectedYear = v),
                         ),
                       ),
                     ],
@@ -382,14 +363,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             SizedBox(
                               height: 55.h,
                               child: CountryCodePicker(
+                                key: _countryPickerKey,
                                 showFlag: true,
                                 hideMainText: true,
                                 showFlagDialog: true,
                                 onChanged: (countryCode) {
                                   setState(() {
                                     selectedCountryCodes =
-                                        countryCode.dialCode!;
-                                    selectedCountryIso = countryCode.code!;
+                                        countryCode.dialCode ??
+                                            selectedCountryCodes;
+                                    selectedCountryIso =
+                                        countryCode.code ?? selectedCountryIso;
+                                    _countryPickerKey =
+                                        ValueKey(selectedCountryIso);
                                   });
                                 },
                                 initialSelection: selectedCountryIso,
@@ -420,67 +406,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   Text('Location',
                       style: AppStyles.fontSize16(fontWeight: FontWeight.w600)),
                   SizedBox(height: 8.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(
-                        width: 108.w,
-                        child: CustomTextField(
-                          controller: locationCountryController,
-                          hintText: 'Country',
-                          readOnly: !isLocationEditable,
-                          sufixicons: Padding(
-                            padding: EdgeInsets.only(right: 12.w),
-                            child: GestureDetector(
-                              onTap: () =>
-                                  setState(() => isLocationEditable = true),
-                              child: SvgPicture.asset(
-                                AppIcons.downArrowIcon,
-                                width: 16.w,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 108.w,
-                        child: CustomTextField(
-                          controller: locationStateController,
-                          hintText: 'State',
-                          readOnly: !isLocationEditable,
-                          sufixicons: Padding(
-                            padding: EdgeInsets.only(right: 12.w),
-                            child: GestureDetector(
-                              onTap: () =>
-                                  setState(() => isLocationEditable = true),
-                              child: SvgPicture.asset(
-                                AppIcons.downArrowIcon,
-                                width: 16.w,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 108.w,
-                        child: CustomTextField(
-                          controller: locationCityController,
-                          hintText: 'City',
-                          readOnly: !isLocationEditable,
-                          sufixicons: Padding(
-                            padding: EdgeInsets.only(right: 12.w),
-                            child: GestureDetector(
-                              onTap: () =>
-                                  setState(() => isLocationEditable = true),
-                              child: SvgPicture.asset(
-                                AppIcons.downArrowIcon,
-                                width: 16.w,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                  CountryStateCityPicker(
+                    initialCountry: locationCountry,
+                    initialState: locationState,
+                    initialCity: locationCity,
+                    onChanged: (country, state, city) {
+                      setState(() {
+                        locationCountry = country?.name ?? '';
+                        locationState = state?.name ?? '';
+                        locationCity = city?.name ?? '';
+                      });
+                    },
                   ),
                   SizedBox(height: 10.h),
                   DottedBorderContainer(
@@ -721,6 +657,38 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
   }
 
+  Widget _buildBirthdayDropdown({
+    required String hint,
+    required String? value,
+    required List<String> items,
+    required ValueChanged<String?> onChanged,
+  }) {
+    final safeValue = (value != null && items.contains(value)) ? value : null;
+    return Container(
+      height: 52.h,
+      padding: EdgeInsets.symmetric(horizontal: 8.w),
+      decoration: BoxDecoration(
+        color: AppColors.fillColor,
+        borderRadius: BorderRadius.circular(8.r),
+        border: Border.all(color: AppColors.primaryColor),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          isExpanded: true,
+          value: safeValue,
+          hint: Text(hint, style: TextStyle(fontSize: 13.sp)),
+          items: items
+              .map((e) => DropdownMenuItem<String>(
+                    value: e,
+                    child: Text(e, style: TextStyle(fontSize: 13.sp)),
+                  ))
+              .toList(),
+          onChanged: onChanged,
+        ),
+      ),
+    );
+  }
+
   Widget _buildEditableTextField({
     required TextEditingController controller,
     required String hintText,
@@ -741,61 +709,44 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   Widget _buildGenderSelector() {
-    return GestureDetector(
-      onTap: () => setState(() => isGenderEditable = true),
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
-        decoration: BoxDecoration(
-          color: isGenderEditable
-              ? AppColors.backgroundColor
-              : AppColors.colorEDF2F4,
-          borderRadius: BorderRadius.circular(8.r),
-          border: Border.all(
-            color:
-                isGenderEditable ? AppColors.primaryColor : Colors.transparent,
-            width: 1.w,
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+      decoration: BoxDecoration(
+        color: AppColors.backgroundColor,
+        borderRadius: BorderRadius.circular(8.r),
+        border: Border.all(color: AppColors.primaryColor, width: 1.w),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Row(
+              children: [
+                Radio<String>(
+                  value: 'Male',
+                  groupValue: selectedGender,
+                  onChanged: (value) {
+                    setState(() => selectedGender = value!);
+                  },
+                ),
+                const Text('Male'),
+              ],
+            ),
           ),
-        ),
-        child: Row(
-          children: [
-            Expanded(
-              child: Row(
-                children: [
-                  Radio<String>(
-                    value: 'Male',
-                    groupValue: selectedGender,
-                    onChanged: isGenderEditable
-                        ? (value) {
-                            setState(() {
-                              selectedGender = value!;
-                            });
-                          }
-                        : null,
-                  ),
-                  const Text('Male'),
-                ],
-              ),
+          Expanded(
+            child: Row(
+              children: [
+                Radio<String>(
+                  value: 'Female',
+                  groupValue: selectedGender,
+                  onChanged: (value) {
+                    setState(() => selectedGender = value!);
+                  },
+                ),
+                const Text('Female'),
+              ],
             ),
-            Expanded(
-              child: Row(
-                children: [
-                  Radio<String>(
-                    value: 'Female',
-                    groupValue: selectedGender,
-                    onChanged: isGenderEditable
-                        ? (value) {
-                            setState(() {
-                              selectedGender = value!;
-                            });
-                          }
-                        : null,
-                  ),
-                  const Text('Female'),
-                ],
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -808,26 +759,30 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       genderApi = 'FEMALE';
     }
 
-    String birthDate = '';
-    if (birthDayDayController.text.isNotEmpty &&
-        birthDayMonthController.text.isNotEmpty &&
-        birthDayYearController.text.isNotEmpty) {
+    String? birthDate;
+    if (selectedDay != null &&
+        selectedMonth != null &&
+        selectedYear != null) {
       birthDate =
-          '${birthDayYearController.text}-${birthDayMonthController.text.padLeft(2, '0')}-${birthDayDayController.text.padLeft(2, '0')}T00:00:00.000Z';
+          '$selectedYear-$selectedMonth-${selectedDay}T00:00:00.000Z';
     }
 
+    final fullPhone = PhoneUtils.formatWithDialCode(
+      selectedCountryCodes,
+      phoneNumberController.text,
+    );
+
     final success = await _authController.updateProfile(
-      firstName: _firstNameController.text,
-      lastName: _lastNameController.text,
+      firstName: _firstNameController.text.trim(),
+      lastName: _lastNameController.text.trim(),
       gender: genderApi,
-      birthDate: birthDate.isNotEmpty ? birthDate : null,
-      phoneNumber: phoneNumberController.text.isNotEmpty
-          ? phoneNumberController.text
-          : null,
-      country: locationCountryController.text,
-      state: locationStateController.text,
-      city: locationCityController.text,
-      username: _usernameController.text,
+      birthDate: birthDate,
+      phoneNumber: fullPhone.isNotEmpty ? fullPhone : null,
+      country: locationCountry,
+      state: locationState,
+      city: locationCity,
+      username: _usernameController.text.trim(),
+      accountId: _accountIdController.text.trim(),
       imagePath: selectedIMage?.path,
       skills: skills,
     );

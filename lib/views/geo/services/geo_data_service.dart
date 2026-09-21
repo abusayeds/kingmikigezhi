@@ -8,7 +8,6 @@ import '../models/city.dart';
 /// Loads country / state / city data from the bundled JSON assets and
 /// caches it in memory for the lifetime of the app.
 ///
-/// Usage:
 /// ```dart
 /// final geo = GeoDataService.instance;
 /// final countries = await geo.getCountries();

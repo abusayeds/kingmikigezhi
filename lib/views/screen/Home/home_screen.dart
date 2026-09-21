@@ -1,6 +1,9 @@
 import 'package:event_sharing/controllers/auth_controller.dart';
+import 'package:event_sharing/controllers/family_controller.dart';
 import 'package:event_sharing/controllers/home_controller.dart';
+import 'package:event_sharing/controllers/notification_controller.dart';
 import 'package:event_sharing/helpers/route.dart';
+import 'package:event_sharing/models/family_model.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/style.dart';
 
@@ -27,7 +30,25 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final AuthController _authController = Get.find<AuthController>();
   final HomeController _homeController = Get.find<HomeController>();
+  final FamilyController _familyController = Get.find<FamilyController>();
+  final NotificationController _notificationController =
+      Get.find<NotificationController>();
   final TextEditingController _searchController = TextEditingController();
+
+  /// Display label shown on the filter chip.
+  String dropdownValue = 'Self';
+
+  /// API relationShip value used for fetching.
+  String _selectedRelationShip = 'Self';
+
+  final List<Color> _memberColors = [
+    AppColors.color67AB9F,
+    AppColors.colorE5CCFF,
+    AppColors.colorCCFFE6,
+    AppColors.colorFFF2CC,
+    const Color(0xffAAAFAE),
+    const Color(0xffC8D7DE),
+  ];
 
   @override
   void initState() {
@@ -37,25 +58,73 @@ class _HomeScreenState extends State<HomeScreen> {
       _homeController.fetchTodayEvents();
       _homeController.fetchFamilyEvents('Self');
       _homeController.fetchUpcomingEvents();
+      _notificationController.getNotifications();
+      _loadFamilyMembersForFilter();
     });
   }
 
-  String dropdownValue = 'Self';
+  Future<void> _loadFamilyMembersForFilter() async {
+    try {
+      await _familyController.fetchFamilies();
+      if (_familyController.families.isEmpty) return;
+      final familyId = _familyController.families.first.id;
+      await _familyController.fetchFamilyMembers(familyId);
+    } catch (_) {}
+  }
+
+  String _relationDisplayName(String? relation) {
+    switch (relation) {
+      case 'Spous':
+        return 'Spouse';
+      case 'ChildStephanie':
+        return 'Child Stephanie';
+      case 'ChildSophia':
+        return 'Child Sophia';
+      case 'Self':
+        return 'Self';
+      case 'Other':
+        return 'Other';
+      default:
+        return relation?.isNotEmpty == true ? relation! : 'Member';
+    }
+  }
+
+  String _memberLabel(FamilyMemberModel member) {
+    final name = [
+      member.user?.firstName,
+      member.user?.lastName,
+    ].whereType<String>().where((e) => e.trim().isNotEmpty).join(' ');
+    final relation = _relationDisplayName(member.relationShip);
+    if (name.isNotEmpty) return '$name ($relation)';
+    return relation;
+  }
+
+  List<({String label, String relationShip})> _filterOptions() {
+    final options = <({String label, String relationShip})>[
+      (label: 'Self', relationShip: 'Self'),
+    ];
+    final seen = <String>{'Self'};
+    for (final member in _familyController.familyMembers) {
+      final relation = (member.relationShip ?? '').trim();
+      if (relation.isEmpty || relation == 'Self') continue;
+      final key = relation.isNotEmpty ? relation : member.userId;
+      if (seen.contains(key)) continue;
+      seen.add(key);
+      options.add((label: _memberLabel(member), relationShip: relation));
+    }
+    return options;
+  }
+
+  Color _colorForRelation(String relation) {
+    final options = _filterOptions();
+    final index = options.indexWhere((o) => o.relationShip == relation);
+    if (index < 0) return const Color(0xffAAAFAE);
+    return _memberColors[index % _memberColors.length];
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: PreferredSize(
-      //   preferredSize: Size.fromHeight(40.h), // Adjust height as needed
-      //   child: Container(
-      //     padding: EdgeInsets.only(
-      //       top: MediaQuery.of(context).padding.top,
-      //       left: 24.w,
-      //       right: 24.w,
-      //     ),
-      //     child: HomeAppBar(),
-      //   ),
-      // ),
       appBar: customHomeAppBar(),
       bottomNavigationBar: const BottomMenu(0),
       body: SingleChildScrollView(
@@ -73,44 +142,27 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   GestureDetector(
-                    onTap: () {
-                      // Show dropdown menu
-                      showMenu<String>(
+                    onTap: () async {
+                      if (_familyController.familyMembers.isEmpty) {
+                        await _loadFamilyMembersForFilter();
+                      }
+                      if (!mounted) return;
+                      final options = _filterOptions();
+                      final selected = await showMenu<String>(
                         context: context,
                         position: const RelativeRect.fromLTRB(100, 100, 0, 0),
-                        // Adjust position as needed
-                        items: <String>[
-                          'Self',
-                          'Spouse',
-                          'Child Stephanie',
-                          'Child Sophia',
-                        ].map<PopupMenuEntry<String>>((String value) {
-                          Color backgroundColor;
-                          switch (value) {
-                            case 'Self':
-                              backgroundColor = AppColors.color67AB9F;
-                              break;
-                            case 'Spouse':
-                              backgroundColor = AppColors.colorE5CCFF;
-                              break;
-                            case 'Child Stephanie':
-                              backgroundColor = AppColors.colorCCFFE6;
-                              break;
-                            case 'Child Sophia':
-                              backgroundColor = AppColors.colorFFF2CC;
-                              break;
-                            default:
-                              backgroundColor = Colors.white;
-                          }
+                        items: options.map<PopupMenuEntry<String>>((option) {
+                          final backgroundColor =
+                              _colorForRelation(option.relationShip);
                           return PopupMenuItem<String>(
-                            value: value,
+                            value: option.relationShip,
                             child: Container(
                               width: double.infinity,
                               color: backgroundColor,
                               padding: EdgeInsets.symmetric(
                                   horizontal: 8.w, vertical: 4.h),
                               child: Text(
-                                value,
+                                option.label,
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 12.sp,
@@ -119,14 +171,19 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           );
                         }).toList(),
-                      ).then((String? selectedValue) {
-                        if (selectedValue != null) {
-                          setState(() {
-                            dropdownValue = selectedValue;
-                          });
-                          _homeController.fetchFamilyEvents(selectedValue);
-                        }
-                      });
+                      );
+                      if (selected != null) {
+                        final match = options.firstWhere(
+                          (o) => o.relationShip == selected,
+                          orElse: () =>
+                              (label: selected, relationShip: selected),
+                        );
+                        setState(() {
+                          dropdownValue = match.label;
+                          _selectedRelationShip = match.relationShip;
+                        });
+                        _homeController.fetchFamilyEvents(match.relationShip);
+                      }
                     },
                     child: Container(
                       height: 23.h,
@@ -146,7 +203,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                           SizedBox(width: 20.w),
-                          // Small space between text and icon
                           SvgPicture.asset(AppIcons.down_ArrowIcon),
                         ],
                       ),
@@ -164,14 +220,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-
-            // _tableCalendar(),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 24.h),
               child: const CalendarWithDropdown(),
             ),
             SizedBox(height: 16.h),
-            //today events
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 6.h),
               child: SizedBox(
@@ -201,14 +254,11 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             SizedBox(height: 16.h),
-            //family events
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 6.h),
               child: _pianoList(),
             ),
-
             SizedBox(height: 16.h),
-
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 24.h),
               child: Row(
@@ -256,7 +306,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       final event = _homeController.upcomingEvents[index];
                       return GestureDetector(
                         onTap: () {
-                          Get.toNamed(AppRoutes.eventDetailsScreen, arguments: event);
+                          Get.toNamed(AppRoutes.eventDetailsScreen,
+                              arguments: event);
                         },
                         child: SizedBox(
                           width: 369.w,
@@ -268,16 +319,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 }),
               ),
             ),
-            SizedBox(
-              height: 30.h,
-            )
+            SizedBox(height: 30.h),
           ],
         ),
       ),
     );
   }
 
-//============================> Search Bar Section <=================================
   Widget _searchBar() {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -288,7 +336,8 @@ class _HomeScreenState extends State<HomeScreen> {
             controller: _searchController,
             onFieldSubmitted: (value) {
               if (value.isNotEmpty) {
-                Get.toNamed(AppRoutes.searchEventScreen, arguments: {'searchTerm': value});
+                Get.toNamed(AppRoutes.searchEventScreen,
+                    arguments: {'searchTerm': value});
               }
             },
             decoration: InputDecoration(
@@ -303,7 +352,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: GestureDetector(
                   onTap: () {
                     if (_searchController.text.isNotEmpty) {
-                      Get.toNamed(AppRoutes.searchEventScreen, arguments: {'searchTerm': _searchController.text});
+                      Get.toNamed(AppRoutes.searchEventScreen, arguments: {
+                        'searchTerm': _searchController.text
+                      });
                     }
                   },
                   child: SvgPicture.asset(
@@ -358,25 +409,8 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  //============================> Piano Event List View <=================================
-  _pianoList() {
-    Color selectedColor;
-    switch (dropdownValue) {
-      case 'Self':
-        selectedColor = AppColors.color67AB9F;
-        break;
-      case 'Spouse':
-        selectedColor = AppColors.colorE5CCFF;
-        break;
-      case 'Child Stephanie':
-        selectedColor = AppColors.colorCCFFE6;
-        break;
-      case 'Child Sophia':
-        selectedColor = AppColors.colorFFF2CC;
-        break;
-      default:
-        selectedColor = const Color(0xffAAAFAE);
-    }
+  Widget _pianoList() {
+    final selectedColor = _colorForRelation(_selectedRelationShip);
 
     return SizedBox(
       width: MediaQuery.of(context).size.width,

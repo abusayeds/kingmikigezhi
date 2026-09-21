@@ -13,18 +13,36 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   late SplashController _splashController;
+  bool _startedAuthCheck = false;
 
   @override
   void initState() {
     super.initState();
     _splashController = Get.find<SplashController>();
-    _splashController.checkAuthStatus();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_startedAuthCheck) return;
+    _startedAuthCheck = true;
+    _prepareAndNavigate();
+  }
+
+  Future<void> _prepareAndNavigate() async {
+    // Precache next-screen assets so the transition does not flash empty frames.
+    await Future.wait([
+      precacheImage(AssetImage(AppImages.appLogo), context),
+      precacheImage(AssetImage(AppImages.onboardingBg), context),
+    ]);
+    if (!mounted) return;
+    await _splashController.checkAuthStatus();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: const Color(0xff4C7E95),
       body: Container(
         decoration: const BoxDecoration(
           color: Color(0xff4C7E95),

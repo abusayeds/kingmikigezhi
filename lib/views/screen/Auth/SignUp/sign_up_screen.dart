@@ -1,4 +1,3 @@
-
 import 'package:event_sharing/utils/style.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +14,10 @@ import '../../../../utils/app_constants.dart';
 import '../../../base/custom_button.dart';
 import '../../../base/custom_text.dart';
 import '../../../base/custom_text_field.dart';
+import '../../../geo/models/country.dart';
+import '../../../geo/models/city_state.dart';
+import '../../../geo/models/city.dart';
+import '../../../geo/services/geo_data_service.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -39,9 +42,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   String? selectedYear;
   String? selectedMonth;
   String? selectedDay;
-  String? selectedCountry;
-  String? selectedState;
-  String? selectedCity;
 
   String? _termsError;
   String? _genderError;
@@ -51,7 +51,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   // Auth controller instance
   final AuthController authController = Get.find<AuthController>();
-  
+
   // Username validation
   String? _usernameError;
   bool _isCheckingUsername = false;
@@ -59,11 +59,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   List<String> genderList = ['Male', 'Female'];
 
+  // =========================> GeoNames data <=========================
+  final GeoDataService _geoService = GeoDataService.instance;
+
+  List<Country> _countries = [];
+  List<CityState> _states = [];
+  List<City> _cities = [];
+
+  Country? _selectedCountry;
+  CityState? _selectedState;
+  City? _selectedCity;
+
+  bool _isLoadingCountries = true;
+  bool _isLoadingStates = false;
+  bool _isLoadingCities = false;
+
   @override
   void initState() {
     super.initState();
-    // Add listener to username field
     userNameController.addListener(_onUsernameChanged);
+    _loadCountries();
   }
 
   @override
@@ -81,43 +96,97 @@ class _SignUpScreenState extends State<SignUpScreen> {
     super.dispose();
   }
 
+  //==========================> Load countries from GeoDataService <=========================
+  Future<void> _loadCountries() async {
+    final countries = await _geoService.getCountries();
+    if (!mounted) return;
+    setState(() {
+      _countries = countries;
+      _isLoadingCountries = false;
+    });
+  }
+
+  //==========================> On country changed <=========================
+  Future<void> _onCountryChanged(Country? country) async {
+    setState(() {
+      _selectedCountry = country;
+      _selectedState = null;
+      _selectedCity = null;
+      _states = [];
+      _cities = [];
+      _isLoadingStates = true;
+      if (country != null) _countryError = null;
+    });
+
+    if (country == null) {
+      setState(() => _isLoadingStates = false);
+      return;
+    }
+
+    final states = await _geoService.getStatesByCountry(country.id);
+    if (!mounted) return;
+    setState(() {
+      _states = states;
+      _isLoadingStates = false;
+    });
+  }
+
+  //==========================> On state changed <=========================
+  Future<void> _onStateChanged(CityState? state) async {
+    setState(() {
+      _selectedState = state;
+      _selectedCity = null;
+      _cities = [];
+      _isLoadingCities = true;
+    });
+
+    if (state == null) {
+      setState(() => _isLoadingCities = false);
+      return;
+    }
+
+    final cities = await _geoService.getCitiesByState(state.id);
+    if (!mounted) return;
+    setState(() {
+      _cities = cities;
+      _isLoadingCities = false;
+    });
+  }
+
+  //==========================> On city changed <=========================
+  void _onCityChanged(City? city) {
+    setState(() => _selectedCity = city);
+  }
+
   // Check username availability with debounce
   void _onUsernameChanged() {
     _usernameDebounce?.cancel();
-    
+
     final username = userNameController.text.trim();
-    
+
     setState(() {
       _usernameError = null;
       _isCheckingUsername = false;
     });
-    
-    if (username.isEmpty) {
-      return;
-    }
-    
+
+    if (username.isEmpty) return;
+
     if (username.length < 3) {
       setState(() {
         _usernameError = 'Username must be at least 3 characters';
       });
       return;
     }
-    
+
     _usernameDebounce = Timer(const Duration(milliseconds: 800), () async {
-      setState(() {
-        _isCheckingUsername = true;
-      });
-      
+      setState(() => _isCheckingUsername = true);
+
       final exists = await authController.checkUsername(username);
-      
+
       if (mounted) {
         setState(() {
           _isCheckingUsername = false;
-          if (exists) {
-            _usernameError = 'This username is already taken';
-          } else {
-            _usernameError = null;
-          }
+          _usernameError = exists ? 'This username is already taken' : null;
         });
       }
     });
@@ -130,158 +199,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     'July', 'August', 'September', 'October', 'November', 'December'
   ];
   List<String> dayList = List.generate(31, (index) => (index + 1).toString().padLeft(2, '0'));
-
-  // Location dropdown data
-  List<String> countryList = [
-    'United States', 'Canada', 'United Kingdom', 'Australia', 'Germany',
-    'France', 'Japan', 'South Korea', 'India', 'Brazil', 'Mexico', 'Italy',
-    'Spain', 'Netherlands', 'Sweden', 'Norway', 'Denmark', 'Switzerland'
-  ];
-
-  Map<String, List<String>> stateMap = {
-    'United States': ['California', 'Texas', 'Florida', 'New York', 'Illinois'],
-    'Canada': ['Ontario', 'Quebec', 'British Columbia', 'Alberta', 'Manitoba'],
-    'United Kingdom': ['England', 'Scotland', 'Wales', 'Northern Ireland'],
-    'Australia': ['New South Wales', 'Victoria', 'Queensland', 'Western Australia'],
-    'Germany': ['Bavaria', 'North Rhine-Westphalia', 'Baden-Württemberg', 'Lower Saxony'],
-    'France': ['Île-de-France', 'Provence-Alpes-Côte d\'Azur', 'Auvergne-Rhône-Alpes', 'Occitanie'],
-    'Japan': ['Tokyo', 'Osaka', 'Kyoto', 'Hokkaido', 'Fukuoka'],
-    'South Korea': ['Seoul', 'Busan', 'Incheon', 'Daegu', 'Daejeon'],
-    'India': ['Maharashtra', 'Karnataka', 'Tamil Nadu', 'Delhi', 'Gujarat'],
-    'Brazil': ['São Paulo', 'Rio de Janeiro', 'Minas Gerais', 'Bahia', 'Paraná'],
-    'Mexico': ['Mexico City', 'Jalisco', 'Nuevo León', 'Puebla', 'Guanajuato'],
-    'Italy': ['Lombardy', 'Lazio', 'Campania', 'Sicily', 'Veneto'],
-    'Spain': ['Madrid', 'Catalonia', 'Andalusia', 'Valencia', 'Galicia'],
-    'Netherlands': ['North Holland', 'South Holland', 'Utrecht', 'Gelderland', 'North Brabant'],
-    'Sweden': ['Stockholm', 'Västra Götaland', 'Skåne', 'Uppsala', 'Östergötland'],
-    'Norway': ['Oslo', 'Rogaland', 'Møre og Romsdal', 'Nordland', 'Viken'],
-    'Denmark': ['Capital Region', 'Central Denmark', 'North Denmark', 'Zealand', 'Southern Denmark'],
-    'Switzerland': ['Zurich', 'Bern', 'Vaud', 'Aargau', 'St. Gallen'],
-  };
-
-  Map<String, List<String>> cityMap = {
-    // United States
-    'California': ['Los Angeles', 'San Francisco', 'San Diego', 'Sacramento'],
-    'Texas': ['Houston', 'Dallas', 'Austin', 'San Antonio'],
-    'Florida': ['Miami', 'Orlando', 'Tampa', 'Jacksonville'],
-    'New York': ['New York City', 'Buffalo', 'Rochester', 'Syracuse'],
-    'Illinois': ['Chicago', 'Aurora', 'Peoria', 'Springfield'],
-
-    // Canada
-    'Ontario': ['Toronto', 'Ottawa', 'Hamilton', 'London'],
-    'Quebec': ['Montreal', 'Quebec City', 'Laval', 'Gatineau'],
-    'British Columbia': ['Vancouver', 'Victoria', 'Surrey', 'Burnaby'],
-    'Alberta': ['Calgary', 'Edmonton', 'Red Deer', 'Lethbridge'],
-    'Manitoba': ['Winnipeg', 'Brandon', 'Steinbach', 'Thompson'],
-
-    // United Kingdom
-    'England': ['London', 'Manchester', 'Birmingham', 'Liverpool'],
-    'Scotland': ['Edinburgh', 'Glasgow', 'Aberdeen', 'Dundee'],
-    'Wales': ['Cardiff', 'Swansea', 'Newport', 'Wrexham'],
-    'Northern Ireland': ['Belfast', 'Londonderry', 'Lisburn', 'Newtownabbey'],
-
-    // Australia
-    'New South Wales': ['Sydney', 'Newcastle', 'Wollongong', 'Albury'],
-    'Victoria': ['Melbourne', 'Geelong', 'Ballarat', 'Bendigo'],
-    'Queensland': ['Brisbane', 'Gold Coast', 'Townsville', 'Cairns'],
-    'Western Australia': ['Perth', 'Fremantle', 'Bunbury', 'Geraldton'],
-
-    // Germany
-    'Bavaria': ['Munich', 'Nuremberg', 'Augsburg', 'Würzburg'],
-    'North Rhine-Westphalia': ['Cologne', 'Düsseldorf', 'Dortmund', 'Essen'],
-    'Baden-Württemberg': ['Stuttgart', 'Mannheim', 'Karlsruhe', 'Freiburg'],
-    'Lower Saxony': ['Hanover', 'Braunschweig', 'Oldenburg', 'Osnabrück'],
-
-    // France
-    'Île-de-France': ['Paris', 'Boulogne-Billancourt', 'Saint-Denis', 'Argenteuil'],
-    'Provence-Alpes-Côte d\'Azur': ['Marseille', 'Nice', 'Toulon', 'Aix-en-Provence'],
-    'Auvergne-Rhône-Alpes': ['Lyon', 'Grenoble', 'Saint-Étienne', 'Villeurbanne'],
-    'Occitanie': ['Toulouse', 'Montpellier', 'Nîmes', 'Perpignan'],
-
-    // Japan
-    'Tokyo': ['Shibuya', 'Shinjuku', 'Harajuku', 'Ginza'],
-    'Osaka': ['Osaka City', 'Sakai', 'Higashiosaka', 'Hirakata'],
-    'Kyoto': ['Kyoto City', 'Uji', 'Kameoka', 'Nagaokakyo'],
-    'Hokkaido': ['Sapporo', 'Hakodate', 'Asahikawa', 'Kushiro'],
-    'Fukuoka': ['Fukuoka City', 'Kitakyushu', 'Kurume', 'Omuta'],
-
-    // South Korea
-    'Seoul': ['Gangnam', 'Jongno', 'Jung', 'Mapo'],
-    'Busan': ['Haeundae', 'Busanjin', 'Seo', 'Nam'],
-    'Incheon': ['Yeonsu', 'Namdong', 'Bupyeong', 'Seo'],
-    'Daegu': ['Suseong', 'Dalseo', 'Nam', 'Buk'],
-    'Daejeon': ['Yuseong', 'Seo', 'Daedeok', 'Jung'],
-
-    // India
-    'Maharashtra': ['Mumbai', 'Pune', 'Nagpur', 'Nashik'],
-    'Karnataka': ['Bangalore', 'Mysore', 'Hubli', 'Mangalore'],
-    'Tamil Nadu': ['Chennai', 'Coimbatore', 'Madurai', 'Tiruchirappalli'],
-    'Delhi': ['New Delhi', 'Delhi Cantonment', 'Karol Bagh', 'Lajpat Nagar'],
-    'Gujarat': ['Ahmedabad', 'Surat', 'Vadodara', 'Rajkot'],
-
-    // Brazil
-    'São Paulo': ['São Paulo City', 'Campinas', 'Santos', 'Ribeirão Preto'],
-    'Rio de Janeiro': ['Rio de Janeiro City', 'Niterói', 'Petrópolis', 'Volta Redonda'],
-    'Minas Gerais': ['Belo Horizonte', 'Uberlândia', 'Contagem', 'Juiz de Fora'],
-    'Bahia': ['Salvador', 'Feira de Santana', 'Vitória da Conquista', 'Camaçari'],
-    'Paraná': ['Curitiba', 'Londrina', 'Maringá', 'Ponta Grossa'],
-
-    // Mexico
-    'Mexico City': ['Mexico City Central', 'Tlalpan', 'Gustavo A. Madero', 'Álvaro Obregón'],
-    'Jalisco': ['Guadalajara', 'Zapopan', 'Tlaquepaque', 'Tonalá'],
-    'Nuevo León': ['Monterrey', 'Guadalupe', 'San Nicolás de los Garza', 'Apodaca'],
-    'Puebla': ['Puebla City', 'Tehuacán', 'San Martín Texmelucan', 'Atlixco'],
-    'Guanajuato': ['León', 'Irapuato', 'Celaya', 'Salamanca'],
-
-    // Italy
-    'Lombardy': ['Milan', 'Bergamo', 'Brescia', 'Como'],
-    'Lazio': ['Rome', 'Latina', 'Frosinone', 'Viterbo'],
-    'Campania': ['Naples', 'Salerno', 'Caserta', 'Benevento'],
-    'Sicily': ['Palermo', 'Catania', 'Messina', 'Syracuse'],
-    'Veneto': ['Venice', 'Verona', 'Padua', 'Vicenza'],
-
-    // Spain
-    'Madrid': ['Madrid City', 'Móstoles', 'Alcalá de Henares', 'Fuenlabrada'],
-    'Catalonia': ['Barcelona', 'Hospitalet de Llobregat', 'Badalona', 'Terrassa'],
-    'Andalusia': ['Seville', 'Málaga', 'Córdoba', 'Granada'],
-    'Valencia': ['Valencia City', 'Alicante', 'Elche', 'Castellón'],
-    'Galicia': ['Vigo', 'A Coruña', 'Ourense', 'Lugo'],
-
-    // Netherlands
-    'North Holland': ['Amsterdam', 'Haarlem', 'Zaanstad', 'Haarlemmermeer'],
-    'South Holland': ['Rotterdam', 'The Hague', 'Leiden', 'Dordrecht'],
-    'Utrecht': ['Utrecht City', 'Amersfoort', 'Nieuwegein', 'Veenendaal'],
-    'Gelderland': ['Nijmegen', 'Arnhem', 'Apeldoorn', 'Ede'],
-    'North Brabant': ['Eindhoven', 'Tilburg', 's-Hertogenbosch', 'Breda'],
-
-    // Sweden
-    'Stockholm': ['Stockholm City', 'Huddinge', 'Järfälla', 'Sollentuna'],
-    'Västra Götaland': ['Gothenburg', 'Borås', 'Mölndal', 'Trollhättan'],
-    'Skåne': ['Malmö', 'Helsingborg', 'Lund', 'Kristianstad'],
-    'Uppsala': ['Uppsala City', 'Enköping', 'Håbo', 'Älvkarleby'],
-    'Östergötland': ['Linköping', 'Norrköping', 'Motala', 'Mjölby'],
-
-    // Norway
-    'Oslo': ['Oslo City', 'Bærum', 'Asker', 'Lørenskog'],
-    'Rogaland': ['Stavanger', 'Sandnes', 'Haugesund', 'Karmøy'],
-    'Møre og Romsdal': ['Ålesund', 'Molde', 'Kristiansund', 'Volda'],
-    'Nordland': ['Bodø', 'Narvik', 'Mo i Rana', 'Fauske'],
-    'Viken': ['Drammen', 'Fredrikstad', 'Sarpsborg', 'Moss'],
-
-    // Denmark
-    'Capital Region': ['Copenhagen', 'Frederiksberg', 'Gentofte', 'Gladsaxe'],
-    'Central Denmark': ['Aarhus', 'Randers', 'Horsens', 'Vejle'],
-    'North Denmark': ['Aalborg', 'Hjørring', 'Frederikshavn', 'Thisted'],
-    'Zealand': ['Roskilde', 'Næstved', 'Holbæk', 'Køge'],
-    'Southern Denmark': ['Odense', 'Esbjerg', 'Kolding', 'Vejle'],
-
-    // Switzerland
-    'Zurich': ['Zurich City', 'Winterthur', 'Uster', 'Dübendorf'],
-    'Bern': ['Bern City', 'Biel/Bienne', 'Thun', 'Köniz'],
-    'Vaud': ['Lausanne', 'Yverdon-les-Bains', 'Montreux', 'Renens'],
-    'Aargau': ['Aarau', 'Baden', 'Wettingen', 'Wohlen'],
-    'St. Gallen': ['St. Gallen City', 'Rapperswil-Jona', 'Wil', 'Gossau'],
-  };
 
   @override
   Widget build(BuildContext context) {
@@ -325,28 +242,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 //==========================> Last Name Text Field <=======================
                 _textFieldSection('Last Name', lastNameController,
                     AppIcons.singlePerson, 'Enter your last name'),
-
                 //=================================> Email Text Field <=========================
-
                 _textFieldSection('Email', emailController,
                     AppIcons.mailIcon, 'Enter your Email', false, true),
-                // CustomTextField(
-                //   controller: emailController,
-                //   hintText: AppStrings.email,
-                //   prifixicon: Padding(
-                //     padding: EdgeInsets.symmetric(horizontal: 12.w),
-                //     child: SvgPicture.asset(
-                //       AppIcons.mailIcon,
-                //       color: AppColors.primaryColor,
-                //     ),
-                //   ),
-                //   validator: (value) {
-                //     if (value == null || value.isEmpty) {
-                //       return "Please enter your email";
-                //     }
-                //     return null;
-                //   },
-                // ),
                 SizedBox(height: 16.h),
                 //==========================> Gender DropdownButton <=======================
                 _genderDropdown(),
@@ -365,8 +263,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     AppStrings.confirmPassword,
                     confirmPasswordController,
                     AppIcons.lockIcon,
-                     AppStrings.confirmpasswords,
-                     true, false, (value) {
+                    AppStrings.confirmpasswords,
+                    true, false, (value) {
                   setState(() {
                     _passwordMatchError = null;
                   });
@@ -459,9 +357,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               onChanged: (newValue) {
                 setState(() {
                   selectedGender = newValue;
-                  if (newValue != null) {
-                    _genderError = null;
-                  }
+                  if (newValue != null) _genderError = null;
                 });
               },
             ),
@@ -479,8 +375,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-
-
   //==========================> Birthday Dropdown Section <=======================
   _birthdayDropdownSection() {
     return Column(
@@ -495,7 +389,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            _buildDropdownField(
+            _buildStringDropdownField(
               value: selectedYear,
               items: yearList,
               hint: 'Year',
@@ -503,13 +397,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
               onChanged: (value) {
                 setState(() {
                   selectedYear = value;
-                  if (value != null) {
-                    _birthdayError = null;
-                  }
+                  if (value != null) _birthdayError = null;
                 });
               },
             ),
-            _buildDropdownField(
+            _buildStringDropdownField(
               value: selectedMonth,
               items: monthList,
               hint: 'Month',
@@ -517,13 +409,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
               onChanged: (value) {
                 setState(() {
                   selectedMonth = value;
-                  if (value != null) {
-                    _birthdayError = null;
-                  }
+                  if (value != null) _birthdayError = null;
                 });
               },
             ),
-            _buildDropdownField(
+            _buildStringDropdownField(
               value: selectedDay,
               items: dayList,
               hint: 'Day',
@@ -531,9 +421,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               onChanged: (value) {
                 setState(() {
                   selectedDay = value;
-                  if (value != null) {
-                    _birthdayError = null;
-                  }
+                  if (value != null) _birthdayError = null;
                 });
               },
             ),
@@ -551,7 +439,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  //==========================> Location Dropdown Section <=======================
+  //==========================> Location Dropdown Section (GeoNames) <=======================
   _locationDropdownSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -562,50 +450,79 @@ class _SignUpScreenState extends State<SignUpScreen> {
           fontsize: 14.sp,
           bottom: 8.h,
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            _buildDropdownField(
-              value: selectedCountry,
-              items: countryList,
-              hint: 'Country',
-              width: 108.w,
-              onChanged: (value) {
-                setState(() {
-                  selectedCountry = value;
-                  selectedState = null;
-                  selectedCity = null;
-                  if (value != null) {
-                    _countryError = null;
-                  }
-                });
-              },
-            ),
-            _buildDropdownField(
-              value: selectedState,
-              items: selectedCountry != null ? (stateMap[selectedCountry] ?? []) : [],
-              hint: 'State',
-              width: 108.w,
-              onChanged: (value) {
-                setState(() {
-                  selectedState = value;
-                  selectedCity = null;
-                });
-              },
-            ),
-            _buildDropdownField(
-              value: selectedCity,
-              items: selectedState != null ? (cityMap[selectedState] ?? []) : [],
-              hint: 'City',
-              width: 108.w,
-              onChanged: (value) {
-                setState(() {
-                  selectedCity = value;
-                });
-              },
-            ),
-          ],
-        ),
+        // -------- Country --------
+        _isLoadingCountries
+            ? Center(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 12.h),
+                  child: SizedBox(
+                    width: 20.w,
+                    height: 20.w,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      valueColor: AlwaysStoppedAnimation<Color>(AppColors.primaryColor),
+                    ),
+                  ),
+                ),
+              )
+            : _buildGeoDropdownField<Country>(
+                value: _selectedCountry,
+                items: _countries,
+                hint: 'Country',
+                onChanged: _onCountryChanged,
+              ),
+        SizedBox(height: 8.h),
+        // -------- State --------
+        _isLoadingStates
+            ? Padding(
+                padding: EdgeInsets.symmetric(vertical: 8.h),
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 14.w,
+                      height: 14.w,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 1.5,
+                        valueColor: AlwaysStoppedAnimation<Color>(AppColors.primaryColor),
+                      ),
+                    ),
+                    SizedBox(width: 8.w),
+                    Text('Loading states...', style: TextStyle(fontSize: 12.sp, color: Colors.grey)),
+                  ],
+                ),
+              )
+            : _buildGeoDropdownField<CityState>(
+                value: _selectedState,
+                items: _states,
+                hint: 'State / Province',
+                onChanged: _states.isNotEmpty ? _onStateChanged : null,
+              ),
+        SizedBox(height: 8.h),
+        // -------- City --------
+        _isLoadingCities
+            ? Padding(
+                padding: EdgeInsets.symmetric(vertical: 8.h),
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 14.w,
+                      height: 14.w,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 1.5,
+                        valueColor: AlwaysStoppedAnimation<Color>(AppColors.primaryColor),
+                      ),
+                    ),
+                    SizedBox(width: 8.w),
+                    Text('Loading cities...', style: TextStyle(fontSize: 12.sp, color: Colors.grey)),
+                  ],
+                ),
+              )
+            : _buildGeoDropdownField<City>(
+                value: _selectedCity,
+                items: _cities,
+                hint: 'City',
+                onChanged: _cities.isNotEmpty ? _onCityChanged : null,
+              ),
         if (_countryError != null)
           Padding(
             padding: EdgeInsets.only(top: 4.h),
@@ -618,8 +535,55 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  //==========================> Generic Dropdown Field Builder <=======================
-  Widget _buildDropdownField({
+  //==========================> Generic Geo Dropdown Field Builder <=======================
+  Widget _buildGeoDropdownField<T>({
+    required T? value,
+    required List<T> items,
+    required String hint,
+    required Function(T?)? onChanged,
+  }) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(horizontal: 12.w),
+      decoration: BoxDecoration(
+        color: AppColors.fillColor,
+        borderRadius: BorderRadius.circular(8.r),
+        border: Border.all(color: AppColors.primaryColor, width: 1),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<T>(
+          value: value,
+          dropdownColor: AppColors.fillColor,
+          padding: EdgeInsets.symmetric(vertical: 6.w),
+          borderRadius: BorderRadius.circular(8.r),
+          hint: Text(
+            hint,
+            style: TextStyle(color: Colors.grey, fontSize: 14.sp),
+          ),
+          icon: SvgPicture.asset(
+            AppIcons.downArrowIcon,
+            width: 16.w,
+            color: AppColors.primaryColor,
+          ),
+          isExpanded: true,
+          items: items.map((T item) {
+            return DropdownMenuItem<T>(
+              value: item,
+              child: Text(
+                item.toString(),
+                style: TextStyle(color: Colors.black, fontSize: 14.sp),
+                overflow: TextOverflow.ellipsis,
+              ),
+            );
+          }).toList(),
+          onChanged: onChanged,
+        ),
+      ),
+    );
+  }
+
+  //==========================> Generic String Dropdown Field Builder (birthday) <=======================
+  Widget _buildStringDropdownField({
     required String? value,
     required List<String> items,
     required String hint,
@@ -643,10 +607,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             borderRadius: BorderRadius.circular(8.r),
             hint: Text(
               hint,
-              style: TextStyle(
-                color: Colors.grey,
-                fontSize: 14.sp,
-              ),
+              style: TextStyle(color: Colors.grey, fontSize: 14.sp),
             ),
             icon: SvgPicture.asset(
               AppIcons.downArrowIcon,
@@ -659,10 +620,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 value: item,
                 child: Text(
                   item,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 14.sp,
-                  ),
+                  style: TextStyle(color: Colors.black, fontSize: 14.sp),
                   overflow: TextOverflow.ellipsis,
                 ),
               );
@@ -723,15 +681,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                     )
                   else if (_usernameError != null)
-                    Icon(
-                      Icons.error_outline,
-                      size: 14.sp,
-                      color: Colors.red,
-                    ),
+                    Icon(Icons.error_outline, size: 14.sp, color: Colors.red),
                   SizedBox(width: 4.w),
                   Expanded(
                     child: CustomText(
-                      text: _isCheckingUsername ? 'Checking username...' : (_usernameError ?? ''),
+                      text: _isCheckingUsername
+                          ? 'Checking username...'
+                          : (_usernameError ?? ''),
                       fontsize: 12.sp,
                       color: _isCheckingUsername ? AppColors.primaryColor : Colors.red,
                     ),
@@ -766,9 +722,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
             isEmail: isEmail,
             prifixicon: icon != null
                 ? Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12.h),
-              child: SvgPicture.asset(icon, color: AppColors.primaryColor),
-            )
+                    padding: EdgeInsets.symmetric(horizontal: 12.h),
+                    child: SvgPicture.asset(icon, color: AppColors.primaryColor),
+                  )
                 : null,
             onChanged: onChanged,
             validator: (value) {
@@ -777,9 +733,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               }
               if (isEmail) {
                 bool data = AppConstants.emailValidator.hasMatch(value);
-                if (!data) {
-                  return "Please check your email!";
-                }
+                if (!data) return "Please check your email!";
               }
               return null;
             },
@@ -799,9 +753,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               onTap: () {
                 setState(() {
                   isChecked = !isChecked;
-                  if (isChecked) {
-                    _termsError = null;
-                  }
+                  if (isChecked) _termsError = null;
                 });
               },
               child: Container(
@@ -809,18 +761,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 height: 20.w,
                 decoration: BoxDecoration(
                   color: isChecked ? AppColors.primaryColor : Colors.transparent,
-                  border: Border.all(
-                    color: AppColors.primaryColor,
-                    width: 1.w,
-                  ),
+                  border: Border.all(color: AppColors.primaryColor, width: 1.w),
                   borderRadius: BorderRadius.circular(4.r),
                 ),
                 child: isChecked
-                    ? Icon(
-                  Icons.check,
-                  color: Colors.white,
-                  size: 14.sp,
-                )
+                    ? Icon(Icons.check, color: Colors.white, size: 14.sp)
                     : null,
               ),
             ),
@@ -877,122 +822,100 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   //==========================> Sign Up Button <=======================
-
   _signUpButton() {
     return Obx(() => CustomButton(
-      onTap: () async {
-        if (authController.isLoading.value) return;
+          onTap: () async {
+            if (authController.isLoading.value) return;
 
-        setState(() {
-          _termsError = null;
-          _genderError = null;
-          _birthdayError = null;
-          _countryError = null;
-          _passwordMatchError = null;
-        });
+            setState(() {
+              _termsError = null;
+              _genderError = null;
+              _birthdayError = null;
+              _countryError = null;
+              _passwordMatchError = null;
+            });
 
-        if (!_formKey.currentState!.validate()) {
-          return;
-        }
+            if (!_formKey.currentState!.validate()) return;
 
-        if (!isChecked) {
-          setState(() {
-            _termsError = 'Please accept the Terms & Conditions and Privacy Policy';
-          });
-          return;
-        }
-
-        if (selectedGender == null) {
-          setState(() {
-            _genderError = 'Please select your gender';
-          });
-          return;
-        }
-
-        if (selectedYear == null || selectedMonth == null || selectedDay == null) {
-          setState(() {
-            _birthdayError = 'Please select your complete birthday';
-          });
-          return;
-        }
-
-        if (selectedCountry == null) {
-          setState(() {
-            _countryError = 'Please select your country';
-          });
-          return;
-        }
-
-        if (passwordController.text != confirmPasswordController.text) {
-          setState(() {
-            _passwordMatchError = 'Passwords do not match';
-          });
-          return;
-        }
-
-        if (_usernameError != null) {
-          return;
-        }
-
-        if (_isCheckingUsername) {
-          return;
-        }
-
-        int monthIndex = monthList.indexOf(selectedMonth!) + 1;
-        String formattedBirthday = '$selectedYear-${monthIndex.toString().padLeft(2, '0')}-$selectedDay';
-
-        bool success = await authController.registerUser(
-          username: userNameController.text.trim(),
-          email: emailController.text.trim(),
-          firstName: firstNameController.text.trim(),
-          lastName: lastNameController.text.trim(),
-          gender: selectedGender!,
-          birthday: formattedBirthday,
-          country: selectedCountry!,
-          state: selectedState ?? '',
-          city: selectedCity ?? '',
-          password: passwordController.text,
-          confirmPassword: confirmPasswordController.text,
-          acceptTerms: isChecked,
-        );
-
-        if (success) {
-          Get.toNamed(
-            AppRoutes.signUpOtpVerificationScreen, 
-            arguments: {
-              'sessionId': authController.storedSessionId.value,
-              'email': emailController.text.trim(),
+            if (!isChecked) {
+              setState(() {
+                _termsError =
+                    'Please accept the Terms & Conditions and Privacy Policy';
+              });
+              return;
             }
-          );
-        }
-      },
-      color: AppColors.buttonColor,
-      text: AppStrings.signUp,
-      textColor: Colors.white,
-      loading: authController.isLoading.value,
-    ));
+
+            if (selectedGender == null) {
+              setState(() {
+                _genderError = 'Please select your gender';
+              });
+              return;
+            }
+
+            if (selectedYear == null ||
+                selectedMonth == null ||
+                selectedDay == null) {
+              setState(() {
+                _birthdayError = 'Please select your complete birthday';
+              });
+              return;
+            }
+
+            if (_selectedCountry == null) {
+              setState(() {
+                _countryError = 'Please select your country';
+              });
+              return;
+            }
+
+            if (passwordController.text != confirmPasswordController.text) {
+              setState(() {
+                _passwordMatchError = 'Passwords do not match';
+              });
+              return;
+            }
+
+            if (_usernameError != null) return;
+            if (_isCheckingUsername) return;
+
+            int monthIndex = monthList.indexOf(selectedMonth!) + 1;
+            String formattedBirthday =
+                '$selectedYear-${monthIndex.toString().padLeft(2, '0')}-$selectedDay';
+
+            bool success = await authController.registerUser(
+              username: userNameController.text.trim(),
+              email: emailController.text.trim(),
+              firstName: firstNameController.text.trim(),
+              lastName: lastNameController.text.trim(),
+              gender: selectedGender!,
+              birthday: formattedBirthday,
+              country: _selectedCountry!.name,
+              state: _selectedState?.name ?? '',
+              city: _selectedCity?.name ?? '',
+              password: passwordController.text,
+              confirmPassword: confirmPasswordController.text,
+              acceptTerms: isChecked,
+            );
+
+            if (success) {
+              Get.toNamed(
+                AppRoutes.signUpOtpVerificationScreen,
+                arguments: {
+                  'sessionId': authController.storedSessionId.value,
+                  'email': emailController.text.trim(),
+                },
+              );
+            }
+          },
+          color: AppColors.buttonColor,
+          text: AppStrings.signUp,
+          textColor: Colors.white,
+          loading: authController.isLoading.value,
+        ));
   }
+
   //==========================> Already Have Account Text <=======================
   _alreadyHaveAccountText() {
-    // return Row(
-    //   mainAxisAlignment: MainAxisAlignment.center,
-    //   children: [
-    //     CustomText(
-    //       text: AppStrings.alreadyHaveAccount,
-    //       fontWeight: FontWeight.w400,
-    //     ),
-    //     TextButton(
-    //       onPressed: () {
-    //         Get.toNamed(AppRoutes.signInScreen);
-    //       },
-    //       child: CustomText(
-    //         text: 'Sign In',
-    //         fontWeight: FontWeight.w500,
-    //         color: AppColors.primaryColor,
-    //       ),
-    //     ),
-    //   ],
-    // );
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -1007,10 +930,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
             },
             child: CustomText(
               fontsize: 12.sp,
-              text:   "Sign In",
+              text: "Sign In",
               color: AppColors.primaryColor,
               fontWeight: FontWeight.w400,
-              decoration:TextDecoration.underline,
+              decoration: TextDecoration.underline,
               lineHeight: 1.5.h,
             ))
       ],

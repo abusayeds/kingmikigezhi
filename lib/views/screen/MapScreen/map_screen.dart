@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:event_sharing/controllers/auth_controller.dart';
 import 'package:event_sharing/services/api_service.dart';
 import 'package:event_sharing/utils/api_constants.dart';
 import 'package:event_sharing/utils/app_colors.dart';
@@ -7,12 +8,14 @@ import 'package:event_sharing/views/base/custom_button.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:event_sharing/views/base/custom_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:latlong2/latlong.dart';
 
+import '../../geo/models/city.dart';
 import '../../geo/models/city_state.dart';
 import '../../geo/models/country.dart';
 import '../../geo/services/geo_data_service.dart';
@@ -29,28 +32,34 @@ class _MapScreenState extends State<MapScreen> {
   /// Create one at https://www.geonames.org/login and enable web services.
   static const String _geoNamesUsername = 'demo';
 
-  GoogleMapController? mapController;
-  Marker? _selectedLocationMarker;
+  final MapController _mapController = MapController();
   LatLng? _selectedPosition;
+  String _markerTitle = 'Selected location';
   bool _isSearching = false;
   bool _isSavingLocation = false;
 
   final ApiService _apiService = Get.find<ApiService>();
+  final AuthController _authController = Get.find<AuthController>();
   final GeoDataService _geoService = GeoDataService.instance;
 
-  //=========================> Country / State dropdown data <=======================
+  //=========================> Country / State / City dropdown data <=======================
   List<Country> _countries = [];
   List<CityState> _states = [];
+  List<City> _cities = [];
   Country? _selectedCountry;
   CityState? _selectedState;
+  City? _selectedCity;
   bool _isLoadingCountries = true;
   bool _isLoadingStates = false;
+  bool _isLoadingCities = false;
+
+  /// Fallback strings from geocode/reverse-geocode when dropdown match fails.
+  String? _geocodedCountry;
+  String? _geocodedState;
+  String? _geocodedCity;
 
   final TextEditingController _locationController = TextEditingController();
-  final CameraPosition _kGooglePlex = const CameraPosition(
-    target: LatLng(23.791275582872142, 90.39232734518325),
-    zoom: 14.4746,
-  );
+  static const LatLng _initialCenter = LatLng(23.791275582872142, 90.39232734518325);
 
   @override
   void initState() {
@@ -61,24 +70,29 @@ class _MapScreenState extends State<MapScreen> {
   @override
   void dispose() {
     _locationController.dispose();
-    mapController?.dispose();
+    _mapController.dispose();
     super.dispose();
-  }
-
-  void _onMapCreated(GoogleMapController controller) {
-    mapController = controller;
   }
 
   void _updateMarker(LatLng position, {String? title}) {
     setState(() {
       _selectedPosition = position;
-      _selectedLocationMarker = Marker(
-        markerId: const MarkerId('selected-location'),
-        position: position,
-        infoWindow: InfoWindow(title: title ?? 'Selected location'),
-      );
+      _markerTitle = title ?? 'Selected location';
     });
-    mapController?.animateCamera(CameraUpdate.newLatLngZoom(position, 14.0));
+    _mapController.move(position, 14.0);
+  }
+
+  String _buildLocationLabel() {
+    final parts = [
+      _selectedCity?.name,
+      _selectedState?.name,
+      _selectedCountry?.name,
+    ].whereType<String>().where((e) => e.trim().isNotEmpty).toList();
+
+    if (parts.isNotEmpty) return parts.join(', ');
+
+    final typed = _locationController.text.trim();
+    return typed;
   }
 
   //=========================> Load all countries <=======================
@@ -93,44 +107,140 @@ class _MapScreenState extends State<MapScreen> {
 
   //=========================> Load states for a selected country <=======================
   Future<void> _onCountryChanged(Country? country) async {
-    if (country == null) return;
-
     setState(() {
       _selectedCountry = country;
       _selectedState = null;
+      _selectedCity = null;
       _states = [];
-      _isLoadingStates = true;
+      _cities = [];
+      _isLoadingStates = country != null;
+      _isLoadingCities = false;
+      _geocodedCountry = country?.name;
+      _geocodedState = null;
+      _geocodedCity = null;
     });
 
-    final states = await _geoService.getStatesByCountry(country.id);
+    if (country == null) return;
 
+    final states = await _geoService.getStatesByCountry(country.id);
     if (!mounted) return;
     setState(() {
       _states = states;
       _isLoadingStates = false;
     });
 
-    // No states in the dataset for this country (e.g. most countries
-    // outside the US/Canada) — still fall back to geocoding the country
-    // name itself so search still works.
-    if (states.isEmpty) {
-      _locationController.text = country.name;
-      _confirmLocation();
-    }
+    // Move map to the selected country without rewriting dropdown values.
+    _locationController.text = country.name;
+    await _confirmLocation(syncDropdowns: false);
   }
 
-  //=========================> On state selected: build location string + geocode <=======================
-  void _onStateChanged(CityState? state) {
-    setState(() => _selectedState = state);
+  //=========================> On state selected: load cities <=======================
+  Future<void> _onStateChanged(CityState? state) async {
+    setState(() {
+      _selectedState = state;
+      _selectedCity = null;
+      _cities = [];
+      _isLoadingCities = state != null;
+      _geocodedState = state?.name;
+      _geocodedCity = null;
+    });
+
     if (state == null || _selectedCountry == null) return;
 
+    final cities = await _geoService.getCitiesByState(state.id);
+    if (!mounted) return;
+    setState(() {
+      _cities = cities;
+      _isLoadingCities = false;
+    });
+
     _locationController.text = '${state.name}, ${_selectedCountry!.name}';
-    _confirmLocation();
+    await _confirmLocation(syncDropdowns: false);
+  }
+
+  //=========================> On city selected: geocode full location <=======================
+  Future<void> _onCityChanged(City? city) async {
+    setState(() {
+      _selectedCity = city;
+      _geocodedCity = city?.name;
+    });
+    if (city == null || _selectedCountry == null) return;
+
+    final parts = [
+      city.name,
+      if (_selectedState != null) _selectedState!.name,
+      _selectedCountry!.name,
+    ];
+    _locationController.text = parts.join(', ');
+    await _confirmLocation(syncDropdowns: false);
+  }
+
+  /// Best-effort match of reverse-geocode parts against local geo datasets.
+  /// Exact name match only — fuzzy/contains matching was swapping to wrong countries.
+  Future<void> _syncDropdownsFromAddress({
+    String? countryName,
+    String? stateName,
+    String? cityName,
+  }) async {
+    if (countryName == null || countryName.trim().isEmpty) return;
+
+    final needle = countryName.trim().toLowerCase();
+    final countries = _countries.isNotEmpty
+        ? _countries
+        : await _geoService.getCountries();
+
+    Country? countryMatch;
+    for (final c in countries) {
+      if (c.name.toLowerCase() == needle) {
+        countryMatch = c;
+        break;
+      }
+    }
+    if (countryMatch == null || !mounted) return;
+
+    final states = await _geoService.getStatesByCountry(countryMatch.id);
+    CityState? stateMatch;
+    if (stateName != null && stateName.trim().isNotEmpty && states.isNotEmpty) {
+      final stateNeedle = stateName.trim().toLowerCase();
+      for (final s in states) {
+        if (s.name.toLowerCase() == stateNeedle) {
+          stateMatch = s;
+          break;
+        }
+      }
+    }
+
+    List<City> cities = [];
+    City? cityMatch;
+    if (stateMatch != null) {
+      cities = await _geoService.getCitiesByState(stateMatch.id);
+      if (cityName != null && cityName.trim().isNotEmpty && cities.isNotEmpty) {
+        final cityNeedle = cityName.trim().toLowerCase();
+        for (final c in cities) {
+          if (c.name.toLowerCase() == cityNeedle) {
+            cityMatch = c;
+            break;
+          }
+        }
+      }
+    }
+
+    if (!mounted) return;
+    setState(() {
+      _countries = countries;
+      _selectedCountry = countryMatch;
+      _states = states;
+      _selectedState = stateMatch;
+      _cities = cities;
+      _selectedCity = cityMatch;
+      _isLoadingStates = false;
+      _isLoadingCities = false;
+    });
   }
 
   /// Free GeoNames forward geocoding (address -> lat/lng)
-  Future<({LatLng position, String name})?> _geocodeWithGeoNames(
-      String address) async {
+  Future<({LatLng position, String name, String? country, String? state, String? city})?>
+      _geocodeWithGeoNames(String address) async {
     final uri = Uri.http('api.geonames.org', '/searchJSON', {
       'q': address,
       'maxRows': '1',
@@ -151,21 +261,30 @@ class _MapScreenState extends State<MapScreen> {
     final lng = double.tryParse(place['lng']?.toString() ?? '');
     if (lat == null || lng == null) return null;
 
-    final name = [
-      place['name']?.toString(),
-      place['adminName1']?.toString(),
-      place['countryName']?.toString(),
-    ].whereType<String>().where((e) => e.trim().isNotEmpty).join(', ');
+    final city = place['name']?.toString();
+    final state = place['adminName1']?.toString();
+    final country = place['countryName']?.toString();
+    final name = [city, state, country]
+        .whereType<String>()
+        .where((e) => e.trim().isNotEmpty)
+        .join(', ');
 
-    return (position: LatLng(lat, lng), name: name.isNotEmpty ? name : address);
+    return (
+      position: LatLng(lat, lng),
+      name: name.isNotEmpty ? name : address,
+      country: country,
+      state: state,
+      city: city,
+    );
   }
 
   /// Free OpenStreetMap Nominatim fallback (no API key)
-  Future<({LatLng position, String name})?> _geocodeWithNominatim(
-      String address) async {
+  Future<({LatLng position, String name, String? country, String? state, String? city})?>
+      _geocodeWithNominatim(String address) async {
     final uri = Uri.https('nominatim.openstreetmap.org', '/search', {
       'q': address,
       'format': 'json',
+      'addressdetails': '1',
       'limit': '1',
     });
 
@@ -186,12 +305,28 @@ class _MapScreenState extends State<MapScreen> {
     final lon = double.tryParse(place['lon']?.toString() ?? '');
     if (lat == null || lon == null) return null;
 
+    final addressMap = place['address'] as Map<String, dynamic>? ?? {};
+    final city = (addressMap['city'] ??
+            addressMap['town'] ??
+            addressMap['village'] ??
+            addressMap['suburb'])
+        ?.toString();
+    final state = addressMap['state']?.toString();
+    final country = addressMap['country']?.toString();
     final name = place['display_name']?.toString() ?? address;
-    return (position: LatLng(lat, lon), name: name);
+
+    return (
+      position: LatLng(lat, lon),
+      name: name,
+      country: country,
+      state: state,
+      city: city,
+    );
   }
 
   /// Free GeoNames reverse geocoding (lat/lng -> address)
-  Future<String?> _reverseWithGeoNames(LatLng position) async {
+  Future<({String name, String? country, String? state, String? city})?>
+      _reverseWithGeoNames(LatLng position) async {
     final uri = Uri.http('api.geonames.org', '/findNearbyPlaceNameJSON', {
       'lat': position.latitude.toString(),
       'lng': position.longitude.toString(),
@@ -208,21 +343,31 @@ class _MapScreenState extends State<MapScreen> {
     if (places.isEmpty) return null;
 
     final place = places.first as Map<String, dynamic>;
-    final parts = [
-      place['name']?.toString(),
-      place['adminName1']?.toString(),
-      place['countryName']?.toString(),
-    ].whereType<String>().where((e) => e.trim().isNotEmpty).toList();
+    final city = place['name']?.toString();
+    final state = place['adminName1']?.toString();
+    final country = place['countryName']?.toString();
+    final parts = [city, state, country]
+        .whereType<String>()
+        .where((e) => e.trim().isNotEmpty)
+        .toList();
 
-    return parts.isEmpty ? null : parts.join(', ');
+    if (parts.isEmpty) return null;
+    return (
+      name: parts.join(', '),
+      country: country,
+      state: state,
+      city: city,
+    );
   }
 
   /// Free Nominatim reverse fallback
-  Future<String?> _reverseWithNominatim(LatLng position) async {
+  Future<({String name, String? country, String? state, String? city})?>
+      _reverseWithNominatim(LatLng position) async {
     final uri = Uri.https('nominatim.openstreetmap.org', '/reverse', {
       'lat': position.latitude.toString(),
       'lon': position.longitude.toString(),
       'format': 'json',
+      'addressdetails': '1',
     });
 
     final response = await http.get(
@@ -235,10 +380,21 @@ class _MapScreenState extends State<MapScreen> {
     if (response.statusCode != 200) return null;
 
     final data = jsonDecode(response.body) as Map<String, dynamic>;
-    return data['display_name']?.toString();
+    final addressMap = data['address'] as Map<String, dynamic>? ?? {};
+    final city = (addressMap['city'] ??
+            addressMap['town'] ??
+            addressMap['village'] ??
+            addressMap['suburb'])
+        ?.toString();
+    final state = addressMap['state']?.toString();
+    final country = addressMap['country']?.toString();
+    final name = data['display_name']?.toString();
+    if (name == null || name.isEmpty) return null;
+
+    return (name: name, country: country, state: state, city: city);
   }
 
-  Future<void> _confirmLocation() async {
+  Future<void> _confirmLocation({bool syncDropdowns = true}) async {
     final location = _locationController.text.trim();
     if (location.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -261,8 +417,31 @@ class _MapScreenState extends State<MapScreen> {
         return;
       }
 
-      _locationController.text = result.name;
-      _updateMarker(result.position, title: result.name);
+      // Only rewrite the text field / dropdowns for manual search or map tap.
+      // Dropdown-driven searches must keep the user's selected country/state/city.
+      if (syncDropdowns) {
+        _locationController.text = result.name;
+        _geocodedCountry = result.country ?? _geocodedCountry;
+        _geocodedState = result.state ?? _geocodedState;
+        _geocodedCity = result.city ?? _geocodedCity;
+      } else {
+        _geocodedCountry = _selectedCountry?.name ?? _geocodedCountry;
+        _geocodedState = _selectedState?.name ?? _geocodedState;
+        _geocodedCity = _selectedCity?.name ?? _geocodedCity;
+      }
+
+      _updateMarker(
+        result.position,
+        title: syncDropdowns ? result.name : location,
+      );
+
+      if (syncDropdowns) {
+        await _syncDropdownsFromAddress(
+          countryName: result.country ?? _selectedCountry?.name,
+          stateName: result.state ?? _selectedState?.name,
+          cityName: result.city ?? _selectedCity?.name,
+        );
+      }
 
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -281,22 +460,26 @@ class _MapScreenState extends State<MapScreen> {
   Future<void> _onMapTap(LatLng position) async {
     _updateMarker(position, title: 'Selected location');
 
-    String? address = await _reverseWithGeoNames(position);
+    var address = await _reverseWithGeoNames(position);
     address ??= await _reverseWithNominatim(position);
 
     if (address != null && mounted) {
-      _locationController.text = address;
+      _locationController.text = address.name;
+      _geocodedCountry = address.country ?? _geocodedCountry;
+      _geocodedState = address.state ?? _geocodedState;
+      _geocodedCity = address.city ?? _geocodedCity;
       setState(() {
-        _selectedLocationMarker = Marker(
-          markerId: const MarkerId('selected-location'),
-          position: position,
-          infoWindow: InfoWindow(title: address),
-        );
+        _markerTitle = address!.name;
       });
+      await _syncDropdownsFromAddress(
+        countryName: address.country,
+        stateName: address.state,
+        cityName: address.city,
+      );
     }
   }
 
-  /// PATCH /users/update-me with the selected location as form data
+  /// PATCH /users/update-me with country, state, city, coords, and location label
   Future<void> _onConfirmAndReturn() async {
     if (_selectedPosition == null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -305,43 +488,93 @@ class _MapScreenState extends State<MapScreen> {
       return;
     }
 
-    final address = _locationController.text.trim();
+    final country = (_selectedCountry?.name ?? _geocodedCountry ?? '').trim();
+    final state = (_selectedState?.name ?? _geocodedState ?? '').trim();
+    final city = (_selectedCity?.name ?? _geocodedCity ?? '').trim();
+
+    if (country.isEmpty && _locationController.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please select or search a location')),
+      );
+      return;
+    }
+
+    final location = _buildLocationLabel().isNotEmpty
+        ? _buildLocationLabel()
+        : [city, state, country]
+            .where((e) => e.trim().isNotEmpty)
+            .join(', ');
     final latitude = _selectedPosition!.latitude;
     final longitude = _selectedPosition!.longitude;
 
     setState(() => _isSavingLocation = true);
 
     try {
-      final response = await _apiService.multipartRequest(
+      final response = await _apiService.patch(
         ApiConstants.updateProfile,
-        method: 'PATCH',
-        fields: {
-          'location': address,
-          'latitude': latitude.toString(),
-          'longitude': longitude.toString(),
-          if (_selectedCountry != null) 'country': _selectedCountry!.name,
-          if (_selectedState != null) 'state': _selectedState!.name,
+        body: {
+          'location': location,
+          if (country.isNotEmpty) 'country': country,
+          if (state.isNotEmpty) 'state': state,
+          if (city.isNotEmpty) 'city': city,
+          'latitude': latitude,
+          'longitude': longitude,
         },
       );
 
       if (!mounted) return;
 
       if (response != null && response['success'] == true) {
+        // Apply to AuthController so home app bar / profile update immediately.
+        final current = Map<String, dynamic>.from(
+          _authController.userProfile.value ?? {},
+        );
+        if (response['data'] is Map) {
+          current.addAll(Map<String, dynamic>.from(response['data']));
+        }
+        // Always keep the location the user just confirmed (API may omit fields).
+        current['location'] = location;
+        if (country.isNotEmpty) current['country'] = country;
+        if (state.isNotEmpty) current['state'] = state;
+        if (city.isNotEmpty) current['city'] = city;
+        current['latitude'] = latitude;
+        current['longitude'] = longitude;
+        _authController.userProfile.value = Map<String, dynamic>.from(current);
+        await _apiService.saveUserData(current);
+
+        // Refresh profile but preserve location fields if API response is incomplete.
+        await _authController.fetchUserProfile();
+        final refreshed = Map<String, dynamic>.from(
+          _authController.userProfile.value ?? {},
+        );
+        refreshed['location'] = location;
+        if (country.isNotEmpty) refreshed['country'] = country;
+        if (state.isNotEmpty) refreshed['state'] = state;
+        if (city.isNotEmpty) refreshed['city'] = city;
+        refreshed['latitude'] = latitude;
+        refreshed['longitude'] = longitude;
+        _authController.userProfile.value = refreshed;
+        await _apiService.saveUserData(refreshed);
+
+        if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Location updated successfully')),
         );
         Get.back(result: {
-          'address': address,
+          'address': location,
+          'location': location,
           'latitude': latitude,
           'longitude': longitude,
-          'country': _selectedCountry?.name,
-          'state': _selectedState?.name,
+          'country': country,
+          'state': state,
+          'city': city,
         });
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-                response?['message']?.toString() ?? 'Failed to update location'),
+              response?['message']?.toString() ?? 'Failed to update location',
+            ),
           ),
         );
       }
@@ -360,17 +593,38 @@ class _MapScreenState extends State<MapScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          GoogleMap(
-            mapType: MapType.normal,
-            zoomGesturesEnabled: true,
-            zoomControlsEnabled: true,
-            myLocationButtonEnabled: true,
-            initialCameraPosition: _kGooglePlex,
-            onMapCreated: _onMapCreated,
-            onTap: _onMapTap,
-            markers: _selectedLocationMarker != null
-                ? {_selectedLocationMarker!}
-                : {},
+          FlutterMap(
+            mapController: _mapController,
+            options: MapOptions(
+              initialCenter: _initialCenter,
+              initialZoom: 14.4746,
+              onTap: (tapPosition, point) => _onMapTap(point),
+            ),
+            children: [
+              TileLayer(
+                urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                userAgentPackageName: 'com.gehzi.event_sharing',
+              ),
+              if (_selectedPosition != null)
+                MarkerLayer(
+                  markers: [
+                    Marker(
+                      point: _selectedPosition!,
+                      width: 48,
+                      height: 48,
+                      alignment: Alignment.topCenter,
+                      child: Tooltip(
+                        message: _markerTitle,
+                        child: const Icon(
+                          Icons.location_on,
+                          color: Colors.red,
+                          size: 48,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+            ],
           ),
           Positioned(
             top: MediaQuery.of(context).padding.top + 8.h,
@@ -415,58 +669,103 @@ class _MapScreenState extends State<MapScreen> {
                     //=========================> Country dropdown <=======================
                     _isLoadingCountries
                         ? const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8),
-                      child: LinearProgressIndicator(),
-                    )
+                            padding: EdgeInsets.symmetric(vertical: 8),
+                            child: LinearProgressIndicator(),
+                          )
                         : DropdownButtonFormField<Country>(
-                      initialValue: _selectedCountry,
-                      isExpanded: true,
-                      decoration: const InputDecoration(
-                        labelText: 'Country',
-                        border: OutlineInputBorder(),
-                      ),
-                      items: _countries
-                          .map((c) => DropdownMenuItem(
-                        value: c,
-                        child: Text(c.name),
-                      ))
-                          .toList(),
-                      onChanged: _onCountryChanged,
-                    ),
+                            key: ValueKey('country-${_selectedCountry?.id}'),
+                            initialValue: _selectedCountry,
+                            isExpanded: true,
+                            decoration: const InputDecoration(
+                              labelText: 'Country',
+                              border: OutlineInputBorder(),
+                            ),
+                            items: _countries
+                                .map(
+                                  (c) => DropdownMenuItem(
+                                    value: c,
+                                    child: Text(c.name),
+                                  ),
+                                )
+                                .toList(),
+                            onChanged: _onCountryChanged,
+                          ),
                     SizedBox(height: 12.h),
 
                     //=========================> State dropdown <=======================
                     if (_selectedCountry != null)
                       _isLoadingStates
                           ? const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 8),
-                        child: LinearProgressIndicator(),
-                      )
+                              padding: EdgeInsets.symmetric(vertical: 8),
+                              child: LinearProgressIndicator(),
+                            )
                           : _states.isEmpty
-                          ? Padding(
-                        padding: EdgeInsets.symmetric(vertical: 8.h),
-                        child: CustomText(
-                          text:
-                          'No states available for this country in the dataset.',
-                          fontsize: 11.sp,
-                          color: Colors.grey,
-                        ),
-                      )
-                          : DropdownButtonFormField<CityState>(
-                        initialValue: _selectedState,
-                        isExpanded: true,
-                        decoration: const InputDecoration(
-                          labelText: 'State / Province',
-                          border: OutlineInputBorder(),
-                        ),
-                        items: _states
-                            .map((s) => DropdownMenuItem(
-                          value: s,
-                          child: Text(s.name),
-                        ))
-                            .toList(),
-                        onChanged: _onStateChanged,
-                      ),
+                              ? Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 8.h),
+                                  child: CustomText(
+                                    text:
+                                        'No states available for this country in the dataset.',
+                                    fontsize: 11.sp,
+                                    color: Colors.grey,
+                                  ),
+                                )
+                              : DropdownButtonFormField<CityState>(
+                                  key: ValueKey(
+                                      'state-${_selectedCountry?.id}-${_selectedState?.id}'),
+                                  initialValue: _selectedState,
+                                  isExpanded: true,
+                                  decoration: const InputDecoration(
+                                    labelText: 'State / Province',
+                                    border: OutlineInputBorder(),
+                                  ),
+                                  items: _states
+                                      .map(
+                                        (s) => DropdownMenuItem(
+                                          value: s,
+                                          child: Text(s.name),
+                                        ),
+                                      )
+                                      .toList(),
+                                  onChanged: _onStateChanged,
+                                ),
+                    SizedBox(height: 12.h),
+
+                    //=========================> City dropdown <=======================
+                    if (_selectedState != null)
+                      _isLoadingCities
+                          ? const Padding(
+                              padding: EdgeInsets.symmetric(vertical: 8),
+                              child: LinearProgressIndicator(),
+                            )
+                          : _cities.isEmpty
+                              ? Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 8.h),
+                                  child: CustomText(
+                                    text:
+                                        'No cities available for this state in the dataset.',
+                                    fontsize: 11.sp,
+                                    color: Colors.grey,
+                                  ),
+                                )
+                              : DropdownButtonFormField<City>(
+                                  key: ValueKey(
+                                      'city-${_selectedState?.id}-${_selectedCity?.id}'),
+                                  initialValue: _selectedCity,
+                                  isExpanded: true,
+                                  decoration: const InputDecoration(
+                                    labelText: 'City',
+                                    border: OutlineInputBorder(),
+                                  ),
+                                  items: _cities
+                                      .map(
+                                        (c) => DropdownMenuItem(
+                                          value: c,
+                                          child: Text(c.name),
+                                        ),
+                                      )
+                                      .toList(),
+                                  onChanged: _onCityChanged,
+                                ),
                     SizedBox(height: 16.h),
 
                     CustomTextField(
@@ -485,15 +784,15 @@ class _MapScreenState extends State<MapScreen> {
                             horizontal: 12.w, vertical: 12.h),
                         child: _isSearching
                             ? SizedBox(
-                          width: 18.w,
-                          height: 18.w,
-                          child: const CircularProgressIndicator(
-                              strokeWidth: 2),
-                        )
+                                width: 18.w,
+                                height: 18.w,
+                                child: const CircularProgressIndicator(
+                                    strokeWidth: 2),
+                              )
                             : GestureDetector(
-                          onTap: _confirmLocation,
-                          child: const Icon(Icons.search),
-                        ),
+                                onTap: _confirmLocation,
+                                child: const Icon(Icons.search),
+                              ),
                       ),
                     ),
                     SizedBox(height: 16.h),
@@ -507,7 +806,8 @@ class _MapScreenState extends State<MapScreen> {
                     CustomButton(
                       onTap: _isSavingLocation ? () {} : _onConfirmAndReturn,
                       textColor: Colors.white,
-                      text: _isSavingLocation ? 'Saving...' : 'Confirm Location',
+                      text:
+                          _isSavingLocation ? 'Saving...' : 'Confirm Location',
                       color: AppColors.primaryColor,
                     ),
                   ],

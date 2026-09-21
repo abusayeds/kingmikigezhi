@@ -124,25 +124,24 @@ class HomeController extends GetxController implements GetxService {
   Future<void> fetchFamilyEvents(String relationShip) async {
     isLoadingFamily.value = true;
     try {
-      String url;
+      // Normalize legacy display labels to API relationShip values.
+      String apiRelation = relationShip;
       switch (relationShip) {
-        case 'Self':
-          url = ApiConstants.familySelfUsersEvents;
-          break;
         case 'Spouse':
-          url = ApiConstants.familySpousUsersEvents;
+          apiRelation = 'Spous';
           break;
         case 'Child Stephanie':
-          url = ApiConstants.familyChildStephanieUsersEvents;
+          apiRelation = 'ChildStephanie';
           break;
         case 'Child Sophia':
-          url = ApiConstants.familyChildSophiaUsersEvents;
+          apiRelation = 'ChildSophia';
           break;
         default:
-          url = ApiConstants.familySelfUsersEvents;
+          apiRelation = relationShip.isEmpty ? 'Self' : relationShip;
       }
 
-      final response = await apiService.get(url);
+      final response =
+          await apiService.get(ApiConstants.familyEventsByRelation(apiRelation));
       if (response['success'] == true) {
         final List<dynamic> data = response['data'];
         familyEvents.value =

@@ -4,6 +4,7 @@ import 'package:event_sharing/helpers/route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 import '../../../../controllers/auth_controller.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_strings.dart';
@@ -15,32 +16,38 @@ class SignUpOtpVerificationScreen extends StatefulWidget {
   const SignUpOtpVerificationScreen({super.key});
 
   @override
-  State<SignUpOtpVerificationScreen> createState() => _SignUpOtpVerificationScreenState();
+  State<SignUpOtpVerificationScreen> createState() =>
+      _SignUpOtpVerificationScreenState();
 }
 
-class _SignUpOtpVerificationScreenState extends State<SignUpOtpVerificationScreen> {
+class _SignUpOtpVerificationScreenState
+    extends State<SignUpOtpVerificationScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController emailCTRl = TextEditingController();
   final TextEditingController otpController = TextEditingController();
+  late final PinInputController _pinInputController;
   final AuthController authController = Get.find<AuthController>();
-  
+
   String sessionId = '';
+
+  // ---- Resend cooldown timer (does NOT block OTP input or Verify button) ----
   int _secondsRemaining = 30;
   Timer? _timer;
 
   @override
   void initState() {
     super.initState();
+    _pinInputController = PinInputController();
     _startTimer();
-    // Get email and sessionId from arguments or stored values
+
     final args = Get.arguments as Map<String, dynamic>? ?? {};
-    
+
     if (args['sessionId'] != null) {
       sessionId = args['sessionId'];
     } else {
       sessionId = authController.storedSessionId.value;
     }
-    
+
     if (args['email'] != null) {
       emailCTRl.text = args['email'];
     } else {
@@ -52,11 +59,15 @@ class _SignUpOtpVerificationScreenState extends State<SignUpOtpVerificationScree
     _secondsRemaining = 30;
     _timer?.cancel();
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (!mounted) {
+        timer.cancel();
+        return;
+      }
       setState(() {
         if (_secondsRemaining > 0) {
           _secondsRemaining--;
         } else {
-          _timer?.cancel();
+          timer.cancel();
         }
       });
     });
@@ -67,20 +78,19 @@ class _SignUpOtpVerificationScreenState extends State<SignUpOtpVerificationScree
     _timer?.cancel();
     otpController.dispose();
     emailCTRl.dispose();
+    _pinInputController.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
         elevation: 0,
-        leading:  IconButton(
-          icon: Icon(Icons.arrow_back_ios,
-              color: Colors.black, size: 18.w),
-          onPressed: () {
-            Get.back();
-          },
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: Colors.black, size: 18.w),
+          onPressed: () => Get.back(),
         ),
       ),
       body: SingleChildScrollView(
@@ -92,100 +102,112 @@ class _SignUpOtpVerificationScreenState extends State<SignUpOtpVerificationScree
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  //SizedBox(height: 64.h),
-                  //================================> Forgot Password Text Section <========================
+                  //================================> Title <========================
                   CustomText(
                     text: 'Sign Up',
                     fontWeight: FontWeight.w600,
                     fontsize: 22.sp,
-
                   ),
-                  SizedBox(
-                    height: 8.h,
-                  ),
+                  SizedBox(height: 8.h),
                   const CustomText(
                     text: 'We just send you authentication code',
                     maxline: 2,
                   ),
                   CustomText(
-                    text: emailCTRl.text.isNotEmpty ? emailCTRl.text : 'email@example.com',
+                    text: emailCTRl.text.isNotEmpty
+                        ? emailCTRl.text
+                        : 'email@example.com',
                     fontWeight: FontWeight.bold,
                     fontsize: 16.sp,
                     color: const Color(0xff20353F),
                   ),
                   SizedBox(height: 53.h),
-                  //==============================> Pin Code Text Field <=====================
+                  //==============================> OTP Input <=====================
+                  // No timer guard here — user can type and verify immediately
                   CustomPinCodeTextField(
                     textEditingController: otpController,
+                    pinController: _pinInputController,
                   ),
-                  SizedBox(height: 48.h),
-                  const CustomText(
-                    text: 'Code Time',
-                  ),
-                  CustomText(
-                    text: '00.${_secondsRemaining.toString().padLeft(2, '0')}s',
-                  ),
-                  //================================> Resend code Button <======================================
                   SizedBox(height: 32.h),
-                  if (_secondsRemaining == 0)
-                  Obx(() => CustomButton(
-                    onTap: authController.isLoading.value ? () {} : () async {
-                      if (sessionId.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Session not found. Please register again.')),
-                        );
-                        return;
-                      }
-
-                      bool success = await authController.resendVerificationOTP(
-                        sessionId: sessionId,
-                      );
-                      if (success) {
-                        _startTimer();
-                      }
-                    },
-                    text: 'Resend code',
-                    textColor: Colors.white,
-                    color: AppColors.primaryColor,
-                    loading: authController.isLoading.value,
-                  )),
+                  //==============================> Resend cooldown / button <======
+                  _secondsRemaining > 0
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CustomText(
+                              text: 'Resend code in ',
+                              fontsize: 14.sp,
+                              color: Colors.grey,
+                            ),
+                            CustomText(
+                              text:
+                                  '00:${_secondsRemaining.toString().padLeft(2, '0')}s',
+                              fontsize: 14.sp,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.primaryColor,
+                            ),
+                          ],
+                        )
+                      : Obx(() => CustomButton(
+                            onTap: authController.isLoading.value
+                                ? () {}
+                                : () async {
+                                    if (sessionId.isEmpty) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(const SnackBar(
+                                        content: Text(
+                                            'Session not found. Please register again.'),
+                                      ));
+                                      return;
+                                    }
+                                    final success = await authController
+                                        .resendVerificationOTP(
+                                            sessionId: sessionId);
+                                    if (success) _startTimer();
+                                  },
+                            text: 'Resend code',
+                            textColor: Colors.white,
+                            color: AppColors.primaryColor,
+                            loading: authController.isLoading.value,
+                          )),
                   //================================> Verify Button <======================================
-                  SizedBox(height: 128.h),
+                  SizedBox(height: 80.h),
                   Obx(() => CustomButton(
-                    onTap: () async {
-                      // Prevent multiple taps while loading
-                      if (authController.isLoading.value) return;
+                        onTap: () async {
+                          if (authController.isLoading.value) return;
 
-                      // Validate OTP code
-                      if (otpController.text.isEmpty || otpController.text.length < 6) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Please enter valid OTP code')),
-                        );
-                        return;
-                      }
+                          if (otpController.text.isEmpty ||
+                              otpController.text.length < 6) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content:
+                                      Text('Please enter valid OTP code')),
+                            );
+                            return;
+                          }
 
-                      if (sessionId.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Session not found. Please register again.')),
-                        );
-                        return;
-                      }
+                          if (sessionId.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text(
+                                      'Session not found. Please register again.')),
+                            );
+                            return;
+                          }
 
-                      // Call verify email API with sessionId
-                      await authController.verifyEmail(
-                        sessionId: sessionId,
-                        otp: otpController.text.trim(),
-                      );
-
-                      // Navigation is handled in the controller on success
-                    },
-                    text: 'Verify',
-                    textColor: Colors.white,
-                    borderColor: AppColors.buttonColor,
-                    loading: authController.isLoading.value,
-                  )),
+                          await authController.verifyEmail(
+                            sessionId: sessionId,
+                            otp: otpController.text.trim(),
+                          );
+                          // Navigation handled in controller on success
+                        },
+                        text: 'Verify',
+                        textColor: Colors.white,
+                        borderColor: AppColors.buttonColor,
+                        loading: authController.isLoading.value,
+                      )),
                   SizedBox(height: 12.h),
-                  _alreadyHaveAccountText()
+                  _alreadyHaveAccountText(),
                 ],
               ),
             ),
@@ -206,13 +228,10 @@ class _SignUpOtpVerificationScreenState extends State<SignUpOtpVerificationScree
           fontsize: 12.sp,
         ),
         TextButton(
-          onPressed: () {
-            Get.toNamed(AppRoutes.signInScreen);
-          },
+          onPressed: () => Get.toNamed(AppRoutes.signInScreen),
           child: CustomText(
-            text: "Sign In",
+            text: 'Sign In',
             fontsize: 12.sp,
-
             color: AppColors.primaryColor,
             decoration: TextDecoration.underline,
             lineHeight: 4.h,

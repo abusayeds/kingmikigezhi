@@ -1,3 +1,5 @@
+import 'package:event_sharing/utils/media_url_utils.dart';
+
 class EventModel {
   final String? id;
   final String? eventName;
@@ -171,7 +173,9 @@ class Creator {
         firstName: json["firstName"],
         lastName: json["lastName"],
         username: json["username"],
-        profilePicture: json["profilePicture"],
+        profilePicture: MediaUrlUtils.resolve(
+          json["profilePicture"] ?? json["image"] ?? json["photo"],
+        ),
         contributionScore: json["contributionScore"],
       );
 }
@@ -250,7 +254,7 @@ class Group {
   final String? name;
   final String? criteria;
   final String? condition;
-  final int? value;
+  final String? value;
   final List<Round>? rounds;
   final int? totalRoundCost;
 
@@ -261,7 +265,7 @@ class Group {
         name: json["name"],
         criteria: json["criteria"],
         condition: json["condition"],
-        value: json["value"],
+        value: json["value"]?.toString(),
         rounds: json["rounds"] == null ? null : List<Round>.from(json["rounds"].map((x) => Round.fromJson(x))),
         totalRoundCost: json["totalRoundCost"],
       );

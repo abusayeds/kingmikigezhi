@@ -27,8 +27,13 @@ class CustomNetworkImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final url = imageUrl.trim();
+    if (url.isEmpty) {
+      return _errorContainer();
+    }
+
     return CachedNetworkImage(
-        imageUrl: imageUrl,
+        imageUrl: url,
         imageBuilder: (context, imageProvider) => Container(
               height: height,
               width: width,
@@ -57,19 +62,23 @@ class CustomNetworkImage extends StatelessWidget {
                 shape: boxShape,
               ),
             )),
-        errorWidget: (context, url, error) => Container(
-              height: height,
-              width: width,
-              decoration: BoxDecoration(
-                border: border,
-                borderRadius: borderRadius,
-                shape: boxShape,
-                image: DecorationImage(
-                  image: AssetImage(AppImages.logo),
-                  fit: BoxFit.cover,
-                ),
-              ),
-              child: child,
-            ));
+        errorWidget: (context, url, error) => _errorContainer());
+  }
+
+  Widget _errorContainer() {
+    return Container(
+      height: height,
+      width: width,
+      decoration: BoxDecoration(
+        border: border,
+        borderRadius: borderRadius,
+        shape: boxShape,
+        image: DecorationImage(
+          image: AssetImage(AppImages.logo),
+          fit: BoxFit.cover,
+        ),
+      ),
+      child: child,
+    );
   }
 }

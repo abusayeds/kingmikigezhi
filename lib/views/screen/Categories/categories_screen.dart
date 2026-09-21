@@ -4,6 +4,7 @@ import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_icons.dart';
 import 'package:event_sharing/utils/app_images.dart';
 import 'package:event_sharing/utils/api_constants.dart';
+import 'package:event_sharing/utils/media_url_utils.dart';
 import 'package:event_sharing/views/base/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -190,9 +191,11 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             return const Center(child: CircularProgressIndicator());
           }
 
-          final category = categories[index];
-          final name = category['name'] ?? 'Unknown';
-          final imageUrl = category['imageUrl'];
+          final category = categories[index] as Map<dynamic, dynamic>? ?? {};
+          final name = category['name']?.toString() ?? 'Unknown';
+          // Use backend imageUrl directly (full https URL).
+          final imageUrl = MediaUrlUtils.resolve(category['imageUrl']) ??
+              MediaUrlUtils.fromMap(category);
 
           return GestureDetector(
             onTap: () => _navigateToSearchScreen(category),
@@ -209,6 +212,12 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                           ? Image.network(
                               imageUrl,
                               fit: BoxFit.cover,
+                              loadingBuilder: (context, child, progress) {
+                                if (progress == null) return child;
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              },
                               errorBuilder: (context, error, stackTrace) {
                                 return Image.asset(
                                   AppImages.logo,
@@ -259,20 +268,6 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             ),
           );
         },
-      ),
-    );
-  }
-
-  Widget _buildPlaceholder(String name) {
-    return Container(
-      color: Colors.grey[300],
-      child: Center(
-        child: CustomText(
-          text: name.isNotEmpty ? name[0].toUpperCase() : '?',
-          fontsize: 24.sp,
-          fontWeight: FontWeight.bold,
-          color: Colors.grey[600] ?? Colors.grey,
-        ),
       ),
     );
   }

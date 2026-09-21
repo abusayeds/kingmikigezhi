@@ -25,6 +25,8 @@ class TopProfileSection extends StatelessWidget {
       final firstName = profile?['firstName'] ?? '';
       final lastName = profile?['lastName'] ?? '';
       final profilePicture = profile?['profilePicture'] ?? profile?['image'];
+      final hasPicture =
+          profilePicture != null && profilePicture.toString().trim().isNotEmpty;
 
       return Container(
         decoration: BoxDecoration(
@@ -39,22 +41,20 @@ class TopProfileSection extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  // Same avatar style as Profile screen (TopProfileCard)
                   Container(
                     height: 120.h,
                     width: 120.w,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(5.r),
-                        ),
-                        shape: BoxShape.rectangle,
-                        border: Border.all(
-                            width: 2.w, color: AppColors.primaryColor)),
+                      borderRadius: BorderRadius.circular(8.r),
+                      color: Colors.grey[200],
+                      shape: BoxShape.rectangle,
+                    ),
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(5.r),
-                      child: profilePicture != null &&
-                              profilePicture.toString().isNotEmpty
+                      borderRadius: BorderRadius.circular(8.r),
+                      child: hasPicture
                           ? Image.network(
-                              profilePicture,
+                              profilePicture.toString(),
                               fit: BoxFit.cover,
                               width: 120.w,
                               height: 120.h,
@@ -90,18 +90,24 @@ class TopProfileSection extends StatelessWidget {
                         Row(
                           children: [
                             InkWell(
-                                onTap: () {
-                                  Get.toNamed(AppRoutes.editProfileScreen);
-                                },
-                                child: SvgPicture.asset(AppIcons.editIcon,
-                                    color: Colors.white)),
+                              onTap: () {
+                                Get.toNamed(AppRoutes.editProfileScreen);
+                              },
+                              child: SvgPicture.asset(
+                                AppIcons.editIcon,
+                                color: Colors.white,
+                              ),
+                            ),
                             const SizedBox(width: 8),
                             InkWell(
-                                onTap: () {
-                                  Get.toNamed(AppRoutes.changePasswordScreen);
-                                },
-                                child: SvgPicture.asset(AppIcons.keyIcon,
-                                    color: Colors.white)),
+                              onTap: () {
+                                Get.toNamed(AppRoutes.changePasswordScreen);
+                              },
+                              child: SvgPicture.asset(
+                                AppIcons.keyIcon,
+                                color: Colors.white,
+                              ),
+                            ),
                           ],
                         )
                       ],

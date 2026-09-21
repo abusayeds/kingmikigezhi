@@ -57,7 +57,6 @@ dependencies:
   grouped_list:
   webview_flutter:
   dotted_border:
-  google_maps_flutter:
   geolocator:
   geocoding:
   table_calendar:
@@ -73,6 +72,8 @@ dependencies:
 
 
   http_parser: any
+  flutter_map: ^8.3.2
+  latlong2: ^0.10.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

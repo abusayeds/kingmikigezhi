@@ -690,6 +690,7 @@ class AuthController extends GetxController {
     String? state,
     String? city,
     String? username,
+    String? accountId,
     String? imagePath,
     List<String>? skills,
   }) async {
@@ -701,22 +702,32 @@ class AuthController extends GetxController {
       // Construct location string as backend likely expects a single string or uses it as a label
       String? location;
       if (city != null || state != null || country != null) {
-        location = "${city ?? ''}, ${state ?? ''}, ${country ?? ''}".trim();
-        // Clean up leading/trailing commas if some parts are null
-        location = location.replaceAll(RegExp(r'^,\s*'), '').replaceAll(RegExp(r',\s*$'), '');
+        location = [city, state, country]
+            .whereType<String>()
+            .where((e) => e.trim().isNotEmpty)
+            .join(', ');
+        if (location.isEmpty) location = null;
       }
 
       if (imagePath != null && imagePath.isNotEmpty) {
         final Map<String, String> fields = {};
         if (firstName != null) fields['firstName'] = firstName;
         if (lastName != null) fields['lastName'] = lastName;
-        if (gender != null) fields['gender'] = gender;
-        if (birthDate != null) fields['birthDate'] = birthDate;
-        if (phoneNumber != null) fields['phoneNumber'] = phoneNumber;
+        if (gender != null && gender.isNotEmpty) fields['gender'] = gender;
+        if (birthDate != null && birthDate.isNotEmpty) {
+          fields['birthDate'] = birthDate;
+        }
+        if (phoneNumber != null && phoneNumber.isNotEmpty) {
+          fields['phoneNumber'] = phoneNumber;
+        }
         if (location != null) fields['location'] = location;
-        if (state != null) fields['state'] = state;
-        if (city != null) fields['city'] = city;
+        if (country != null && country.isNotEmpty) fields['country'] = country;
+        if (state != null && state.isNotEmpty) fields['state'] = state;
+        if (city != null && city.isNotEmpty) fields['city'] = city;
         if (username != null) fields['username'] = username;
+        if (accountId != null && accountId.isNotEmpty) {
+          fields['accountId'] = accountId;
+        }
         if (skills != null) fields['skills'] = skills.join(',');
 
         response = await apiService.multipartRequest(
@@ -729,13 +740,23 @@ class AuthController extends GetxController {
         final Map<String, dynamic> requestBody = {};
         if (firstName != null) requestBody['firstName'] = firstName;
         if (lastName != null) requestBody['lastName'] = lastName;
-        if (gender != null) requestBody['gender'] = gender;
-        if (birthDate != null) requestBody['birthDate'] = birthDate;
-        if (phoneNumber != null) requestBody['phoneNumber'] = phoneNumber;
+        if (gender != null && gender.isNotEmpty) requestBody['gender'] = gender;
+        if (birthDate != null && birthDate.isNotEmpty) {
+          requestBody['birthDate'] = birthDate;
+        }
+        if (phoneNumber != null && phoneNumber.isNotEmpty) {
+          requestBody['phoneNumber'] = phoneNumber;
+        }
         if (location != null) requestBody['location'] = location;
-        if (state != null) requestBody['state'] = state;
-        if (city != null) requestBody['city'] = city;
+        if (country != null && country.isNotEmpty) {
+          requestBody['country'] = country;
+        }
+        if (state != null && state.isNotEmpty) requestBody['state'] = state;
+        if (city != null && city.isNotEmpty) requestBody['city'] = city;
         if (username != null) requestBody['username'] = username;
+        if (accountId != null && accountId.isNotEmpty) {
+          requestBody['accountId'] = accountId;
+        }
         if (skills != null) requestBody['skills'] = skills;
 
         response = await apiService.patch(
@@ -749,20 +770,43 @@ class AuthController extends GetxController {
 
       if (response != null && response['success'] == true) {
         // Merge with existing profile
-        Map<String, dynamic> currentProfile = Map<String, dynamic>.from(userProfile.value ?? {});
-        Map<String, dynamic> updatedData = Map<String, dynamic>.from(response['data']);
-        
-        currentProfile.addAll(updatedData);
+        Map<String, dynamic> currentProfile =
+            Map<String, dynamic>.from(userProfile.value ?? {});
+        if (response['data'] is Map) {
+          currentProfile
+              .addAll(Map<String, dynamic>.from(response['data']));
+        }
+
+        // Ensure locally submitted fields stick even if API omits them.
+        if (firstName != null) currentProfile['firstName'] = firstName;
+        if (lastName != null) currentProfile['lastName'] = lastName;
+        if (gender != null && gender.isNotEmpty) {
+          currentProfile['gender'] = gender;
+        }
+        if (birthDate != null && birthDate.isNotEmpty) {
+          currentProfile['birthDate'] = birthDate;
+        }
+        if (phoneNumber != null && phoneNumber.isNotEmpty) {
+          currentProfile['phoneNumber'] = phoneNumber;
+        }
+        if (country != null) currentProfile['country'] = country;
+        if (state != null) currentProfile['state'] = state;
+        if (city != null) currentProfile['city'] = city;
+        if (location != null) currentProfile['location'] = location;
+        if (username != null) currentProfile['username'] = username;
+        if (accountId != null) currentProfile['accountId'] = accountId;
+        if (skills != null) currentProfile['skillLabels'] = skills;
+
         userProfile.value = currentProfile;
-        
+
         await apiService.saveUserData(userProfile.value!);
-        
+
         Fluttertoast.showToast(
           msg: response['message'] ?? "Profile updated successfully!",
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.BOTTOM,
         );
-        
+
         await fetchUserProfile();
         return true;
       }

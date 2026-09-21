@@ -24,17 +24,26 @@ import 'controller/addEventController.dart';
 class CategoryModel {
   final String id;
   final String name;
-  CategoryModel({required this.id, required this.name});
-  factory CategoryModel.fromJson(Map<String, dynamic> json) =>
-      CategoryModel(id: json['id'], name: json['name']);
+  final String? imageUrl;
+  CategoryModel({required this.id, required this.name, this.imageUrl});
+  factory CategoryModel.fromJson(Map<String, dynamic> json) => CategoryModel(
+        id: json['id'],
+        name: json['name'],
+        imageUrl: json['imageUrl'] ?? json['image'],
+      );
 }
 
 class SubCategoryModel {
   final String id;
   final String name;
-  SubCategoryModel({required this.id, required this.name});
+  final String? imageUrl;
+  SubCategoryModel({required this.id, required this.name, this.imageUrl});
   factory SubCategoryModel.fromJson(Map<String, dynamic> json) =>
-      SubCategoryModel(id: json['id'], name: json['name']);
+      SubCategoryModel(
+        id: json['id'],
+        name: json['name'],
+        imageUrl: json['imageUrl'] ?? json['image'],
+      );
 }
 
 class ProgramModel {

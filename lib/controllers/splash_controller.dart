@@ -38,7 +38,7 @@ class SplashController extends GetxController {
         }
       }
     } else {
-      // No token, go to onboarding
+      // No token, go to onboarding with a soft fade (see AppRoutes.onboardScreen).
       Get.offAllNamed(AppRoutes.onboardScreen);
     }
   }

@@ -26,6 +26,8 @@ class _CreateEventOneState extends State<CreateEventOne> {
   // Force a fresh controller every time this screen opens so stale state
   // from a previous create/edit session is never carried over.
   late final Addeventcontroller addEventController;
+  late final ScrollController _scrollController;
+  Worker? _stepScrollWorker;
 
   @override
   void initState() {
@@ -34,6 +36,16 @@ class _CreateEventOneState extends State<CreateEventOne> {
     // start clean regardless of how many times the screen is pushed.
     Get.delete<Addeventcontroller>(force: true);
     addEventController = Get.put(Addeventcontroller());
+    _scrollController = ScrollController();
+
+    // When user taps Next/Back or the stepper, jump back to the top so the
+    // AppBar + step header are visible on every step.
+    _stepScrollWorker = ever(addEventController.activeStepIndex, (_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!_scrollController.hasClients) return;
+        _scrollController.jumpTo(0);
+      });
+    });
 
     final dynamic args = Get.arguments;
     if (args is EventModel) {
@@ -45,6 +57,8 @@ class _CreateEventOneState extends State<CreateEventOne> {
 
   @override
   void dispose() {
+    _stepScrollWorker?.dispose();
+    _scrollController.dispose();
     // Clean up so the next open always gets a fresh instance.
     Get.delete<Addeventcontroller>(force: true);
     super.dispose();
@@ -65,6 +79,7 @@ class _CreateEventOneState extends State<CreateEventOne> {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
+        controller: _scrollController,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

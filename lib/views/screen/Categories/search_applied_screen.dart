@@ -5,6 +5,7 @@ import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_icons.dart';
 import 'package:event_sharing/utils/app_images.dart';
 import 'package:event_sharing/utils/api_constants.dart';
+import 'package:event_sharing/utils/media_url_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -13,8 +14,13 @@ import '../../base/custom_text.dart';
 
 class CategoriesSearchAppliedScreen extends StatefulWidget {
   final dynamic category;
+  final bool isSubCategory;
 
-  const CategoriesSearchAppliedScreen({super.key, required this.category});
+  const CategoriesSearchAppliedScreen({
+    super.key,
+    required this.category,
+    this.isSubCategory = false,
+  });
 
   @override
   State<CategoriesSearchAppliedScreen> createState() =>
@@ -24,7 +30,11 @@ class CategoriesSearchAppliedScreen extends StatefulWidget {
 class _CategoriesSearchAppliedScreenState
     extends State<CategoriesSearchAppliedScreen> {
   List<EventModel> events = [];
+  List<Map<String, dynamic>> subCategories = [];
+  String? _bannerImageUrl;
+  String? _title;
   bool isLoading = true;
+  bool _isLoadingSubCategories = false;
   String? error;
   int _page = 1;
   final int _limit = 10;
@@ -35,6 +45,13 @@ class _CategoriesSearchAppliedScreenState
   @override
   void initState() {
     super.initState();
+    final map = _asMap(widget.category);
+    _title = map?['name']?.toString() ??
+        (widget.isSubCategory ? 'Sub Category' : 'Category');
+    _bannerImageUrl = MediaUrlUtils.fromMap(map);
+    if (!widget.isSubCategory) {
+      _fetchSubCategories();
+    }
     _fetchEvents();
     _scrollController.addListener(_scrollListener);
   }
@@ -46,45 +63,177 @@ class _CategoriesSearchAppliedScreenState
     super.dispose();
   }
 
+  Map<String, dynamic>? _asMap(dynamic value) {
+    if (value is Map<String, dynamic>) return value;
+    if (value is Map) {
+      return value.map((key, val) => MapEntry(key.toString(), val));
+    }
+    return null;
+  }
+
   void _scrollListener() {
-    if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent &&
+    if (_scrollController.position.pixels ==
+            _scrollController.position.maxScrollExtent &&
         !_isLoadingMore &&
         _hasMore) {
       _loadMore();
     }
   }
 
-  Future<void> _fetchEvents() async {
-    setState(() {
-      isLoading = true;
-      error = null;
-    });
+  Future<void> _fetchSubCategories() async {
+    setState(() => _isLoadingSubCategories = true);
 
     try {
       final apiService = Get.find<ApiService>();
       final String? categoryId = widget.category['id']?.toString();
-      
       if (categoryId == null) {
+        setState(() => _isLoadingSubCategories = false);
+        return;
+      }
+
+      final response =
+          await apiService.get(ApiConstants.subCategoriesEvent(categoryId));
+
+      if (response['success'] == true) {
+        final raw = response['data'];
+        List<dynamic> data = [];
+        if (raw is List) {
+          data = raw;
+        } else if (raw is Map) {
+          data = (raw['data'] as List?) ??
+              (raw['subcategories'] as List?) ??
+              (raw['subCategories'] as List?) ??
+              [];
+        }
+
         setState(() {
-          error = "Category ID is missing";
+          subCategories = data
+              .whereType<Map>()
+              .map((e) => e.map((k, v) => MapEntry(k.toString(), v)))
+              .toList();
+          _isLoadingSubCategories = false;
+        });
+      } else {
+        setState(() => _isLoadingSubCategories = false);
+      }
+    } catch (_) {
+      setState(() => _isLoadingSubCategories = false);
+    }
+  }
+
+  String _eventsUrl({required int page}) {
+    final id = widget.category['id']?.toString() ?? '';
+    if (widget.isSubCategory) {
+      // Prefer events filtered by subcategory; fall back handled in parser.
+      return '${ApiConstants.createEvent}?subcategoryId=$id&page=$page&limit=$_limit';
+    }
+    return '${ApiConstants.categorieDetailsEvent(id)}?page=$page&limit=$_limit';
+  }
+
+  List<EventModel> _parseEvents(dynamic response) {
+    if (response is! Map) return [];
+
+    // Category details shape: data.events.data
+    final categoryData = _asMap(response['data']);
+    if (categoryData != null) {
+      final eventsData = _asMap(categoryData['events']);
+      if (eventsData != null && eventsData['data'] is List) {
+        return (eventsData['data'] as List)
+            .map<EventModel>((json) => EventModel.fromJson(json))
+            .toList();
+      }
+      // Flat list under data
+      if (categoryData['data'] is List) {
+        return (categoryData['data'] as List)
+            .map<EventModel>((json) => EventModel.fromJson(json))
+            .toList();
+      }
+    }
+
+    // Direct list: data: [...]
+    if (response['data'] is List) {
+      return (response['data'] as List)
+          .map<EventModel>((json) => EventModel.fromJson(json))
+          .toList();
+    }
+
+    return [];
+  }
+
+  bool _parseHasNext(dynamic response) {
+    if (response is! Map) return false;
+    final categoryData = _asMap(response['data']);
+    final eventsMeta = _asMap(categoryData?['events'])?['meta'];
+    if (eventsMeta is Map && eventsMeta['hasNext'] == true) return true;
+    final meta = response['meta'];
+    if (meta is Map && meta['hasNext'] == true) return true;
+    final nestedMeta = categoryData?['meta'];
+    if (nestedMeta is Map && nestedMeta['hasNext'] == true) return true;
+    return false;
+  }
+
+  Future<void> _fetchEvents({bool reset = true}) async {
+    if (reset) {
+      setState(() {
+        isLoading = true;
+        error = null;
+        _page = 1;
+        _hasMore = true;
+        events.clear();
+      });
+    }
+
+    try {
+      final apiService = Get.find<ApiService>();
+      final String? id = widget.category['id']?.toString();
+
+      if (id == null) {
+        setState(() {
+          error = widget.isSubCategory
+              ? "Sub Category ID is missing"
+              : "Category ID is missing";
           isLoading = false;
         });
         return;
       }
 
-      final response = await apiService.get(
-        '${ApiConstants.categorieDetailsEvent(categoryId)}?page=$_page&limit=$_limit',
-      );
+      final response = await apiService.get(_eventsUrl(page: _page));
 
       if (response['success'] == true) {
-        final categoryData = response['data'] ?? {};
-        final eventsData = categoryData['events'] ?? {};
-        final List<dynamic> data = eventsData['data'] ?? [];
-        final Map<String, dynamic> meta = eventsData['meta'] ?? {};
+        if (!widget.isSubCategory) {
+          final categoryData = _asMap(response['data']) ?? {};
+          final detailsImage = MediaUrlUtils.fromMap(categoryData);
+          final detailsName = categoryData['name']?.toString();
+
+          if (subCategories.isEmpty) {
+            final nested = categoryData['subcategories'] ??
+                categoryData['subCategories'] ??
+                categoryData['sub_categories'];
+            List<dynamic> nestedList = [];
+            if (nested is List) {
+              nestedList = nested;
+            } else if (nested is Map) {
+              nestedList = (nested['data'] as List?) ?? [];
+            }
+            if (nestedList.isNotEmpty) {
+              subCategories = nestedList
+                  .whereType<Map>()
+                  .map((e) => e.map((k, v) => MapEntry(k.toString(), v)))
+                  .toList();
+            }
+          }
+
+          setState(() {
+            if (detailsImage != null) _bannerImageUrl = detailsImage;
+            if (detailsName != null && detailsName.isNotEmpty) {
+              _title = detailsName;
+            }
+          });
+        }
 
         setState(() {
-          events = data.map<EventModel>((json) => EventModel.fromJson(json)).toList();
-          _hasMore = meta['hasNext'] == true;
+          events = _parseEvents(response);
+          _hasMore = _parseHasNext(response);
           isLoading = false;
         });
       } else {
@@ -111,23 +260,15 @@ class _CategoriesSearchAppliedScreenState
 
     try {
       final apiService = Get.find<ApiService>();
-      final String? categoryId = widget.category['id']?.toString();
-      
-      if (categoryId == null) return;
+      final String? id = widget.category['id']?.toString();
+      if (id == null) return;
 
-      final response = await apiService.get(
-        '${ApiConstants.categorieDetailsEvent(categoryId)}?page=$_page&limit=$_limit',
-      );
+      final response = await apiService.get(_eventsUrl(page: _page));
 
       if (response['success'] == true) {
-        final categoryData = response['data'] ?? {};
-        final eventsData = categoryData['events'] ?? {};
-        final List<dynamic> data = eventsData['data'] ?? [];
-        final Map<String, dynamic> meta = eventsData['meta'] ?? {};
-
         setState(() {
-          events.addAll(data.map<EventModel>((json) => EventModel.fromJson(json)));
-          _hasMore = meta['hasNext'] == true;
+          events.addAll(_parseEvents(response));
+          _hasMore = _parseHasNext(response);
           _isLoadingMore = false;
         });
       } else {
@@ -144,13 +285,21 @@ class _CategoriesSearchAppliedScreenState
     }
   }
 
-  Future<void> _refreshEvents() async {
-    setState(() {
-      _page = 1;
-      _hasMore = true;
-      events.clear();
-    });
-    await _fetchEvents();
+  Future<void> _refresh() async {
+    if (!widget.isSubCategory) {
+      await _fetchSubCategories();
+    }
+    await _fetchEvents(reset: true);
+  }
+
+  void _onSubCategoryTap(Map<String, dynamic> subCategory) {
+    Get.to(
+      () => CategoriesSearchAppliedScreen(
+        category: subCategory,
+        isSubCategory: true,
+      ),
+      transition: Transition.rightToLeft,
+    );
   }
 
   String _formatCost(String? cost) {
@@ -167,72 +316,143 @@ class _CategoriesSearchAppliedScreenState
     return '${deadline.month}/${deadline.day}/${deadline.year}';
   }
 
+  Widget _networkOrLogo({
+    required String? url,
+    double? height,
+    double? width,
+  }) {
+    final imageUrl = MediaUrlUtils.resolve(url);
+    if (imageUrl == null || imageUrl.isEmpty) {
+      return Image.asset(
+        AppImages.logo,
+        height: height,
+        width: width,
+        fit: BoxFit.cover,
+      );
+    }
+    return Image.network(
+      imageUrl,
+      height: height,
+      width: width,
+      fit: BoxFit.cover,
+      errorBuilder: (context, error, stackTrace) => Image.asset(
+        AppImages.logo,
+        height: height,
+        width: width,
+        fit: BoxFit.cover,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final categoryName = widget.category['name'] ?? 'Category';
-    final categoryImage = widget.category['imageUrl'];
-
     return Scaffold(
-      //=======================> App Bar Section <============================
       appBar: AppBar(
         title: CustomText(
-          text: categoryName,
+          text: _title ?? 'Category',
           fontsize: 18.sp,
           fontWeight: FontWeight.w500,
         ),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios,
-              color: Colors.black, size: 18.w),
-          onPressed: () {
-            Get.back();
-          },
+          icon: Icon(Icons.arrow_back_ios, color: Colors.black, size: 18.w),
+          onPressed: () => Get.back(),
         ),
         centerTitle: true,
       ),
-      //=======================> Body Section <============================
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.h, vertical: 16.h),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              //=======================> Event Image Section <============================
-              ClipRRect(
-                borderRadius: BorderRadius.circular(16.r),
-                child: categoryImage != null && categoryImage.isNotEmpty
-                    ? Image.network(
-                        categoryImage,
-                        height: 180.h,
-                        width: 345.w,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) =>
-                            Image.asset(
-                          AppImages.logo,
-                          height: 180.h,
-                          width: 345.w,
-                          fit: BoxFit.cover,
-                        ),
-                      )
-                    : Image.asset(
-                        AppImages.logo,
-                        height: 180.h,
-                        width: 345.w,
-                        fit: BoxFit.cover,
-                      ),
-              ),
-              SizedBox(height: 16.h),
-              CustomText(
-                text: 'Total ${events.length} Events',
-                fontsize: 20.sp,
-                color: AppColors.blackColor,
-                fontWeight: FontWeight.w500,
-              ),
-              //=======================> Event Name Section <============================
-              SizedBox(height: 8.h),
-              _buildEventList(),
-            ],
+      body: RefreshIndicator(
+        onRefresh: _refresh,
+        child: SingleChildScrollView(
+          controller: _scrollController,
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 24.h, vertical: 16.h),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(16.r),
+                  child: SizedBox(
+                    height: 180.h,
+                    width: 345.w,
+                    child: _networkOrLogo(url: _bannerImageUrl),
+                  ),
+                ),
+                if (!widget.isSubCategory &&
+                    (_isLoadingSubCategories || subCategories.isNotEmpty)) ...[
+                  SizedBox(height: 16.h),
+                  CustomText(
+                    text: 'Sub Categories',
+                    fontsize: 16.sp,
+                    color: AppColors.blackColor,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  SizedBox(height: 8.h),
+                  _buildSubCategorySection(),
+                ],
+                SizedBox(height: 16.h),
+                CustomText(
+                  text: 'Total ${events.length} Events',
+                  fontsize: 20.sp,
+                  color: AppColors.blackColor,
+                  fontWeight: FontWeight.w500,
+                ),
+                SizedBox(height: 8.h),
+                _buildEventList(),
+              ],
+            ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildSubCategorySection() {
+    if (_isLoadingSubCategories && subCategories.isEmpty) {
+      return SizedBox(
+        height: 110.h,
+        child: const Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    if (subCategories.isEmpty) return const SizedBox.shrink();
+
+    return SizedBox(
+      height: 120.h,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        itemCount: subCategories.length,
+        separatorBuilder: (_, __) => SizedBox(width: 10.w),
+        itemBuilder: (context, index) {
+          final sub = subCategories[index];
+          final name = sub['name']?.toString() ?? 'Unknown';
+          final imageUrl = MediaUrlUtils.fromMap(sub);
+
+          return GestureDetector(
+            onTap: () => _onSubCategoryTap(sub),
+            child: SizedBox(
+              width: 110.w,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12.r),
+                      child: _networkOrLogo(url: imageUrl),
+                    ),
+                  ),
+                  SizedBox(height: 6.h),
+                  CustomText(
+                    text: name,
+                    fontsize: 11.sp,
+                    fontWeight: FontWeight.w500,
+                    maxline: 1,
+                    textAlign: TextAlign.left,
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -243,11 +463,18 @@ class _CategoriesSearchAppliedScreenState
     }
 
     if (error != null && events.isEmpty) {
-      return Center(child: Text(error!, style: const TextStyle(color: Colors.red)));
+      return Center(
+          child: Text(error!, style: const TextStyle(color: Colors.red)));
     }
 
     if (events.isEmpty) {
-      return const Center(child: Text('No events found for this category'));
+      return Center(
+        child: Text(
+          widget.isSubCategory
+              ? 'No events found for this sub category'
+              : 'No events found for this category',
+        ),
+      );
     }
 
     return ListView.builder(
@@ -264,6 +491,7 @@ class _CategoriesSearchAppliedScreenState
 
         final event = events[index];
         final schedule = event.schedule;
+        final coverUrl = MediaUrlUtils.resolve(event.coverImage);
 
         return GestureDetector(
           onTap: () {
@@ -279,37 +507,20 @@ class _CategoriesSearchAppliedScreenState
                   borderRadius: BorderRadius.circular(15.r),
                 ),
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 12.h),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 8.w, vertical: 12.h),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      //=====================> Event Image Section <=========================
                       ClipRRect(
                         borderRadius: BorderRadius.circular(10.r),
-                        child: event.coverImage != null && event.coverImage!.isNotEmpty
-                            ? Image.network(
-                                event.coverImage!,
-                                height: 75.h,
-                                width: 75.w,
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return Image.asset(
-                                    AppImages.logo,
-                                    height: 75.h,
-                                    width: 75.w,
-                                    fit: BoxFit.cover,
-                                  );
-                                },
-                              )
-                            : Image.asset(
-                                AppImages.logo,
-                                height: 75.h,
-                                width: 75.w,
-                                fit: BoxFit.cover,
-                              ),
+                        child: SizedBox(
+                          height: 75.h,
+                          width: 75.w,
+                          child: _networkOrLogo(url: coverUrl),
+                        ),
                       ),
                       SizedBox(width: 12.w),
-                      //===================== >> Event Details Section << =========================
                       Expanded(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -320,7 +531,6 @@ class _CategoriesSearchAppliedScreenState
                               fontsize: 14.sp,
                               fontWeight: FontWeight.w500,
                             ),
-                            //=====================> Event Info Section <=========================
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -328,77 +538,21 @@ class _CategoriesSearchAppliedScreenState
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(vertical: 3.0),
-                                      child: Row(
-                                        children: [
-                                          SvgPicture.asset(AppIcons.dotIconForFamily),
-                                          SizedBox(width: 4.w),
-                                          Text(
-                                            schedule?.eventType ?? 'Onsite Event',
-                                            style: TextStyle(fontSize: 8.sp, color: AppColors.color414141),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(vertical: 3.0),
-                                      child: Row(
-                                        children: [
-                                          SvgPicture.asset(AppIcons.dotIconForFamily),
-                                          SizedBox(width: 4.w),
-                                          Text(
-                                            event.location ?? 'Dhaka Bangladesh',
-                                            style: TextStyle(fontSize: 8.sp, color: AppColors.color414141),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(vertical: 3.0),
-                                      child: Row(
-                                        children: [
-                                          SvgPicture.asset(AppIcons.dotIconForFamily),
-                                          SizedBox(width: 4.w),
-                                          Text(
-                                            'History: 2023-1st winner',
-                                            style: TextStyle(fontSize: 8.sp, color: AppColors.color808080),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
+                                    _metaRow(
+                                        schedule?.eventType ?? 'Onsite Event'),
+                                    _metaRow(
+                                        event.location ?? 'Dhaka Bangladesh'),
+                                    _metaRow('History: 2023-1st winner',
+                                        color: AppColors.color808080),
                                   ],
                                 ),
                                 Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(vertical: 3.0),
-                                      child: Row(
-                                        children: [
-                                          SvgPicture.asset(AppIcons.dotIconForFamily),
-                                          SizedBox(width: 4.w),
-                                          Text(
-                                            'Cost: ${_formatCost(schedule?.cost)}',
-                                            style: TextStyle(fontSize: 8.sp, color: AppColors.color414141),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(vertical: 3.0),
-                                      child: Row(
-                                        children: [
-                                          SvgPicture.asset(AppIcons.dotIconForFamily),
-                                          SizedBox(width: 4.w),
-                                          Text(
-                                            'Deadline: ${_formatDeadline(schedule?.deadline)}',
-                                            style: TextStyle(fontSize: 8.sp, color: AppColors.color414141),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
+                                    _metaRow(
+                                        'Cost: ${_formatCost(schedule?.cost)}'),
+                                    _metaRow(
+                                        'Deadline: ${_formatDeadline(schedule?.deadline)}'),
                                   ],
                                 ),
                               ],
@@ -406,7 +560,6 @@ class _CategoriesSearchAppliedScreenState
                           ],
                         ),
                       ),
-                      //=====================> Share Icon <=========================
                       GestureDetector(
                         onTap: () {
                           Get.toNamed(AppRoutes.myInvitationPage);
@@ -422,7 +575,6 @@ class _CategoriesSearchAppliedScreenState
                   ),
                 ),
               ),
-              //=====================> Positioned More Icon at Top Right <=========================
               Positioned(
                 bottom: 10,
                 right: 10,
@@ -435,19 +587,22 @@ class _CategoriesSearchAppliedScreenState
     );
   }
 
-  Widget _buildEventPlaceholder(String? title) {
-    return Container(
-      height: 75.h,
-      width: 75.w,
-      color: Colors.grey[300],
-      child: Center(
-        child: CustomText(
-          text: title?.isNotEmpty == true ? title![0].toUpperCase() : '?',
-          fontsize: 24.sp,
-          fontWeight: FontWeight.bold,
-        ),
+  Widget _metaRow(String text, {Color? color}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 3.0),
+      child: Row(
+        children: [
+          SvgPicture.asset(AppIcons.dotIconForFamily),
+          SizedBox(width: 4.w),
+          Text(
+            text,
+            style: TextStyle(
+              fontSize: 8.sp,
+              color: color ?? AppColors.color414141,
+            ),
+          ),
+        ],
       ),
     );
   }
 }
-

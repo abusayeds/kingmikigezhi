@@ -49,10 +49,11 @@ class OnboardScreen extends StatelessWidget {
                       SizedBox(height: 32.h),
                       //=========================> Heading <=======================
                       CustomText(
-                        text: 'Welcome to DaiWaBuYi!',
+                        text: 'Welcome to DaiWaBuYi\nGezhi Zhong!',
                         color: Colors.white,
-                        fontsize: 22.sp,
+                        fontsize: 24.sp,
                         fontWeight: FontWeight.w900,
+                        textAlign: TextAlign.center,
                         bottom: 16.h,
                       ),
                       CustomText(
@@ -76,7 +77,7 @@ class OnboardScreen extends StatelessWidget {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Icon(Icons.circle, color: Colors.white, size: 8.w),
+                          // Icon(Icons.circle, color: Colors.white, size: 8.w),
                           SizedBox(width: 8.w),
                           Expanded(
                             child: CustomText(
@@ -93,7 +94,7 @@ class OnboardScreen extends StatelessWidget {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Icon(Icons.circle, color: Colors.white, size: 8.w),
+                          // Icon(Icons.circle, color: Colors.white, size: 8.w),
                           SizedBox(width: 8.w),
                           Expanded(
                             child: CustomText(
@@ -110,7 +111,7 @@ class OnboardScreen extends StatelessWidget {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Icon(Icons.circle, color: Colors.white, size: 8.w),
+                          // Icon(Icons.circle, color: Colors.white, size: 8.w),
                           SizedBox(width: 8.w),
                           Expanded(
                             child: CustomText(
@@ -127,7 +128,7 @@ class OnboardScreen extends StatelessWidget {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Icon(Icons.circle, color: Colors.white, size: 8.w),
+                          // Icon(Icons.circle, color: Colors.white, size: 8.w),
                           SizedBox(width: 8.w),
                           Expanded(
                             child: CustomText(
@@ -144,7 +145,7 @@ class OnboardScreen extends StatelessWidget {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Icon(Icons.circle, color: Colors.white, size: 8.w),
+                          // Icon(Icons.circle, color: Colors.white, size: 8.w),
                           SizedBox(width: 8.w),
                           Expanded(
                             child: CustomText(
