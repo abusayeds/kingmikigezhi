@@ -307,15 +307,15 @@ class FamilyController extends GetxController {
     required String password,
     required String username,
     required String relationShip,
-    String? displayName,
-    String? phone,
     List<String>? skills,
     bool isIndependent = false,
+    String role = 'MEMBER',
   }) async {
     try {
       isCreating.value = true;
       update();
 
+      // Matches POST /family-members body contract
       final Map<String, dynamic> requestBody = {
         'familyId': familyId,
         'firstName': firstName,
@@ -330,12 +330,9 @@ class FamilyController extends GetxController {
         'password': password,
         'username': username,
         'relationShip': relationShip,
-        if (displayName != null && displayName.isNotEmpty)
-          'displayName': displayName,
-        if (phone != null && phone.isNotEmpty) 'phone': phone,
-        if (skills != null) 'skills': skills,
+        'skills': skills ?? <String>[],
         'isIndependent': isIndependent,
-        'role': 'MEMBER',
+        'role': role,
       };
 
       final response = await apiService.post(
@@ -357,6 +354,14 @@ class FamilyController extends GetxController {
         return true;
       }
 
+      Fluttertoast.showToast(
+        msg: response?['message']?.toString() ??
+            "Failed to add family member",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
       return false;
     } catch (e) {
       isCreating.value = false;

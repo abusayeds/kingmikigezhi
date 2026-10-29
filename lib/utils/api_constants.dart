@@ -1,6 +1,6 @@
 class ApiConstants {
   // TODO: Change this to your actual backend API base URL
-  static const String baseUrl = 'https://sabbir2001.ssh.bd'; // Replace with your actual base URL
+  static const String baseUrl = 'https://api.daiwabuyi.com'; // Replace with your actual base URL
   static const String apiUrl = '$baseUrl/api/v1';
 
 

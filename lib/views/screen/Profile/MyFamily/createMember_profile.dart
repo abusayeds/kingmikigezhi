@@ -894,7 +894,7 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
   }
 
   Future<void> _addFamilyMember() async {
-    if (familyId == null) {
+    if (familyId == null || familyId!.isEmpty) {
       Get.snackbar('Error', 'Family ID not found',
           backgroundColor: Colors.red, colorText: Colors.white);
       return;
@@ -910,13 +910,27 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
     final password = passwordController.text.trim();
     final confirmPassword = confrimPasswordController.text.trim();
 
+    final day = birthDayDayController.text.trim();
+    final month = birthDayMonthController.text.trim();
+    final year = birthDayYearController.text.trim();
+
+    final country = locationCountryController.text.trim();
+    final state = locationStateController.text.trim();
+    final city = locationCityController.text.trim();
+
     if (firstName.isEmpty ||
         lastName.isEmpty ||
         email.isEmpty ||
         username.isEmpty ||
         password.isEmpty ||
         relationShip == null ||
-        selectedGender.isEmpty) {
+        selectedGender.isEmpty ||
+        day.isEmpty ||
+        month.isEmpty ||
+        year.isEmpty ||
+        country.isEmpty ||
+        state.isEmpty ||
+        city.isEmpty) {
       Get.snackbar('Error', 'Please fill all required fields',
           backgroundColor: Colors.red, colorText: Colors.white);
       return;
@@ -928,43 +942,22 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
       return;
     }
 
+    // API expects MALE / FEMALE
     final genderApi = selectedGender == 'Male' ? 'MALE' : 'FEMALE';
 
-    final day = birthDayDayController.text.trim();
-    final month = birthDayMonthController.text.trim();
-    final year = birthDayYearController.text.trim();
-    if (day.isEmpty || month.isEmpty || year.isEmpty) {
-      Get.snackbar('Error', 'Please enter birthday',
-          backgroundColor: Colors.red, colorText: Colors.white);
-      return;
-    }
-
-    final birthDay =
+    // API expects YYYY-MM-DD
+    final birthDate =
         '$year-${month.padLeft(2, '0')}-${day.padLeft(2, '0')}';
 
-    final country = locationCountryController.text.trim();
-    final state = locationStateController.text.trim();
-    final city = locationCityController.text.trim();
-    final location = [
-      if (city.isNotEmpty) city,
-      if (state.isNotEmpty) state,
-      if (country.isNotEmpty) country,
-    ].join(', ');
-
-    final phoneRaw = phoneNumberController.text.trim();
-    final phone = phoneRaw.isEmpty
-        ? null
-        : (phoneRaw.startsWith('+')
-            ? phoneRaw
-            : '$selectedCountryCodes$phoneRaw');
+    final location = [city, state, country].join(', ');
 
     final success = await _familyController.addFamilyMember(
       familyId: familyId!,
       firstName: firstName,
       lastName: lastName,
       gender: genderApi,
-      birthDate: birthDay,
-      location: location.isNotEmpty ? location : city,
+      birthDate: birthDate,
+      location: location,
       country: country,
       state: state,
       city: city,
@@ -972,10 +965,9 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
       password: password,
       username: username,
       relationShip: relationShip,
-      displayName: displayNameController.text.trim(),
-      phone: phone,
-      skills: skills.isNotEmpty ? skills : null,
+      skills: skills,
       isIndependent: isIndependent,
+      role: 'MEMBER',
     );
 
     if (success) {
