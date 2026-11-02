@@ -81,23 +81,32 @@ class FamilyController extends GetxController {
   Future<bool> createFamily({
     required String name,
     String? description,
-    String? imageBase64,
+    String? imagePath,
   }) async {
     try {
       isCreating.value = true;
       update();
 
-      final Map<String, dynamic> requestBody = {
+      final Map<String, String> fields = {
         'name': name,
         if (description != null && description.isNotEmpty)
           'description': description,
-        if (imageBase64 != null) 'imageUrl': imageBase64,
       };
 
-      final response = await apiService.post(
-        ApiConstants.createFamily,
-        body: requestBody,
-      );
+      final dynamic response;
+      if (imagePath != null && imagePath.isNotEmpty) {
+        response = await apiService.multipartRequest(
+          ApiConstants.createFamily,
+          method: 'POST',
+          fields: fields,
+          files: {'imageUrl': imagePath},
+        );
+      } else {
+        response = await apiService.post(
+          ApiConstants.createFamily,
+          body: fields,
+        );
+      }
 
       isCreating.value = false;
       update();
@@ -113,6 +122,13 @@ class FamilyController extends GetxController {
         return true;
       }
 
+      Fluttertoast.showToast(
+        msg: response?['message']?.toString() ?? "Failed to create family",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
       return false;
     } catch (e) {
       isCreating.value = false;
@@ -202,20 +218,30 @@ class FamilyController extends GetxController {
     required String familyId,
     String? name,
     String? description,
-    String? imageBase64,
+    String? imagePath,
   }) async {
     try {
       isUpdating.value = true;
       update();
 
-      final Map<String, dynamic> requestBody = {};
-      if (name != null && name.isNotEmpty) requestBody['name'] = name;
-      if (description != null) requestBody['description'] = description;
-      if (imageBase64 != null) requestBody['imageUrl'] = imageBase64;
-
       final String url =
           ApiConstants.updateFamily.replaceAll(':familyId', familyId);
-      final response = await apiService.patch(url, body: requestBody);
+
+      final Map<String, String> fields = {};
+      if (name != null && name.isNotEmpty) fields['name'] = name;
+      if (description != null) fields['description'] = description;
+
+      final dynamic response;
+      if (imagePath != null && imagePath.isNotEmpty) {
+        response = await apiService.multipartRequest(
+          url,
+          method: 'PATCH',
+          fields: fields,
+          files: {'imageUrl': imagePath},
+        );
+      } else {
+        response = await apiService.patch(url, body: fields);
+      }
 
       isUpdating.value = false;
       update();
@@ -231,6 +257,13 @@ class FamilyController extends GetxController {
         return true;
       }
 
+      Fluttertoast.showToast(
+        msg: response?['message']?.toString() ?? "Failed to update family",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
       return false;
     } catch (e) {
       isUpdating.value = false;

@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +10,9 @@ import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_icons.dart';
 import 'package:event_sharing/utils/app_images.dart';
 import 'package:event_sharing/utils/app_strings.dart';
+import 'package:event_sharing/utils/media_url_utils.dart';
 import 'package:event_sharing/views/base/custom_button.dart';
+import 'package:event_sharing/views/base/custom_network_image.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:event_sharing/views/base/custom_text_field.dart';
 
@@ -57,7 +58,7 @@ class _UpdateFamilyGroupState extends State<UpdateFamilyGroup> {
     if (family != null) {
       familyNameController.text = family.name;
       descriptionController.text = family.description ?? '';
-      currentImageUrl = family.imageUrl;
+      currentImageUrl = MediaUrlUtils.resolve(family.imageUrl);
       setState(() {});
     }
   }
@@ -85,17 +86,11 @@ class _UpdateFamilyGroupState extends State<UpdateFamilyGroup> {
       return;
     }
 
-    String? imageBase64;
-    if (selectedImage != null) {
-      final bytes = selectedImage!.readAsBytesSync();
-      imageBase64 = base64Encode(bytes);
-    }
-
     final success = await _familyController.updateFamily(
       familyId: familyId!,
       name: name,
       description: description.isNotEmpty ? description : null,
-      imageBase64: imageBase64,
+      imagePath: selectedImage?.path,
     );
 
     if (success) {
@@ -150,18 +145,12 @@ class _UpdateFamilyGroupState extends State<UpdateFamilyGroup> {
                               )
                             : currentImageUrl != null &&
                                     currentImageUrl!.isNotEmpty
-                                ? Container(
-                                    width: 120.w,
+                                ? CustomNetworkImage(
+                                    imageUrl: currentImageUrl!,
                                     height: 120.h,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.rectangle,
-                                      border: Border.all(
-                                          width: 2.w, color: AppColors.white),
-                                      image: DecorationImage(
-                                        image: NetworkImage(currentImageUrl!),
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
+                                    width: 120.w,
+                                    border: Border.all(
+                                        width: 2.w, color: AppColors.white),
                                   )
                                 : Container(
                                     width: 120.w,

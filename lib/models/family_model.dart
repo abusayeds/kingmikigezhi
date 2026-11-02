@@ -1,3 +1,5 @@
+import 'package:event_sharing/utils/media_url_utils.dart';
+
 class FamilyModel {
   final String id;
   final String name;
@@ -26,7 +28,7 @@ class FamilyModel {
       id: json['id'] ?? '',
       name: json['name'] ?? '',
       description: json['description'],
-      imageUrl: json['imageUrl'],
+      imageUrl: MediaUrlUtils.resolve(json['imageUrl'] ?? json['image']),
       createdBy: json['createdBy'] ?? '',
       isDeleted: json['isDeleted'] ?? false,
       createdAt: json['createdAt'] != null
@@ -76,7 +78,9 @@ class CreatorInfo {
       firstName: json['firstName'] ?? '',
       lastName: json['lastName'] ?? '',
       email: json['email'] ?? '',
-      profilePicture: json['profilePicture'],
+      profilePicture: MediaUrlUtils.resolve(
+        json['profilePicture'] ?? json['image'],
+      ),
     );
   }
 }
@@ -181,7 +185,9 @@ class FamilyMemberUser {
       firstName: json['firstName'] ?? '',
       lastName: json['lastName'] ?? '',
       email: json['email'] ?? '',
-      profilePicture: json['profilePicture'],
+      profilePicture: MediaUrlUtils.resolve(
+        json['profilePicture'] ?? json['image'],
+      ),
     );
   }
 }

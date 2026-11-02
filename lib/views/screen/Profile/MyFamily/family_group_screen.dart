@@ -2,7 +2,9 @@ import 'package:event_sharing/controllers/family_controller.dart';
 import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_icons.dart';
+import 'package:event_sharing/utils/media_url_utils.dart';
 import 'package:event_sharing/utils/style.dart';
+import 'package:event_sharing/views/base/custom_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -126,7 +128,7 @@ class _FamilyGroupScreenState extends State<FamilyGroupScreen> {
                   child: _notification(
                     family.name,
                     family.createdAt,
-                    family.imageUrl ?? '',
+                    MediaUrlUtils.resolve(family.imageUrl) ?? '',
                     family.description ?? '',
                     familyId: family.id,
                   ),
@@ -209,12 +211,11 @@ class _FamilyGroupScreenState extends State<FamilyGroupScreen> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  CircleAvatar(
-                    backgroundImage: imageUrl.isNotEmpty
-                        ? NetworkImage(imageUrl)
-                        : const NetworkImage(
-                            'https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg'),
-                    radius: 30.r,
+                  CustomNetworkImage(
+                    imageUrl: imageUrl,
+                    height: 60.r,
+                    width: 60.r,
+                    boxShape: BoxShape.circle,
                   ),
                   SizedBox(width: 12.w),
                   Expanded(

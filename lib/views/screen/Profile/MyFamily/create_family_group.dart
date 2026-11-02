@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -59,16 +58,10 @@ class _CreateFamilyGroupState extends State<CreateFamilyGroup> {
       return;
     }
 
-    String? imageBase64;
-    if (selectedImage != null) {
-      final bytes = selectedImage!.readAsBytesSync();
-      imageBase64 = base64Encode(bytes);
-    }
-
     final success = await _familyController.createFamily(
       name: name,
       description: description.isNotEmpty ? description : null,
-      imageBase64: imageBase64,
+      imagePath: selectedImage?.path,
     );
 
     if (success) {
