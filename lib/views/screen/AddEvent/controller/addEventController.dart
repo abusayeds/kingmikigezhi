@@ -95,11 +95,35 @@ class Addeventcontroller extends GetxController {
   // Map UI placement label to backend PlacementType enum
   String _mapPlacement(String placement) {
     switch (placement) {
-      case "1st": return "First";
-      case "2nd": return "Second";
-      case "Silver": return "Silver";
-      case "Gold": return "Gold";
-      default: return placement;
+      case "1st":
+      case "1 Prize":
+        return "First";
+      case "2nd":
+      case "2 Prize":
+        return "Second";
+      case "3rd":
+      case "3 Prize":
+        return "Third";
+      case "4th":
+      case "4 Prize":
+        return "Fourth";
+      case "5th":
+      case "5 Prize":
+        return "Fifth";
+      case "6th":
+      case "6 Prize":
+        return "Sixth";
+      case "Silver":
+        return "Silver";
+      case "Gold":
+        return "Gold";
+      case "Grand Prize":
+      case "Honorable Mention":
+      case "Audience Awards":
+      case "Special Prize":
+        return placement;
+      default:
+        return placement;
     }
   }
 
@@ -202,9 +226,9 @@ class Addeventcontroller extends GetxController {
     if (event.groups != null) {
       groups.assignAll(event.groups!.map((g) => {
             "name": g.name ?? '',
-            "criteria": g.criteria ?? 'Age',
-            "condition": g.condition ?? 'UpTo',
-            "value": g.value?.toString() ?? '',
+            "criteria": _mapGroupCriteria(g.criteria),
+            "condition": _mapGroupCondition(g.condition),
+            "value": _parseGroupValue(g.value),
             "rounds": (g.rounds ?? [])
                 .map((r) => {
                       "roundType": r.roundType ?? 'Preliminary',
@@ -264,20 +288,20 @@ class Addeventcontroller extends GetxController {
 
     isLoading.value = true;
     try {
-      // Prepare Schedule
+      // Prepare Schedule — cost/lateFee as decimal strings (backend Decimal fields)
       Map<String, dynamic> schedule = {
-        "competitionLevel": competitionLevel ?? "Preliminary",
+        "competitionLevel": competitionLevel ?? "Local-Easy",
         "eventType": eventType ?? "Online",
         "registrationDate": _combineDateTime(registrationDate, registrationTime),
         "deadline": _combineDateTime(deadlineDate, deadlineTime),
-        "cost": cost ?? 0,
+        "cost": _formatDecimalString(cost ?? 0),
+        "hasFinalDeadline": hasFinalDeadline,
+        "finalDeadline": hasFinalDeadline
+            ? _combineDateParts(
+                finalDeadlineYear, finalDeadlineMonth, finalDeadlineDay)
+            : null,
+        "lateFee": _formatDecimalString(hasFinalDeadline ? (lateFee ?? 0) : 0),
       };
-
-      if (hasFinalDeadline) {
-        schedule["hasFinalDeadline"] = true;
-        schedule["finalDeadline"] = _combineDateParts(finalDeadlineYear, finalDeadlineMonth, finalDeadlineDay);
-        schedule["lateFee"] = lateFee ?? 0;
-      }
 
       // Prepare Fields for Multipart
       Map<String, String> fields = {
@@ -312,18 +336,18 @@ class Addeventcontroller extends GetxController {
       }
 
       // Groups are sent at the TOP LEVEL (not inside schedule).
-      // cost and lateFee must be strings (backend stores them as Decimal).
-      // Only include optional fields when they carry a real value.
+      // criteria: Age|Score, condition: API enums, value: number.
+      // Round cost/lateFee must be strings (backend Decimal).
       if (groups.isNotEmpty) {
         final plainGroups = groups.map((g) {
-          final rawRounds = (g['rounds'] as List?)?.cast<Map<String, dynamic>>() ?? [];
+          final rawRounds =
+              (g['rounds'] as List?)?.cast<Map<String, dynamic>>() ?? [];
           return {
             "name": g['name']?.toString() ?? '',
-            "criteria": g['criteria']?.toString() ?? 'Age',
-            "condition": g['condition']?.toString() ?? 'UpTo',
-            "value": g['value']?.toString() ?? '',
+            "criteria": _mapGroupCriteria(g['criteria']?.toString()),
+            "condition": _mapGroupCondition(g['condition']?.toString()),
+            "value": _parseGroupValue(g['value']),
             "rounds": rawRounds.map((r) {
-              // Convert numeric cost/lateFee to string — backend expects Decimal as string
               final rawCost = r['cost'];
               final rawLateFee = r['lateFee'];
               final costNum = rawCost is num
@@ -333,23 +357,18 @@ class Addeventcontroller extends GetxController {
                   ? rawLateFee.toDouble()
                   : double.tryParse(rawLateFee?.toString() ?? '') ?? 0.0;
 
-              // Format as integer string when whole (100.0 → "100"), else decimal string
-              String formatDecimal(double v) =>
-                  v == v.roundToDouble() ? v.toInt().toString() : v.toString();
-
               final Map<String, dynamic> round = {
                 "roundType": r['roundType']?.toString() ?? 'Preliminary',
                 "deadline": r['deadline']?.toString() ?? '',
-                "cost": formatDecimal(costNum),
+                "cost": _formatDecimalString(costNum),
               };
 
-              // Optional fields — only add when meaningful
               if (r['hasFinalDeadline'] == true) {
                 round["hasFinalDeadline"] = true;
                 if (r['finalDeadline'] != null) {
                   round["finalDeadline"] = r['finalDeadline'].toString();
                 }
-                round["lateFee"] = formatDecimal(lateFeeNum);
+                round["lateFee"] = _formatDecimalString(lateFeeNum);
               }
               if (r['description'] != null &&
                   r['description'].toString().isNotEmpty) {
@@ -363,7 +382,8 @@ class Addeventcontroller extends GetxController {
         fields["groups"] = jsonEncode(plainGroups);
       }
 
-      // Own history records -> EventResult (placement + note)
+      // Own history is OPTIONAL. Only send results when the user added records.
+      // Skipping Step 4 history still creates/updates the event successfully.
       if (ownHistories.isNotEmpty) {
         fields["results"] = jsonEncode(ownHistories
             .map((h) => {
@@ -371,6 +391,8 @@ class Addeventcontroller extends GetxController {
                   "note": "${h['year']} - ${h['placement']} place winner",
                 })
             .toList());
+      } else {
+        debugPrint("=== CREATE EVENT: no own history — omitting results ===");
       }
 
       // Prepare Files
@@ -451,6 +473,61 @@ class Addeventcontroller extends GetxController {
     }
   }
 
+  /// Backend GroupCriteria: Age | Score
+  String _mapGroupCriteria(String? criteria) {
+    switch (criteria) {
+      case 'Score':
+        return 'Score';
+      case 'Age':
+      default:
+        return 'Age';
+    }
+  }
+
+  /// Map UI / legacy condition labels to backend GroupCondition enums.
+  String _mapGroupCondition(String? condition) {
+    switch (condition) {
+      case 'UpTo':
+        return 'UpTo';
+      case 'DownTo':
+        return 'DownTo';
+      case 'Greater Than':
+      case 'Greater':
+        return 'Greater';
+      case 'Greater And Equal':
+      case 'GreaterAndEqual':
+        return 'GreaterAndEqual';
+      case 'Less Than':
+      case 'Lower':
+        return 'Lower';
+      case 'Less And Equal':
+      case 'LowerAndEqual':
+        return 'LowerAndEqual';
+      default:
+        return 'UpTo';
+    }
+  }
+
+  /// Backend expects a number for group value (not "20+" / "Class A").
+  num _parseGroupValue(dynamic raw) {
+    if (raw is num) return raw;
+    final text = raw?.toString().trim() ?? '';
+    if (text.isEmpty) return 0;
+    final direct = num.tryParse(text);
+    if (direct != null) return direct;
+    // Extract leading number from legacy labels like "20+" or "6-12"
+    final match = RegExp(r'^\d+(\.\d+)?').firstMatch(text);
+    if (match != null) {
+      return num.tryParse(match.group(0)!) ?? 0;
+    }
+    return 0;
+  }
+
+  String _formatDecimalString(num v) {
+    final d = v.toDouble();
+    return d == d.roundToDouble() ? d.toInt().toString() : d.toString();
+  }
+
   String _combineDateTime(String? date, String? time) {
     if (date == null || date.isEmpty) return DateTime.now().toUtc().toIso8601String();
     if (time == null || time.isEmpty) return "${date}T00:00:00.000Z";
@@ -479,7 +556,13 @@ class Addeventcontroller extends GetxController {
     }
   }
 
-  void addGroup(String name, String criteria, String condition, String value, List<Map<String, dynamic>> rounds) {
+  void addGroup(
+    String name,
+    String criteria,
+    String condition,
+    dynamic value,
+    List<Map<String, dynamic>> rounds,
+  ) {
     // Deep-copy each round map so clearing tempRounds has zero effect on what
     // is stored inside the group.
     final copiedRounds = rounds
@@ -487,9 +570,9 @@ class Addeventcontroller extends GetxController {
         .toList();
     groups.add({
       "name": name,
-      "criteria": criteria,
-      "condition": condition,
-      "value": value,
+      "criteria": _mapGroupCriteria(criteria),
+      "condition": _mapGroupCondition(condition),
+      "value": _parseGroupValue(value),
       "rounds": copiedRounds,
     });
     // Reassign so GetX triggers a reactive rebuild on all Obx listeners.

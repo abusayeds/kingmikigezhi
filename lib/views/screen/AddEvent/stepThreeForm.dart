@@ -19,36 +19,22 @@ class StepThreeForm extends StatefulWidget {
 }
 
 class _StepThreeFormState extends State<StepThreeForm> {
-  // Enums for Backend
-  final List<String> groupCriteriaList = ['All', 'Age', 'UTR', 'Level', 'Class'];
-  final List<String> conditionList = ['UpTo', 'Equal', 'Greater Than', 'Greater And Equal', 'Less Than', 'Less And Equal'];
+  // Backend GroupCriteria: Age | Score
+  final List<String> groupCriteriaList = ['Age', 'Score'];
+  // Display labels → API GroupCondition enums
+  final List<String> conditionList = [
+    'UpTo',
+    'DownTo',
+    'Greater Than',
+    'Greater And Equal',
+    'Less Than',
+    'Less And Equal',
+  ];
   final List<String> roundTypeList = ['Preliminary', 'SemiFinal', 'Final'];
   final List<String> yesNoList = ['Yes', 'No'];
 
-  /// Value options shown in the Value dropdown based on selected Criteria.
-  final Map<String, List<String>> criteriaValueMap = {
-    'All': ['All'],
-    'Age': ['6-12', '13-19', '20+'],
-    'UTR': ['1.0-4.0', '4.1-8.0', '8.1-12', '12.1-16'],
-    'Level': ['Beginner', 'Intermediate', 'Advanced I', 'Advanced II'],
-    'Class': [
-      'Senior master',
-      'National master',
-      'Expert',
-      'Class A',
-      'Class B',
-      'Class C',
-      'Class D',
-      'Class E',
-      'Class F',
-      'Class G',
-      'Class H',
-      'Class I',
-      'Class J',
-    ],
-  };
-
   // Controllers for Round
+  final TextEditingController groupValueController = TextEditingController();
   final TextEditingController roundDateController = TextEditingController();
   final TextEditingController roundTimeController = TextEditingController();
   final TextEditingController roundCostController = TextEditingController();
@@ -62,13 +48,39 @@ class _StepThreeFormState extends State<StepThreeForm> {
 
   String? _selectedCriteria;
   String? _selectedCondition;
-  String? _selectedValue;
   String? _selectedRoundType;
   String? _selectedHasFinalDeadline;
 
-  List<String> get _valueOptions {
-    if (_selectedCriteria == null) return const [];
-    return criteriaValueMap[_selectedCriteria] ?? const [];
+  /// Map UI condition labels to backend GroupCondition enums.
+  String _mapConditionToApi(String condition) {
+    switch (condition) {
+      case 'UpTo':
+        return 'UpTo';
+      case 'DownTo':
+        return 'DownTo';
+      case 'Greater Than':
+        return 'Greater';
+      case 'Greater And Equal':
+        return 'GreaterAndEqual';
+      case 'Less Than':
+        return 'Lower';
+      case 'Less And Equal':
+        return 'LowerAndEqual';
+      // Already-API values (e.g. from edit prefill)
+      case 'Greater':
+      case 'GreaterAndEqual':
+      case 'Lower':
+      case 'LowerAndEqual':
+        return condition;
+      default:
+        return condition;
+    }
+  }
+
+  num? _parseGroupValue(String raw) {
+    final trimmed = raw.trim();
+    if (trimmed.isEmpty) return null;
+    return num.tryParse(trimmed);
   }
 
   @override
@@ -79,14 +91,29 @@ class _StepThreeFormState extends State<StepThreeForm> {
     // Clearing here would wipe rounds only on first load, not on re-entry.
   }
 
+  @override
+  void dispose() {
+    groupValueController.dispose();
+    roundDateController.dispose();
+    roundTimeController.dispose();
+    roundCostController.dispose();
+    roundLateFeeController.dispose();
+    roundDescriptionController.dispose();
+    rFinalYearController.dispose();
+    rFinalMonthController.dispose();
+    rFinalDayController.dispose();
+    super.dispose();
+  }
+
   void _saveDataToController() {
     // If the user added rounds but never pressed "Add" on the group,
     // auto-save them into a group so data isn't lost on Next.
     if (addeventcontroller.tempRounds.isNotEmpty) {
       final criteria = _selectedCriteria ?? 'Age';
-      final condition = _selectedCondition ?? 'Equal';
-      final value = _selectedValue ?? (_valueOptions.isNotEmpty ? _valueOptions.first : 'All');
-      final generatedName = "$criteria $condition $value";
+      final conditionLabel = _selectedCondition ?? 'UpTo';
+      final condition = _mapConditionToApi(conditionLabel);
+      final value = _parseGroupValue(groupValueController.text) ?? 0;
+      final generatedName = "$criteria $conditionLabel $value";
 
       // Deep-copy before clearing
       final snapshotRounds = addeventcontroller.tempRounds
@@ -104,7 +131,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
       setState(() {
         _selectedCriteria = null;
         _selectedCondition = null;
-        _selectedValue = null;
+        groupValueController.clear();
       });
     }
   }
@@ -137,7 +164,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
                       items: groupCriteriaList,
                       onChanged: (v) => setState(() {
                         _selectedCriteria = v;
-                        _selectedValue = null; // reset value when criteria changes
+                        groupValueController.clear();
                       }),
                     ),
                   ),
@@ -158,13 +185,13 @@ class _StepThreeFormState extends State<StepThreeForm> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
-                    child: _buildDropdown(
-                      value: _selectedValue,
-                      hint: _selectedCriteria == null ? 'Select Criteria first' : 'Value',
-                      items: _valueOptions,
-                      onChanged: _selectedCriteria == null
-                          ? null
-                          : (v) => setState(() => _selectedValue = v),
+                    child: CustomTextField(
+                      height: 48.5,
+                      controller: groupValueController,
+                      hintText: _selectedCriteria == 'Score'
+                          ? 'Score value (e.g. 80)'
+                          : 'Age value (e.g. 15)',
+                      keyboardType: TextInputType.number,
                     ),
                   ),
                   SizedBox(width: 15.w),
@@ -176,10 +203,15 @@ class _StepThreeFormState extends State<StepThreeForm> {
                       color: AppColors.buttonA47059,
                       borderColor: Colors.transparent,
                       onTap: () {
+                        final parsedValue =
+                            _parseGroupValue(groupValueController.text);
                         if (_selectedCriteria == null ||
                             _selectedCondition == null ||
-                            _selectedValue == null) {
-                          Get.snackbar("Error", "Please fill all group details");
+                            parsedValue == null) {
+                          Get.snackbar(
+                            "Error",
+                            "Please fill criteria, condition, and a numeric value",
+                          );
                           return;
                         }
                         if (addeventcontroller.tempRounds.isEmpty) {
@@ -187,8 +219,10 @@ class _StepThreeFormState extends State<StepThreeForm> {
                           return;
                         }
 
+                        final apiCondition =
+                            _mapConditionToApi(_selectedCondition!);
                         final generatedName =
-                            "$_selectedCriteria $_selectedCondition $_selectedValue";
+                            "$_selectedCriteria $_selectedCondition $parsedValue";
 
                         // Snapshot the rounds NOW (deep copy) before anything is cleared
                         final snapshotRounds = addeventcontroller.tempRounds
@@ -198,8 +232,8 @@ class _StepThreeFormState extends State<StepThreeForm> {
                         addeventcontroller.addGroup(
                           generatedName,
                           _selectedCriteria!,
-                          _selectedCondition!,
-                          _selectedValue!,
+                          apiCondition,
+                          parsedValue,
                           snapshotRounds,
                         );
 
@@ -208,7 +242,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
                         setState(() {
                           _selectedCriteria = null;
                           _selectedCondition = null;
-                          _selectedValue = null;
+                          groupValueController.clear();
                         });
                       },
                       text: 'Add',

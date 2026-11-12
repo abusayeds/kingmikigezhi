@@ -65,11 +65,17 @@ class _StepFiveFormState extends State<StepFiveForm> {
             children: [
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 8.h),
-                child: Text("Step 4: Own History", style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w600)),
+                child: Text(
+                  "Step 4: Own History (Optional)",
+                  style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w600),
+                ),
               ),
-              //registration date
+              Text(
+                'You can skip this step and still create the event.',
+                style: AppStyles.fontSize12(color: AppColors.hintColor),
+              ),
               SizedBox(height: 12.h),
-             Text('Session', style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
+              Text('Session', style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
               SizedBox(height: 12.h),
               Obx(() {
                 if (addEventController.isLoadingHistory.value) {
@@ -242,7 +248,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
                       ? Padding(
                           padding: EdgeInsets.all(8.r),
                           child: CustomText(
-                            text: 'No history added yet',
+                            text: 'No history added — optional. Tap Add & Share to create without history.',
                             color: AppColors.color414141,
                           ),
                         )
@@ -411,6 +417,7 @@ class _StepFiveFormState extends State<StepFiveForm> {
                     child: addEventController.isLoading.value 
                       ? const Center(child: CircularProgressIndicator())
                       : CustomButton(
+                          // Own history is optional — create/update works with an empty list.
                           onTap: addEventController.createEvent,
                           text: addEventController.isEditMode.value
                               ? "Update & Share"
