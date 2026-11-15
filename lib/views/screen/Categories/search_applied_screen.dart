@@ -1,3 +1,4 @@
+import 'package:event_sharing/helpers/event_actions.dart';
 import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/models/event_model.dart';
 import 'package:event_sharing/services/api_service.dart';
@@ -10,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import '../../base/app_remote_image.dart';
 import '../../base/custom_text.dart';
 
 class CategoriesSearchAppliedScreen extends StatefulWidget {
@@ -321,26 +323,11 @@ class _CategoriesSearchAppliedScreenState
     double? height,
     double? width,
   }) {
-    final imageUrl = MediaUrlUtils.resolve(url);
-    if (imageUrl == null || imageUrl.isEmpty) {
-      return Image.asset(
-        AppImages.logo,
-        height: height,
-        width: width,
-        fit: BoxFit.cover,
-      );
-    }
-    return Image.network(
-      imageUrl,
+    return AppRemoteImage(
+      url: url,
       height: height,
       width: width,
       fit: BoxFit.cover,
-      errorBuilder: (context, error, stackTrace) => Image.asset(
-        AppImages.logo,
-        height: height,
-        width: width,
-        fit: BoxFit.cover,
-      ),
     );
   }
 
@@ -578,7 +565,10 @@ class _CategoriesSearchAppliedScreenState
               Positioned(
                 bottom: 10,
                 right: 10,
-                child: Icon(Icons.more_horiz, color: AppColors.greyColor),
+                child: EventMoreMenuButton(
+                  event: event,
+                  iconColor: AppColors.greyColor,
+                ),
               ),
             ],
           ),

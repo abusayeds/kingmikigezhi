@@ -1,3 +1,4 @@
+import 'package:event_sharing/helpers/event_actions.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,6 +10,7 @@ import '../../../models/event_model.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_icons.dart';
 import '../../../utils/app_images.dart';
+import '../../base/app_remote_image.dart';
 
 class EventCard extends StatelessWidget {
   final EventModel? eventModel;
@@ -45,27 +47,12 @@ class EventCard extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(24.r),
-                  child: eventModel?.coverImage != null &&
-                          eventModel!.coverImage!.isNotEmpty
-                      ? Image.network(
-                          eventModel!.coverImage!,
-                          height: 154.h,
-                          width: double.infinity,
-                          fit: BoxFit.fill,
-                          errorBuilder: (context, error, stackTrace) =>
-                              Image.asset(
-                            AppImages.logo,
-                            height: 154.h,
-                            width: double.infinity,
-                            fit: BoxFit.fill,
-                          ),
-                        )
-                      : Image.asset(
-                          AppImages.logo,
-                          height: 154.h,
-                          width: double.infinity,
-                          fit: BoxFit.fill,
-                        ),
+                  child: AppRemoteImage(
+                    url: eventModel?.coverImage,
+                    height: 154.h,
+                    width: double.infinity,
+                    fit: BoxFit.fill,
+                  ),
                 ),
                 Positioned(
                   right: -4.w,
@@ -117,11 +104,18 @@ class EventCard extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        SvgPicture.asset(
-                          AppIcons.share,
-                          color: AppColors.primaryColor,
-                          height: 20.h,
-                          width: 20.w,
+                        GestureDetector(
+                          onTap: () {
+                            if (eventModel != null) {
+                              handleEventMenuAction('share', eventModel!);
+                            }
+                          },
+                          child: SvgPicture.asset(
+                            AppIcons.share,
+                            color: AppColors.primaryColor,
+                            height: 20.h,
+                            width: 20.w,
+                          ),
                         ),
                       ],
                     ),
@@ -178,10 +172,10 @@ class EventCard extends StatelessWidget {
                   Align(
                       alignment: Alignment.bottomRight,
                       child: Padding(
-                        padding: EdgeInsets.only(bottom: 2.h), // Small padding to prevent touching the edge
-                        child: Icon(
-                          Icons.more_horiz_outlined,
-                          color: AppColors.greyColor,
+                        padding: EdgeInsets.only(bottom: 2.h),
+                        child: EventMoreMenuButton(
+                          event: eventModel,
+                          iconColor: AppColors.greyColor,
                         ),
                       ))
                 ],

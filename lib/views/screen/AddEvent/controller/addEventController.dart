@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -21,6 +22,9 @@ class Addeventcontroller extends GetxController {
 
   // Step 1: Basic
   String? coverImagePath;
+  /// Used on web where MultipartFile.fromPath is unreliable.
+  Uint8List? coverImageBytes;
+  String? coverImageFileName;
   RxBool isRepeated = false.obs;
   String? repeatOption;
   String? sessionNumber;
@@ -63,7 +67,7 @@ class Addeventcontroller extends GetxController {
   RxList<Map<String, dynamic>> historyEvents = <Map<String, dynamic>>[].obs;
   String? selectedHistoryEventId;
 
-  // Own history records added by user (shown in History box, sent as results)
+  // Own history records added by user (shown in History box, sent as previousEvents)
   RxList<Map<String, dynamic>> ownHistories = <Map<String, dynamic>>[].obs;
 
   void addOwnHistory({
@@ -135,6 +139,8 @@ class Addeventcontroller extends GetxController {
     existingCoverImageUrl = null;
     programName = null;
     coverImagePath = null;
+    coverImageBytes = null;
+    coverImageFileName = null;
     isRepeated.value = false;
     repeatOption = null;
     sessionNumber = null;
@@ -286,6 +292,48 @@ class Addeventcontroller extends GetxController {
     }
     showUserAgreementError.value = false;
 
+    final hasCover = (coverImageBytes != null && coverImageBytes!.isNotEmpty) ||
+        (coverImagePath != null && coverImagePath!.isNotEmpty) ||
+        (isEditMode.value &&
+            existingCoverImageUrl != null &&
+            existingCoverImageUrl!.isNotEmpty);
+
+    if (!hasCover) {
+      Fluttertoast.showToast(msg: 'Please add a cover image');
+      return;
+    }
+    if (programId == null || programId!.trim().isEmpty) {
+      Fluttertoast.showToast(msg: 'Please select a program');
+      return;
+    }
+    if (eventName == null || eventName!.trim().isEmpty) {
+      Fluttertoast.showToast(msg: 'Please enter an event name');
+      return;
+    }
+    if (organizer == null || organizer!.trim().isEmpty) {
+      Fluttertoast.showToast(msg: 'Please enter an organizer');
+      return;
+    }
+    if (eventPortal == null || eventPortal!.trim().isEmpty) {
+      Fluttertoast.showToast(msg: 'Please enter an event portal URL');
+      return;
+    }
+    if (registrationPortal == null || registrationPortal!.trim().isEmpty) {
+      Fluttertoast.showToast(msg: 'Please enter a registration portal URL');
+      return;
+    }
+    if (description == null || description!.trim().isEmpty) {
+      Fluttertoast.showToast(msg: 'Please enter a description');
+      return;
+    }
+    if (registrationDate == null ||
+        registrationTime == null ||
+        deadlineDate == null ||
+        deadlineTime == null) {
+      Fluttertoast.showToast(msg: 'Please complete schedule dates and times');
+      return;
+    }
+
     isLoading.value = true;
     try {
       // Prepare Schedule — cost/lateFee as decimal strings (backend Decimal fields)
@@ -382,44 +430,61 @@ class Addeventcontroller extends GetxController {
         fields["groups"] = jsonEncode(plainGroups);
       }
 
-      // Own history is OPTIONAL. Only send results when the user added records.
-      // Skipping Step 4 history still creates/updates the event successfully.
+      // Own history → previousEvents { id, recordName } (backend contract).
       if (ownHistories.isNotEmpty) {
-        fields["results"] = jsonEncode(ownHistories
+        fields["previousEvents"] = jsonEncode(ownHistories
             .map((h) => {
-                  "placement": _mapPlacement(h['placement']?.toString() ?? ''),
-                  "note": "${h['year']} - ${h['placement']} place winner",
+                  "id": h['eventId']?.toString() ?? '',
+                  "recordName":
+                      "${h['year']} - ${h['placement']} place winner",
                 })
+            .where((h) => (h['id'] as String).isNotEmpty)
             .toList());
       } else {
-        debugPrint("=== CREATE EVENT: no own history — omitting results ===");
+        debugPrint("=== CREATE EVENT: no own history — omitting previousEvents ===");
       }
 
-      // Prepare Files
+      // Prepare Files (path for mobile; bytes for web)
       Map<String, String> files = {};
-      if (coverImagePath != null) {
+      Map<String, List<int>>? fileBytes;
+      if (coverImageBytes != null && coverImageBytes!.isNotEmpty) {
+        fileBytes = {
+          'coverImage': coverImageBytes!,
+        };
+      } else if (coverImagePath != null && coverImagePath!.isNotEmpty) {
         files["coverImage"] = coverImagePath!;
+      } else if (isEditMode.value &&
+          existingCoverImageUrl != null &&
+          existingCoverImageUrl!.isNotEmpty) {
+        fields['coverImage'] = existingCoverImageUrl!;
       }
 
       debugPrint("=== CREATE EVENT REQUEST ===");
       fields.forEach((k, v) => debugPrint("$k: $v"));
-      debugPrint("files: $files");
+      debugPrint("files: $files, hasBytes: ${fileBytes != null}");
+
+      final fileNames = coverImageFileName != null
+          ? {'coverImage': coverImageFileName!}
+          : null;
 
       final dynamic response;
       if (isEditMode.value && editingEventId != null) {
-        // Update existing event (Edit & Verify flow)
         response = await _apiService.multipartRequest(
           ApiConstants.updateEvents.replaceAll(':eventId', editingEventId!),
           method: 'PATCH',
           fields: fields,
           files: files.isNotEmpty ? files : null,
+          fileBytes: fileBytes,
+          fileNames: fileNames,
         );
       } else {
-        // Create new event (previous logic kept same)
-        response = await _apiService.multipartPost(
+        response = await _apiService.multipartRequest(
           ApiConstants.createEvent,
+          method: 'POST',
           fields: fields,
           files: files.isNotEmpty ? files : null,
+          fileBytes: fileBytes,
+          fileNames: fileNames,
         );
       }
 

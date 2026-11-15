@@ -1,6 +1,8 @@
+import 'package:event_sharing/helpers/event_actions.dart';
 import 'package:event_sharing/utils/app_icons.dart';
 import 'package:event_sharing/utils/app_images.dart';
 import 'package:event_sharing/utils/style.dart';
+import 'package:event_sharing/views/base/app_remote_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -57,20 +59,13 @@ class EventCardWidget extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(16.r),
-                  child: eventModel?.coverImage != null &&
-                          eventModel!.coverImage!.isNotEmpty
-                      ? Image.network(
-                          eventModel!.coverImage!,
+                  child: (eventModel?.coverImage != null &&
+                          eventModel!.coverImage!.isNotEmpty)
+                      ? AppRemoteImage(
+                          url: eventModel!.coverImage,
                           width: 125.w,
                           height: 125.h,
                           fit: BoxFit.fill,
-                          errorBuilder: (context, error, stackTrace) =>
-                              Image.asset(
-                            AppImages.logo,
-                            width: 125.w,
-                            height: 125.h,
-                            fit: BoxFit.fill,
-                          ),
                         )
                       : Image.asset(
                           imagePath?.isNotEmpty == true
@@ -129,9 +124,10 @@ class EventCardWidget extends StatelessWidget {
           Positioned(
             bottom: 5.h,
             right: 10.w,
-            child: const Icon(
-              Icons.more_horiz_outlined,
-              color: Colors.white,
+            child: EventMoreMenuButton(
+              event: eventModel,
+              iconColor: Colors.white,
+              iconSize: 22,
             ),
           ),
         ],

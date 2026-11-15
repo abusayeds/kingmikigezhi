@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../helpers/feed_search_query.dart';
 import '../models/event_model.dart';
 import '../services/api_service.dart';
 import '../utils/api_constants.dart';
@@ -60,21 +62,39 @@ class HomeController extends GetxController implements GetxService {
     }
 
     try {
-      String url = "${ApiConstants.searchEvents}?page=${searchPage.value}&limit=10";
-      if (searchTerm != null && searchTerm.isNotEmpty) url += "&searchTerm=$searchTerm";
-      if (programId != null && programId.isNotEmpty) url += "&programId=$programId";
-      if (type != null && type.isNotEmpty) url += "&type=$type";
-      if (location != null && location.isNotEmpty) url += "&location=$location";
-      if (categoryGroup != null && categoryGroup.isNotEmpty) {
-        url += "&categoryGroup=$categoryGroup";
-      }
-      if (priceMin != null) url += "&priceMin=$priceMin";
-      if (priceMax != null) url += "&priceMax=$priceMax";
+      final params = FeedSearchQuery.build(
+        page: searchPage.value,
+        searchTerm: searchTerm,
+        programId: programId,
+        type: type,
+        location: location,
+        categoryGroup: categoryGroup,
+        priceMin: priceMin,
+        priceMax: priceMax,
+      );
 
-      final response = await apiService.get(url);
+      final hasTerm = (searchTerm?.trim().isNotEmpty ?? false);
+      final hasFilters = (programId?.trim().isNotEmpty ?? false) ||
+          (type?.trim().isNotEmpty ?? false) ||
+          (location?.trim().isNotEmpty ?? false) ||
+          (categoryGroup?.trim().isNotEmpty ?? false) ||
+          priceMin != null ||
+          priceMax != null;
+      if (!hasTerm && !hasFilters) {
+        if (!isLoadMore) searchedEvents.clear();
+        Fluttertoast.showToast(msg: 'Enter a search term or apply filters');
+        return;
+      }
+
+      final uri = Uri.parse(ApiConstants.searchEvents).replace(
+        queryParameters: params,
+      );
+
+      final response = await apiService.get(uri.toString());
       if (response['success'] == true) {
-        final List<dynamic> data = response['data'];
-        final List<EventModel> newEvents = data.map((json) => EventModel.fromJson(json)).toList();
+        final List<dynamic> data = response['data'] ?? [];
+        final List<EventModel> newEvents =
+            data.map((json) => EventModel.fromJson(json)).toList();
 
         if (isLoadMore) {
           searchedEvents.addAll(newEvents);
@@ -82,9 +102,18 @@ class HomeController extends GetxController implements GetxService {
           searchedEvents.value = newEvents;
         }
 
-        searchHasNext.value = response['meta']['hasNext'] ?? false;
+        final meta = response['meta'];
+        searchHasNext.value =
+            meta is Map ? (meta['hasNext'] == true) : false;
+      } else {
+        if (!isLoadMore) searchedEvents.clear();
+        Fluttertoast.showToast(
+          msg: response['message']?.toString() ?? 'Search failed',
+        );
       }
     } catch (e) {
+      if (!isLoadMore) searchedEvents.clear();
+      Fluttertoast.showToast(msg: 'Error searching events: $e');
       debugPrint("Error searching events: $e");
     } finally {
       isLoadingSearch.value = false;

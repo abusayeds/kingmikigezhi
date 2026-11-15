@@ -271,8 +271,11 @@ class _SteponeformState extends State<Steponeform> {
   Future _pickImage(Function(Uint8List) setImage) async {
     final pickedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedImage != null) {
+      final bytes = await pickedImage.readAsBytes();
       addEventController.coverImagePath = pickedImage.path;
-      setImage(File(pickedImage.path).readAsBytesSync());
+      addEventController.coverImageBytes = bytes;
+      addEventController.coverImageFileName = pickedImage.name;
+      setImage(bytes);
     }
   }
 

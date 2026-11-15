@@ -68,28 +68,33 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           children: [
             //================================> Notification section <=======================
 
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  GestureDetector(
-                    onTap: () async {
-                      await _notificationController.markAllAsRead();
-                    },
-                    child: Text(
-                      'Ignore All',
-                      style: TextStyle(
-                        color: AppColors.primaryColor,
-                        decoration: TextDecoration.underline,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14.sp,
+            Obx(() {
+              final hasItems =
+                  _notificationController.notifications.isNotEmpty;
+              if (!hasItems) return const SizedBox.shrink();
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    GestureDetector(
+                      onTap: () async {
+                        await _notificationController.markAllAsRead();
+                      },
+                      child: Text(
+                        'Ignore All',
+                        style: TextStyle(
+                          color: AppColors.primaryColor,
+                          decoration: TextDecoration.underline,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14.sp,
+                        ),
                       ),
-                    ),
-                  )
-                ],
-              ),
-            ),
+                    )
+                  ],
+                ),
+              );
+            }),
             Expanded(
               child: Obx(() {
                 if (_notificationController.isLoading.value &&

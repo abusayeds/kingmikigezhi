@@ -72,13 +72,18 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   @override
   Widget build(BuildContext context) {
+    final isMultiLine = (widget.maxLines ?? 1) > 1;
+    final fieldHeight = widget.height ??
+        (isMultiLine
+            ? AppStyles.standardHeight * (widget.maxLines ?? 2)
+            : AppStyles.standardHeight);
     return ConstrainedBox(
       constraints: BoxConstraints(
-        minHeight: widget.height ?? AppStyles.standardHeight,
-        maxHeight: widget.height ?? AppStyles.standardHeight,
+        minHeight: fieldHeight,
+        maxHeight: isMultiLine ? double.infinity : fieldHeight,
       ),
       child: SizedBox(
-        height: widget.height ?? AppStyles.standardHeight,
+        height: isMultiLine ? null : fieldHeight,
         child: TextFormField(
       maxLines: widget.maxLines,
       onTap: widget.onTab,
@@ -91,6 +96,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       validator: widget.validator ?? _defaultValidator,
       cursorColor: AppColors.primaryColor,
       obscureText: widget.isPassword ? obscureText : false,
+      enableInteractiveSelection: !(widget.readOnly ?? false) || widget.onTab != null,
       style:   TextStyle(
         color: Colors.black,
         fontSize: 13.sp,

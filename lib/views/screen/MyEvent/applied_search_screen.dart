@@ -1,3 +1,4 @@
+import 'package:event_sharing/helpers/event_actions.dart';
 import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_icons.dart';
@@ -229,7 +230,10 @@ class _AppliedSearchEventListScreenState extends State<AppliedSearchEventListScr
                             Positioned(
                               bottom: 10,
                               right: 10,
-                              child: Icon(Icons.more_horiz, color:AppColors.greyColor),
+                              child: EventMoreMenuButton(
+                                event: event,
+                                iconColor: AppColors.greyColor,
+                              ),
                             ),
                           ],
                         )

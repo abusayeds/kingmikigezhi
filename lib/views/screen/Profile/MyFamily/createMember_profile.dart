@@ -12,6 +12,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../../../utils/app_constants.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_icons.dart';
 import '../../../../utils/app_images.dart';
@@ -85,6 +86,15 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
         _authController.editOptionYears.isEmpty) {
       _authController.fetchEditOptions();
     }
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (familyId != null && familyId!.isNotEmpty) return;
+      await _familyController.fetchFamilies();
+      if (!mounted) return;
+      if (_familyController.families.isNotEmpty) {
+        setState(() => familyId = _familyController.families.first.id);
+      }
+    });
   }
 
   @override
@@ -730,6 +740,16 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                             ),
                           ),
                           Padding(
+                            padding: EdgeInsets.only(top: 4.h, bottom: 4.h),
+                            child: Text(
+                              'Password: 8+ chars with upper & lower case, a number, and a special character (@\$!%*?&).',
+                              style: TextStyle(
+                                fontSize: 11.sp,
+                                color: AppColors.color414141,
+                              ),
+                            ),
+                          ),
+                          Padding(
                             padding: EdgeInsets.symmetric(vertical: 8.h),
                             child: const Text('Confirm Password',
                                 style: TextStyle(
@@ -895,8 +915,13 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
 
   Future<void> _addFamilyMember() async {
     if (familyId == null || familyId!.isEmpty) {
-      Get.snackbar('Error', 'Family ID not found',
-          backgroundColor: Colors.red, colorText: Colors.white);
+      Get.snackbar(
+        'Family required',
+        'No family found. Create a family group first, then add a member.',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        duration: const Duration(seconds: 5),
+      );
       return;
     }
 
@@ -939,6 +964,17 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
     if (password != confirmPassword) {
       Get.snackbar('Error', 'Passwords do not match',
           backgroundColor: Colors.red, colorText: Colors.white);
+      return;
+    }
+
+    if (!AppConstants.passwordValidator.hasMatch(password)) {
+      Get.snackbar(
+        'Invalid password',
+        'Use 8+ characters with upper & lower case, a number, and a special character.',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        duration: const Duration(seconds: 5),
+      );
       return;
     }
 

@@ -4,6 +4,8 @@ import 'package:event_sharing/utils/app_strings.dart';
 import 'package:event_sharing/utils/phone_utils.dart';
 import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/custom_text_field.dart';
+import 'package:event_sharing/helpers/route.dart';
+import 'package:event_sharing/views/base/custom_button.dart';
 import 'package:event_sharing/views/screen/Profile/Account/top_profile_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -470,7 +472,8 @@ class _PersonalInformationScreenState
                                     ),
                                     SizedBox(width: 8.w),
                                     InkWell(
-                                      onTap: () => Get.back(),
+                                      onTap: () => Get.toNamed(
+                                          AppRoutes.editProfileScreen),
                                       child: SvgPicture.asset(
                                         AppIcons.editIcon,
                                         colorFilter: ColorFilter.mode(
@@ -546,6 +549,13 @@ class _PersonalInformationScreenState
                 //     ),
                 //   );
                 // }),
+                SizedBox(height: 16.h),
+                CustomButton(
+                  onTap: () => Get.toNamed(AppRoutes.editProfileScreen),
+                  text: AppStrings.editProfile,
+                  textColor: Colors.white,
+                  color: AppColors.buttonColor,
+                ),
                 SizedBox(height: 24.h),
               ],
             ),

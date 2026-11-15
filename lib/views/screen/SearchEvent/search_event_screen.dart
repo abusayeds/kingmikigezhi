@@ -1,12 +1,17 @@
 import 'package:event_sharing/controllers/home_controller.dart';
+import 'package:event_sharing/helpers/feed_search_query.dart';
+import 'package:event_sharing/utils/api_constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import '../../../helpers/route.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_icons.dart';
 import '../../../utils/app_images.dart';
+import '../../base/app_remote_image.dart';
 import '../../base/custom_text.dart';
 import '../../base/custom_text_field.dart';
 
@@ -21,6 +26,7 @@ class _SearchEventScreenState extends State<SearchEventScreen> {
   final HomeController _homeController = Get.find<HomeController>();
   final TextEditingController _searchController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
+  Map<String, dynamic> _activeFilters = {};
 
   @override
   void initState() {
@@ -56,30 +62,33 @@ class _SearchEventScreenState extends State<SearchEventScreen> {
     }
   }
 
-  String _mapCategoryGroup(String? displayValue) {
-    if (displayValue == null) return '';
-    switch (displayValue) {
-      case '6 Year - 10 Year':
-        return '6year-10year';
-      case '11 Year - 16 Year':
-        return '11year-16year';
-      case '17 Year+':
-        return '17year+';
-      default:
-        return displayValue.toLowerCase().replaceAll(' ', '');
-    }
-  }
-
   void _performSearch(Map<String, dynamic> filters, {bool isLoadMore = false}) {
-    RangeValues? priceRange = filters['priceRange'];
-    
+    if (!isLoadMore) {
+      _activeFilters = Map<String, dynamic>.from(filters);
+    }
+    final merged = {..._activeFilters, ...filters};
+    RangeValues? priceRange = merged['priceRange'] as RangeValues?;
+
+    var searchTerm = _searchController.text.trim();
+    if (searchTerm.isEmpty) {
+      searchTerm = (merged['searchTerm'] as String?)?.trim() ?? '';
+    }
+    if (searchTerm.isEmpty) {
+      final loc = (merged['location'] as String?)?.trim();
+      if (loc != null && loc.isNotEmpty) {
+        searchTerm = loc;
+      }
+    }
+
     _homeController.searchEvents(
       isLoadMore: isLoadMore,
-      searchTerm: _searchController.text,
-      programId: filters['program'], // Assuming program contains ID or name as needed by API
-      type: filters['type'],
-      location: filters['location'],
-      categoryGroup: _mapCategoryGroup(filters['category']),
+      searchTerm: searchTerm.isNotEmpty ? searchTerm : null,
+      programId: merged['program']?.toString(),
+      type: merged['type']?.toString(),
+      location: merged['location']?.toString(),
+      categoryGroup: FeedSearchQuery.normalizeCategoryGroup(
+        merged['category']?.toString(),
+      ),
       priceMin: priceRange?.start,
       priceMax: priceRange?.end,
     );
@@ -161,18 +170,11 @@ class _SearchEventScreenState extends State<SearchEventScreen> {
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(10.r),
                                 child: event.coverImage != null && event.coverImage!.isNotEmpty
-                                    ? Image.network(
-                                        event.coverImage!,
+                                    ? AppRemoteImage(
+                                        url: event.coverImage,
                                         width: 77.w,
                                         height: 76.h,
                                         fit: BoxFit.cover,
-                                        errorBuilder: (context, error, stackTrace) =>
-                                          Image.asset(
-                                            AppImages.logo,
-                                            width: 77.w,
-                                            height: 76.h,
-                                            fit: BoxFit.cover,
-                                          ),
                                       )
                                     : Image.asset(
                                         AppImages.logo,
@@ -220,8 +222,18 @@ class _SearchEventScreenState extends State<SearchEventScreen> {
                                 children: [
                                   //===========================> Share Icon Button <======================
                                   InkWell(
-                                      onTap: () {
-                                        Get.toNamed(AppRoutes.myInvitationPage);
+                                      onTap: () async {
+                                        final link = (event.eventPortal?.trim().isNotEmpty == true)
+                                            ? event.eventPortal!.trim()
+                                            : (event.id != null
+                                                ? '${ApiConstants.baseUrl}/events/${event.id}'
+                                                : null);
+                                        if (link == null || link.isEmpty) {
+                                          Fluttertoast.showToast(msg: 'No event link available');
+                                          return;
+                                        }
+                                        await Clipboard.setData(ClipboardData(text: link));
+                                        Fluttertoast.showToast(msg: 'Event link copied');
                                       },
                                       child: Icon(
                                         Icons.share,

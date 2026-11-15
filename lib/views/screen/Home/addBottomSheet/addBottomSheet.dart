@@ -147,8 +147,9 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
                           icon: const Icon(Icons.calendar_today_rounded)),
                       controller: _startsDateCTRL,
                       hintText: 'Date',
-
                       readOnly: true,
+                      validator: (_) => null,
+                      onTab: () => _selectDate(context, _startsDateCTRL),
                       sufixicons: Padding(
                         padding: EdgeInsets.only(right: 12.w),
                       ),
@@ -163,6 +164,8 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
                       controller: _startsTimeCTRL,
                       hintText: 'Time',
                       readOnly: true,
+                      validator: (_) => null,
+                      onTab: () => _selectTime(context, _startsTimeCTRL),
                       sufixicons: Padding(
                         padding: EdgeInsets.only(right: 12.w),
                       ),
@@ -186,6 +189,8 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
                       controller: _endsDateCTRL,
                       hintText: 'Date',
                       readOnly: true,
+                      validator: (_) => null,
+                      onTab: () => _selectDate(context, _endsDateCTRL),
                       sufixicons: Padding(
                         padding: EdgeInsets.only(right: 12.w),
                       ),
@@ -200,6 +205,8 @@ class _HomePageAddBottomSheetWidgetState extends State<HomePageAddBottomSheetWid
                       controller: _endsTimeCTRL,
                       hintText: 'Time',
                       readOnly: true,
+                      validator: (_) => null,
+                      onTab: () => _selectTime(context, _endsTimeCTRL),
                       sufixicons: Padding(
                         padding: EdgeInsets.only(right: 12.w),
                       ),

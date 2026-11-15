@@ -44,6 +44,8 @@ class ApiService {
     String method = 'POST',
     Map<String, String>? fields,
     Map<String, String>? files,
+    Map<String, List<int>>? fileBytes,
+    Map<String, String>? fileNames,
     Map<String, String>? headers,
   }) async {
     try {
@@ -62,8 +64,20 @@ class ApiService {
         request.fields.addAll(fields);
       }
 
-      // Add files
-      if (files != null) {
+      // Prefer in-memory bytes (required for Flutter web).
+      if (fileBytes != null) {
+        for (var entry in fileBytes.entries) {
+          if (entry.value.isEmpty) continue;
+          final filename = fileNames?[entry.key] ?? '${entry.key}.jpg';
+          final mimeType = mime(filename) ?? 'image/jpeg';
+          request.files.add(http.MultipartFile.fromBytes(
+            entry.key,
+            entry.value,
+            filename: filename,
+            contentType: MediaType.parse(mimeType),
+          ));
+        }
+      } else if (files != null) {
         for (var entry in files.entries) {
           if (entry.value.isNotEmpty) {
             String? mimeType = mime(entry.value);
@@ -163,12 +177,20 @@ class ApiService {
               errorMessage = firstError.toString();
             }
           }
+        } else if (body['message'] is Map) {
+          errorMessage = jsonEncode(body['message']);
         } else {
-          // Simple string message
-          errorMessage = body['message'];
+          errorMessage = body['message'].toString();
+        }
+      } else if (body['errors'] != null) {
+        final errors = body['errors'];
+        if (errors is List && errors.isNotEmpty) {
+          errorMessage = errors.map((e) => e.toString()).join(', ');
+        } else {
+          errorMessage = errors.toString();
         }
       } else if (body['error'] != null) {
-        errorMessage = body['error'];
+        errorMessage = body['error'].toString();
       }
 
       throw ApiError(

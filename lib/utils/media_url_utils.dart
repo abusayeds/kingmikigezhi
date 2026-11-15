@@ -34,9 +34,9 @@ class MediaUrlUtils {
       return value;
     }
 
-    // Absolute URL from backend — use exactly as returned.
+    // Absolute URL from backend — use exactly as returned (incl. S3 / SVG).
     if (value.startsWith('http://') || value.startsWith('https://')) {
-      return _usableOrNull(value);
+      return value;
     }
 
     final base = ApiConstants.baseUrl.endsWith('/')
@@ -44,17 +44,16 @@ class MediaUrlUtils {
         : ApiConstants.baseUrl;
 
     if (value.startsWith('/')) {
-      return _usableOrNull('$base$value');
+      return '$base$value';
     }
 
-    return _usableOrNull('$base/$value');
+    return '$base/$value';
   }
 
-  /// Skip SVG defaults — Flutter [Image.network] cannot decode SVG.
-  static String? _usableOrNull(String url) {
+  static bool isSvg(String? url) {
+    if (url == null || url.isEmpty) return false;
     final path = Uri.tryParse(url)?.path.toLowerCase() ?? url.toLowerCase();
-    if (path.endsWith('.svg')) return null;
-    return url;
+    return path.endsWith('.svg');
   }
 
   /// Pulls an image URL from a category / subcategory / media JSON map.

@@ -1,0 +1,64 @@
+import 'package:event_sharing/utils/app_images.dart';
+import 'package:event_sharing/utils/media_url_utils.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
+/// Drop-in replacement for [Image.network] that works on Flutter web
+/// even when the CDN/S3 bucket has no CORS headers.
+class AppRemoteImage extends StatelessWidget {
+  final String? url;
+  final BoxFit fit;
+  final double? width;
+  final double? height;
+  final Widget? errorWidget;
+
+  const AppRemoteImage({
+    super.key,
+    required this.url,
+    this.fit = BoxFit.cover,
+    this.width,
+    this.height,
+    this.errorWidget,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final resolved = MediaUrlUtils.resolve(url);
+    if (resolved == null || resolved.isEmpty) {
+      return errorWidget ?? _fallback();
+    }
+
+    if (!kIsWeb && MediaUrlUtils.isSvg(resolved)) {
+      return SvgPicture.network(
+        resolved,
+        width: width,
+        height: height,
+        fit: fit,
+        placeholderBuilder: (_) => const Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    return Image.network(
+      resolved,
+      width: width,
+      height: height,
+      fit: fit,
+      webHtmlElementStrategy: WebHtmlElementStrategy.prefer,
+      errorBuilder: (context, error, stackTrace) => errorWidget ?? _fallback(),
+      loadingBuilder: (context, child, progress) {
+        if (progress == null) return child;
+        return const Center(child: CircularProgressIndicator());
+      },
+    );
+  }
+
+  Widget _fallback() {
+    return Image.asset(
+      AppImages.logo,
+      width: width,
+      height: height,
+      fit: fit,
+    );
+  }
+}

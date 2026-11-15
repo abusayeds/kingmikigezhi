@@ -1,3 +1,4 @@
+import 'package:event_sharing/views/base/app_remote_image.dart';
 import 'package:event_sharing/views/base/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../../helpers/event_actions.dart';
 import '../../../../../helpers/route.dart';
 import '../../../../../utils/app_colors.dart';
 import '../../../../../utils/app_icons.dart';
@@ -97,27 +99,12 @@ class _MyUpcomingEventScreenState extends State<MyUpcomingEventScreen> {
                                     //=====================> Event Image Section <=========================
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(10.r),
-                                      child: event.coverImage != null &&
-                                              event.coverImage!.isNotEmpty
-                                          ? Image.network(
-                                              event.coverImage!,
-                                              height: 75.0.h,
-                                              width: 75.0.w,
-                                              fit: BoxFit.cover,
-                                              errorBuilder: (context, error, stackTrace) =>
-                                                  Image.asset(
-                                                AppImages.logo,
-                                                height: 75.0.h,
-                                                width: 75.0.w,
-                                                fit: BoxFit.cover,
-                                              ),
-                                            )
-                                          : Image.asset(
-                                              AppImages.logo,
-                                              height: 75.0.h,
-                                              width: 75.0.w,
-                                              fit: BoxFit.cover,
-                                            ),
+                                      child: AppRemoteImage(
+                                        url: event.coverImage,
+                                        height: 75.0.h,
+                                        width: 75.0.w,
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
                                     SizedBox(width: 12.w),
                                     //=====================> Event Details Section <=========================
@@ -221,7 +208,10 @@ class _MyUpcomingEventScreenState extends State<MyUpcomingEventScreen> {
                             Positioned(
                               bottom: 10,
                               right: 10,
-                              child: Icon(Icons.more_horiz, color:AppColors.greyColor),
+                              child: EventMoreMenuButton(
+                                event: event,
+                                iconColor: AppColors.greyColor,
+                              ),
                             ),
                           ],
                         )

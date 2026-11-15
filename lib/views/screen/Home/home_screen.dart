@@ -65,12 +65,21 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> _loadFamilyMembersForFilter() async {
     try {
-      await _familyController.fetchFamilies();
+      await _familyController.fetchFamilies(showErrorToast: false);
       if (_familyController.families.isEmpty) return;
       final familyId = _familyController.families.first.id;
-      await _familyController.fetchFamilyMembers(familyId);
+      await _familyController.fetchFamilyMembers(
+        familyId,
+        showErrorToast: false,
+      );
     } catch (_) {}
   }
+
+  bool get _hasFamilyMemberFilters =>
+      _familyController.familyMembers.any((m) {
+        final r = (m.relationShip ?? '').trim();
+        return r.isNotEmpty && r != 'Self';
+      });
 
   String _relationDisplayName(String? relation) {
     switch (relation) {
@@ -141,73 +150,93 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  GestureDetector(
-                    onTap: () async {
-                      if (_familyController.familyMembers.isEmpty) {
-                        await _loadFamilyMembersForFilter();
-                      }
-                      if (!mounted) return;
-                      final options = _filterOptions();
-                      final selected = await showMenu<String>(
-                        context: context,
-                        position: const RelativeRect.fromLTRB(100, 100, 0, 0),
-                        items: options.map<PopupMenuEntry<String>>((option) {
-                          final backgroundColor =
-                              _colorForRelation(option.relationShip);
-                          return PopupMenuItem<String>(
-                            value: option.relationShip,
-                            child: Container(
-                              width: double.infinity,
-                              color: backgroundColor,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 8.w, vertical: 4.h),
-                              child: Text(
-                                option.label,
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 12.sp,
+                  Obx(() {
+                    if (!_hasFamilyMemberFilters) {
+                      return Container(
+                        height: 23.h,
+                        padding: EdgeInsets.symmetric(horizontal: 8.w),
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryColor,
+                          borderRadius: BorderRadius.circular(6.r),
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(
+                          'Self',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 10.sp,
+                          ),
+                        ),
+                      );
+                    }
+                    return GestureDetector(
+                      onTap: () async {
+                        if (_familyController.familyMembers.isEmpty) {
+                          await _loadFamilyMembersForFilter();
+                        }
+                        if (!mounted) return;
+                        final options = _filterOptions();
+                        final selected = await showMenu<String>(
+                          context: context,
+                          position: const RelativeRect.fromLTRB(100, 100, 0, 0),
+                          items: options.map<PopupMenuEntry<String>>((option) {
+                            final backgroundColor =
+                                _colorForRelation(option.relationShip);
+                            return PopupMenuItem<String>(
+                              value: option.relationShip,
+                              child: Container(
+                                width: double.infinity,
+                                color: backgroundColor,
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 8.w, vertical: 4.h),
+                                child: Text(
+                                  option.label,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 12.sp,
+                                  ),
                                 ),
                               ),
-                            ),
-                          );
-                        }).toList(),
-                      );
-                      if (selected != null) {
-                        final match = options.firstWhere(
-                          (o) => o.relationShip == selected,
-                          orElse: () =>
-                              (label: selected, relationShip: selected),
+                            );
+                          }).toList(),
                         );
-                        setState(() {
-                          dropdownValue = match.label;
-                          _selectedRelationShip = match.relationShip;
-                        });
-                        _homeController.fetchFamilyEvents(match.relationShip);
-                      }
-                    },
-                    child: Container(
-                      height: 23.h,
-                      padding: EdgeInsets.symmetric(horizontal: 6.w),
-                      decoration: BoxDecoration(
-                        color: AppColors.primaryColor,
-                        borderRadius: BorderRadius.circular(6.r),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            dropdownValue,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 10.sp,
+                        if (selected != null) {
+                          final match = options.firstWhere(
+                            (o) => o.relationShip == selected,
+                            orElse: () =>
+                                (label: selected, relationShip: selected),
+                          );
+                          setState(() {
+                            dropdownValue = match.label;
+                            _selectedRelationShip = match.relationShip;
+                          });
+                          _homeController.fetchFamilyEvents(match.relationShip);
+                        }
+                      },
+                      child: Container(
+                        height: 23.h,
+                        padding: EdgeInsets.symmetric(horizontal: 6.w),
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryColor,
+                          borderRadius: BorderRadius.circular(6.r),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              dropdownValue,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 10.sp,
+                              ),
                             ),
-                          ),
-                          SizedBox(width: 20.w),
-                          SvgPicture.asset(AppIcons.down_ArrowIcon),
-                        ],
+                            SizedBox(width: 20.w),
+                            SvgPicture.asset(AppIcons.down_ArrowIcon),
+                          ],
+                        ),
                       ),
-                    ),
-                  ),
+                    );
+                  }),
                   Padding(
                     padding: const EdgeInsets.only(left: 10),
                     child: IconButton(
@@ -347,21 +376,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
               hintText: "Search Event",
               hintStyle: AppStyles.fontSize14(color: AppColors.greyColor),
-              suffixIcon: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.w),
-                child: GestureDetector(
-                  onTap: () {
-                    if (_searchController.text.isNotEmpty) {
-                      Get.toNamed(AppRoutes.searchEventScreen, arguments: {
-                        'searchTerm': _searchController.text
-                      });
-                    }
-                  },
-                  child: SvgPicture.asset(
-                    AppIcons.search,
-                    width: 24.w,
-                    height: 24.h,
-                  ),
+              suffixIcon: IconButton(
+                onPressed: () {
+                  final term = _searchController.text.trim();
+                  if (term.isNotEmpty) {
+                    Get.toNamed(AppRoutes.searchEventScreen,
+                        arguments: {'searchTerm': term});
+                  }
+                },
+                icon: SvgPicture.asset(
+                  AppIcons.search,
+                  width: 24.w,
+                  height: 24.h,
                 ),
               ),
               border: OutlineInputBorder(

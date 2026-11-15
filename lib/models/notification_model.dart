@@ -70,22 +70,44 @@ class NotificationModel {
   }
 
   factory NotificationModel.fromJson(Map<String, dynamic> json) {
+    List<dynamic>? medium;
+    final rawMedium = json['medium'];
+    if (rawMedium is List) {
+      medium = List<dynamic>.from(rawMedium);
+    } else if (rawMedium != null) {
+      medium = [rawMedium];
+    }
+
+    bool? isRead;
+    final rawIsRead = json['isRead'];
+    if (rawIsRead is bool) {
+      isRead = rawIsRead;
+    } else if (rawIsRead is num) {
+      isRead = rawIsRead != 0;
+    } else if (rawIsRead is String) {
+      isRead = rawIsRead.toLowerCase() == 'true' || rawIsRead == '1';
+    }
+
     return NotificationModel(
-      id: json['id'],
-      recipientId: json['recipientId'],
-      senderId: json['senderId'],
-      type: json['type'],
-      medium: json['medium'] != null ? List<dynamic>.from(json['medium']) : null,
-      title: json['title'],
-      message: json['message'],
-      image: json['image'],
-      linkId: json['linkId'],
-      linkType: json['linkType'],
-      isRead: json['isRead'],
-      readAt: json['readAt'],
+      id: json['id']?.toString(),
+      recipientId: json['recipientId']?.toString(),
+      senderId: json['senderId']?.toString(),
+      type: json['type']?.toString(),
+      medium: medium,
+      title: json['title']?.toString(),
+      message: json['message']?.toString(),
+      image: json['image']?.toString(),
+      linkId: json['linkId']?.toString(),
+      linkType: json['linkType']?.toString(),
+      isRead: isRead,
+      readAt: json['readAt']?.toString(),
       data: json['data'],
-      createdAt: json['createdAt'] != null ? DateTime.tryParse(json['createdAt']) : null,
-      updatedAt: json['updatedAt'] != null ? DateTime.tryParse(json['updatedAt']) : null,
+      createdAt: json['createdAt'] != null
+          ? DateTime.tryParse(json['createdAt'].toString())
+          : null,
+      updatedAt: json['updatedAt'] != null
+          ? DateTime.tryParse(json['updatedAt'].toString())
+          : null,
     );
   }
 }
@@ -112,14 +134,34 @@ class NotificationResponse {
   });
 
   factory NotificationResponse.fromJson(Map<String, dynamic> json) {
-    final data = json['data'] as Map<String, dynamic>?;
-    final meta = json['meta'] as Map<String, dynamic>?;
+    final rawData = json['data'];
+    final meta = json['meta'] is Map
+        ? Map<String, dynamic>.from(json['meta'] as Map)
+        : null;
+
+    List<NotificationModel> items = [];
+    int? unreadCount;
+
+    if (rawData is List) {
+      items = rawData
+          .whereType<Map>()
+          .map((e) => NotificationModel.fromJson(Map<String, dynamic>.from(e)))
+          .toList();
+    } else if (rawData is Map) {
+      final data = Map<String, dynamic>.from(rawData);
+      unreadCount = data['unreadCount'] is int ? data['unreadCount'] as int : null;
+      final rawItems = data['items'] ?? data['notifications'] ?? data['data'];
+      if (rawItems is List) {
+        items = rawItems
+            .whereType<Map>()
+            .map((e) => NotificationModel.fromJson(Map<String, dynamic>.from(e)))
+            .toList();
+      }
+    }
 
     return NotificationResponse(
-      items: data != null && data['items'] != null
-          ? (data['items'] as List).map((e) => NotificationModel.fromJson(e)).toList()
-          : [],
-      unreadCount: data?['unreadCount'],
+      items: items,
+      unreadCount: unreadCount,
       page: meta?['page'],
       limit: meta?['limit'],
       total: meta?['total'],

@@ -1,4 +1,5 @@
 import 'package:event_sharing/controllers/event_controller.dart';
+import 'package:event_sharing/helpers/event_actions.dart';
 import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/models/event_model.dart';
 import 'package:event_sharing/models/home_event_model.dart';
@@ -194,6 +195,11 @@ class _CalendarWithDropdownState extends State<CalendarWithDropdown> {
                   );
                 }
               },
+              trailing: EventMoreMenuButton(
+                event: event,
+                iconColor: AppColors.primaryColor,
+                iconSize: 22,
+              ),
             );
           }
           if (event is HomeEventModel) {
@@ -210,6 +216,11 @@ class _CalendarWithDropdownState extends State<CalendarWithDropdown> {
                   event.location!,
                 if (timeLabel.isNotEmpty) timeLabel,
               ].join(' · '),
+              trailing: Icon(
+                Icons.more_horiz,
+                color: AppColors.primaryColor,
+                size: 20.sp,
+              ),
             );
           }
           return _eventTile(title: 'Event');
@@ -222,6 +233,7 @@ class _CalendarWithDropdownState extends State<CalendarWithDropdown> {
     required String title,
     String? subtitle,
     VoidCallback? onTap,
+    Widget? trailing,
   }) {
     return InkWell(
       onTap: onTap,
@@ -268,12 +280,14 @@ class _CalendarWithDropdownState extends State<CalendarWithDropdown> {
                 ],
               ),
             ),
-            if (onTap != null)
-              Icon(
-                Icons.chevron_right,
-                color: AppColors.primaryColor,
-                size: 20.sp,
-              ),
+            trailing ??
+                (onTap != null
+                    ? Icon(
+                        Icons.chevron_right,
+                        color: AppColors.primaryColor,
+                        size: 20.sp,
+                      )
+                    : const SizedBox.shrink()),
           ],
         ),
       ),

@@ -29,24 +29,38 @@ class NotificationController extends GetxController {
       update();
 
       if (response != null && response['success'] == true) {
-        final notificationResponse = NotificationResponse.fromJson(response);
-        notifications.value = notificationResponse.items;
-        unreadCount.value = notificationResponse.unreadCount ?? 0;
+        try {
+          final notificationResponse = NotificationResponse.fromJson(response);
+          notifications.value = notificationResponse.items;
+          unreadCount.value = notificationResponse.unreadCount ??
+              notificationResponse.items.where((n) => n.isRead != true).length;
+        } catch (_) {
+          // Soft-fail parse errors so UI shows empty state instead of raw JSON toast.
+          notifications.clear();
+          unreadCount.value = 0;
+        }
+      } else {
+        notifications.clear();
+        unreadCount.value = 0;
       }
     } catch (e) {
       isLoading.value = false;
+      notifications.clear();
+      unreadCount.value = 0;
       update();
       Fluttertoast.showToast(
-        msg: "Failed to load notifications: $e",
-        toastLength: Toast.LENGTH_LONG,
+        msg: "Could not load notifications. Pull to refresh later.",
+        toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
       );
     }
   }
 
   Future<bool> markAllAsRead() async {
+    if (notifications.isEmpty) {
+      Fluttertoast.showToast(msg: 'No notifications to ignore');
+      return false;
+    }
     try {
       isLoading.value = true;
       update();

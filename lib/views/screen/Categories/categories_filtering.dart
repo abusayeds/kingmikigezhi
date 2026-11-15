@@ -1,3 +1,6 @@
+import 'package:event_sharing/models/event_model.dart';
+import 'package:event_sharing/services/api_service.dart';
+import 'package:event_sharing/utils/api_constants.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_icons.dart';
 import 'package:event_sharing/utils/app_strings.dart';
@@ -7,6 +10,7 @@ import 'package:event_sharing/views/base/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CategoriesFilterScreen extends StatefulWidget {
@@ -17,16 +21,68 @@ class CategoriesFilterScreen extends StatefulWidget {
 }
 
 class _CategoriesFilterScreenState extends State<CategoriesFilterScreen> {
-  final TextEditingController _categoriesCTRL = TextEditingController();
   final TextEditingController _locationCTRL = TextEditingController();
-  final List<String> _program = ['Concert', 'Sports', 'Show', 'Olympic game'];
   final List<String> _type = ['Onsite', 'Online', 'Hybrid'];
   final List<String> _category = ['6 Year - 10 Year', '11 Year - 16 Year', '17 Year+'];
+  List<Program> _apiPrograms = [];
+  bool _isLoadingPrograms = true;
 
-  RangeValues _currentRangeValues = const RangeValues(50, 80);
-  String? _selectedProgram;
+  RangeValues _currentRangeValues = const RangeValues(50, 4000);
+  Program? _selectedProgram;
   String? _selectedType;
   String? _selectedCategory;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchPrograms();
+  }
+
+  Future<void> _fetchPrograms() async {
+    try {
+      final apiService = Get.find<ApiService>();
+      final List<Program> allPrograms = [];
+      int page = 1;
+      bool hasNext = true;
+
+      while (hasNext) {
+        final response =
+            await apiService.get("${ApiConstants.programs}?page=$page&limit=50");
+        if (response['success'] == true) {
+          final List<dynamic> data = response['data'] ?? [];
+          allPrograms.addAll(data.map((json) => Program.fromJson(json)));
+          hasNext = response['meta']?['hasNext'] == true;
+          page++;
+        } else {
+          hasNext = false;
+        }
+      }
+
+      if (!mounted) return;
+      setState(() {
+        _apiPrograms = allPrograms;
+        _isLoadingPrograms = false;
+      });
+    } catch (e) {
+      debugPrint("Error fetching programs: $e");
+      if (!mounted) return;
+      setState(() => _isLoadingPrograms = false);
+    }
+  }
+
+  String _mapCategoryGroup(String? displayValue) {
+    if (displayValue == null) return '';
+    switch (displayValue) {
+      case '6 Year - 10 Year':
+        return '6year-10year';
+      case '11 Year - 16 Year':
+        return '11year-16year';
+      case '17 Year+':
+        return '17year+';
+      default:
+        return displayValue;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,27 +152,38 @@ class _CategoriesFilterScreenState extends State<CategoriesFilterScreen> {
                   contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
                 ),
                 child: DropdownButtonHideUnderline(
-                  child: DropdownButton<String>(
-                    padding: EdgeInsets.symmetric(vertical: 5.w),
-                    //focusColor:  AppColors.primaryColor,
-                    iconDisabledColor: AppColors.primaryColor,
-                    icon: SvgPicture.asset(AppIcons.down_ArrowIcon,color: AppColors.primaryColor,height:8.h,),
-                    iconEnabledColor: AppColors.primaryColor,
-                    isExpanded: true,
-                    value: _selectedProgram,
-                    hint: CustomText(text: 'Select Program', fontsize: 14.sp),
-                    items: _program.map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        _selectedProgram = newValue;
-                      });
-                    },
-                  ),
+                  child: _isLoadingPrograms
+                      ? const Center(
+                          child: SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          ),
+                        )
+                      : DropdownButton<Program>(
+                          padding: EdgeInsets.symmetric(vertical: 5.w),
+                          iconDisabledColor: AppColors.primaryColor,
+                          icon: SvgPicture.asset(
+                            AppIcons.down_ArrowIcon,
+                            color: AppColors.primaryColor,
+                            height: 8.h,
+                          ),
+                          iconEnabledColor: AppColors.primaryColor,
+                          isExpanded: true,
+                          value: _selectedProgram,
+                          hint: CustomText(text: 'Select Program', fontsize: 14.sp),
+                          items: _apiPrograms.map((Program value) {
+                            return DropdownMenuItem<Program>(
+                              value: value,
+                              child: Text(value.name ?? 'Unknown'),
+                            );
+                          }).toList(),
+                          onChanged: (Program? newValue) {
+                            setState(() {
+                              _selectedProgram = newValue;
+                            });
+                          },
+                        ),
                 ),
               ),
               SizedBox(height: 16.h),
@@ -306,7 +373,15 @@ class _CategoriesFilterScreenState extends State<CategoriesFilterScreen> {
                 children: [
                   Expanded(
                     child: CustomButton(
-                      onTap: () {},
+                      onTap: () {
+                        setState(() {
+                          _selectedProgram = null;
+                          _selectedType = null;
+                          _selectedCategory = null;
+                          _locationCTRL.clear();
+                          _currentRangeValues = const RangeValues(50, 4000);
+                        });
+                      },
                       borderColor: AppColors.buttonColor,
                       text: "Reset",
                       color: AppColors.colorEDF2F4,
@@ -316,7 +391,15 @@ class _CategoriesFilterScreenState extends State<CategoriesFilterScreen> {
                   SizedBox(width: 16.w),
                   Expanded(
                     child: CustomButton(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pop(context, {
+                          'program': _selectedProgram?.id,
+                          'type': _selectedType,
+                          'category': _mapCategoryGroup(_selectedCategory),
+                          'location': _locationCTRL.text,
+                          'priceRange': _currentRangeValues,
+                        });
+                      },
                       text: "Apply",
                       textColor: Colors.white,
                       color: AppColors.buttonColor,

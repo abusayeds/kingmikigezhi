@@ -204,13 +204,22 @@ class _CountryStateCityPickerState extends State<CountryStateCityPicker> {
             decoration: InputDecoration(
               labelText: 'State / Province',
               border: const OutlineInputBorder(),
-              enabled: _states.isNotEmpty,
+              helperText: _selectedCountry == null
+                  ? 'Select a country first'
+                  : (_states.isEmpty ? 'No states found for this country' : null),
             ),
             isExpanded: true,
+            hint: Text(
+              _selectedCountry == null
+                  ? 'Select country first'
+                  : (_states.isEmpty ? 'No states available' : 'Select state'),
+            ),
             items: _states
                 .map((s) => DropdownMenuItem(value: s, child: Text(s.name)))
                 .toList(),
-            onChanged: _states.isEmpty ? null : _onStateChanged,
+            onChanged: (_selectedCountry == null || _states.isEmpty)
+                ? null
+                : _onStateChanged,
           ),
         const SizedBox(height: 12),
         if (_loadingCities)
@@ -225,13 +234,22 @@ class _CountryStateCityPickerState extends State<CountryStateCityPicker> {
             decoration: InputDecoration(
               labelText: 'City',
               border: const OutlineInputBorder(),
-              enabled: _cities.isNotEmpty,
+              helperText: _selectedState == null
+                  ? 'Select a state first'
+                  : (_cities.isEmpty ? 'No cities found for this state' : null),
             ),
             isExpanded: true,
+            hint: Text(
+              _selectedState == null
+                  ? 'Select state first'
+                  : (_cities.isEmpty ? 'No cities available' : 'Select city'),
+            ),
             items: _cities
                 .map((c) => DropdownMenuItem(value: c, child: Text(c.name)))
                 .toList(),
-            onChanged: _cities.isEmpty ? null : _onCityChanged,
+            onChanged: (_selectedState == null || _cities.isEmpty)
+                ? null
+                : _onCityChanged,
           ),
       ],
     );

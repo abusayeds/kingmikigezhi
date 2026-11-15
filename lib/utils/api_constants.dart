@@ -1,6 +1,6 @@
 class ApiConstants {
-  // TODO: Change this to your actual backend API base URL
-  static const String baseUrl = 'https://api.daiwabuyi.com'; // Replace with your actual base URL
+  // Production API. Dev tunnel: https://sabbir2001.ssh.bd
+  static const String baseUrl = 'https://api.daiwabuyi.com';
   static const String apiUrl = '$baseUrl/api/v1';
 
 
@@ -51,7 +51,7 @@ class ApiConstants {
   static const String addFamilyMember = '$apiUrl/family-members';
   static const String familyMemberbyFamilyId = '$apiUrl/family-members/family/:familyId';
   static const String familyOwnerbyFamilyId = '$apiUrl/family-members/family/:familyId?role=OWNER';
-  static const String removeFamilyMember = '$apiUrl/family-members//family/:familyId/user/:userId';
+  static const String removeFamilyMember = '$apiUrl/family-members/family/:familyId/user/:userId';
   static const String addOwner = '$apiUrl/family-members/add-owner';
 
 
@@ -113,6 +113,7 @@ class ApiConstants {
   static const String getHistoryEvents = '$apiUrl/events/feed/history';
   static const String getEventsDetails = '$apiUrl/events/:eventId';
   static const String updateEvents = '$apiUrl/events/:eventId';
+  static const String deleteEvent = '$apiUrl/events/:eventId';
 
 
   //Home Events

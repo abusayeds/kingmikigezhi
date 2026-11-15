@@ -80,7 +80,7 @@ class EventModel {
         id: json["id"],
         eventName: json["eventName"],
         baseEventName: json["baseEventName"],
-        coverImage: json["coverImage"],
+        coverImage: MediaUrlUtils.resolve(json["coverImage"]),
         programId: json["programId"],
         organizer: json["organizer"],
         location: json["location"],
@@ -206,7 +206,7 @@ class Program {
         id: json["id"],
         name: json["name"],
         description: json["description"],
-        imageUrl: json["imageUrl"],
+        imageUrl: MediaUrlUtils.resolve(json["imageUrl"]),
       );
 }
 

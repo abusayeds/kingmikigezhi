@@ -32,7 +32,7 @@ class FamilyController extends GetxController {
     super.onInit();
   }
 
-  Future<void> fetchFamilies({int page = 1}) async {
+  Future<void> fetchFamilies({int page = 1, bool showErrorToast = true}) async {
     try {
       isLoading.value = true;
       update();
@@ -56,13 +56,15 @@ class FamilyController extends GetxController {
     } catch (e) {
       isLoading.value = false;
       update();
-      Fluttertoast.showToast(
-        msg: "Failed to load families: $e",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-      );
+      if (showErrorToast) {
+        Fluttertoast.showToast(
+          msg: "Failed to load families: $e",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+        );
+      }
     }
   }
 
@@ -280,7 +282,7 @@ class FamilyController extends GetxController {
   }
 
   Future<void> fetchFamilyMembers(String familyId,
-      {bool isOwner = false}) async {
+      {bool isOwner = false, bool showErrorToast = true}) async {
     try {
       isLoading.value = true;
       update();
@@ -316,13 +318,15 @@ class FamilyController extends GetxController {
     } catch (e) {
       isLoading.value = false;
       update();
-      Fluttertoast.showToast(
-        msg: "Failed to load family members: $e",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-      );
+      if (showErrorToast) {
+        Fluttertoast.showToast(
+          msg: "Failed to load family members: $e",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+        );
+      }
     }
   }
 
@@ -387,8 +391,13 @@ class FamilyController extends GetxController {
         return true;
       }
 
+      final errors = response?['errors'];
+      final detail = errors is List && errors.isNotEmpty
+          ? errors.map((e) => e.toString()).join('\n')
+          : null;
       Fluttertoast.showToast(
-        msg: response?['message']?.toString() ??
+        msg: detail ??
+            response?['message']?.toString() ??
             "Failed to add family member",
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
@@ -423,7 +432,7 @@ class FamilyController extends GetxController {
         'newOwnerUserId': newOwnerUserId,
       };
 
-      final response = await apiService.post(
+      final response = await apiService.patch(
         ApiConstants.addOwner,
         body: requestBody,
       );

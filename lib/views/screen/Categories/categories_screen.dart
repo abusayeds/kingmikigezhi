@@ -2,7 +2,6 @@ import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/services/api_service.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_icons.dart';
-import 'package:event_sharing/utils/app_images.dart';
 import 'package:event_sharing/utils/api_constants.dart';
 import 'package:event_sharing/utils/media_url_utils.dart';
 import 'package:event_sharing/views/base/custom_text_field.dart';
@@ -11,6 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
+import '../../base/app_remote_image.dart';
 import '../../base/bottom_menu..dart';
 import '../../base/custom_text.dart';
 import 'search_applied_screen.dart';
@@ -208,27 +208,10 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                   Positioned.fill(
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(16.r),
-                      child: imageUrl != null && imageUrl.isNotEmpty
-                          ? Image.network(
-                              imageUrl,
-                              fit: BoxFit.cover,
-                              loadingBuilder: (context, child, progress) {
-                                if (progress == null) return child;
-                                return const Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              },
-                              errorBuilder: (context, error, stackTrace) {
-                                return Image.asset(
-                                  AppImages.logo,
-                                  fit: BoxFit.cover,
-                                );
-                              },
-                            )
-                          : Image.asset(
-                              AppImages.logo,
-                              fit: BoxFit.cover,
-                            ),
+                      child: AppRemoteImage(
+                        url: imageUrl,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                   Positioned(
@@ -285,33 +268,37 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             contenpaddingVertical: 12.h,
             hintText: "Search Event",
             onFieldSubmitted: (value) {
-              if (value.isNotEmpty) {
+              final term = value.trim();
+              if (term.isNotEmpty) {
                 Get.toNamed(AppRoutes.searchEventScreen,
-                    arguments: {'searchTerm': value});
+                    arguments: {'searchTerm': term});
               }
             },
-            sufixicons: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.w),
-              child: GestureDetector(
-                onTap: () {
-                  if (_searchController.text.isNotEmpty) {
-                    Get.toNamed(AppRoutes.searchEventScreen,
-                        arguments: {'searchTerm': _searchController.text});
-                  }
-                },
-                child: SvgPicture.asset(
-                  AppIcons.search,
-                  width: 24.w,
-                  height: 24.h,
-                  color: AppColors.primaryColor,
-                ),
+            sufixicons: IconButton(
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(),
+              onPressed: () {
+                final term = _searchController.text.trim();
+                if (term.isNotEmpty) {
+                  Get.toNamed(AppRoutes.searchEventScreen,
+                      arguments: {'searchTerm': term});
+                }
+              },
+              icon: SvgPicture.asset(
+                AppIcons.search,
+                width: 24.w,
+                height: 24.h,
+                color: AppColors.primaryColor,
               ),
             ),
           ),
         ),
         GestureDetector(
-          onTap: () {
-            Get.toNamed(AppRoutes.categoriesFilterScreen);
+          onTap: () async {
+            final result = await Get.toNamed(AppRoutes.categoriesFilterScreen);
+            if (result != null) {
+              Get.toNamed(AppRoutes.searchEventScreen, arguments: result);
+            }
           },
           child: Container(
             decoration: BoxDecoration(

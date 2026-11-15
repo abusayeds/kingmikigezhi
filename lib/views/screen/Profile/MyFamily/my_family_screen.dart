@@ -31,19 +31,32 @@ class _MyFamilyScreenState extends State<MyFamilyScreen>
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      familyId = Get.arguments?['familyId'];
-      if (familyId != null) {
-        _loadData();
-      }
+      _resolveFamilyAndLoad();
     });
   }
 
-  void _loadData() async {
-    print('DEBUG: Loading family members for familyId: $familyId');
+  Future<void> _resolveFamilyAndLoad() async {
+    final args = Get.arguments;
+    if (args is Map && args['familyId'] != null) {
+      familyId = args['familyId']?.toString();
+    }
+    if (familyId == null || familyId!.isEmpty) {
+      await _familyController.fetchFamilies();
+      if (_familyController.families.isNotEmpty) {
+        familyId = _familyController.families.first.id;
+      }
+    }
+    if (!mounted) return;
+    setState(() {});
+    if (familyId != null && familyId!.isNotEmpty) {
+      await _loadData();
+    }
+  }
+
+  Future<void> _loadData() async {
+    if (familyId == null || familyId!.isEmpty) return;
     await _familyController.fetchFamilyMembers(familyId!);
-    print('DEBUG: Members fetched: ${_familyController.familyMembers.length}');
     await _familyController.fetchFamilyMembers(familyId!, isOwner: true);
-    print('DEBUG: Owners fetched: ${_familyController.familyOwners.length}');
   }
 
   @override

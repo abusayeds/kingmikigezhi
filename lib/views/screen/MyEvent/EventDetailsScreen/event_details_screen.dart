@@ -8,11 +8,14 @@ import 'package:event_sharing/utils/app_images.dart';
 import 'package:event_sharing/utils/app_strings.dart';
 import 'package:event_sharing/utils/media_url_utils.dart';
 import 'package:event_sharing/utils/style.dart';
+import 'package:event_sharing/views/base/app_remote_image.dart';
 import 'package:event_sharing/views/base/custom_button.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -52,6 +55,50 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
   void dispose() {
     _totalCostController.dispose();
     super.dispose();
+  }
+
+  Future<void> _shareEventLink() async {
+    final link = (event?.eventPortal?.trim().isNotEmpty == true)
+        ? event!.eventPortal!.trim()
+        : (event?.id != null
+            ? '${ApiConstants.baseUrl}/events/${event!.id}'
+            : null);
+    if (link == null || link.isEmpty) {
+      Fluttertoast.showToast(msg: 'No event link available to share');
+      return;
+    }
+    await Clipboard.setData(ClipboardData(text: link));
+    Fluttertoast.showToast(msg: 'Event link copied');
+  }
+
+  Future<void> _confirmAndDeleteEvent() async {
+    if (event?.id == null) return;
+    final confirmed = await Get.dialog<bool>(
+      AlertDialog(
+        title: const Text('Delete event?'),
+        content: const Text('This will permanently remove the event.'),
+        actions: [
+          TextButton(onPressed: () => Get.back(result: false), child: const Text('Cancel')),
+          TextButton(onPressed: () => Get.back(result: true), child: const Text('Delete')),
+        ],
+      ),
+    );
+    if (confirmed != true) return;
+
+    try {
+      final api = Get.find<ApiService>();
+      final response = await api.delete(
+        ApiConstants.deleteEvent.replaceAll(':eventId', event!.id!),
+      );
+      if (response['success'] == true) {
+        Fluttertoast.showToast(msg: response['message'] ?? 'Event deleted');
+        Get.back(result: true);
+      } else {
+        Fluttertoast.showToast(msg: response['message'] ?? 'Failed to delete event');
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
+    }
   }
 
   double _parseMoney(dynamic raw) {
@@ -334,27 +381,12 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(16.r),
-                    child: event!.coverImage != null &&
-                            event!.coverImage!.isNotEmpty
-                        ? Image.network(
-                            event!.coverImage!,
-                            height: 180.h,
-                            width: 345.w,
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) =>
-                                Image.asset(
-                              AppImages.logo,
-                              height: 180.h,
-                              width: 345.w,
-                              fit: BoxFit.cover,
-                            ),
-                          )
-                        : Image.asset(
-                            AppImages.logo,
-                            height: 180.h,
-                            width: 345.w,
-                            fit: BoxFit.cover,
-                          ),
+                    child: AppRemoteImage(
+                      url: event!.coverImage,
+                      height: 180.h,
+                      width: 345.w,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ],
               ),
@@ -425,9 +457,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: InkWell(
-                          onTap: () {
-                            Get.toNamed(AppRoutes.myInvitationPage);
-                          },
+                          onTap: _shareEventLink,
                           child: SvgPicture.asset(AppIcons.share)),
                     ),
                   ),
@@ -870,7 +900,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                         color: AppColors.colorD9A951,
                         borderColor: AppColors.colorD9A951,
                         textColor: AppColors.white,
-                        onTap: () {},
+                        onTap: _confirmAndDeleteEvent,
                         text: 'Delete')
                   ],
                 ),

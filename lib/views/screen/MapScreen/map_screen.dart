@@ -65,6 +65,46 @@ class _MapScreenState extends State<MapScreen> {
   void initState() {
     super.initState();
     _loadCountries();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _seedFromUserProfile());
+  }
+
+  Future<void> _seedFromUserProfile() async {
+    await _authController.fetchUserProfile();
+    final profile = _authController.userProfile.value;
+    if (profile == null || !mounted) return;
+
+    final latRaw = profile['latitude'];
+    final lngRaw = profile['longitude'];
+    final lat = latRaw is num ? latRaw.toDouble() : double.tryParse('$latRaw');
+    final lng = lngRaw is num ? lngRaw.toDouble() : double.tryParse('$lngRaw');
+
+    final locationLabel = (profile['location'] ?? '').toString().trim();
+    final city = (profile['city'] ?? '').toString().trim();
+    final state = (profile['state'] ?? '').toString().trim();
+    final country = (profile['country'] ?? '').toString().trim();
+
+    if (locationLabel.isNotEmpty) {
+      _locationController.text = locationLabel;
+    } else if ([city, state, country].any((e) => e.isNotEmpty)) {
+      _locationController.text =
+          [city, state, country].where((e) => e.isNotEmpty).join(', ');
+    }
+
+    if (lat != null && lng != null) {
+      final pos = LatLng(lat, lng);
+      setState(() {
+        _selectedPosition = pos;
+        _markerTitle = _locationController.text.isNotEmpty
+            ? _locationController.text
+            : 'Your location';
+      });
+      _mapController.move(pos, 13);
+      await _syncDropdownsFromAddress(
+        countryName: country.isNotEmpty ? country : null,
+        stateName: state.isNotEmpty ? state : null,
+        cityName: city.isNotEmpty ? city : null,
+      );
+    }
   }
 
   @override
@@ -406,8 +446,8 @@ class _MapScreenState extends State<MapScreen> {
     setState(() => _isSearching = true);
 
     try {
-      var result = await _geocodeWithGeoNames(location);
-      result ??= await _geocodeWithNominatim(location);
+      var result = await _geocodeWithNominatim(location);
+      result ??= await _geocodeWithGeoNames(location);
 
       if (result == null) {
         if (!mounted) return;
@@ -460,8 +500,8 @@ class _MapScreenState extends State<MapScreen> {
   Future<void> _onMapTap(LatLng position) async {
     _updateMarker(position, title: 'Selected location');
 
-    var address = await _reverseWithGeoNames(position);
-    address ??= await _reverseWithNominatim(position);
+    var address = await _reverseWithNominatim(position);
+    address ??= await _reverseWithGeoNames(position);
 
     if (address != null && mounted) {
       _locationController.text = address.name;
