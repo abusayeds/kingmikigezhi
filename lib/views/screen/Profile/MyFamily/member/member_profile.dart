@@ -1,8 +1,10 @@
 import 'package:event_sharing/controllers/family_controller.dart';
 import 'package:event_sharing/helpers/route.dart';
+import 'package:event_sharing/models/family_model.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_icons.dart';
 import 'package:event_sharing/utils/style.dart';
+import 'package:event_sharing/views/base/skeletons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -20,11 +22,35 @@ class MyFamilyMemberAddScreen extends StatefulWidget {
 
 class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
   late FamilyController _familyController;
+  final TextEditingController _searchController = TextEditingController();
+  final RxString _searchQuery = ''.obs;
 
   @override
   void initState() {
     super.initState();
     _familyController = Get.find<FamilyController>();
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  /// Name / username / relationship wise filter (case-insensitive).
+  List<FamilyMemberModel> get _visibleMembers {
+    final query = _searchQuery.value.trim().toLowerCase();
+    final all = _familyController.familyMembers;
+    if (query.isEmpty) return all.toList();
+    return all.where((member) {
+      final first = member.user?.firstName ?? '';
+      final last = member.user?.lastName ?? '';
+      final username = member.user?.username ?? '';
+      final relation = member.relationShip ?? '';
+      return '$first $last'.toLowerCase().contains(query) ||
+          username.toLowerCase().contains(query) ||
+          relation.toLowerCase().contains(query);
+    }).toList();
   }
 
   @override
@@ -69,12 +95,26 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextField(
+                    controller: _searchController,
+                    textInputAction: TextInputAction.search,
+                    onChanged: (value) => _searchQuery.value = value,
                     decoration: InputDecoration(
                       hintText: 'Search Name',
                       hintStyle: TextStyle(color: AppColors.greyColor),
                       border: InputBorder.none,
-                      suffixIcon:
-                          Icon(Icons.search, color: AppColors.primaryColor),
+                      suffixIcon: Obx(
+                        () => _searchQuery.value.isEmpty
+                            ? Icon(Icons.search, color: AppColors.primaryColor)
+                            : InkWell(
+                                onTap: () {
+                                  _searchController.clear();
+                                  _searchQuery.value = '';
+                                  FocusScope.of(context).unfocus();
+                                },
+                                child: Icon(Icons.close,
+                                    color: AppColors.primaryColor),
+                              ),
+                      ),
                     ),
                   ),
                 ),
@@ -82,27 +122,29 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
             ),
             Obx(() {
               if (_familyController.isLoading.value) {
-                return Center(
-                  child: Padding(
-                    padding: EdgeInsets.all(20.h),
-                    child: CircularProgressIndicator(
-                      color: AppColors.primaryColor,
-                    ),
-                  ),
+                return Padding(
+                  padding: EdgeInsets.all(20.h),
+                  child: const ConnectionListSkeleton(itemCount: 4),
                 );
               }
 
-              if (_familyController.familyMembers.isEmpty) {
+              final members = _visibleMembers;
+
+              if (members.isEmpty) {
+                final isSearching = _searchQuery.value.trim().isNotEmpty;
                 return Center(
                   child: Padding(
                     padding: EdgeInsets.all(20.h),
                     child: Column(
                       children: [
-                        Icon(Icons.person_off,
+                        Icon(isSearching ? Icons.search_off : Icons.person_off,
                             size: 50.h, color: AppColors.greyColor),
                         SizedBox(height: 10.h),
                         Text(
-                          'No members found',
+                          isSearching
+                              ? 'No member matches "${_searchQuery.value.trim()}"'
+                              : 'No members found',
+                          textAlign: TextAlign.center,
                           style: TextStyle(
                             color: AppColors.greyColor,
                             fontSize: 16.sp,
@@ -115,11 +157,11 @@ class _MyFamilyMemberAddScreenState extends State<MyFamilyMemberAddScreen> {
               }
 
               return ListView.builder(
-                itemCount: _familyController.familyMembers.length,
+                itemCount: members.length,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
-                  final member = _familyController.familyMembers[index];
+                  final member = members[index];
                   return Padding(
                     padding:
                         EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),

@@ -31,6 +31,8 @@ class EventModel {
   final int? applicationCount;
   final Program? program;
   final RepeatConfig? repeatConfig;
+  /// Present on list + detail payloads so ownership checks work without nested creator.
+  final String? creatorId;
   final Creator? creator;
   final Schedule? schedule;
   // Groups are returned at the top level of the event (not inside schedule)
@@ -69,6 +71,7 @@ class EventModel {
     this.applicationCount,
     this.program,
     this.repeatConfig,
+    this.creatorId,
     this.creator,
     this.schedule,
     this.groups,
@@ -106,6 +109,8 @@ class EventModel {
         applicationCount: json["_count"] == null ? null : json["_count"]["eventApplieds"] ?? json["_count"]["applications"],
         program: json["program"] == null ? null : Program.fromJson(json["program"]),
         repeatConfig: json["repeatConfig"] == null ? null : RepeatConfig.fromJson(json["repeatConfig"]),
+        creatorId: json["creatorId"]?.toString() ??
+            (json["creator"] is Map ? json["creator"]["id"]?.toString() : null),
         creator: json["creator"] == null ? null : Creator.fromJson(json["creator"]),
         schedule: json["schedule"] == null ? null : Schedule.fromJson(json["schedule"]),
         // Groups live at the event top level
@@ -254,11 +259,33 @@ class Group {
   final String? name;
   final String? criteria;
   final String? condition;
+
+  /// Numeric bound — set for Age (and legacy Score) groups.
   final String? value;
+
+  /// Preset band label — set for UTR / Level / Class groups
+  /// (e.g. "1.0-4.0", "Begineer", "Class A").
+  final String? valueLabel;
+
   final List<Round>? rounds;
   final int? totalRoundCost;
 
-  Group({this.id, this.name, this.criteria, this.condition, this.value, this.rounds, this.totalRoundCost});
+  Group({
+    this.id,
+    this.name,
+    this.criteria,
+    this.condition,
+    this.value,
+    this.valueLabel,
+    this.rounds,
+    this.totalRoundCost,
+  });
+
+  /// What to show for this group's value: the preset label when there is one,
+  /// otherwise the number.
+  String get displayValue => (valueLabel?.trim().isNotEmpty ?? false)
+      ? valueLabel!.trim()
+      : (value ?? '');
 
   factory Group.fromJson(Map<String, dynamic> json) => Group(
         id: json["id"],
@@ -266,6 +293,7 @@ class Group {
         criteria: json["criteria"],
         condition: json["condition"],
         value: json["value"]?.toString(),
+        valueLabel: json["valueLabel"]?.toString(),
         rounds: json["rounds"] == null ? null : List<Round>.from(json["rounds"].map((x) => Round.fromJson(x))),
         totalRoundCost: json["totalRoundCost"],
       );

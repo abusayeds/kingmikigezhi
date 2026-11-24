@@ -168,6 +168,7 @@ class FamilyMemberUser {
   final String id;
   final String firstName;
   final String lastName;
+  final String username;
   final String email;
   final String? profilePicture;
 
@@ -175,6 +176,7 @@ class FamilyMemberUser {
     required this.id,
     required this.firstName,
     required this.lastName,
+    this.username = '',
     required this.email,
     this.profilePicture,
   });
@@ -184,6 +186,7 @@ class FamilyMemberUser {
       id: json['id'] ?? '',
       firstName: json['firstName'] ?? '',
       lastName: json['lastName'] ?? '',
+      username: json['username'] ?? '',
       email: json['email'] ?? '',
       profilePicture: MediaUrlUtils.resolve(
         json['profilePicture'] ?? json['image'],

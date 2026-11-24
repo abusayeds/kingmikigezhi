@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -13,9 +12,11 @@ import '../../../utils/app_icons.dart';
 import '../../../utils/app_strings.dart';
 import '../../../utils/style.dart';
 import '../../../services/api_service.dart';
+import '../../base/app_remote_image.dart';
 import '../../base/custom_button.dart';
 import '../../base/custom_text.dart';
 import '../../base/custom_text_field.dart';
+import '../../base/dropdown_field_loader.dart';
 import 'InnerWidget/dotted_border_container.dart';
 import 'controller/addEventController.dart';
 
@@ -76,6 +77,12 @@ class _SteponeformState extends State<Steponeform> {
   Uint8List? coverImage;
   ProgramModel? _selectedProgram;
 
+  // Cached API options — loaded on enter, reused when opening pickers.
+  List<CategoryModel> _categories = [];
+  final Map<String, List<SubCategoryModel>> _subCategoriesCache = {};
+  final Map<String, List<ProgramModel>> _programsCache = {};
+  bool _isLoadingCategories = false;
+
   List<String> get yearList {
     final currentYear = DateTime.now().year;
     return List.generate(9, (i) => (currentYear - 4 + i).toString());
@@ -125,6 +132,10 @@ class _SteponeformState extends State<Steponeform> {
       );
       programController.text = addEventController.programName!;
     }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      _loadCategories(silent: false);
+    });
   }
 
   // ─── API calls ────────────────────────────────────────────────────────────
@@ -160,19 +171,92 @@ class _SteponeformState extends State<Steponeform> {
         .toList();
   }
 
+  Future<void> _loadCategories({required bool silent}) async {
+    final showFieldLoader = !silent && _categories.isEmpty;
+    if (showFieldLoader && mounted) {
+      setState(() => _isLoadingCategories = true);
+    }
+    try {
+      final categories = await _fetchCategories();
+      if (!mounted) return;
+      setState(() => _categories = categories);
+    } catch (e) {
+      if (!silent) _showErrorSnack('Failed to load categories: $e');
+    } finally {
+      if (showFieldLoader && mounted) {
+        setState(() => _isLoadingCategories = false);
+      }
+    }
+  }
+
+  Future<List<SubCategoryModel>> _getSubCategories(
+    String categoryId, {
+    required bool silent,
+  }) async {
+    if (_subCategoriesCache.containsKey(categoryId)) {
+      // Keep cache fresh in the background.
+      _fetchSubCategories(categoryId).then((list) {
+        _subCategoriesCache[categoryId] = list;
+      }).catchError((_) {});
+      return _subCategoriesCache[categoryId]!;
+    }
+    try {
+      final list = await _fetchSubCategories(categoryId);
+      _subCategoriesCache[categoryId] = list;
+      return list;
+    } catch (e) {
+      if (!silent) _showErrorSnack('Failed to load subcategories: $e');
+      return const [];
+    }
+  }
+
+  String _programCacheKey({String? categoryId, String? subcategoryId}) {
+    if (subcategoryId != null) return 'sub:$subcategoryId';
+    return 'cat:$categoryId';
+  }
+
+  Future<List<ProgramModel>> _getPrograms({
+    String? categoryId,
+    String? subcategoryId,
+    required bool silent,
+  }) async {
+    final key = _programCacheKey(
+      categoryId: categoryId,
+      subcategoryId: subcategoryId,
+    );
+    if (_programsCache.containsKey(key)) {
+      final refresh = subcategoryId != null
+          ? _fetchProgramsBySubCategory(subcategoryId)
+          : _fetchProgramsByCategory(categoryId!);
+      refresh.then((list) {
+        _programsCache[key] = list;
+      }).catchError((_) {});
+      return _programsCache[key]!;
+    }
+    try {
+      final list = subcategoryId != null
+          ? await _fetchProgramsBySubCategory(subcategoryId)
+          : await _fetchProgramsByCategory(categoryId!);
+      _programsCache[key] = list;
+      return list;
+    } catch (e) {
+      if (!silent) _showErrorSnack('Failed to load programs: $e');
+      return const [];
+    }
+  }
+
   // ─── Popup flow ──────────────────────────────────────────────────────────
 
   Future<void> _openCategoryPopup() async {
-    _showLoadingDialog();
-    List<CategoryModel> categories = [];
-    try {
-      categories = await _fetchCategories();
-    } catch (e) {
-      _dismissLoading();
-      _showErrorSnack('Failed to load categories: $e');
-      return;
+    // First open after enter may still be warming cache — keep field spinner only.
+    if (_categories.isEmpty && _isLoadingCategories) return;
+    if (_categories.isEmpty) {
+      await _loadCategories(silent: false);
+      if (!mounted || _categories.isEmpty) return;
+    } else {
+      // Silent refresh while user picks from cached list.
+      _loadCategories(silent: true);
     }
-    _dismissLoading();
     if (!mounted) return;
 
     await showModalBottomSheet(
@@ -181,7 +265,7 @@ class _SteponeformState extends State<Steponeform> {
       backgroundColor: Colors.transparent,
       builder: (_) => _SelectionPopup(
         title: 'Select Category',
-        items: categories.map((c) => _PopupItem(id: c.id, name: c.name)).toList(),
+        items: _categories.map((c) => _PopupItem(id: c.id, name: c.name)).toList(),
         onSelect: (item) async {
           Navigator.pop(context);
           await _handleCategorySelected(item.id);
@@ -191,51 +275,116 @@ class _SteponeformState extends State<Steponeform> {
   }
 
   Future<void> _handleCategorySelected(String categoryId) async {
-    _showLoadingDialog();
-    List<SubCategoryModel> subCategories = [];
-    try {
-      subCategories = await _fetchSubCategories(categoryId);
-    } catch (e) {
-      _dismissLoading();
-      _showErrorSnack('Failed to load subcategories: $e');
+    final cached = _subCategoriesCache[categoryId];
+    if (cached != null) {
+      _getSubCategories(categoryId, silent: true); // silent refresh
+      if (cached.isEmpty) {
+        await _openProgramPopup(categoryId: categoryId);
+      } else {
+        await _showSubCategorySheet(cached);
+      }
       return;
     }
-    _dismissLoading();
+
+    // First load for this category — tiny inline sheet loader, not full-screen.
     if (!mounted) return;
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      isDismissible: false,
+      enableDrag: false,
+      builder: (_) => const _SelectionPopup(
+        title: 'Select Sub Category',
+        items: [],
+        isLoading: true,
+        onSelect: _noopSelect,
+      ),
+    );
+
+    final subCategories =
+        await _getSubCategories(categoryId, silent: false);
+    if (!mounted) return;
+    Navigator.of(context).pop(); // close loader sheet
 
     if (subCategories.isEmpty) {
       await _openProgramPopup(categoryId: categoryId);
     } else {
+      await _showSubCategorySheet(subCategories);
+    }
+  }
+
+  Future<void> _showSubCategorySheet(List<SubCategoryModel> subCategories) async {
+    if (!mounted) return;
+    await showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => _SelectionPopup(
+        title: 'Select Sub Category',
+        items: subCategories.map((s) => _PopupItem(id: s.id, name: s.name)).toList(),
+        onSelect: (item) async {
+          Navigator.pop(context);
+          await _openProgramPopup(subcategoryId: item.id);
+        },
+      ),
+    );
+  }
+
+  Future<void> _openProgramPopup({String? categoryId, String? subcategoryId}) async {
+    final key = _programCacheKey(
+      categoryId: categoryId,
+      subcategoryId: subcategoryId,
+    );
+    final cached = _programsCache[key];
+    if (cached != null) {
+      _getPrograms(
+        categoryId: categoryId,
+        subcategoryId: subcategoryId,
+        silent: true,
+      );
+      if (!mounted) return;
       await showModalBottomSheet(
         context: context,
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
         builder: (_) => _SelectionPopup(
-          title: 'Select Sub Category',
-          items: subCategories.map((s) => _PopupItem(id: s.id, name: s.name)).toList(),
-          onSelect: (item) async {
+          title: 'Select Program',
+          items: cached.map((p) => _PopupItem(id: p.id, name: p.name)).toList(),
+          onSelect: (item) {
             Navigator.pop(context);
-            await _openProgramPopup(subcategoryId: item.id);
+            setState(() {
+              _selectedProgram = ProgramModel(id: item.id, name: item.name);
+              programController.text = item.name;
+            });
           },
         ),
       );
-    }
-  }
-
-  Future<void> _openProgramPopup({String? categoryId, String? subcategoryId}) async {
-    _showLoadingDialog();
-    List<ProgramModel> programs = [];
-    try {
-      programs = subcategoryId != null
-          ? await _fetchProgramsBySubCategory(subcategoryId)
-          : await _fetchProgramsByCategory(categoryId!);
-    } catch (e) {
-      _dismissLoading();
-      _showErrorSnack('Failed to load programs: $e');
       return;
     }
-    _dismissLoading();
+
     if (!mounted) return;
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      isDismissible: false,
+      enableDrag: false,
+      builder: (_) => const _SelectionPopup(
+        title: 'Select Program',
+        items: [],
+        isLoading: true,
+        onSelect: _noopSelect,
+      ),
+    );
+
+    final programs = await _getPrograms(
+      categoryId: categoryId,
+      subcategoryId: subcategoryId,
+      silent: false,
+    );
+    if (!mounted) return;
+    Navigator.of(context).pop(); // close loader sheet
 
     await showModalBottomSheet(
       context: context,
@@ -255,17 +404,11 @@ class _SteponeformState extends State<Steponeform> {
     );
   }
 
-  void _showLoadingDialog() {
-    showDialog(context: context, barrierDismissible: false, builder: (_) => const Center(child: CircularProgressIndicator()));
-  }
-
-  void _dismissLoading() {
-    if (mounted) Navigator.of(context, rootNavigator: true).pop();
-  }
-
   void _showErrorSnack(String msg) {
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg), backgroundColor: Colors.red.shade600));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(msg), backgroundColor: Colors.red.shade600),
+    );
   }
 
   Future _pickImage(Function(Uint8List) setImage) async {
@@ -313,13 +456,13 @@ class _SteponeformState extends State<Steponeform> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 24.h),
+      padding: EdgeInsets.fromLTRB(24.w, 4.h, 24.w, 12.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text("This is a shared community. All events are public", style: AppStyles.fontSize12(color: AppColors.colorD9A951)),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            padding: EdgeInsets.only(top: 6.h, bottom: 8.h),
             child: Text('Step 1: Basic', style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
           ),
           DottedBorderContainer(
@@ -331,17 +474,18 @@ class _SteponeformState extends State<Steponeform> {
                           addEventController.existingCoverImageUrl!.isNotEmpty)
                       ? GestureDetector(
                           onTap: () => _pickImage((img) => setState(() => coverImage = img)),
-                          child: Image.network(
-                            addEventController.existingCoverImageUrl!,
+                          child: AppRemoteImage(
+                            url: addEventController.existingCoverImageUrl,
                             fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) =>
-                                _addImageButton(() => _pickImage((img) => setState(() => coverImage = img))),
+                            errorWidget: _addImageButton(() =>
+                                _pickImage((img) =>
+                                    setState(() => coverImage = img))),
                           ),
                         )
                       : _addImageButton(() => _pickImage((img) => setState(() => coverImage = img))),
             ),
           ),
-          SizedBox(height: 16.h),
+          SizedBox(height: 10.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -373,7 +517,7 @@ class _SteponeformState extends State<Steponeform> {
             _buildDropdown(value: _selectedRepeatOption, hint: 'Select Repeat Option', items: repeatOptions, onChanged: (v) => setState(() => _selectedRepeatOption = v)),
           ],
 
-          SizedBox(height: 23.h),
+          SizedBox(height: 10.h),
 
           if (!_isRepeated)
             DottedBorderContainer(
@@ -407,56 +551,93 @@ class _SteponeformState extends State<Steponeform> {
               ),
             ),
 
-          SizedBox(height: 16.h),
+          SizedBox(height: 10.h),
           Text('Program', style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
-          SizedBox(height: 12.h),
+          SizedBox(height: 6.h),
           GestureDetector(
-            onTap: _openCategoryPopup,
+            onTap: _isLoadingCategories && _categories.isEmpty
+                ? null
+                : _openCategoryPopup,
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
-              decoration: BoxDecoration(color: AppColors.fillColor, borderRadius: BorderRadius.circular(8.r), border: Border.all(color: AppColors.primaryColor, width: 1)),
+              decoration: BoxDecoration(
+                color: AppColors.fillColor,
+                borderRadius: BorderRadius.circular(8.r),
+                border: Border.all(color: AppColors.primaryColor, width: 1),
+              ),
               height: 50.h,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(programController.text.isEmpty ? 'Select Program' : programController.text, style: AppStyles.fontSize14(color: programController.text.isEmpty ? AppColors.color414141 : Colors.black)),
-                  SvgPicture.asset(AppIcons.downArrowIcon, width: 16.w, color: AppColors.primaryColor),
+                  if (_isLoadingCategories) ...[
+                    const DropdownFieldLoader(),
+                    SizedBox(width: 10.w),
+                  ],
+                  Expanded(
+                    child: Text(
+                      programController.text.isEmpty
+                          ? (_isLoadingCategories
+                              ? 'Loading programs...'
+                              : 'Select Program')
+                          : programController.text,
+                      style: AppStyles.fontSize14(
+                        color: programController.text.isEmpty
+                            ? AppColors.color414141
+                            : Colors.black,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  SvgPicture.asset(
+                    AppIcons.downArrowIcon,
+                    width: 16.w,
+                    color: AppColors.primaryColor,
+                  ),
                 ],
               ),
             ),
           ),
 
-          SizedBox(height: 16.h),
+          SizedBox(height: 10.h),
           Text('Organizer', style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
-          SizedBox(height: 12.h),
+          SizedBox(height: 6.h),
           CustomTextField(controller: organizerController, hintText: 'Type Organizer', height: 50.h),
 
-          SizedBox(height: 16.h),
+          SizedBox(height: 10.h),
           Text('Event Name', style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
-          SizedBox(height: 12.h),
+          SizedBox(height: 6.h),
           CustomTextField(controller: eventNameController, hintText: 'Type Event Name', height: 50.h),
 
-          SizedBox(height: 16.h),
+          SizedBox(height: 10.h),
           Text('Event Portal', style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
-          SizedBox(height: 12.h),
+          SizedBox(height: 6.h),
           CustomTextField(controller: eventPortalController, hintText: 'Type Event Portal', height: 50.h),
 
-          SizedBox(height: 16.h),
+          SizedBox(height: 10.h),
           Text('Registration Portal', style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
-          SizedBox(height: 12.h),
+          SizedBox(height: 6.h),
           CustomTextField(controller: registrationPortalController, hintText: 'Type Registration Portal', height: 50.h),
 
-          SizedBox(height: 16.h),
+          SizedBox(height: 10.h),
           Text('Description', style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
-          SizedBox(height: 12.h),
-          CustomTextField(maxLines: 3, controller: descriptionCRTL, hintText: 'Type your Description...'),
+          SizedBox(height: 6.h),
+          CustomTextField(
+            maxLines: 3,
+            controller: descriptionCRTL,
+            hintText: 'Type your Description...',
+            height: 88.h,
+          ),
 
-          SizedBox(height: 16.h),
+          SizedBox(height: 10.h),
           Text('Note', style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
-          SizedBox(height: 12.h),
-          CustomTextField(maxLines: 3, controller: noteCRTL, hintText: 'Type your event note'),
+          SizedBox(height: 6.h),
+          CustomTextField(
+            maxLines: 3,
+            controller: noteCRTL,
+            hintText: 'Type your event note',
+            height: 88.h,
+          ),
 
-          SizedBox(height: 24.h),
+          SizedBox(height: 14.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -464,7 +645,7 @@ class _SteponeformState extends State<Steponeform> {
               SizedBox(width: 166.w, child: CustomButton(onTap: () { _saveDataToController(); if (addEventController.activeStepIndex.value < 4) addEventController.activeStepIndex.value++; }, text: "Next", borderColor: AppColors.buttonColor, textColor: Colors.white, color: AppColors.buttonColor)),
             ],
           ),
-          SizedBox(height: 25.h),
+          SizedBox(height: 8.h),
         ],
       ),
     );
@@ -488,39 +669,116 @@ class _SteponeformState extends State<Steponeform> {
   }
 
   Widget _addImageButton(VoidCallback onPressed) {
-    return Center(child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          IconButton(onPressed: onPressed, icon: Icon(Icons.add_circle_outlined, color: AppColors.primaryColor, size: 20.w)),
-          CustomText(text: AppStrings.addCoverPhoto, color: Colors.grey),
-        ]));
+    // Optional: leaving this empty uses the app logo as the cover.
+    return Center(
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+      IconButton(
+          onPressed: onPressed,
+          icon: Icon(Icons.add_circle_outlined,
+              color: AppColors.primaryColor, size: 20.w)),
+      CustomText(text: AppStrings.addCoverPhoto, color: Colors.grey),
+      SizedBox(height: 2.h),
+      CustomText(
+        text: 'Optional — the app logo is used if you skip this',
+        color: Colors.grey,
+        fontsize: 10.sp,
+      ),
+    ]));
   }
 }
 
-class _PopupItem { final String id; final String name; _PopupItem({required this.id, required this.name}); }
+class _PopupItem {
+  final String id;
+  final String name;
+  _PopupItem({required this.id, required this.name});
+}
+
+void _noopSelect(_PopupItem item) {}
 
 class _SelectionPopup extends StatelessWidget {
-  final String title; final List<_PopupItem> items; final void Function(_PopupItem item) onSelect;
-  const _SelectionPopup({required this.title, required this.items, required this.onSelect});
+  final String title;
+  final List<_PopupItem> items;
+  final void Function(_PopupItem item) onSelect;
+  final bool isLoading;
+
+  const _SelectionPopup({
+    required this.title,
+    required this.items,
+    required this.onSelect,
+    this.isLoading = false,
+  });
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(color: Colors.white, borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
-      padding: EdgeInsets.only(top: 20.h, left: 20.w, right: 20.w, bottom: MediaQuery.of(context).viewInsets.bottom + 20.h),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      padding: EdgeInsets.only(
+        top: 20.h,
+        left: 20.w,
+        right: 20.w,
+        bottom: MediaQuery.of(context).viewInsets.bottom + 20.h,
+      ),
       child: Column(
-        mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Center(child: Container(width: 40.w, height: 4.h, decoration: BoxDecoration(color: Colors.grey.shade300, borderRadius: BorderRadius.circular(2.r)))),
+          Center(
+            child: Container(
+              width: 40.w,
+              height: 4.h,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(2.r),
+              ),
+            ),
+          ),
           SizedBox(height: 16.h),
           Text(title, style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w700)),
           SizedBox(height: 12.h),
-          if (items.isEmpty) Center(child: Padding(padding: EdgeInsets.symmetric(vertical: 32.h), child: Text('No items available', style: TextStyle(fontSize: 14.sp, color: Colors.grey))))
-          else ConstrainedBox(
+          if (isLoading)
+            Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 32.h),
+                child: const DropdownFieldLoader(size: 22),
+              ),
+            )
+          else if (items.isEmpty)
+            Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 32.h),
+                child: Text(
+                  'No items available',
+                  style: TextStyle(fontSize: 14.sp, color: Colors.grey),
+                ),
+              ),
+            )
+          else
+            ConstrainedBox(
               constraints: BoxConstraints(maxHeight: 320.h),
               child: ListView.separated(
-                shrinkWrap: true, itemCount: items.length,
-                separatorBuilder: (_, __) => Divider(height: 1, color: Colors.grey.shade200),
+                shrinkWrap: true,
+                itemCount: items.length,
+                separatorBuilder: (_, __) =>
+                    Divider(height: 1, color: Colors.grey.shade200),
                 itemBuilder: (_, index) {
                   final item = items[index];
-                  return InkWell(onTap: () => onSelect(item), borderRadius: BorderRadius.circular(8.r), child: Padding(padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 8.w), child: Text(item.name, style: TextStyle(fontSize: 14.sp, color: Colors.black87))));
+                  return InkWell(
+                    onTap: () => onSelect(item),
+                    borderRadius: BorderRadius.circular(8.r),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: 14.h,
+                        horizontal: 8.w,
+                      ),
+                      child: Text(
+                        item.name,
+                        style: TextStyle(fontSize: 14.sp, color: Colors.black87),
+                      ),
+                    ),
+                  );
                 },
               ),
             ),

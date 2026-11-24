@@ -1,4 +1,5 @@
 import 'package:event_sharing/controllers/event_controller.dart';
+import 'package:event_sharing/controllers/family_controller.dart';
 import 'package:event_sharing/helpers/event_actions.dart';
 import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/models/event_model.dart';
@@ -56,6 +57,11 @@ class _CalendarWithDropdownState extends State<CalendarWithDropdown> {
   /// Selected / tapped date highlight — brand primary circle (different from today)
   static final Color _selectedFill = AppColors.primaryColor;
 
+  final FamilyController _familyController = Get.find<FamilyController>();
+
+  /// API relationship value the calendar is filtered by.
+  String _selectedRelationShip = 'Self';
+
   @override
   void initState() {
     super.initState();
@@ -63,7 +69,153 @@ class _CalendarWithDropdownState extends State<CalendarWithDropdown> {
     _selectedMonthIndex = _focusedDay.month;
     _selectedYear = _focusedDay.year;
     _eventController.fetchHomeEvents();
-    _eventController.fetchCalendarEvents();
+    _eventController.fetchCalendarEvents(relationShip: _selectedRelationShip);
+    _loadFamilyMembers();
+  }
+
+  /// The filter lists every family member. With no family (or no members yet)
+  /// it shows only the current user, as "Self".
+  Future<void> _loadFamilyMembers() async {
+    try {
+      if (_familyController.families.isEmpty) {
+        await _familyController.fetchFamilies(showErrorToast: false);
+      }
+      if (_familyController.families.isEmpty) return;
+      await _familyController.fetchFamilyMembers(
+        _familyController.families.first.id,
+        showErrorToast: false,
+      );
+      if (mounted) setState(() {});
+    } catch (_) {
+      // The calendar still works with just "Self".
+    }
+  }
+
+  String _relationDisplayName(String? relation) {
+    final value = (relation ?? '').trim();
+    switch (value) {
+      case 'Self':
+        return 'Self';
+      case 'Spous':
+        return 'Spouse';
+      case 'ChildStephanie':
+        return 'Child Stephanie';
+      case 'ChildSophia':
+        return 'Child Sophia';
+      case 'Other':
+        return 'Other';
+      default:
+        return value.isEmpty ? 'Member' : value;
+    }
+  }
+
+  /// "Self" plus one entry per family member that has a relationship set.
+  List<({String label, String relationShip})> _relationOptions() {
+    final options = <({String label, String relationShip})>[
+      (label: 'Self', relationShip: 'Self'),
+    ];
+    final seen = <String>{'Self'};
+
+    for (final member in _familyController.familyMembers) {
+      final relation = (member.relationShip ?? '').trim();
+      if (relation.isEmpty || relation == 'Self') continue;
+      if (!seen.add(relation)) continue;
+
+      final name = [member.user?.firstName, member.user?.lastName]
+          .whereType<String>()
+          .where((e) => e.trim().isNotEmpty)
+          .join(' ');
+      final relationLabel = _relationDisplayName(relation);
+      options.add((
+        label: name.isNotEmpty ? '$name ($relationLabel)' : relationLabel,
+        relationShip: relation,
+      ));
+    }
+    return options;
+  }
+
+  Future<void> _onRelationChanged(String relationShip) async {
+    if (relationShip == _selectedRelationShip) return;
+    setState(() => _selectedRelationShip = relationShip);
+    await _eventController.fetchCalendarEvents(relationShip: relationShip);
+  }
+
+  Widget _relationFilter() {
+    final options = _relationOptions();
+    final current = options.firstWhere(
+      (o) => o.relationShip == _selectedRelationShip,
+      orElse: () => options.first,
+    );
+
+    // Only one option (no family members) — show a plain, non-tappable chip.
+    if (options.length == 1) {
+      return Container(
+        height: 26.h,
+        padding: EdgeInsets.symmetric(horizontal: 10.w),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: AppColors.primaryColor,
+          borderRadius: BorderRadius.circular(6.r),
+        ),
+        child: Text(
+          current.label,
+          style: TextStyle(color: Colors.white, fontSize: 11.sp),
+        ),
+      );
+    }
+
+    return PopupMenuButton<String>(
+      tooltip: 'Filter calendar by family member',
+      position: PopupMenuPosition.under,
+      onSelected: _onRelationChanged,
+      itemBuilder: (context) => options
+          .map(
+            (option) => PopupMenuItem<String>(
+              value: option.relationShip,
+              child: Row(
+                children: [
+                  if (option.relationShip == _selectedRelationShip)
+                    Icon(Icons.check,
+                        size: 16.sp, color: AppColors.primaryColor)
+                  else
+                    SizedBox(width: 16.sp),
+                  SizedBox(width: 8.w),
+                  Flexible(
+                    child: Text(
+                      option.label,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(fontSize: 13.sp),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          )
+          .toList(),
+      child: Container(
+        height: 26.h,
+        constraints: BoxConstraints(maxWidth: 160.w),
+        padding: EdgeInsets.symmetric(horizontal: 10.w),
+        decoration: BoxDecoration(
+          color: AppColors.primaryColor,
+          borderRadius: BorderRadius.circular(6.r),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Flexible(
+              child: Text(
+                current.label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(color: Colors.white, fontSize: 11.sp),
+              ),
+            ),
+            Icon(Icons.arrow_drop_down, color: Colors.white, size: 16.sp),
+          ],
+        ),
+      ),
+    );
   }
 
   DateTime _dayKey(DateTime day) =>
@@ -326,6 +478,12 @@ class _CalendarWithDropdownState extends State<CalendarWithDropdown> {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Family-member filter for the calendar (point 1).
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [_relationFilter()],
+          ),
+          SizedBox(height: 4.h),
           Row(
             children: [
               Expanded(

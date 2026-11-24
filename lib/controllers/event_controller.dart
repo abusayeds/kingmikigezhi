@@ -34,22 +34,29 @@ class EventController extends GetxController {
     super.onInit();
   }
 
-  Future<void> fetchUpcomingEvents({bool isLoadMore = false, String? search}) async {
+  Future<void> fetchUpcomingEvents({
+    bool isLoadMore = false,
+    bool force = false,
+    String? search,
+  }) async {
     if (isLoadMore) {
       if (!upcomingHasNext.value) return;
       upcomingPage.value++;
     } else {
       upcomingPage.value = 1;
-      isLoadingUpcoming.value = true;
+      // Only show full-page loader when we have nothing to display yet.
+      if (force || upcomingEvents.isEmpty) {
+        isLoadingUpcoming.value = upcomingEvents.isEmpty;
+      }
       if (search != null) {
-        searchUpcomingQuery.value = search;
+        searchUpcomingQuery.value = search.trim();
       }
     }
 
     try {
       String url = "${ApiConstants.getUpcomingEvents}?page=${upcomingPage.value}&limit=10";
       if (searchUpcomingQuery.value.isNotEmpty) {
-        url += "&searchTerm=${searchUpcomingQuery.value}";
+        url += "&searchTerm=${Uri.encodeQueryComponent(searchUpcomingQuery.value)}";
       }
 
       final response = await apiService.get(url);
@@ -74,8 +81,11 @@ class EventController extends GetxController {
   }
 
   Future<void> fetchEventDetails(String eventId) async {
-    isLoadingDetails.value = true;
-    eventDetails.value = null;
+    final hasCached =
+        eventDetails.value != null && eventDetails.value?.id == eventId;
+    if (!hasCached) {
+      isLoadingDetails.value = true;
+    }
     try {
       final url = ApiConstants.getEventsDetails.replaceAll(':eventId', eventId);
       final response = await apiService.get(url);
@@ -90,7 +100,9 @@ class EventController extends GetxController {
   }
 
   Future<void> fetchHomeEvents() async {
-    isLoadingHomeEvents.value = true;
+    if (homeEvents.isEmpty) {
+      isLoadingHomeEvents.value = true;
+    }
     try {
       final response = await apiService.get(ApiConstants.getHomeEvents);
       if (response['success'] == true) {
@@ -104,28 +116,61 @@ class EventController extends GetxController {
     }
   }
 
-  Future<void> fetchCalendarEvents() async {
+  /// Relationship currently shown on the calendar ('Self' by default).
+  final RxString calendarRelationShip = 'Self'.obs;
+  final RxBool isLoadingCalendar = false.obs;
+
+  /// Events for the calendar.
+  ///
+  /// With [relationShip] the calendar shows the events of that family member
+  /// (API enum value, e.g. `Self`, `Spous`, `ChildStephanie`). Without one it
+  /// falls back to the combined today + upcoming + history feeds.
+  Future<void> fetchCalendarEvents({String? relationShip}) async {
+    final relation = (relationShip ?? calendarRelationShip.value).trim();
+    calendarRelationShip.value = relation.isEmpty ? 'Self' : relation;
+
+    isLoadingCalendar.value = calendarEvents.isEmpty;
     try {
-      final urls = [
-        ApiConstants.getUpcomingEvents,
-        ApiConstants.getHistoryEvents,
-        ApiConstants.todayEvents,
-      ];
-
-      final responses = await Future.wait(
-        urls.map((url) => apiService.get("$url?page=1&limit=100")),
-      );
-
       final List<EventModel> allEvents = [];
-      for (final response in responses) {
+
+      if (relation.isNotEmpty) {
+        final response = await apiService.get(
+          '${ApiConstants.familyEventsByRelation(relation)}&page=1&limit=100',
+        );
         if (response['success'] == true) {
-          final List<dynamic> data = response['data'];
+          final List<dynamic> data = response['data'] ?? [];
           allEvents.addAll(data.map((json) => EventModel.fromJson(json)));
         }
+      } else {
+        final urls = [
+          ApiConstants.getUpcomingEvents,
+          ApiConstants.getHistoryEvents,
+          ApiConstants.todayEvents,
+        ];
+
+        final responses = await Future.wait(
+          urls.map((url) => apiService.get("$url?page=1&limit=100")),
+        );
+
+        for (final response in responses) {
+          if (response['success'] == true) {
+            final List<dynamic> data = response['data'];
+            allEvents.addAll(data.map((json) => EventModel.fromJson(json)));
+          }
+        }
       }
-      calendarEvents.value = allEvents;
+
+      // One entry per event id — the feeds can overlap.
+      final seen = <String>{};
+      calendarEvents.value = allEvents.where((e) {
+        final id = e.id;
+        if (id == null || id.isEmpty) return true;
+        return seen.add(id);
+      }).toList();
     } catch (e) {
       debugPrint("Error fetching calendar events: $e");
+    } finally {
+      isLoadingCalendar.value = false;
     }
   }
 

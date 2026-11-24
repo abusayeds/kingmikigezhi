@@ -1,6 +1,8 @@
+import 'package:event_sharing/controllers/auth_controller.dart';
 import 'package:event_sharing/utils/app_strings.dart';
 import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/profile_ListTile.dart';
+import 'package:event_sharing/views/base/pull_to_refresh.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -18,7 +20,10 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: const BottomMenu(3),
-      body: SingleChildScrollView(
+      body: PullToRefresh(
+        onRefresh: () => Get.find<AuthController>().fetchUserProfile(),
+        child: SingleChildScrollView(
+        physics: PullToRefresh.alwaysScrollable(),
         child: Column(
           children: [
             const TopProfileCard(),
@@ -29,7 +34,10 @@ class ProfileScreen extends StatelessWidget {
                   //============================> Account List Tile <=================
                   ProfileListTile(
                     onTap: (){
-                        Get.toNamed(AppRoutes.personalInformationScreen);
+                        Get.toNamed(
+                          AppRoutes.personalInformationScreen,
+                          arguments: const <String, dynamic>{},
+                        );
                     },
                     title:AppStrings.account,
                     prefixIcon: SvgPicture.asset(AppIcons.accountIcon, color: AppColors.primaryColor, width: 24.w, height: 24.h),
@@ -38,26 +46,42 @@ class ProfileScreen extends StatelessWidget {
                   //============================> My Family List Tile <=================
                   ProfileListTile(
                     onTap: () {
-                      Get.toNamed(AppRoutes.familyGroupScreen);
+                      Get.toNamed(
+                        AppRoutes.familyGroupScreen,
+                        arguments: const <String, dynamic>{},
+                      );
                     },
                     title:AppStrings.myFamily,
                     prefixIcon: SvgPicture.asset(AppIcons.ownershipIcon, color: AppColors.primaryColor, width: 24.w, height: 24.h),
                     suffixIcon: SvgPicture.asset(AppIcons.rightArrow,color: AppColors.primaryColor),),
 
                   //============================> My Event List Tile <=================
+                  // Only this user's created events. The Event screen in the
+                  // bottom menu shows universal community events instead.
                   ProfileListTile(
                     onTap: () {
-                    //  Get.toNamed(AppRoutes.myEventScreen);
+                      Get.toNamed(AppRoutes.myCreatedEventScreen);
+                    },
+                    title: AppStrings.myEvent,
+                    prefixIcon: SvgPicture.asset(AppIcons.myEventIcon, color: AppColors.primaryColor),
+                    suffixIcon: SvgPicture.asset(AppIcons.rightArrow,color: AppColors.primaryColor),),
+
+                  //============================> Applied Event List Tile <=================
+                  ProfileListTile(
+                    onTap: () {
                       Get.toNamed(AppRoutes.appliedSearchEventListScreen);
                     },
-                    title:AppStrings.myEvent,
+                    title: AppStrings.appliedEvent,
                     prefixIcon: SvgPicture.asset(AppIcons.myEventIcon, color: AppColors.primaryColor),
                     suffixIcon: SvgPicture.asset(AppIcons.rightArrow,color: AppColors.primaryColor),),
 
                   //============================> Connection List Tile <=================
                   ProfileListTile(
                     onTap: () {
-                      Get.toNamed(AppRoutes.myConnectionScreen);
+                      Get.toNamed(
+                        AppRoutes.myConnectionScreen,
+                        arguments: const <String, dynamic>{},
+                      );
                     },
                     title:AppStrings.connection,
                     prefixIcon: SvgPicture.asset(AppIcons.connection, color: AppColors.primaryColor),
@@ -65,7 +89,10 @@ class ProfileScreen extends StatelessWidget {
                   //============================> Contribution List Tile <=================
                   ProfileListTile(
                     onTap: () {
-                      Get.toNamed(AppRoutes.myContributionScreen);
+                      Get.toNamed(
+                        AppRoutes.myContributionScreen,
+                        arguments: const <String, dynamic>{},
+                      );
                     },
                     title:AppStrings.contribution,
                     prefixIcon: SvgPicture.asset(AppIcons.contribution, color: AppColors.primaryColor),
@@ -74,7 +101,10 @@ class ProfileScreen extends StatelessWidget {
                   //============================> Invitation List Tile <=================
                   ProfileListTile(
                     onTap: () {
-                      Get.toNamed(AppRoutes.invitationListPage);
+                      Get.toNamed(
+                        AppRoutes.invitationListPage,
+                        arguments: const <String, dynamic>{},
+                      );
                     },
                     title:AppStrings.invitation,
                     prefixIcon: SvgPicture.asset(AppIcons.share, color: AppColors.primaryColor),
@@ -82,7 +112,10 @@ class ProfileScreen extends StatelessWidget {
                   //============================> Settings List Tile <=================
                   ProfileListTile(
                     onTap: () {
-                      Get.toNamed(AppRoutes.settingsScreen);
+                      Get.toNamed(
+                        AppRoutes.settingsScreen,
+                        arguments: const <String, dynamic>{},
+                      );
                     },
                     title:AppStrings.settings,
                     prefixIcon: SvgPicture.asset(AppIcons.settingsIcon, color: AppColors.primaryColor),
@@ -91,7 +124,10 @@ class ProfileScreen extends StatelessWidget {
                   //============================> About Us List Tile <=================
                   ProfileListTile(
                     onTap: () {
-                      Get.toNamed(AppRoutes.aboutusScreen);
+                      Get.toNamed(
+                        AppRoutes.aboutusScreen,
+                        arguments: const <String, dynamic>{},
+                      );
                     },
                     title:AppStrings.aboutUs,
                     prefixIcon: SvgPicture.asset(AppIcons.aboutIcon, color: AppColors.primaryColor, width: 24.w, height: 24.h),
@@ -100,7 +136,10 @@ class ProfileScreen extends StatelessWidget {
                   //============================> Terms and Conditions List Tile <=================
                   ProfileListTile(
                     onTap: () {
-                      Get.toNamed(AppRoutes.termsConditionScreen);
+                      Get.toNamed(
+                        AppRoutes.termsConditionScreen,
+                        arguments: const <String, dynamic>{},
+                      );
                     },
                     title:AppStrings.termsAndConditions,
                     prefixIcon: SvgPicture.asset(AppIcons.documentIcon, color: AppColors.primaryColor),
@@ -109,7 +148,10 @@ class ProfileScreen extends StatelessWidget {
                   //============================> Privacy Policy List Tile <=================
                   ProfileListTile(
                     onTap: () {
-                      Get.toNamed(AppRoutes.privacyPolicyScreen);
+                      Get.toNamed(
+                        AppRoutes.privacyPolicyScreen,
+                        arguments: const <String, dynamic>{},
+                      );
                     },
                     title:AppStrings.privacyPolicy,
                     prefixIcon: SvgPicture.asset(AppIcons.shieldIcon, color: AppColors.primaryColor),
@@ -128,6 +170,7 @@ class ProfileScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
       ),
     );
   }

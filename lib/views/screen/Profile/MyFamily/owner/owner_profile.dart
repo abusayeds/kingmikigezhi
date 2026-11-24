@@ -1,8 +1,10 @@
 import 'package:event_sharing/controllers/family_controller.dart';
 import 'package:event_sharing/helpers/route.dart';
+import 'package:event_sharing/models/family_model.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_icons.dart';
 import 'package:event_sharing/utils/style.dart';
+import 'package:event_sharing/views/base/skeletons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -19,11 +21,35 @@ class OwnerMemberAddScreen extends StatefulWidget {
 
 class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
   late FamilyController _familyController;
+  final TextEditingController _searchController = TextEditingController();
+  final RxString _searchQuery = ''.obs;
 
   @override
   void initState() {
     super.initState();
     _familyController = Get.find<FamilyController>();
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  /// Name / username / email wise filter (case-insensitive).
+  List<FamilyMemberModel> get _visibleOwners {
+    final query = _searchQuery.value.trim().toLowerCase();
+    final all = _familyController.familyOwners;
+    if (query.isEmpty) return all.toList();
+    return all.where((member) {
+      final first = member.user?.firstName ?? '';
+      final last = member.user?.lastName ?? '';
+      final username = member.user?.username ?? '';
+      final email = member.user?.email ?? '';
+      return '$first $last'.toLowerCase().contains(query) ||
+          username.toLowerCase().contains(query) ||
+          email.toLowerCase().contains(query);
+    }).toList();
   }
 
   @override
@@ -45,12 +71,26 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextField(
+                    controller: _searchController,
+                    textInputAction: TextInputAction.search,
+                    onChanged: (value) => _searchQuery.value = value,
                     decoration: InputDecoration(
                       hintText: 'Search Name',
                       hintStyle: TextStyle(color: AppColors.greyColor),
                       border: InputBorder.none,
-                      suffixIcon:
-                          Icon(Icons.search, color: AppColors.primaryColor),
+                      suffixIcon: Obx(
+                        () => _searchQuery.value.isEmpty
+                            ? Icon(Icons.search, color: AppColors.primaryColor)
+                            : InkWell(
+                                onTap: () {
+                                  _searchController.clear();
+                                  _searchQuery.value = '';
+                                  FocusScope.of(context).unfocus();
+                                },
+                                child: Icon(Icons.close,
+                                    color: AppColors.primaryColor),
+                              ),
+                      ),
                     ),
                   ),
                 ),
@@ -58,27 +98,29 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
             ),
             Obx(() {
               if (_familyController.isLoading.value) {
-                return Center(
-                  child: Padding(
-                    padding: EdgeInsets.all(20.h),
-                    child: CircularProgressIndicator(
-                      color: AppColors.primaryColor,
-                    ),
-                  ),
+                return Padding(
+                  padding: EdgeInsets.all(20.h),
+                  child: const ConnectionListSkeleton(itemCount: 4),
                 );
               }
 
-              if (_familyController.familyOwners.isEmpty) {
+              final owners = _visibleOwners;
+
+              if (owners.isEmpty) {
+                final isSearching = _searchQuery.value.trim().isNotEmpty;
                 return Center(
                   child: Padding(
                     padding: EdgeInsets.all(20.h),
                     child: Column(
                       children: [
-                        Icon(Icons.person_off,
+                        Icon(isSearching ? Icons.search_off : Icons.person_off,
                             size: 50.h, color: AppColors.greyColor),
                         SizedBox(height: 10.h),
                         Text(
-                          'No owners found',
+                          isSearching
+                              ? 'No owner matches "${_searchQuery.value.trim()}"'
+                              : 'No owners found',
+                          textAlign: TextAlign.center,
                           style: TextStyle(
                             color: AppColors.greyColor,
                             fontSize: 16.sp,
@@ -91,11 +133,11 @@ class _OwnerMemberAddScreenState extends State<OwnerMemberAddScreen> {
               }
 
               return ListView.builder(
-                itemCount: _familyController.familyOwners.length,
+                itemCount: owners.length,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
-                  final member = _familyController.familyOwners[index];
+                  final member = owners[index];
                   return Padding(
                     padding:
                         EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),

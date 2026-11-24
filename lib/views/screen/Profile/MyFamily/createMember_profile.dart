@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:event_sharing/controllers/auth_controller.dart';
 import 'package:event_sharing/controllers/family_controller.dart';
+import 'package:event_sharing/helpers/route_args.dart';
 import 'package:event_sharing/utils/phone_utils.dart';
 import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/skillItem.dart';
@@ -80,7 +81,8 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
     super.initState();
     _familyController = Get.find<FamilyController>();
     _authController = Get.find<AuthController>();
-    familyId = Get.arguments?['familyId'];
+    final argFamilyId = routeArgString('familyId');
+    familyId = argFamilyId.isEmpty ? null : argFamilyId;
 
     if (_authController.editOptionPrograms.isEmpty ||
         _authController.editOptionYears.isEmpty) {
@@ -156,36 +158,37 @@ class _CreateMemberProfileScreenState extends State<CreateMemberProfileScreen> {
                     child: Stack(
                       clipBehavior: Clip.none,
                       children: [
-                        _image != null
-                            ? Container(
-                                width: 120.w,
-                                height: 120.h,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.rectangle,
-                                  border: Border.all(
-                                      width: 2.w, color: AppColors.white),
-                                  image: DecorationImage(
-                                    image: MemoryImage(_image!),
-                                    fit: BoxFit.cover,
+                        // Circular head image at a size that matches the rest
+                        // of the profile screens. The placeholder logo is
+                        // contained (not cropped) so it never looks oversized.
+                        Container(
+                          width: 96.w,
+                          height: 96.w,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: AppColors.colorEDF2F4,
+                            border:
+                                Border.all(width: 2.w, color: AppColors.white),
+                          ),
+                          clipBehavior: Clip.antiAlias,
+                          child: _image != null
+                              ? Image.memory(
+                                  _image!,
+                                  fit: BoxFit.cover,
+                                  width: 96.w,
+                                  height: 96.w,
+                                )
+                              : Padding(
+                                  padding: EdgeInsets.all(18.w),
+                                  child: Image.asset(
+                                    AppImages.logo,
+                                    fit: BoxFit.contain,
                                   ),
                                 ),
-                              )
-                            : Container(
-                                width: 120.w,
-                                height: 120.h,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.rectangle,
-                                  border: Border.all(
-                                      width: 2.w, color: AppColors.white),
-                                  image: DecorationImage(
-                                    image: AssetImage(AppImages.logo),
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
+                        ),
                         Positioned(
-                          bottom: -5.h,
-                          right: -5.w,
+                          bottom: -2.h,
+                          right: -2.w,
                           child: GestureDetector(
                             onTap: () => showImagePickerOption(context),
                             child: SvgPicture.asset(AppIcons.editFram),

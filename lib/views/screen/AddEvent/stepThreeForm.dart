@@ -1,3 +1,4 @@
+import 'package:event_sharing/helpers/app_feedback.dart';
 import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/custom_button.dart';
 import 'package:event_sharing/views/base/custom_text_field.dart';
@@ -18,18 +19,79 @@ class StepThreeForm extends StatefulWidget {
   State<StepThreeForm> createState() => _StepThreeFormState();
 }
 
+/// One entry in the "Criteria" dropdown: a criteria type plus, for banded
+/// criteria, the preset label that goes with it.
+class _CriteriaOption {
+  /// API `GroupCriteria` value: Default | Age | UTR | Level | Class.
+  final String criteria;
+
+  /// Preset band label, e.g. "6-12", "1.0-4.0", "Class A". Null for Default.
+  final String? label;
+
+  /// Numeric bounds, set for Age bands so age filtering keeps working.
+  final int? min;
+  final int? max;
+
+  const _CriteriaOption(this.criteria, this.label, {this.min, this.max});
+
+  /// Stable id used as the DropdownMenuItem value.
+  String get id => label == null ? criteria : '$criteria|$label';
+
+  String get display => label == null ? criteria : '$criteria  $label';
+
+  bool get isLabelBased =>
+      criteria == 'UTR' || criteria == 'Level' || criteria == 'Class';
+
+  bool get isAge => criteria == 'Age';
+
+  bool get isDefault => criteria == 'Default';
+}
+
 class _StepThreeFormState extends State<StepThreeForm> {
-  // Backend GroupCriteria: Age | Score
-  final List<String> groupCriteriaList = ['Age', 'Score'];
-  // Display labels → API GroupCondition enums
-  final List<String> conditionList = [
-    'UpTo',
-    'DownTo',
-    'Greater Than',
-    'Greater And Equal',
-    'Less Than',
-    'Less And Equal',
+  /// Criteria presets, exactly as specified by the client.
+  static const List<_CriteriaOption> _criteriaOptions = [
+    _CriteriaOption('Default', null),
+
+    _CriteriaOption('Age', '6-12', min: 6, max: 12),
+    _CriteriaOption('Age', '13-19', min: 13, max: 19),
+    _CriteriaOption('Age', '20+', min: 20, max: 120),
+
+    _CriteriaOption('UTR', '1.0-4.0'),
+    _CriteriaOption('UTR', '4.1-8.0'),
+    _CriteriaOption('UTR', '8.1-12'),
+    _CriteriaOption('UTR', '12.1-16'),
+
+    _CriteriaOption('Level', 'Begineer'),
+    _CriteriaOption('Level', 'Intermediate'),
+    _CriteriaOption('Level', 'Advanced I'),
+    _CriteriaOption('Level', 'Advanced II'),
+
+    _CriteriaOption('Class', 'Senior master'),
+    _CriteriaOption('Class', 'National master'),
+    _CriteriaOption('Class', 'Expert'),
+    _CriteriaOption('Class', 'Class A'),
+    _CriteriaOption('Class', 'Class B'),
+    _CriteriaOption('Class', 'Class C'),
+    _CriteriaOption('Class', 'Class D'),
+    _CriteriaOption('Class', 'Class E'),
+    _CriteriaOption('Class', 'Class F'),
+    _CriteriaOption('Class', 'Class G'),
+    _CriteriaOption('Class', 'Class H'),
+    _CriteriaOption('Class', 'Class I'),
+    _CriteriaOption('Class', 'Class J'),
   ];
+
+  /// Condition dropdown, in the order the client listed them.
+  static const List<MapEntry<String, String>> _conditionOptions = [
+    MapEntry('Default', 'Default'),
+    MapEntry('Equal', 'Equal'),
+    MapEntry('UpTo', 'Up to'),
+    MapEntry('Greater', 'Greater than'),
+    MapEntry('GreaterAndEqual', 'Greater and equal'),
+    MapEntry('Lower', 'Less than'),
+    MapEntry('LowerAndEqual', 'Less and equal'),
+  ];
+
   final List<String> roundTypeList = ['Preliminary', 'SemiFinal', 'Final'];
   final List<String> yesNoList = ['Yes', 'No'];
 
@@ -46,18 +108,26 @@ class _StepThreeFormState extends State<StepThreeForm> {
 
   final Addeventcontroller addeventcontroller = Get.find<Addeventcontroller>();
 
-  String? _selectedCriteria;
+  /// Selected criteria option id (see [_CriteriaOption.id]).
+  String? _selectedCriteriaId;
+
+  /// Selected condition — already an API `RoundCondition` value.
   String? _selectedCondition;
   String? _selectedRoundType;
   String? _selectedHasFinalDeadline;
 
-  /// Map UI condition labels to backend GroupCondition enums.
+  _CriteriaOption? get _selectedCriteriaOption {
+    final id = _selectedCriteriaId;
+    if (id == null) return null;
+    for (final option in _criteriaOptions) {
+      if (option.id == id) return option;
+    }
+    return null;
+  }
+
+  /// Legacy UI labels still map to the API enums so edit-prefill keeps working.
   String _mapConditionToApi(String condition) {
     switch (condition) {
-      case 'UpTo':
-        return 'UpTo';
-      case 'DownTo':
-        return 'DownTo';
       case 'Greater Than':
         return 'Greater';
       case 'Greater And Equal':
@@ -66,16 +136,11 @@ class _StepThreeFormState extends State<StepThreeForm> {
         return 'Lower';
       case 'Less And Equal':
         return 'LowerAndEqual';
-      // Already-API values (e.g. from edit prefill)
-      case 'Greater':
-      case 'GreaterAndEqual':
-      case 'Lower':
-      case 'LowerAndEqual':
-        return condition;
       default:
         return condition;
     }
   }
+
 
   num? _parseGroupValue(String raw) {
     final trimmed = raw.trim();
@@ -109,11 +174,21 @@ class _StepThreeFormState extends State<StepThreeForm> {
     // If the user added rounds but never pressed "Add" on the group,
     // auto-save them into a group so data isn't lost on Next.
     if (addeventcontroller.tempRounds.isNotEmpty) {
-      final criteria = _selectedCriteria ?? 'Age';
-      final conditionLabel = _selectedCondition ?? 'UpTo';
-      final condition = _mapConditionToApi(conditionLabel);
-      final value = _parseGroupValue(groupValueController.text) ?? 0;
-      final generatedName = "$criteria $conditionLabel $value";
+      final option = _selectedCriteriaOption ??
+          const _CriteriaOption('Age', '6-12', min: 6, max: 12);
+      final condition = _mapConditionToApi(_selectedCondition ?? 'UpTo');
+      final conditionLabel = _conditionLabel(condition);
+
+      num? value;
+      if (option.isAge) {
+        value = _parseGroupValue(groupValueController.text) ?? option.min ?? 0;
+      }
+
+      final generatedName = option.isDefault
+          ? 'Default'
+          : (option.isAge
+              ? '${option.criteria} $conditionLabel $value'
+              : '${option.criteria} $conditionLabel ${option.label}');
 
       // Deep-copy before clearing
       final snapshotRounds = addeventcontroller.tempRounds
@@ -122,60 +197,234 @@ class _StepThreeFormState extends State<StepThreeForm> {
 
       addeventcontroller.addGroup(
         generatedName,
-        criteria,
+        option.criteria,
         condition,
         value,
         snapshotRounds,
+        valueLabel: option.label,
       );
       addeventcontroller.clearTempRounds();
       setState(() {
-        _selectedCriteria = null;
+        _selectedCriteriaId = null;
         _selectedCondition = null;
         groupValueController.clear();
       });
     }
   }
 
+  /// A number is only meaningful for Age groups. UTR / Level / Class carry a
+  /// preset label, and Default carries neither.
+  bool get _needsNumericValue => _selectedCriteriaOption?.isAge ?? false;
+
+  Widget _buildCriteriaDropdown() {
+    // Grouped by criteria type, with the type shown as a non-selectable header.
+    final items = <DropdownMenuItem<String>>[];
+    String? lastCriteria;
+
+    for (final option in _criteriaOptions) {
+      if (option.label != null && option.criteria != lastCriteria) {
+        lastCriteria = option.criteria;
+      }
+      items.add(
+        DropdownMenuItem<String>(
+          value: option.id,
+          child: Row(
+            children: [
+              if (option.label != null)
+                Container(
+                  margin: EdgeInsets.only(right: 6.w),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 6.w, vertical: 1.h),
+                  decoration: BoxDecoration(
+                    color: AppColors.colorEDF2F4,
+                    borderRadius: BorderRadius.circular(4.r),
+                  ),
+                  child: Text(
+                    option.criteria,
+                    style: TextStyle(
+                      fontSize: 9.sp,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.primaryColor,
+                    ),
+                  ),
+                ),
+              Flexible(
+                child: Text(
+                  option.label ?? option.criteria,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontSize: 12.sp),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    return Container(
+      height: 48.5.h,
+      padding: EdgeInsets.symmetric(horizontal: 12.w),
+      decoration: BoxDecoration(
+        color: AppColors.colorEDF2F4,
+        borderRadius: BorderRadius.circular(8.r),
+        border: Border.all(color: AppColors.borderColor, width: 1.w),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          isExpanded: true,
+          value: _selectedCriteriaId,
+          hint: Text('Criteria',
+              style: TextStyle(
+                  fontSize: 13.sp, color: AppColors.color414141)),
+          icon: Icon(Icons.keyboard_arrow_down,
+              size: 20.sp, color: AppColors.primaryColor),
+          menuMaxHeight: 320.h,
+          items: items,
+          onChanged: (id) {
+            setState(() {
+              _selectedCriteriaId = id;
+              final option = _selectedCriteriaOption;
+              // Prefill the number from the Age band so the group is valid
+              // straight away; the user can still change it.
+              if (option != null && option.isAge && option.min != null) {
+                groupValueController.text = option.min.toString();
+              } else {
+                groupValueController.clear();
+              }
+            });
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildConditionDropdown() {
+    return Container(
+      height: 48.5.h,
+      padding: EdgeInsets.symmetric(horizontal: 12.w),
+      decoration: BoxDecoration(
+        color: AppColors.colorEDF2F4,
+        borderRadius: BorderRadius.circular(8.r),
+        border: Border.all(color: AppColors.borderColor, width: 1.w),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          isExpanded: true,
+          value: _selectedCondition,
+          hint: Text('Condition',
+              style: TextStyle(
+                  fontSize: 13.sp, color: AppColors.color414141)),
+          icon: Icon(Icons.keyboard_arrow_down,
+              size: 20.sp, color: AppColors.primaryColor),
+          menuMaxHeight: 320.h,
+          items: _conditionOptions
+              .map((entry) => DropdownMenuItem<String>(
+                    value: entry.key,
+                    child: Text(entry.value,
+                        style: TextStyle(fontSize: 12.sp)),
+                  ))
+              .toList(),
+          onChanged: (v) => setState(() => _selectedCondition = v),
+        ),
+      ),
+    );
+  }
+
+  /// "Age  Up to  15" / "Class  Equal  Class A" / "Default"
+  String _groupSummary(Map<String, dynamic> group) {
+    final criteria = group['criteria']?.toString() ?? '';
+    if (criteria == 'Default') return 'Default';
+
+    final condition = _conditionLabel(group['condition']?.toString() ?? '');
+    final label = group['valueLabel']?.toString().trim();
+    final value = (label != null && label.isNotEmpty)
+        ? label
+        : (group['value']?.toString() ?? '');
+
+    return [criteria, condition, value]
+        .where((part) => part.trim().isNotEmpty)
+        .join('  ');
+  }
+
+  String _conditionLabel(String apiValue) {
+    for (final entry in _conditionOptions) {
+      if (entry.key == apiValue) return entry.value;
+    }
+    return apiValue;
+  }
+
+  void _addGroup() {
+    final option = _selectedCriteriaOption;
+    if (option == null || _selectedCondition == null) {
+      AppFeedback.validation('Choose a criteria and a condition.');
+      return;
+    }
+
+    num? parsedValue;
+    if (option.isAge) {
+      parsedValue = _parseGroupValue(groupValueController.text);
+      if (parsedValue == null) {
+        AppFeedback.validation('Enter an age value for this group.');
+        return;
+      }
+    }
+
+    // Rounds are optional: a group can be saved on its own and rounds added
+    // to it later.
+    final apiCondition = _mapConditionToApi(_selectedCondition!);
+    final conditionLabel = _conditionLabel(apiCondition);
+    final generatedName = option.isDefault
+        ? 'Default'
+        : (option.isAge
+            ? '${option.criteria} $conditionLabel $parsedValue'
+            : '${option.criteria} $conditionLabel ${option.label}');
+
+    // Snapshot the rounds NOW (deep copy) before anything is cleared.
+    final snapshotRounds = addeventcontroller.tempRounds
+        .map((r) => Map<String, dynamic>.from(r))
+        .toList();
+
+    addeventcontroller.addGroup(
+      generatedName,
+      option.criteria,
+      apiCondition,
+      parsedValue,
+      snapshotRounds,
+      valueLabel: option.label,
+    );
+
+    addeventcontroller.clearTempRounds();
+    setState(() {
+      _selectedCriteriaId = null;
+      _selectedCondition = null;
+      groupValueController.clear();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 24.w),
-      child: Column(children: [
-        SingleChildScrollView(
-          child: Column(
+      padding: EdgeInsets.fromLTRB(24.w, 4.h, 24.w, 12.h),
+      child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                padding: EdgeInsets.only(bottom: 8.h),
                 child: Text('Step 3: Group',
                     style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w600)),
               ),
-              SizedBox(height: 12.h),
               Text('Define Group',
                   style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
-              SizedBox(height: 12.h),
+              SizedBox(height: 6.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                    child: _buildDropdown(
-                      value: _selectedCriteria,
-                      hint: 'Criteria',
-                      items: groupCriteriaList,
-                      onChanged: (v) => setState(() {
-                        _selectedCriteria = v;
-                        groupValueController.clear();
-                      }),
-                    ),
+                    child: _buildCriteriaDropdown(),
                   ),
                   SizedBox(width: 15.w),
                   Expanded(
-                    child: _buildDropdown(
-                      value: _selectedCondition,
-                      hint: 'Condition',
-                      items: conditionList,
-                      onChanged: (v) => setState(() => _selectedCondition = v),
-                    ),
+                    child: _buildConditionDropdown(),
                   ),
                 ],
               ),
@@ -185,14 +434,32 @@ class _StepThreeFormState extends State<StepThreeForm> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
-                    child: CustomTextField(
-                      height: 48.5,
-                      controller: groupValueController,
-                      hintText: _selectedCriteria == 'Score'
-                          ? 'Score value (e.g. 80)'
-                          : 'Age value (e.g. 15)',
-                      keyboardType: TextInputType.number,
-                    ),
+                    child: _needsNumericValue
+                        ? CustomTextField(
+                            height: 48.5,
+                            controller: groupValueController,
+                            hintText: 'Age value (e.g. 15)',
+                            keyboardType: TextInputType.number,
+                          )
+                        : Container(
+                            height: 48.5.h,
+                            alignment: Alignment.centerLeft,
+                            padding: EdgeInsets.symmetric(horizontal: 16.w),
+                            decoration: BoxDecoration(
+                              color: AppColors.colorEDF2F4,
+                              borderRadius: BorderRadius.circular(8.r),
+                              border: Border.all(
+                                  color: AppColors.borderColor, width: 1.w),
+                            ),
+                            child: Text(
+                              _selectedCriteriaOption?.label ??
+                                  'No value needed',
+                              style: TextStyle(
+                                fontSize: 13.sp,
+                                color: AppColors.color414141,
+                              ),
+                            ),
+                          ),
                   ),
                   SizedBox(width: 15.w),
                   SizedBox(
@@ -202,49 +469,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
                       width: 90.w,
                       color: AppColors.buttonA47059,
                       borderColor: Colors.transparent,
-                      onTap: () {
-                        final parsedValue =
-                            _parseGroupValue(groupValueController.text);
-                        if (_selectedCriteria == null ||
-                            _selectedCondition == null ||
-                            parsedValue == null) {
-                          Get.snackbar(
-                            "Error",
-                            "Please fill criteria, condition, and a numeric value",
-                          );
-                          return;
-                        }
-                        if (addeventcontroller.tempRounds.isEmpty) {
-                          Get.snackbar("Error", "Please add at least one round to the group");
-                          return;
-                        }
-
-                        final apiCondition =
-                            _mapConditionToApi(_selectedCondition!);
-                        final generatedName =
-                            "$_selectedCriteria $_selectedCondition $parsedValue";
-
-                        // Snapshot the rounds NOW (deep copy) before anything is cleared
-                        final snapshotRounds = addeventcontroller.tempRounds
-                            .map((r) => Map<String, dynamic>.from(r))
-                            .toList();
-
-                        addeventcontroller.addGroup(
-                          generatedName,
-                          _selectedCriteria!,
-                          apiCondition,
-                          parsedValue,
-                          snapshotRounds,
-                        );
-
-                        // Clear temp state AFTER group is safely stored
-                        addeventcontroller.clearTempRounds();
-                        setState(() {
-                          _selectedCriteria = null;
-                          _selectedCondition = null;
-                          groupValueController.clear();
-                        });
-                      },
+                      onTap: _addGroup,
                       text: 'Add',
                       textColor: AppColors.textColor,
                     ),
@@ -274,7 +499,7 @@ class _StepThreeFormState extends State<StepThreeForm> {
                           children: [
                             ListTile(
                               title: Text("${group['name']}"),
-                              subtitle: Text("${group['criteria']} ${group['condition']} ${group['value']}"),
+                              subtitle: Text(_groupSummary(group)),
                               trailing: IconButton(
                                 icon: SvgPicture.asset(AppIcons.trashIcon),
                                 onPressed: () => addeventcontroller.removeGroup(idx),
@@ -423,7 +648,9 @@ class _StepThreeFormState extends State<StepThreeForm> {
                         borderColor: Colors.white,
                         onTap: () {
                           if (_selectedRoundType == null || roundDateController.text.isEmpty) {
-                            Get.snackbar("Error", "Round type and deadline are required");
+                            AppFeedback.validation(
+                              'Select a round type and deadline date.',
+                            );
                             return;
                           }
                           addeventcontroller.addTempRound(
@@ -510,11 +737,9 @@ class _StepThreeFormState extends State<StepThreeForm> {
                   ),
                 ],
               ),
-              SizedBox(height: 25.h),
+              SizedBox(height: 12.h),
             ],
-          ),
-        )
-      ]),
+      ),
     );
   }
 

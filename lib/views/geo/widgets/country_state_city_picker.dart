@@ -1,4 +1,7 @@
+import 'package:event_sharing/utils/app_colors.dart';
+import 'package:event_sharing/utils/style.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../models/country.dart';
 import '../models/city_state.dart';
 import '../models/city.dart';
@@ -177,20 +180,22 @@ class _CountryStateCityPickerState extends State<CountryStateCityPicker> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        _fieldLabel('Country'),
         DropdownButtonFormField<Country>(
           key: ValueKey('country-${_selectedCountry?.id}'),
           initialValue: _selectedCountry,
-          decoration: const InputDecoration(
-            labelText: 'Country',
-            border: OutlineInputBorder(),
-          ),
+          decoration: _fieldDecoration(),
+          style: _valueTextStyle(context),
+          icon: const Icon(Icons.arrow_drop_down_sharp),
           isExpanded: true,
+          hint: const Text('Select country'),
           items: _countries
               .map((c) => DropdownMenuItem(value: c, child: Text(c.name)))
               .toList(),
           onChanged: _onCountryChanged,
         ),
-        const SizedBox(height: 12),
+        SizedBox(height: 10.h),
+        _fieldLabel('State / Province'),
         if (_loadingStates)
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 8),
@@ -201,13 +206,15 @@ class _CountryStateCityPickerState extends State<CountryStateCityPicker> {
             key: ValueKey(
                 'state-${_selectedCountry?.id}-${_selectedState?.id}'),
             initialValue: _selectedState,
-            decoration: InputDecoration(
-              labelText: 'State / Province',
-              border: const OutlineInputBorder(),
+            decoration: _fieldDecoration(
               helperText: _selectedCountry == null
                   ? 'Select a country first'
-                  : (_states.isEmpty ? 'No states found for this country' : null),
+                  : (_states.isEmpty
+                      ? 'No states found for this country'
+                      : null),
             ),
+            style: _valueTextStyle(context),
+            icon: const Icon(Icons.arrow_drop_down_sharp),
             isExpanded: true,
             hint: Text(
               _selectedCountry == null
@@ -221,7 +228,8 @@ class _CountryStateCityPickerState extends State<CountryStateCityPicker> {
                 ? null
                 : _onStateChanged,
           ),
-        const SizedBox(height: 12),
+        SizedBox(height: 10.h),
+        _fieldLabel('City'),
         if (_loadingCities)
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 8),
@@ -231,13 +239,13 @@ class _CountryStateCityPickerState extends State<CountryStateCityPicker> {
           DropdownButtonFormField<City>(
             key: ValueKey('city-${_selectedState?.id}-${_selectedCity?.id}'),
             initialValue: _selectedCity,
-            decoration: InputDecoration(
-              labelText: 'City',
-              border: const OutlineInputBorder(),
+            decoration: _fieldDecoration(
               helperText: _selectedState == null
                   ? 'Select a state first'
                   : (_cities.isEmpty ? 'No cities found for this state' : null),
             ),
+            style: _valueTextStyle(context),
+            icon: const Icon(Icons.arrow_drop_down_sharp),
             isExpanded: true,
             hint: Text(
               _selectedState == null
@@ -252,6 +260,52 @@ class _CountryStateCityPickerState extends State<CountryStateCityPicker> {
                 : _onCityChanged,
           ),
       ],
+    );
+  }
+
+  // ── Styling ────────────────────────────────────────────────────────────────
+  // These dropdowns sit between CustomTextField inputs on the profile forms,
+  // so they use the same fill, border, radius and label treatment: a bold
+  // label above the field rather than a floating Material label.
+
+  Widget _fieldLabel(String text) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 6.h),
+      child: Text(
+        text,
+        style: AppStyles.fontSize16(fontWeight: FontWeight.w600),
+      ),
+    );
+  }
+
+  TextStyle _valueTextStyle(BuildContext context) {
+    return TextStyle(
+      fontSize: 14.sp,
+      color: Theme.of(context).textTheme.bodyLarge?.color ?? Colors.black,
+    );
+  }
+
+  OutlineInputBorder _border() {
+    return OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8.0),
+      borderSide: BorderSide(width: 1.w, color: AppColors.primaryColor),
+    );
+  }
+
+  InputDecoration _fieldDecoration({String? helperText}) {
+    return InputDecoration(
+      isDense: true,
+      contentPadding:
+          EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+      filled: true,
+      fillColor: AppColors.fillColor,
+      helperText: helperText,
+      helperStyle: TextStyle(fontSize: 11.sp, color: AppColors.greyColor),
+      border: _border(),
+      enabledBorder: _border(),
+      focusedBorder: _border(),
+      disabledBorder: _border(),
+      errorBorder: _border(),
     );
   }
 }

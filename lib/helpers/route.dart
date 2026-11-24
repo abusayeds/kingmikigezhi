@@ -14,6 +14,7 @@ import 'package:event_sharing/views/screen/Home/Donet/suggestion_screen.dart';
 import 'package:event_sharing/views/screen/MyEvent/EventDetailsScreen/event_details_screen.dart';
 import 'package:event_sharing/views/screen/MyEvent/applied_search_screen.dart';
 import 'package:event_sharing/views/screen/MyEvent/my_event_filter_screen.dart';
+import 'package:event_sharing/views/screen/MyEvent/created/my_created_event_screen.dart';
 import 'package:event_sharing/views/screen/MyEvent/myevent_screen.dart';
 import 'package:event_sharing/views/screen/MyEvent/today/my_today_event_screen.dart';
 import 'package:event_sharing/views/screen/Profile/AboutUs/aboutus_screen.dart';
@@ -103,6 +104,8 @@ class AppRoutes {
   static String myFamilyScreen = "/my_family_screen";
   static String createMemberProfileScreen = "/CreateMemberProfileScreen";
   static String myEventScreen = "/myEventScreen";
+  /// Profile → My Event: only the events this user created.
+  static String myCreatedEventScreen = "/myCreatedEventScreen";
   static String myTodayEventScreen = "/MyTodayEventScreen";
   static String myEventFilterScreen = "/myEventFilterScreen";
   static String myConnectionScreen = "/myConnectionScreen";
@@ -210,6 +213,9 @@ class AppRoutes {
         name: myEventScreen,
         page: () => const MyEventScreen(),
         transition: Transition.noTransition),
+    GetPage(
+        name: myCreatedEventScreen,
+        page: () => const MyCreatedEventScreen()),
     GetPage(
         name: myTodayEventScreen,
         page: () => const MyTodayEventScreen(),

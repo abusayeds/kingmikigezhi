@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:event_sharing/controllers/home_controller.dart';
+import 'package:event_sharing/helpers/app_feedback.dart';
+import 'package:event_sharing/helpers/route.dart';
 import 'package:flutter/foundation.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../../../../models/event_model.dart';
@@ -10,6 +12,24 @@ import '../../../../utils/api_constants.dart';
 
 class Addeventcontroller extends GetxController {
   final ApiService _apiService = Get.find<ApiService>();
+
+  static const List<String> allowedCompetitionLevels = [
+    'Local-Easy',
+    'Local-Medium',
+    'Local-Difficult',
+    'Regional-Easy',
+    'Regional-Medium',
+    'Regional-Difficult',
+    'State-Easy',
+    'State-Medium',
+    'State-Difficult',
+    'National-Easy',
+    'National-Medium',
+    'National-Difficult',
+    'International-Easy',
+    'International-Medium',
+    'International-Difficult',
+  ];
 
   RxInt activeStepIndex = 0.obs;
   RxBool isLoading = false.obs;
@@ -79,7 +99,7 @@ class Addeventcontroller extends GetxController {
     // placement is unique per event on backend (@@unique([eventId, placement]))
     final exists = ownHistories.any((h) => h['placement'] == placement);
     if (exists) {
-      Fluttertoast.showToast(msg: "This record is already added");
+      AppFeedback.validation('This history record is already added.');
       return;
     }
     ownHistories.add({
@@ -207,7 +227,9 @@ class Addeventcontroller extends GetxController {
     // Step 2: Details
     final schedule = event.schedule;
     if (schedule != null) {
-      competitionLevel = schedule.competitionLevel;
+      // Older events may still store round types (Preliminary/SemiFinal/Final).
+      // Clear invalid values so the user re-selects a valid competition level.
+      competitionLevel = _normalizeCompetitionLevel(schedule.competitionLevel);
       eventType = schedule.eventType;
       if (schedule.registrationDate != null) {
         registrationDate = DateFormat('yyyy-MM-dd').format(schedule.registrationDate!);
@@ -235,6 +257,7 @@ class Addeventcontroller extends GetxController {
             "criteria": _mapGroupCriteria(g.criteria),
             "condition": _mapGroupCondition(g.condition),
             "value": _parseGroupValue(g.value),
+            "valueLabel": g.valueLabel,
             "rounds": (g.rounds ?? [])
                 .map((r) => {
                       "roundType": r.roundType ?? 'Preliminary',
@@ -262,8 +285,10 @@ class Addeventcontroller extends GetxController {
     }
   }
 
-  Future<void> fetchHistoryEvents() async {
-    isLoadingHistory.value = true;
+  /// [silent] keeps existing items visible and skips the field spinner.
+  Future<void> fetchHistoryEvents({bool silent = false}) async {
+    final showLoader = !silent && historyEvents.isEmpty;
+    if (showLoader) isLoadingHistory.value = true;
     try {
       final response = await _apiService.get(
         "${ApiConstants.getHistoryEvents}?page=1&limit=100",
@@ -273,64 +298,81 @@ class Addeventcontroller extends GetxController {
         historyEvents.assignAll(
           data.map((e) => Map<String, dynamic>.from(e as Map)),
         );
-      } else {
-        Fluttertoast.showToast(
-          msg: response['message'] ?? "Failed to fetch history events",
+      } else if (!silent) {
+        AppFeedback.error(
+          response['message']?.toString() ??
+              'Could not load history events right now.',
         );
       }
     } catch (e) {
-      Fluttertoast.showToast(msg: e.toString());
+      if (!silent) AppFeedback.error(e.toString());
     } finally {
-      isLoadingHistory.value = false;
+      if (showLoader) isLoadingHistory.value = false;
     }
   }
 
   Future<void> createEvent() async {
     if (!isUserAgreementAccepted.value) {
       showUserAgreementError.value = true;
+      activeStepIndex.value = 3;
+      AppFeedback.validation('Please accept the user agreement to continue.');
       return;
     }
     showUserAgreementError.value = false;
 
-    final hasCover = (coverImageBytes != null && coverImageBytes!.isNotEmpty) ||
-        (coverImagePath != null && coverImagePath!.isNotEmpty) ||
-        (isEditMode.value &&
-            existingCoverImageUrl != null &&
-            existingCoverImageUrl!.isNotEmpty);
-
-    if (!hasCover) {
-      Fluttertoast.showToast(msg: 'Please add a cover image');
-      return;
-    }
+    // The cover photo is optional — the backend falls back to the app logo.
     if (programId == null || programId!.trim().isEmpty) {
-      Fluttertoast.showToast(msg: 'Please select a program');
+      _goToStepWithValidation(0, 'Select a program for this event.');
       return;
     }
     if (eventName == null || eventName!.trim().isEmpty) {
-      Fluttertoast.showToast(msg: 'Please enter an event name');
+      _goToStepWithValidation(0, 'Enter an event name.');
       return;
     }
     if (organizer == null || organizer!.trim().isEmpty) {
-      Fluttertoast.showToast(msg: 'Please enter an organizer');
+      _goToStepWithValidation(0, 'Enter the organizer name.');
       return;
     }
     if (eventPortal == null || eventPortal!.trim().isEmpty) {
-      Fluttertoast.showToast(msg: 'Please enter an event portal URL');
+      _goToStepWithValidation(0, 'Add an event portal / website link.');
       return;
     }
     if (registrationPortal == null || registrationPortal!.trim().isEmpty) {
-      Fluttertoast.showToast(msg: 'Please enter a registration portal URL');
+      _goToStepWithValidation(0, 'Add a registration portal link.');
       return;
     }
     if (description == null || description!.trim().isEmpty) {
-      Fluttertoast.showToast(msg: 'Please enter a description');
+      _goToStepWithValidation(0, 'Write a short description for your event.');
       return;
     }
     if (registrationDate == null ||
+        registrationDate!.trim().isEmpty ||
         registrationTime == null ||
+        registrationTime!.trim().isEmpty ||
         deadlineDate == null ||
-        deadlineTime == null) {
-      Fluttertoast.showToast(msg: 'Please complete schedule dates and times');
+        deadlineDate!.trim().isEmpty ||
+        deadlineTime == null ||
+        deadlineTime!.trim().isEmpty) {
+      _goToStepWithValidation(
+        1,
+        'Complete registration open date/time and deadline date/time.',
+      );
+      return;
+    }
+
+    final normalizedCompetitionLevel =
+        _normalizeCompetitionLevel(competitionLevel);
+    if (normalizedCompetitionLevel == null) {
+      _goToStepWithValidation(
+        1,
+        'Select a competition level (for example Local-Easy or National-Medium).',
+      );
+      return;
+    }
+    competitionLevel = normalizedCompetitionLevel;
+
+    if (eventType == null || eventType!.trim().isEmpty) {
+      _goToStepWithValidation(1, 'Select an event type (Onsite, Online, or Hybrid).');
       return;
     }
 
@@ -338,7 +380,7 @@ class Addeventcontroller extends GetxController {
     try {
       // Prepare Schedule — cost/lateFee as decimal strings (backend Decimal fields)
       Map<String, dynamic> schedule = {
-        "competitionLevel": competitionLevel ?? "Local-Easy",
+        "competitionLevel": competitionLevel,
         "eventType": eventType ?? "Online",
         "registrationDate": _combineDateTime(registrationDate, registrationTime),
         "deadline": _combineDateTime(deadlineDate, deadlineTime),
@@ -390,11 +432,15 @@ class Addeventcontroller extends GetxController {
         final plainGroups = groups.map((g) {
           final rawRounds =
               (g['rounds'] as List?)?.cast<Map<String, dynamic>>() ?? [];
+          final label = g['valueLabel']?.toString().trim();
           return {
             "name": g['name']?.toString() ?? '',
             "criteria": _mapGroupCriteria(g['criteria']?.toString()),
             "condition": _mapGroupCondition(g['condition']?.toString()),
-            "value": _parseGroupValue(g['value']),
+            // Omit nulls — the backend treats absent as "not set".
+            if (_parseGroupValue(g['value']) != null)
+              "value": _parseGroupValue(g['value']),
+            if (label != null && label.isNotEmpty) "valueLabel": label,
             "rounds": rawRounds.map((r) {
               final rawCost = r['cost'];
               final rawLateFee = r['lateFee'];
@@ -489,11 +535,7 @@ class Addeventcontroller extends GetxController {
       }
 
       if (response['success'] == true) {
-        Fluttertoast.showToast(
-            msg: response['message'] ??
-                (isEditMode.value
-                    ? "Event updated successfully"
-                    : "Event created successfully"));
+        final wasEdit = isEditMode.value;
 
         // Parse the updated event from the response so the caller screen
         // can refresh itself without an extra API call.
@@ -508,22 +550,82 @@ class Addeventcontroller extends GetxController {
           }
         } catch (_) {}
 
-        // Pass the updated model back so EventDetailsScreen can update itself
-        Get.back(result: updatedEvent);
+        // Refresh feeds so the new/updated event shows in lists.
+        _refreshEventFeeds();
+
+        if (wasEdit) {
+          // Toast survives Get.back(); snackbar would be dismissed with the route.
+          AppFeedback.toast(
+            response['message']?.toString() ?? 'Event updated successfully.',
+          );
+          Get.back(result: updatedEvent ?? true);
+        } else {
+          AppFeedback.success(
+            response['message']?.toString() ?? 'Event created successfully.',
+          );
+          if (updatedEvent?.id != null) {
+            // Replace create form with the new event details page.
+            Get.offNamed(
+              AppRoutes.eventDetailsScreen,
+              arguments: updatedEvent,
+            );
+          } else {
+            // Fallback if response had no event payload.
+            Get.offNamed(AppRoutes.myEventScreen);
+          }
+        }
       } else {
         debugPrint("=== CREATE EVENT FAILED: $response");
-        Fluttertoast.showToast(
-            msg: response['message'] ??
-                (isEditMode.value
-                    ? "Failed to update event"
-                    : "Failed to create event"));
+        AppFeedback.error(
+          response['message']?.toString() ??
+              (isEditMode.value
+                  ? 'Could not update the event. Please try again.'
+                  : 'Could not create the event. Please try again.'),
+        );
       }
     } catch (e) {
       debugPrint("=== CREATE EVENT ERROR: $e");
-      Fluttertoast.showToast(msg: e.toString());
+      AppFeedback.error(
+        e.toString(),
+        title: isEditMode.value
+            ? 'Could not update event'
+            : 'Could not create event',
+      );
     } finally {
       isLoading.value = false;
     }
+  }
+
+  void _refreshEventFeeds() {
+    if (!Get.isRegistered<HomeController>()) return;
+    final home = Get.find<HomeController>();
+    home.fetchTodayEvents();
+    home.fetchUpcomingEvents();
+    home.fetchHistoryEvents();
+    home.fetchCreatedEvents();
+  }
+
+  /// Returns a valid schedule competition level, or null if the user must pick one.
+  String? _normalizeCompetitionLevel(String? raw) {
+    if (raw == null) return null;
+    final value = raw.trim();
+    if (value.isEmpty) return null;
+    if (allowedCompetitionLevels.contains(value)) return value;
+
+    // Legacy enum values previously stored on schedule.competitionLevel.
+    switch (value) {
+      case 'Preliminary':
+      case 'SemiFinal':
+      case 'Final':
+        return null;
+      default:
+        return null;
+    }
+  }
+
+  void _goToStepWithValidation(int step, String message) {
+    activeStepIndex.value = step;
+    AppFeedback.validation(message);
   }
 
   String _mapRepeatOption(String option) {
@@ -539,11 +641,16 @@ class Addeventcontroller extends GetxController {
   }
 
   /// Backend GroupCriteria: Age | Score
+  /// Backend `GroupCriteria`: Default | Age | Score | UTR | Level | Class.
   String _mapGroupCriteria(String? criteria) {
     switch (criteria) {
+      case 'Default':
       case 'Score':
-        return 'Score';
+      case 'UTR':
+      case 'Level':
+      case 'Class':
       case 'Age':
+        return criteria!;
       default:
         return 'Age';
     }
@@ -568,24 +675,29 @@ class Addeventcontroller extends GetxController {
       case 'Less And Equal':
       case 'LowerAndEqual':
         return 'LowerAndEqual';
+      case 'Default':
+        return 'Default';
+      case 'Equal':
+        return 'Equal';
       default:
         return 'UpTo';
     }
   }
 
-  /// Backend expects a number for group value (not "20+" / "Class A").
-  num _parseGroupValue(dynamic raw) {
+  /// Numeric group bound, or null when the group is label-based
+  /// (UTR / Level / Class) or Default.
+  num? _parseGroupValue(dynamic raw) {
     if (raw is num) return raw;
     final text = raw?.toString().trim() ?? '';
-    if (text.isEmpty) return 0;
+    if (text.isEmpty) return null;
     final direct = num.tryParse(text);
     if (direct != null) return direct;
-    // Extract leading number from legacy labels like "20+" or "6-12"
+    // Extract a leading number from labels like "20+" or "6-12".
     final match = RegExp(r'^\d+(\.\d+)?').firstMatch(text);
     if (match != null) {
-      return num.tryParse(match.group(0)!) ?? 0;
+      return num.tryParse(match.group(0)!);
     }
-    return 0;
+    return null;
   }
 
   String _formatDecimalString(num v) {
@@ -626,8 +738,9 @@ class Addeventcontroller extends GetxController {
     String criteria,
     String condition,
     dynamic value,
-    List<Map<String, dynamic>> rounds,
-  ) {
+    List<Map<String, dynamic>> rounds, {
+    String? valueLabel,
+  }) {
     // Deep-copy each round map so clearing tempRounds has zero effect on what
     // is stored inside the group.
     final copiedRounds = rounds
@@ -638,6 +751,9 @@ class Addeventcontroller extends GetxController {
       "criteria": _mapGroupCriteria(criteria),
       "condition": _mapGroupCondition(condition),
       "value": _parseGroupValue(value),
+      "valueLabel": valueLabel?.trim().isNotEmpty == true
+          ? valueLabel!.trim()
+          : null,
       "rounds": copiedRounds,
     });
     // Reassign so GetX triggers a reactive rebuild on all Obx listeners.

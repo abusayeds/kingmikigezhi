@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../controllers/home_controller.dart';
+
 class MyEventScreen extends StatefulWidget {
   const MyEventScreen({super.key});
 
@@ -28,6 +30,14 @@ class _MyEventScreenState extends State<MyEventScreen>
     _tabController.addListener(() {
       setState(() {});
     });
+    // Prefetch the community event lists once; revisit uses silent refresh.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!Get.isRegistered<HomeController>()) return;
+      final home = Get.find<HomeController>();
+      home.fetchTodayEvents();
+      home.fetchUpcomingEvents();
+      home.fetchHistoryEvents();
+    });
   }
 
   @override
@@ -35,6 +45,30 @@ class _MyEventScreenState extends State<MyEventScreen>
     _tabController.removeListener(() {});
     _tabController.dispose();
     super.dispose();
+  }
+
+  Widget _tabLabel(String text, int index) {
+    final selected = _tabController.index == index;
+    return Tab(
+      child: Container(
+        decoration: BoxDecoration(
+          color: selected ? AppColors.primaryColor : Colors.transparent,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(10.r),
+            topRight: Radius.circular(10.r),
+          ),
+        ),
+        child: Align(
+          alignment: Alignment.center,
+          child: CustomText(
+            text: text,
+            color: selected ? Colors.white : Colors.black,
+            fontWeight: FontWeight.w500,
+            fontsize: 13.sp,
+          ),
+        ),
+      ),
+    );
   }
 
   @override
@@ -53,97 +87,23 @@ class _MyEventScreenState extends State<MyEventScreen>
               Get.back();
             },
           ),
-          title: Text('Event', style:AppStyles.fontSize18(fontWeight: FontWeight.w600)),
+          title: Text('Event',
+              style: AppStyles.fontSize18(fontWeight: FontWeight.w600)),
           centerTitle: true,
           bottom: TabBar(
-            padding: EdgeInsets.symmetric(horizontal: 6.h),
+            padding: EdgeInsets.symmetric(horizontal: 4.h),
             controller: _tabController,
             indicatorColor: Colors.transparent,
             labelColor: Colors.black,
             unselectedLabelColor: Colors.grey,
             indicatorWeight: 1,
-
-            //dividerColor: Color(0xFFFFFFFF),
+            isScrollable: false,
+            labelPadding: EdgeInsets.symmetric(horizontal: 2.w),
             dividerColor: const Color(0xFFC8D7DE),
-            //tabAlignment: TabAlignment.fill,
             tabs: [
-              //========================> Tab 01  <====================
-              Tab(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: _tabController.index == 0
-                        ? AppColors.primaryColor
-                        : Colors.transparent,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10.r),
-                        topRight: Radius.circular(10.r)),
-                    // border: Border.all(color: const Color(0xFFBD9A73)),
-                  ),
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: CustomText(
-                      text: 'Today',
-                      color: _tabController.index == 0
-                          ? Colors.white
-                          : Colors.black,
-                      fontWeight: FontWeight.w500,
-                      fontsize: 14.sp,
-
-                    ),
-                  ),
-                ),
-              ),
-              //========================> Tab 02  <====================
-
-              Tab(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: _tabController.index == 1
-                        ? AppColors.primaryColor
-                        : Colors.transparent,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10.r),
-                        topRight: Radius.circular(10.r)),
-                    //border: Border.all(color: const Color(0xFFBD9A73)),
-                  ),
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: CustomText(
-                      text: 'Upcoming',
-                      color: _tabController.index == 1
-                          ? Colors.white
-                          : Colors.black,
-                      fontWeight: FontWeight.w500,
-                      fontsize: 14.sp,
-                    ),
-                  ),
-                ),
-              ),
-              //========================> Tab 03  <====================
-              Tab(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: _tabController.index == 2
-                        ? AppColors.primaryColor
-                        : Colors.transparent,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10.r),
-                        topRight: Radius.circular(10.r)),
-                    //border: Border.all(color: const Color(0xFFBD9A73)),
-                  ),
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: CustomText(
-                      text: 'History',
-                      color: _tabController.index == 2
-                          ? Colors.white
-                          : Colors.black,
-                      fontWeight: FontWeight.w500,
-                      fontsize: 14.sp,
-                    ),
-                  ),
-                ),
-              ),
+              _tabLabel('Today', 0),
+              _tabLabel('Upcoming', 1),
+              _tabLabel('History', 2),
             ],
           ),
         ),

@@ -1,6 +1,7 @@
 class ApiConstants {
-  // Production API. Dev tunnel: https://sabbir2001.ssh.bd
-  static const String baseUrl = 'https://api.daiwabuyi.com';
+   // Production API. Dev tunnel: https://sabbir2001.ssh.bd
+ static const String baseUrl = 'https://sabbir2001.ssh.bd';
+//   static const String baseUrl = 'https://api.daiwabuyi.com';
   static const String apiUrl = '$baseUrl/api/v1';
 
 
@@ -111,9 +112,16 @@ class ApiConstants {
   static const String getActiveEvents = '$apiUrl/events/feed/active';
   static const String getUpcomingEvents = '$apiUrl/events/feed/upcoming';
   static const String getHistoryEvents = '$apiUrl/events/feed/history';
+  static const String getMyCreatedEvents = '$apiUrl/events/feed/mine';
   static const String getEventsDetails = '$apiUrl/events/:eventId';
   static const String updateEvents = '$apiUrl/events/:eventId';
   static const String deleteEvent = '$apiUrl/events/:eventId';
+  /// Verify is a normal PATCH on the event with `isVerified: true`.
+  /// Any signed-in user may verify, the same as editing.
+  static String verifyEvent(String eventId) => '$apiUrl/events/$eventId';
+  /// Edit history (who changed what) shown at the bottom of event details.
+  static String eventEditLogs(String eventId) =>
+      '$apiUrl/events/edit-logs/$eventId';
 
 
   //Home Events
@@ -125,6 +133,9 @@ class ApiConstants {
 
 
   static const String appliedEvents = '$apiUrl/event-applications/my';
+  static const String createEventApplication = '$apiUrl/event-applications';
+  static const String deleteEventApplication =
+      '$apiUrl/event-applications/:appliedId';
 
   //Settings
   static const String getAboutSettings = '$apiUrl/settings/about';
@@ -137,6 +148,7 @@ class ApiConstants {
   //notification
   static const String getMyNotification = '$apiUrl/notifications/my';
   static const String readAllNotification = '$apiUrl/notifications/my/read-all';
+  static String readNotification(String id) => '$apiUrl/notifications/$id/read';
 
 
 
@@ -152,13 +164,18 @@ class ApiConstants {
 
   // Invitations
   static const String getMyConnections = '$apiUrl/connections/my-connections';
+  static String shareInvitationConnections(String eventId) =>
+      '$apiUrl/event-invitations/share/$eventId/connections';
   static String sendInvitations(String eventId) => '$apiUrl/event-invitations/share/$eventId';
   static const String getSentInvitation = '$apiUrl/event-invitations/sent';
   static const String getReceiveInvitation = '$apiUrl/event-invitations/received';
-  static String acceptById(String userId) => '$apiUrl/event-invitations/$userId/accept';
-  static String declineById(String userId) => '$apiUrl/event-invitations/$userId/decline';
-  static String acceptByAll(String userId) => '$apiUrl/event-invitations/$userId/accept-all';
-  static String declineByAll(String userId) => '$apiUrl/event-invitations/$userId/decline-all';
+  static String acceptById(String invitationId) =>
+      '$apiUrl/event-invitations/$invitationId/accept';
+  static String declineById(String invitationId) =>
+      '$apiUrl/event-invitations/$invitationId/decline';
+  // Bulk routes are fixed paths (not /:id/accept-all).
+  static const String acceptByAll = '$apiUrl/event-invitations/accept-all';
+  static const String declineByAll = '$apiUrl/event-invitations/decline-all';
 
 
 

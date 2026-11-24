@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:event_sharing/controllers/auth_controller.dart';
+import 'package:event_sharing/helpers/app_feedback.dart';
 import 'package:event_sharing/utils/phone_utils.dart';
 import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/skillItem.dart';
@@ -16,6 +17,7 @@ import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_icons.dart';
 import '../../../../utils/app_images.dart';
 import '../../../../utils/app_strings.dart';
+import '../../../base/app_remote_image.dart';
 import '../../../base/custom_button.dart';
 import '../../../base/custom_text.dart';
 import '../../../base/custom_text_field.dart';
@@ -66,20 +68,147 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   String? _selectedStartYear;
   String? _selectedProgramId;
+  /// When non-null, the Add button updates this skill instead of appending.
+  String? _editingSkillLabel;
+
+  /// True once the form has been filled from a real profile payload.
+  bool _prefilled = false;
+  Worker? _profileWorker;
 
   @override
   void initState() {
     super.initState();
     _loadProfileData();
+
+    // The profile is loaded asynchronously. Without this, opening Edit before
+    // the request finishes left phone country code, skills and location empty.
+    _profileWorker = ever<Map<String, dynamic>?>(
+      _authController.userProfile,
+      (profile) {
+        if (!mounted || _prefilled || profile == null) return;
+        setState(_loadProfileData);
+      },
+    );
+    if (_authController.userProfile.value == null) {
+      _authController.fetchUserProfile();
+    }
+
     if (_authController.editOptionPrograms.isEmpty ||
         _authController.editOptionYears.isEmpty) {
       _authController.fetchEditOptions();
     }
   }
 
+  Future<void> _beginEditSkill(String skill) async {
+    if (_authController.editOptionPrograms.isEmpty ||
+        _authController.editOptionYears.isEmpty) {
+      await _authController.fetchEditOptions();
+    }
+
+    final match = RegExp(r'^(.*) since (\d{4})$').firstMatch(skill.trim());
+    if (match == null) {
+      AppFeedback.validation(
+        'Could not edit this skill. Remove it and add it again.',
+      );
+      return;
+    }
+
+    final programName = match.group(1)!.trim();
+    final year = match.group(2)!;
+
+    String? programId;
+    for (final p in _authController.editOptionPrograms) {
+      if ((p['name'] ?? '').trim() == programName) {
+        programId = p['id'];
+        break;
+      }
+    }
+
+    final yearAvailable =
+        _authController.editOptionYears.any((y) => y.toString() == year);
+
+    // Keep the skill visible while it is being edited — removing it here made
+    // it look deleted if the user never pressed Update.
+    setState(() {
+      _editingSkillLabel = skill;
+      _selectedProgramId = programId;
+      _selectedStartYear = yearAvailable ? year : null;
+    });
+
+    if (programId == null || !yearAvailable) {
+      AppFeedback.info(
+        'Choose the program and year above, then tap Update.',
+      );
+    } else {
+      AppFeedback.info(
+        'Update Start Year or Program above, then tap Update.',
+      );
+    }
+  }
+
+  void _cancelSkillEdit() {
+    setState(() {
+      _editingSkillLabel = null;
+      _selectedProgramId = null;
+      _selectedStartYear = null;
+    });
+  }
+
+  void _addOrUpdateSkill() {
+    if (_selectedProgramId == null || _selectedStartYear == null) {
+      AppFeedback.validation('Select both a Start Year and a Program.');
+      return;
+    }
+
+    final programName = _authController.editOptionPrograms
+            .firstWhere(
+              (p) => p['id'] == _selectedProgramId,
+              orElse: () => {'name': ''},
+            )['name'] ??
+        '';
+    if (programName.isEmpty) {
+      AppFeedback.validation('Select a valid program.');
+      return;
+    }
+
+    final label = '$programName since $_selectedStartYear';
+
+    // One entry per program — the backend keys skills on (user, programName).
+    final duplicateIndex = skills.indexWhere(
+      (s) => s != _editingSkillLabel && _programNameOf(s) == programName,
+    );
+    if (duplicateIndex != -1) {
+      AppFeedback.validation('$programName is already in your skills.');
+      return;
+    }
+
+    setState(() {
+      if (_editingSkillLabel != null) {
+        final index = skills.indexOf(_editingSkillLabel!);
+        if (index != -1) {
+          skills[index] = label;
+        } else if (!skills.contains(label)) {
+          skills.add(label);
+        }
+      } else if (!skills.contains(label)) {
+        skills.add(label);
+      }
+      _editingSkillLabel = null;
+      _selectedProgramId = null;
+      _selectedStartYear = null;
+    });
+  }
+
+  /// "Chess since 2020" -> "Chess"
+  String _programNameOf(String skillLabel) {
+    final match = RegExp(r'^(.*) since (\d{4})$').firstMatch(skillLabel.trim());
+    return (match?.group(1) ?? skillLabel).trim();
+  }
+
   void _loadProfileData() {
     final profile = _authController.userProfile.value;
     if (profile != null) {
+      _prefilled = true;
       _accountIdController.text = profile['accountId']?.toString() ?? '';
       _firstNameController.text = profile['firstName'] ?? '';
       _lastNameController.text = profile['lastName'] ?? '';
@@ -141,6 +270,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   void dispose() {
+    _profileWorker?.dispose();
     _accountIdController.dispose();
     _firstNameController.dispose();
     _lastNameController.dispose();
@@ -206,18 +336,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                           width: 2.w, color: AppColors.white)),
                                   child: profilePicture != null &&
                                           profilePicture.toString().isNotEmpty
-                                      ? Image.network(
-                                          profilePicture,
+                                      ? AppRemoteImage(
+                                          url: profilePicture,
                                           fit: BoxFit.cover,
                                           width: 120.w,
                                           height: 120.h,
-                                          errorBuilder: (context, error, stackTrace) =>
-                                              Image.asset(
-                                            AppImages.logo,
-                                            fit: BoxFit.cover,
-                                            width: 120.w,
-                                            height: 120.h,
-                                          ),
                                         )
                                       : Image.asset(
                                           AppImages.logo,
@@ -348,10 +471,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             AppStyles.fontSize16(fontWeight: FontWeight.w600)),
                   ),
                   Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
+                        // Same fill, border and radius as CustomTextField so the
+                        // code box lines up with the number field beside it.
+                        height: 48.h,
                         decoration: BoxDecoration(
                             color: AppColors.fillColor,
                             border: Border.all(
@@ -361,7 +487,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             SizedBox(
-                              height: 55.h,
+                              height: 48.h,
                               child: CountryCodePicker(
                                 key: _countryPickerKey,
                                 showFlag: true,
@@ -394,6 +520,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       SizedBox(width: 10.w),
                       Expanded(
                         child: CustomTextField(
+                          height: 48.h,
                           controller: phoneNumberController,
                           keyboardType: TextInputType.phone,
                           hintText: AppStrings.phoneNumberHintText,
@@ -563,33 +690,32 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           SizedBox(height: 10.h),
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: 8.h),
-                            child: CustomButton(
-                              color: AppColors.buttonA47059,
-                              borderColor: Colors.white,
-                              onTap: () {
-                                if (_selectedProgramId != null &&
-                                    _selectedStartYear != null) {
-                                  final programName = _authController
-                                      .editOptionPrograms
-                                      .firstWhere(
-                                        (p) =>
-                                            p['id'] == _selectedProgramId,
-                                        orElse: () => {'name': ''},
-                                      )['name'] ??
-                                      '';
-                                  final label =
-                                      '$programName since $_selectedStartYear';
-                                  if (!skills.contains(label)) {
-                                    setState(() {
-                                      skills.add(label);
-                                      _selectedProgramId = null;
-                                      _selectedStartYear = null;
-                                    });
-                                  }
-                                }
-                              },
-                              text: "Add",
-                              textColor: Colors.white,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: CustomButton(
+                                    color: AppColors.buttonA47059,
+                                    borderColor: Colors.white,
+                                    onTap: _addOrUpdateSkill,
+                                    text: _editingSkillLabel != null
+                                        ? "Update"
+                                        : "Add",
+                                    textColor: Colors.white,
+                                  ),
+                                ),
+                                if (_editingSkillLabel != null) ...[
+                                  SizedBox(width: 10.w),
+                                  Expanded(
+                                    child: CustomButton(
+                                      color: AppColors.fillColor,
+                                      borderColor: AppColors.primaryColor,
+                                      onTap: _cancelSkillEdit,
+                                      text: "Cancel",
+                                      textColor: AppColors.primaryColor,
+                                    ),
+                                  ),
+                                ],
+                              ],
                             ),
                           ),
                           SizedBox(height: 8.h),
@@ -624,9 +750,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                                 AppIcons.editIcon,
                                             deleteIconPath:
                                                 AppIcons.trashIcon,
-                                            onEditTap: () {},
+                                            onEditTap: () =>
+                                                _beginEditSkill(skill),
                                             onDeleteTap: () {
                                               setState(() {
+                                                if (_editingSkillLabel ==
+                                                    skill) {
+                                                  _editingSkillLabel = null;
+                                                  _selectedProgramId = null;
+                                                  _selectedStartYear = null;
+                                                }
                                                 skills.remove(skill);
                                               });
                                             });
@@ -709,43 +842,40 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   Widget _buildGenderSelector() {
+    // Same fill, border, radius and padding as the CustomTextField inputs
+    // above and below it, so the form reads as one consistent column.
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
       decoration: BoxDecoration(
-        color: AppColors.backgroundColor,
+        color: AppColors.fillColor,
         borderRadius: BorderRadius.circular(8.r),
         border: Border.all(color: AppColors.primaryColor, width: 1.w),
       ),
       child: Row(
         children: [
-          Expanded(
-            child: Row(
-              children: [
-                Radio<String>(
-                  value: 'Male',
-                  groupValue: selectedGender,
-                  onChanged: (value) {
-                    setState(() => selectedGender = value!);
-                  },
-                ),
-                const Text('Male'),
-              ],
-            ),
+          Expanded(child: _genderOption('Male')),
+          Expanded(child: _genderOption('Female')),
+        ],
+      ),
+    );
+  }
+
+  Widget _genderOption(String label) {
+    return InkWell(
+      onTap: () => setState(() => selectedGender = label),
+      borderRadius: BorderRadius.circular(8.r),
+      child: Row(
+        children: [
+          Radio<String>(
+            value: label,
+            groupValue: selectedGender,
+            visualDensity: VisualDensity.compact,
+            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            activeColor: AppColors.primaryColor,
+            onChanged: (value) => setState(() => selectedGender = value!),
           ),
-          Expanded(
-            child: Row(
-              children: [
-                Radio<String>(
-                  value: 'Female',
-                  groupValue: selectedGender,
-                  onChanged: (value) {
-                    setState(() => selectedGender = value!);
-                  },
-                ),
-                const Text('Female'),
-              ],
-            ),
-          ),
+          SizedBox(width: 4.w),
+          Text(label, style: TextStyle(fontSize: 14.sp)),
         ],
       ),
     );

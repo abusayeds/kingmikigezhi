@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'dart:convert';
+
+import 'package:event_sharing/helpers/app_feedback.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../helpers/route.dart';
@@ -65,11 +66,7 @@ class AuthController extends GetxController {
       print('Error type: ${e.runtimeType}');
       print('=============================');
 
-      Fluttertoast.showToast(
-        msg: "Check error: $e",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-      );
+      AppFeedback.error('Could not check username right now.');
 
       return false; // If error occurs, assume username is available to let user proceed
     }
@@ -126,12 +123,8 @@ class AuthController extends GetxController {
         isLoading.value = false;
         update();
 
-        Fluttertoast.showToast(
-          msg: response['message'] ??
-              "Registration successful! Please verify your email.",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-        );
+        AppFeedback.success(response['message'] ??
+              "Registration successful! Please verify your email.");
 
         return true;
       }
@@ -161,13 +154,7 @@ class AuthController extends GetxController {
         }
       }
 
-      Fluttertoast.showToast(
-        msg: errorMessage,
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-      );
+      AppFeedback.error(errorMessage);
 
       return false;
     }
@@ -211,24 +198,14 @@ class AuthController extends GetxController {
           await apiService.saveUserData(response['data']['user']);
         }
 
-        Fluttertoast.showToast(
-          msg: response['message'] ?? "Email verified successfully!",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-        );
+        AppFeedback.success(response['message'] ?? "Email verified successfully!");
 
         // Navigate to home screen after successful verification
         Get.offAllNamed(AppRoutes.homeScreen);
         return true;
       }
 
-      Fluttertoast.showToast(
-        msg: response['message'] ?? "Verification failed. Please try again.",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-      );
+      AppFeedback.validation(response['message'] ?? "Verification failed. Please try again.");
 
       return false;
     } catch (e) {
@@ -240,13 +217,7 @@ class AuthController extends GetxController {
         errorMessage = e;
       }
 
-      Fluttertoast.showToast(
-        msg: errorMessage,
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-      );
+      AppFeedback.error(errorMessage);
 
       return false;
     }
@@ -273,21 +244,11 @@ class AuthController extends GetxController {
       update();
 
       if (response != null && response['success'] == true) {
-        Fluttertoast.showToast(
-          msg: response['message'] ?? "Verification code resent successfully!",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-        );
+        AppFeedback.success(response['message'] ?? "Verification code resent successfully!");
         return true;
       }
 
-      Fluttertoast.showToast(
-        msg: response['message'] ?? "Failed to resend verification code.",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-      );
+      AppFeedback.error(response['message'] ?? "Failed to resend verification code.");
 
       return false;
     } catch (e) {
@@ -299,13 +260,7 @@ class AuthController extends GetxController {
         errorMessage = e;
       }
 
-      Fluttertoast.showToast(
-        msg: errorMessage,
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-      );
+      AppFeedback.error(errorMessage);
 
       return false;
     }
@@ -349,11 +304,7 @@ class AuthController extends GetxController {
         isLoading.value = false;
         update();
 
-        Fluttertoast.showToast(
-          msg: response['message'] ?? "Login successful!",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-        );
+        AppFeedback.success(response['message'] ?? "Login successful!");
 
         // Navigate to home screen
         Get.offAllNamed(AppRoutes.homeScreen);
@@ -372,13 +323,7 @@ class AuthController extends GetxController {
         errorMessage = e;
       }
 
-      Fluttertoast.showToast(
-        msg: errorMessage,
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-      );
+      AppFeedback.error(errorMessage);
 
       return false;
     }
@@ -386,8 +331,7 @@ class AuthController extends GetxController {
 
   // Logout
   Future<void> logout() async {
-    await apiService.clearUserData();
-    Get.offAllNamed(AppRoutes.signInScreen);
+    await apiService.forceLogout(reason: 'User signed out');
   }
 
   // Check if user is logged in
@@ -433,12 +377,8 @@ class AuthController extends GetxController {
         storedEmail.value = email;
         await sharedPreferences.setString(ApiConstants.keyUserEmail, email);
 
-        Fluttertoast.showToast(
-          msg: response['message'] ??
-              "If the email exists, a password reset OTP has been sent.",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-        );
+        AppFeedback.success(response['message'] ??
+              "If the email exists, a password reset OTP has been sent.");
 
         return sessionId.isNotEmpty;
       }
@@ -453,13 +393,7 @@ class AuthController extends GetxController {
         errorMessage = e;
       }
 
-      Fluttertoast.showToast(
-        msg: errorMessage,
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-      );
+      AppFeedback.error(errorMessage);
 
       return false;
     }
@@ -488,11 +422,7 @@ class AuthController extends GetxController {
       update();
 
       if (response != null && response['success'] == true) {
-        Fluttertoast.showToast(
-          msg: response['message'] ?? "Email verified successfully!",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-        );
+        AppFeedback.success(response['message'] ?? "Email verified successfully!");
 
         // Store resetToken from response if available
         String resetToken = response['data']?['resetToken'] ?? '';
@@ -503,13 +433,7 @@ class AuthController extends GetxController {
         return response;
       }
 
-      Fluttertoast.showToast(
-        msg: response['message'] ?? "Verification failed. Please try again.",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-      );
+      AppFeedback.validation(response['message'] ?? "Verification failed. Please try again.");
 
       return null;
     } catch (e) {
@@ -521,13 +445,7 @@ class AuthController extends GetxController {
         errorMessage = e;
       }
 
-      Fluttertoast.showToast(
-        msg: errorMessage,
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-      );
+      AppFeedback.error(errorMessage);
 
       return null;
     }
@@ -554,21 +472,11 @@ class AuthController extends GetxController {
       update();
 
       if (response != null && response['success'] == true) {
-        Fluttertoast.showToast(
-          msg: response['message'] ?? "Verification code resent successfully!",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-        );
+        AppFeedback.success(response['message'] ?? "Verification code resent successfully!");
         return true;
       }
 
-      Fluttertoast.showToast(
-        msg: response['message'] ?? "Failed to resend verification code.",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-      );
+      AppFeedback.error(response['message'] ?? "Failed to resend verification code.");
 
       return false;
     } catch (e) {
@@ -580,13 +488,7 @@ class AuthController extends GetxController {
         errorMessage = e;
       }
 
-      Fluttertoast.showToast(
-        msg: errorMessage,
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-      );
+      AppFeedback.error(errorMessage);
 
       return false;
     }
@@ -615,11 +517,7 @@ class AuthController extends GetxController {
       update();
 
       if (response != null && response['success'] == true) {
-        Fluttertoast.showToast(
-          msg: response['message'] ?? "Password reset successful!",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-        );
+        AppFeedback.success(response['message'] ?? "Password reset successful!");
 
         // Navigate to sign in screen
         Get.offAllNamed(AppRoutes.signInScreen);
@@ -636,13 +534,7 @@ class AuthController extends GetxController {
         errorMessage = e;
       }
 
-      Fluttertoast.showToast(
-        msg: errorMessage,
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-      );
+      AppFeedback.error(errorMessage);
 
       return false;
     }
@@ -660,8 +552,12 @@ class AuthController extends GetxController {
   // Fetch user profile
   Future<void> fetchUserProfile() async {
     try {
-      isLoading.value = true;
-      update();
+      // Keep existing profile visible while refreshing in the background.
+      final showLoader = userProfile.value == null;
+      if (showLoader) {
+        isLoading.value = true;
+        update();
+      }
 
       final response = await apiService.get(ApiConstants.myProfile);
 
@@ -728,7 +624,8 @@ class AuthController extends GetxController {
         if (accountId != null && accountId.isNotEmpty) {
           fields['accountId'] = accountId;
         }
-        if (skills != null) fields['skills'] = skills.join(',');
+        // JSON, not a comma-joined string: program names may contain commas.
+        if (skills != null) fields['skills'] = jsonEncode(skills);
 
         response = await apiService.multipartRequest(
           ApiConstants.updateProfile,
@@ -801,11 +698,7 @@ class AuthController extends GetxController {
 
         await apiService.saveUserData(userProfile.value!);
 
-        Fluttertoast.showToast(
-          msg: response['message'] ?? "Profile updated successfully!",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-        );
+        AppFeedback.success(response['message'] ?? "Profile updated successfully!");
 
         await fetchUserProfile();
         return true;
@@ -815,13 +708,7 @@ class AuthController extends GetxController {
     } catch (e) {
       isLoading.value = false;
       update();
-      Fluttertoast.showToast(
-        msg: "Failed to update profile: $e",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-      );
+      AppFeedback.error("Failed to update profile: $e");
       return false;
     }
   }
@@ -849,11 +736,7 @@ class AuthController extends GetxController {
       update();
 
       if (response != null && response['success'] == true) {
-        Fluttertoast.showToast(
-          msg: response['message'] ?? "Password changed successfully!",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-        );
+        AppFeedback.success(response['message'] ?? "Password changed successfully!");
         return true;
       }
 
@@ -861,13 +744,7 @@ class AuthController extends GetxController {
     } catch (e) {
       isLoading.value = false;
       update();
-      Fluttertoast.showToast(
-        msg: "Failed to change password: $e",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-      );
+      AppFeedback.error("Failed to change password: $e");
       return false;
     }
   }

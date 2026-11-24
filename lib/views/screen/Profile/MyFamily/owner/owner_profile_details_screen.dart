@@ -1,15 +1,19 @@
+import 'package:event_sharing/helpers/route_args.dart';
 import 'package:event_sharing/utils/api_constants.dart';
 import 'package:event_sharing/utils/app_strings.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_icons.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:event_sharing/views/base/custom_list_tile.dart';
+import 'package:event_sharing/views/base/skeletons.dart';
+import 'package:event_sharing/controllers/family_controller.dart';
 import 'package:event_sharing/services/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:shimmer/shimmer.dart';
 
 class OwnerProfileDetailsScreen extends StatefulWidget {
   const OwnerProfileDetailsScreen({super.key});
@@ -20,8 +24,46 @@ class OwnerProfileDetailsScreen extends StatefulWidget {
 }
 
 class _OwnerProfileDetailsScreenState extends State<OwnerProfileDetailsScreen> {
+  final FamilyController _familyController = Get.find<FamilyController>();
   Map<String, dynamic>? _userData;
   bool _isLoading = true;
+
+  /// Relationship comes from the family membership row, not the user profile.
+  String get _relationshipLabel {
+    final userId = routeArgString('userId');
+    if (userId.isEmpty) return 'N/A';
+
+    final members = [
+      ..._familyController.familyOwners,
+      ..._familyController.familyMembers,
+    ];
+    for (final member in members) {
+      if (member.userId == userId) {
+        return _relationDisplayName(member.relationShip);
+      }
+    }
+    return 'N/A';
+  }
+
+  /// API enum values are not display-friendly (`Spous`, `ChildStephanie`).
+  String _relationDisplayName(String? relation) {
+    final value = (relation ?? '').trim();
+    if (value.isEmpty) return 'N/A';
+    switch (value) {
+      case 'Self':
+        return 'Self';
+      case 'Spous':
+        return 'Spouse';
+      case 'ChildStephanie':
+        return 'Child Stephanie';
+      case 'ChildSophia':
+        return 'Child Sophia';
+      case 'Other':
+        return 'Other';
+      default:
+        return value;
+    }
+  }
 
   @override
   void initState() {
@@ -30,8 +72,8 @@ class _OwnerProfileDetailsScreenState extends State<OwnerProfileDetailsScreen> {
   }
 
   Future<void> _fetchUserProfile() async {
-    final userId = Get.arguments?['userId'];
-    if (userId == null) {
+    final userId = routeArgString('userId');
+    if (userId.isEmpty) {
       setState(() => _isLoading = false);
       return;
     }
@@ -76,8 +118,7 @@ class _OwnerProfileDetailsScreenState extends State<OwnerProfileDetailsScreen> {
         centerTitle: true,
       ),
       body: _isLoading
-          ? Center(
-              child: CircularProgressIndicator(color: AppColors.primaryColor))
+          ? const ProfileSkeleton()
           : _userData == null
               ? const Center(child: Text('No data found'))
               : SingleChildScrollView(
@@ -106,13 +147,17 @@ class _OwnerProfileDetailsScreenState extends State<OwnerProfileDetailsScreen> {
                                           width: 120,
                                           fit: BoxFit.cover,
                                           placeholder: (context, url) =>
-                                              Container(
-                                            height: 120,
-                                            width: 120,
-                                            color: AppColors.colorEDF2F4,
-                                            child: Icon(Icons.person,
-                                                size: 50,
-                                                color: AppColors.greyColor),
+                                              Shimmer.fromColors(
+                                            baseColor:
+                                                Colors.grey.withOpacity(0.6),
+                                            highlightColor:
+                                                Colors.grey.withOpacity(0.3),
+                                            child: Container(
+                                              height: 120,
+                                              width: 120,
+                                              color: Colors.grey
+                                                  .withOpacity(0.6),
+                                            ),
                                           ),
                                           errorWidget: (context, url, error) =>
                                               Container(
@@ -176,7 +221,7 @@ class _OwnerProfileDetailsScreenState extends State<OwnerProfileDetailsScreen> {
                         _buildFieldLabel('Relationship'),
                         CustomListTile(
                           backgroundColor: AppColors.colorEDF2F4,
-                          title: 'N/A',
+                          title: _relationshipLabel,
                         ),
                         _buildFieldLabel('Account ID'),
                         CustomListTile(
