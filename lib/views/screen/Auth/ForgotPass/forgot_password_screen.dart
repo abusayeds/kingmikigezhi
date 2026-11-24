@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:event_sharing/helpers/route.dart';
+import 'package:event_sharing/helpers/route_args.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -33,16 +34,16 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     super.initState();
     _startTimer();
     // Get email and sessionId from arguments or stored values
-    final args = Get.arguments as Map<String, dynamic>? ?? {};
+    final args = routeArgsMap();
 
     if (args['sessionId'] != null) {
-      sessionId = args['sessionId'];
+      sessionId = args['sessionId'].toString();
     } else {
       sessionId = authController.forgotPasswordSessionId.value;
     }
 
     if (args['email'] != null) {
-      emailCTRl.text = args['email'];
+      emailCTRl.text = args['email'].toString();
     } else {
       emailCTRl.text = authController.getStoredEmail();
     }

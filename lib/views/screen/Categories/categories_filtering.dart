@@ -7,6 +7,7 @@ import 'package:event_sharing/utils/app_strings.dart';
 import 'package:event_sharing/views/base/custom_button.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:event_sharing/views/base/custom_text_field.dart';
+import 'package:event_sharing/views/base/dropdown_field_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -151,16 +152,15 @@ class _CategoriesFilterScreenState extends State<CategoriesFilterScreen> {
                   ),
                   contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
                 ),
-                child: DropdownButtonHideUnderline(
-                  child: _isLoadingPrograms
-                      ? const Center(
-                          child: SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(strokeWidth: 2),
-                          ),
-                        )
-                      : DropdownButton<Program>(
+                child: Row(
+                  children: [
+                    if (_isLoadingPrograms) ...[
+                      const DropdownFieldLoader(),
+                      SizedBox(width: 8.w),
+                    ],
+                    Expanded(
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<Program>(
                           padding: EdgeInsets.symmetric(vertical: 5.w),
                           iconDisabledColor: AppColors.primaryColor,
                           icon: SvgPicture.asset(
@@ -171,19 +171,30 @@ class _CategoriesFilterScreenState extends State<CategoriesFilterScreen> {
                           iconEnabledColor: AppColors.primaryColor,
                           isExpanded: true,
                           value: _selectedProgram,
-                          hint: CustomText(text: 'Select Program', fontsize: 14.sp),
+                          hint: CustomText(
+                            text: _isLoadingPrograms
+                                ? 'Loading programs...'
+                                : 'Select Program',
+                            fontsize: 14.sp,
+                          ),
                           items: _apiPrograms.map((Program value) {
                             return DropdownMenuItem<Program>(
                               value: value,
                               child: Text(value.name ?? 'Unknown'),
                             );
                           }).toList(),
-                          onChanged: (Program? newValue) {
-                            setState(() {
-                              _selectedProgram = newValue;
-                            });
-                          },
+                          onChanged:
+                              _isLoadingPrograms && _apiPrograms.isEmpty
+                                  ? null
+                                  : (Program? newValue) {
+                                      setState(() {
+                                        _selectedProgram = newValue;
+                                      });
+                                    },
                         ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               SizedBox(height: 16.h),
@@ -247,11 +258,16 @@ class _CategoriesFilterScreenState extends State<CategoriesFilterScreen> {
               ),
               CustomTextField(
                 controller: _locationCTRL,
-                hintText: 'Type here',
+                hintText: 'Type city or place',
+                validator: (_) => null,
+                keyboardType: TextInputType.text,
+                onChanged: (_) => setState(() {}),
                 sufixicons: Padding(
-                  padding: EdgeInsets.all(16.w),
-                  child: SvgPicture.asset(AppIcons.locationIcon,
-                      color: AppColors.primaryColor),
+                  padding: EdgeInsets.all(12.w),
+                  child: SvgPicture.asset(
+                    AppIcons.locationIcon,
+                    color: AppColors.primaryColor,
+                  ),
                 ),
               ),
               SizedBox(height: 16.h),
@@ -320,7 +336,8 @@ class _CategoriesFilterScreenState extends State<CategoriesFilterScreen> {
                     bottom: 16.h,
                   ),
                   CustomText(
-                    text: '\$20-\$4K',
+                    text:
+                        '\$${_currentRangeValues.start.round()}-\$${_currentRangeValues.end.round()}',
                     fontWeight: FontWeight.w500,
                     fontsize: 16.sp,
                     bottom: 16.h,
@@ -343,75 +360,117 @@ class _CategoriesFilterScreenState extends State<CategoriesFilterScreen> {
                   });
                 },
                 activeColor: AppColors.primaryColor,
-                inactiveColor: Colors.blue.withOpacity(0.2),
+                inactiveColor: Colors.blue.withValues(alpha: 0.2),
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('\$${_currentRangeValues.start.round()}',style: GoogleFonts.poppins(
+                    Text(
+                      '\$${_currentRangeValues.start.round()}',
+                      style: GoogleFonts.poppins(
                         fontWeight: FontWeight.w400,
                         fontSize: 8.sp,
-                        color: const Color(0xFF20353F)
-                    ),),
-                    //CustomText(text: '\$${_currentRangeValues.start.round()}'),
-                    //CustomText(text: '\$${_currentRangeValues.end.round()}'),
-                    Text('\$${_currentRangeValues.end.round()}',style: GoogleFonts.poppins(
+                        color: const Color(0xFF20353F),
+                      ),
+                    ),
+                    Text(
+                      '\$${_currentRangeValues.end.round()}',
+                      style: GoogleFonts.poppins(
                         fontWeight: FontWeight.w400,
                         fontSize: 8.sp,
-                        color: const Color(0xFF20353F)
-                    ),),
+                        color: const Color(0xFF20353F),
+                      ),
+                    ),
                   ],
                 ),
               ),
-              SizedBox(height: 131.h),
-              // const Spacer(),
+              SizedBox(height: 48.h),
               //===========================> Button Section <===============================
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: CustomButton(
-                      onTap: () {
-                        setState(() {
-                          _selectedProgram = null;
-                          _selectedType = null;
-                          _selectedCategory = null;
-                          _locationCTRL.clear();
-                          _currentRangeValues = const RangeValues(50, 4000);
-                        });
-                      },
-                      borderColor: AppColors.buttonColor,
-                      text: "Reset",
-                      color: AppColors.colorEDF2F4,
-                      textColor: Colors.black,
+              SafeArea(
+                top: false,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: CustomButton(
+                        onTap: _onReset,
+                        borderColor: AppColors.buttonColor,
+                        text: "Reset",
+                        color: AppColors.colorEDF2F4,
+                        textColor: Colors.black,
+                      ),
                     ),
-                  ),
-                  SizedBox(width: 16.w),
-                  Expanded(
-                    child: CustomButton(
-                      onTap: () {
-                        Navigator.pop(context, {
-                          'program': _selectedProgram?.id,
-                          'type': _selectedType,
-                          'category': _mapCategoryGroup(_selectedCategory),
-                          'location': _locationCTRL.text,
-                          'priceRange': _currentRangeValues,
-                        });
-                      },
-                      text: "Apply",
-                      textColor: Colors.white,
-                      color: AppColors.buttonColor,
+                    SizedBox(width: 16.w),
+                    Expanded(
+                      child: CustomButton(
+                        onTap: _onApply,
+                        text: "Apply",
+                        textColor: Colors.white,
+                        color: AppColors.buttonColor,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-              SizedBox(height: 75.h),
+              SizedBox(height: 24.h),
             ],
           ),
         ),
       ),
     );
+  }
+
+  void _onReset() {
+    FocusScope.of(context).unfocus();
+    setState(() {
+      _selectedProgram = null;
+      _selectedType = null;
+      _selectedCategory = null;
+      _locationCTRL.clear();
+      _currentRangeValues = const RangeValues(50, 4000);
+    });
+    Get.snackbar(
+      'Filter',
+      'Filters reset',
+      snackPosition: SnackPosition.BOTTOM,
+      duration: const Duration(seconds: 1),
+    );
+  }
+
+  void _onApply() {
+    FocusScope.of(context).unfocus();
+    final location = _locationCTRL.text.trim();
+    final result = <String, dynamic>{
+      'program': _selectedProgram?.id,
+      'type': _selectedType,
+      'category': _mapCategoryGroup(_selectedCategory),
+      'location': location,
+      'priceRange': _currentRangeValues,
+      if (location.isNotEmpty) 'searchTerm': location,
+    };
+
+    final hasAny = (_selectedProgram?.id?.toString().isNotEmpty ?? false) ||
+        (_selectedType?.isNotEmpty ?? false) ||
+        (_selectedCategory?.isNotEmpty ?? false) ||
+        location.isNotEmpty;
+
+    if (!hasAny) {
+      Get.snackbar(
+        'Filter',
+        'Select at least one filter or enter a location',
+        snackPosition: SnackPosition.BOTTOM,
+        duration: const Duration(seconds: 2),
+      );
+      return;
+    }
+
+    Get.back(result: result);
+  }
+
+  @override
+  void dispose() {
+    _locationCTRL.dispose();
+    super.dispose();
   }
 }

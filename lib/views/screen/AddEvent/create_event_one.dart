@@ -116,7 +116,7 @@ class _CreateEventOneState extends State<CreateEventOne> {
           children: [
             // Wrap the stepper in Obx to make it reactive
             Obx(() => SizedBox(
-              height: 100.h,
+              height: 78.h,
               child: EasyStepper(
                 activeStep: addEventController.activeStepIndex.value,
                 stepShape: StepShape.rRectangle,
@@ -263,22 +263,36 @@ class _CreateEventOneState extends State<CreateEventOne> {
                 onStepReached: (index) => addEventController.activeStepIndex.value = index,
               ),
             )),
-            // Use IndexedStack so all step widgets stay alive — their State
-            // (text controllers, dropdown values, tempRounds, etc.) is never
-            // destroyed when the user navigates between steps.
-            Obx(() => IndexedStack(
-              index: addEventController.activeStepIndex.value.clamp(0, 3),
-              children: const [
-                Steponeform(),
-                StepTwoForm(),
-                StepThreeForm(),
-                StepFiveForm(),
-              ],
-            )),
+            // Keep all steps mounted (state preserved) but only the active
+            // step takes layout space — IndexedStack caused huge empty gaps
+            // because it always sized to the tallest step.
+            Obx(() {
+              final index =
+                  addEventController.activeStepIndex.value.clamp(0, 3);
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _keepAliveStep(visible: index == 0, child: const Steponeform()),
+                  _keepAliveStep(visible: index == 1, child: const StepTwoForm()),
+                  _keepAliveStep(visible: index == 2, child: const StepThreeForm()),
+                  _keepAliveStep(visible: index == 3, child: const StepFiveForm()),
+                ],
+              );
+            }),
           ],
         ),
       ),
       ),
+    );
+  }
+
+  Widget _keepAliveStep({required bool visible, required Widget child}) {
+    return Visibility(
+      visible: visible,
+      maintainState: true,
+      maintainAnimation: true,
+      maintainSize: false,
+      child: child,
     );
   }
 }

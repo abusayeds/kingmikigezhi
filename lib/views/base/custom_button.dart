@@ -16,12 +16,14 @@ class CustomButton extends StatelessWidget {
         required this.onTap,
         required this.text,
         this.loading = false,
+        this.enabled = true,
         this.width,
         this.height,
         this.textColor});
   final Function() onTap;
   final String text;
   final bool loading;
+  final bool enabled;
   final double? height;
   final double? width;
   final Color? color;
@@ -32,18 +34,23 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Determine the final border color based on your logic
-    final finalBorderColor = borderColor ?? (color ?? AppColors.buttonColor);
+    final isDisabled = !enabled || loading;
+    final baseColor = color ?? AppColors.buttonColor;
+    final finalBorderColor = borderColor ?? baseColor;
+    final bgColor = (!enabled && !loading)
+        ? AppColors.greyColor
+        : baseColor;
 
     return Padding(
         padding: padding,
         child: ElevatedButton(
-          onPressed: loading ? () {} : onTap,
+          onPressed: isDisabled ? null : onTap,
           style: ElevatedButton.styleFrom(
+            disabledBackgroundColor: bgColor,
             shape: RoundedRectangleBorder(
                 side: BorderSide(width: 1.w, color: finalBorderColor),
                 borderRadius: BorderRadius.circular(8.r)),
-            backgroundColor: color ?? AppColors.buttonColor,
+            backgroundColor: bgColor,
             minimumSize: Size(width ?? Get.width, height ?? AppStyles.standardHeight),
           ),
           child: loading

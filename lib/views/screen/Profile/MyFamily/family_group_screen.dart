@@ -5,6 +5,8 @@ import 'package:event_sharing/utils/app_icons.dart';
 import 'package:event_sharing/utils/media_url_utils.dart';
 import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/custom_network_image.dart';
+import 'package:event_sharing/views/base/pull_to_refresh.dart';
+import 'package:event_sharing/views/base/skeletons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -84,31 +86,37 @@ class _FamilyGroupScreenState extends State<FamilyGroupScreen> {
   Widget _buildFamilyContent() {
     if (_familyController.isLoading.value &&
         _familyController.families.isEmpty) {
-      return const Center(child: CircularProgressIndicator());
+      return const ConnectionListSkeleton();
     }
 
     if (_familyController.families.isEmpty) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.family_restroom, size: 64, color: Colors.grey),
-            SizedBox(height: 16.h),
-            const Text(
-              'No families yet',
-              style: TextStyle(fontSize: 16, color: Colors.grey),
-            ),
-            SizedBox(height: 8.h),
-            const Text(
-              'Create your first family',
-              style: TextStyle(fontSize: 14, color: Colors.grey),
-            ),
-          ],
+      return PullToRefresh.empty(
+        onRefresh: () => _familyController.fetchFamilies(),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.family_restroom, size: 64, color: Colors.grey),
+              SizedBox(height: 16.h),
+              const Text(
+                'No families yet',
+                style: TextStyle(fontSize: 16, color: Colors.grey),
+              ),
+              SizedBox(height: 8.h),
+              const Text(
+                'Create your first family',
+                style: TextStyle(fontSize: 14, color: Colors.grey),
+              ),
+            ],
+          ),
         ),
       );
     }
 
-    return SingleChildScrollView(
+    return PullToRefresh(
+      onRefresh: () => _familyController.fetchFamilies(),
+      child: SingleChildScrollView(
+      physics: PullToRefresh.alwaysScrollable(),
       child: Column(
         children: [
           ListView.builder(
@@ -165,6 +173,7 @@ class _FamilyGroupScreenState extends State<FamilyGroupScreen> {
           SizedBox(height: 20.h),
         ],
       ),
+    ),
     );
   }
 
@@ -373,22 +382,28 @@ class _FamilyGroupScreenState extends State<FamilyGroupScreen> {
                           borderRadius: BorderRadius.circular(100),
                         ),
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SvgPicture.asset(
-                            AppIcons.eyeIcon,
-                            width: 24.w,
-                            height: 24.h,
-                            color: Colors.white,
-                          ),
-                          SizedBox(width: 4.w),
-                          Text(
-                            'Update Family',
-                            style: AppStyles.fontSize14(
-                                color: AppColors.backgroundColor),
-                          ),
-                        ],
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SvgPicture.asset(
+                              AppIcons.eyeIcon,
+                              width: 18.w,
+                              height: 18.h,
+                              color: Colors.white,
+                            ),
+                            SizedBox(width: 4.w),
+                            Text(
+                              'Update Family',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: AppStyles.fontSize12(
+                                  color: AppColors.backgroundColor),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -410,22 +425,28 @@ class _FamilyGroupScreenState extends State<FamilyGroupScreen> {
                           borderRadius: BorderRadius.circular(100.r),
                         ),
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SvgPicture.asset(
-                            AppIcons.delete,
-                            width: 24.w,
-                            height: 24.h,
-                            color: Colors.white,
-                          ),
-                          SizedBox(width: 4.w),
-                          Text(
-                            'Delete Family',
-                            style: AppStyles.fontSize14(
-                                color: AppColors.backgroundColor),
-                          ),
-                        ],
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SvgPicture.asset(
+                              AppIcons.delete,
+                              width: 18.w,
+                              height: 18.h,
+                              color: Colors.white,
+                            ),
+                            SizedBox(width: 4.w),
+                            Text(
+                              'Delete Family',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: AppStyles.fontSize12(
+                                  color: AppColors.backgroundColor),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),

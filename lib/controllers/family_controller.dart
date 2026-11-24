@@ -34,8 +34,11 @@ class FamilyController extends GetxController {
 
   Future<void> fetchFamilies({int page = 1, bool showErrorToast = true}) async {
     try {
-      isLoading.value = true;
-      update();
+      // Keep existing families visible on revisit.
+      if (families.isEmpty) {
+        isLoading.value = true;
+        update();
+      }
 
       final String url = '${ApiConstants.myFamilies}?page=$page&limit=10';
       final response = await apiService.get(url);
@@ -284,8 +287,12 @@ class FamilyController extends GetxController {
   Future<void> fetchFamilyMembers(String familyId,
       {bool isOwner = false, bool showErrorToast = true}) async {
     try {
-      isLoading.value = true;
-      update();
+      final hasCachedMembers =
+          (isOwner ? familyOwners : familyMembers).isNotEmpty;
+      if (!hasCachedMembers) {
+        isLoading.value = true;
+        update();
+      }
 
       String url =
           ApiConstants.familyMemberbyFamilyId.replaceAll(':familyId', familyId);

@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_images.dart';
+import '../../../base/app_remote_image.dart';
 import '../../../base/custom_text.dart';
 
 class TopProfileSection extends StatelessWidget {
@@ -53,18 +54,11 @@ class TopProfileSection extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8.r),
                       child: hasPicture
-                          ? Image.network(
-                              profilePicture.toString(),
+                          ? AppRemoteImage(
+                              url: profilePicture.toString(),
                               fit: BoxFit.cover,
                               width: 120.w,
                               height: 120.h,
-                              errorBuilder: (context, error, stackTrace) =>
-                                  Image.asset(
-                                AppImages.logo,
-                                fit: BoxFit.cover,
-                                width: 120.w,
-                                height: 120.h,
-                              ),
                             )
                           : Image.asset(
                               AppImages.logo,

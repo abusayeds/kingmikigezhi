@@ -39,7 +39,11 @@ class SettingsController extends GetxController {
   /// Fetch current saved settings
   Future<void> fetchSettings() async {
     try {
-      isLoadingSettings.value = true;
+      if (dateTimeFormat.value.isEmpty &&
+          timeZone.value.isEmpty &&
+          currency.value.isEmpty) {
+        isLoadingSettings.value = true;
+      }
       final response = await apiService.get(ApiConstants.getUserSettings);
       if (response != null && response['success'] == true) {
         final data = response['data'] ?? {};
@@ -60,7 +64,9 @@ class SettingsController extends GetxController {
   /// Fetch dropdown options
   Future<void> fetchSettingsOptions() async {
     try {
-      isLoadingOptions.value = true;
+      if (dateTimeFormatOptions.isEmpty) {
+        isLoadingOptions.value = true;
+      }
       final response = await apiService.get(ApiConstants.getUserSettingsOptions);
       if (response != null && response['success'] == true) {
         final data = response['data'] ?? {};

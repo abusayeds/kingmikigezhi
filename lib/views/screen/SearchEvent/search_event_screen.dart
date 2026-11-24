@@ -14,6 +14,8 @@ import '../../../utils/app_images.dart';
 import '../../base/app_remote_image.dart';
 import '../../base/custom_text.dart';
 import '../../base/custom_text_field.dart';
+import '../../base/pull_to_refresh.dart';
+import '../../base/skeletons.dart';
 
 class SearchEventScreen extends StatefulWidget {
   const SearchEventScreen({super.key});
@@ -35,14 +37,18 @@ class _SearchEventScreenState extends State<SearchEventScreen> {
     
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final dynamic args = Get.arguments;
-      if (args != null && args is Map<String, dynamic>) {
-        if (args.containsKey('searchTerm')) {
-          _searchController.text = args['searchTerm'] ?? '';
+      if (args is Map) {
+        final map = Map<String, dynamic>.from(args);
+        final term = (map['searchTerm'] ?? map['location'] ?? '')
+            .toString()
+            .trim();
+        if (term.isNotEmpty) {
+          _searchController.text = term;
         }
-        _performSearch(args);
-      } else if (args != null && args is String) {
-        _searchController.text = args;
-        _performSearch({'searchTerm': args});
+        _performSearch(map);
+      } else if (args is String && args.trim().isNotEmpty) {
+        _searchController.text = args.trim();
+        _performSearch({'searchTerm': args.trim()});
       }
     });
   }
@@ -62,7 +68,7 @@ class _SearchEventScreenState extends State<SearchEventScreen> {
     }
   }
 
-  void _performSearch(Map<String, dynamic> filters, {bool isLoadMore = false}) {
+  Future<void> _performSearch(Map<String, dynamic> filters, {bool isLoadMore = false}) async {
     if (!isLoadMore) {
       _activeFilters = Map<String, dynamic>.from(filters);
     }
@@ -80,7 +86,7 @@ class _SearchEventScreenState extends State<SearchEventScreen> {
       }
     }
 
-    _homeController.searchEvents(
+    await _homeController.searchEvents(
       isLoadMore: isLoadMore,
       searchTerm: searchTerm.isNotEmpty ? searchTerm : null,
       programId: merged['program']?.toString(),
@@ -136,22 +142,25 @@ class _SearchEventScreenState extends State<SearchEventScreen> {
             Expanded(
               child: Obx(() {
                 if (_homeController.isLoadingSearch.value && _homeController.searchedEvents.isEmpty) {
-                  return const Center(child: CircularProgressIndicator());
+                  return const EventListSkeleton();
                 }
                 
                 if (_homeController.searchedEvents.isEmpty) {
-                  return const Center(child: Text("No events found matching your search."));
+                  return PullToRefresh.empty(
+                    onRefresh: () => _performSearch(_activeFilters),
+                    child: const Center(child: Text("No events found matching your search.")),
+                  );
                 }
 
-                return ListView.builder(
+                return PullToRefresh(
+                  onRefresh: () => _performSearch(_activeFilters),
+                  child: ListView.builder(
                   controller: _scrollController,
+                  physics: PullToRefresh.alwaysScrollable(),
                   itemCount: _homeController.searchedEvents.length + (_homeController.isLoadingSearch.value ? 1 : 0),
                   itemBuilder: (context, index) {
                     if (index == _homeController.searchedEvents.length) {
-                      return const Center(child: Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: CircularProgressIndicator(),
-                      ));
+                      return const ListLoadMoreSkeleton();
                     }
 
                     final event = _homeController.searchedEvents[index];
@@ -267,6 +276,7 @@ class _SearchEventScreenState extends State<SearchEventScreen> {
                       ),
                     );
                   },
+                ),
                 );
               }),
             ),

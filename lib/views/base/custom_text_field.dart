@@ -73,90 +73,83 @@ class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
     final isMultiLine = (widget.maxLines ?? 1) > 1;
+    final lines = widget.maxLines ?? 1;
+    // Don't multiply the full single-line field height by maxLines —
+    // that made Note/Description fields huge with empty space inside.
     final fieldHeight = widget.height ??
         (isMultiLine
-            ? AppStyles.standardHeight * (widget.maxLines ?? 2)
+            ? (AppStyles.standardHeight + (18.h * (lines - 1)))
             : AppStyles.standardHeight);
-    return ConstrainedBox(
-      constraints: BoxConstraints(
-        minHeight: fieldHeight,
-        maxHeight: isMultiLine ? double.infinity : fieldHeight,
-      ),
-      child: SizedBox(
-        height: isMultiLine ? null : fieldHeight,
-        child: TextFormField(
-      maxLines: widget.maxLines,
-      onTap: widget.onTab,
-      onChanged: widget.onChanged,
-      onFieldSubmitted: widget.onFieldSubmitted,
-      readOnly: widget.readOnly ?? false,
-      controller: widget.controller,
-      keyboardType: widget.keyboardType,
-      obscuringCharacter: widget.obscureCharacrter ?? '*',
-      validator: widget.validator ?? _defaultValidator,
-      cursorColor: AppColors.primaryColor,
-      obscureText: widget.isPassword ? obscureText : false,
-      enableInteractiveSelection: !(widget.readOnly ?? false) || widget.onTab != null,
-      style:   TextStyle(
-        color: Colors.black,
-        fontSize: 13.sp,
-        height: 1.0, // Add line height for proper vertical centering
-      ),
-      decoration: InputDecoration(
-        isDense: false, // Ensure consistent height regardless of icon presence
-        contentPadding: EdgeInsets.symmetric(
-          horizontal: widget.contenpaddingHorizontal ?? 16.w, // Fixed value
-          vertical: widget.contenpaddingVertical ?? 12.h,     // Reduced for better centering
+    return SizedBox(
+      height: fieldHeight,
+      child: TextFormField(
+        maxLines: widget.maxLines,
+        textAlignVertical:
+            isMultiLine ? TextAlignVertical.top : TextAlignVertical.center,
+        onTap: widget.onTab,
+        onChanged: widget.onChanged,
+        onFieldSubmitted: widget.onFieldSubmitted,
+        readOnly: widget.readOnly ?? false,
+        controller: widget.controller,
+        keyboardType: widget.keyboardType,
+        obscuringCharacter: widget.obscureCharacrter ?? '*',
+        validator: widget.validator ?? _defaultValidator,
+        cursorColor: AppColors.primaryColor,
+        obscureText: widget.isPassword ? obscureText : false,
+        enableInteractiveSelection:
+            !(widget.readOnly ?? false) || widget.onTab != null,
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: 13.sp,
+          height: isMultiLine ? 1.35 : 1.0,
         ),
-
-        // Alternative Solution 2: Use clamped responsive values with better centering
-        // contentPadding: EdgeInsets.symmetric(
-        //   horizontal: widget.contenpaddingHorizontal ?? (12.w).clamp(12.0, 20.0),
-        //   vertical: widget.contenpaddingVertical ?? (12.h).clamp(10.0, 16.0),
-        // ),
-
-        filled: true,
-        fillColor: widget.filColor ?? AppColors.fillColor,
-        prefixIcon: widget.prifixicon,
-        suffixIcon: widget.isPassword
-            ? GestureDetector(
-          onTap: toggle,
-          child: _suffixIcon(obscureText ? AppIcons.eyeOffIcon : AppIcons.eyeIcon),
-        )
-            : widget.sufixicons,
-
-        // Solution 3: Fixed icon constraints to prevent excessive scaling
-        prefixIconConstraints: BoxConstraints(
-          minHeight: AppStyles.standardHeight,
-          minWidth: 48.w,  // Increased for better touch target
-          maxHeight: AppStyles.standardHeight, // Match field height
-          maxWidth: 56.w,
+        decoration: InputDecoration(
+          isDense: true,
+          alignLabelWithHint: isMultiLine,
+          contentPadding: EdgeInsets.symmetric(
+            horizontal: widget.contenpaddingHorizontal ?? 16.w,
+            vertical:
+                widget.contenpaddingVertical ?? (isMultiLine ? 10.h : 12.h),
+          ),
+          filled: true,
+          fillColor: widget.filColor ?? AppColors.fillColor,
+          prefixIcon: widget.prifixicon,
+          suffixIcon: widget.isPassword
+              ? GestureDetector(
+                  onTap: toggle,
+                  child: _suffixIcon(
+                      obscureText ? AppIcons.eyeOffIcon : AppIcons.eyeIcon),
+                )
+              : widget.sufixicons,
+          prefixIconConstraints: BoxConstraints(
+            minHeight: isMultiLine ? 24.h : AppStyles.standardHeight,
+            minWidth: 48.w,
+            maxHeight: isMultiLine ? 40.h : AppStyles.standardHeight,
+            maxWidth: 56.w,
+          ),
+          suffixIconConstraints: BoxConstraints(
+            minHeight: isMultiLine ? 24.h : AppStyles.standardHeight,
+            minWidth: 48.w,
+            maxHeight: isMultiLine ? 40.h : AppStyles.standardHeight,
+            maxWidth: 56.w,
+          ),
+          errorStyle: const TextStyle(color: Colors.red),
+          suffixIconColor: AppColors.primaryColor,
+          prefixIconColor: AppColors.primaryColor,
+          labelText: widget.labelText,
+          hintText: widget.hintText,
+          hintStyle: widget.hintTextStyle ??
+              TextStyle(
+                color: AppColors.hintColor,
+                fontFamily: 'Poppins',
+                fontSize: 13.sp,
+              ),
+          border: _buildOutlineInputBorder(),
+          errorBorder: _buildOutlineInputBorder(),
+          focusedBorder: _buildOutlineInputBorder(),
+          enabledBorder: _buildOutlineInputBorder(),
+          disabledBorder: _buildOutlineInputBorder(),
         ),
-        suffixIconConstraints: BoxConstraints(
-          minHeight: AppStyles.standardHeight,
-          minWidth: 48.w,  // Increased for better touch target
-          maxHeight: AppStyles.standardHeight, // Match field height
-          maxWidth: 56.w,
-        ),
-
-        errorStyle: const TextStyle(color: Colors.red),
-        suffixIconColor: AppColors.primaryColor,
-        prefixIconColor: AppColors.primaryColor,
-        labelText: widget.labelText,
-        hintText: widget.hintText,
-        hintStyle: widget.hintTextStyle ??
-            TextStyle(
-              color: AppColors.hintColor,
-              fontFamily: 'Poppins',
-              fontSize: 13.sp, // Fixed font size for consistency
-            ),
-        border: _buildOutlineInputBorder(),
-        errorBorder: _buildOutlineInputBorder(),
-        focusedBorder: _buildOutlineInputBorder(),
-        enabledBorder: _buildOutlineInputBorder(),
-        disabledBorder: _buildOutlineInputBorder(),
-      ),
-      ),
       ),
     );
   }

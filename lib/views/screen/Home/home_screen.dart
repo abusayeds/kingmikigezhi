@@ -7,6 +7,8 @@ import 'package:event_sharing/models/family_model.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/style.dart';
 
+import 'package:event_sharing/views/base/pull_to_refresh.dart';
+import 'package:event_sharing/views/base/skeletons.dart';
 import 'package:event_sharing/views/screen/Home/InnerWidget/calender_widget.dart';
 import 'package:event_sharing/views/screen/Home/InnerWidget/eventCard_widget.dart';
 import 'package:event_sharing/views/screen/Home/InnerWidget/home_app_bar.dart';
@@ -75,6 +77,17 @@ class _HomeScreenState extends State<HomeScreen> {
     } catch (_) {}
   }
 
+  Future<void> _onRefresh() async {
+    await Future.wait([
+      _authController.fetchUserProfile(),
+      _homeController.fetchTodayEvents(force: true),
+      _homeController.fetchFamilyEvents(_selectedRelationShip, force: true),
+      _homeController.fetchUpcomingEvents(force: true),
+      _notificationController.getNotifications(force: true),
+      _loadFamilyMembersForFilter(),
+    ]);
+  }
+
   bool get _hasFamilyMemberFilters =>
       _familyController.familyMembers.any((m) {
         final r = (m.relationShip ?? '').trim();
@@ -136,8 +149,11 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: customHomeAppBar(),
       bottomNavigationBar: const BottomMenu(0),
-      body: SingleChildScrollView(
-        child: Column(
+      body: PullToRefresh(
+        onRefresh: _onRefresh,
+        child: SingleChildScrollView(
+          physics: PullToRefresh.alwaysScrollable(),
+          child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 20.h),
@@ -210,7 +226,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             dropdownValue = match.label;
                             _selectedRelationShip = match.relationShip;
                           });
-                          _homeController.fetchFamilyEvents(match.relationShip);
+                          _homeController.familyEvents.clear();
+                          _homeController.fetchFamilyEvents(
+                            match.relationShip,
+                            force: true,
+                          );
                         }
                       },
                       child: Container(
@@ -259,8 +279,13 @@ class _HomeScreenState extends State<HomeScreen> {
               child: SizedBox(
                 height: 160.h,
                 child: Obx(() {
-                  if (_homeController.isLoadingToday.value) {
-                    return const Center(child: CircularProgressIndicator());
+                  if (_homeController.isLoadingToday.value &&
+                      _homeController.todayEvents.isEmpty) {
+                    return ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 4,
+                      itemBuilder: (_, __) => const EventChipSkeleton(),
+                    );
                   }
                   if (_homeController.todayEvents.isEmpty) {
                     return const Center(child: Text("No events today"));
@@ -322,8 +347,13 @@ class _HomeScreenState extends State<HomeScreen> {
               child: SizedBox(
                 height: 275.h,
                 child: Obx(() {
-                  if (_homeController.isLoadingUpcoming.value) {
-                    return const Center(child: CircularProgressIndicator());
+                  if (_homeController.isLoadingUpcoming.value &&
+                      _homeController.upcomingEvents.isEmpty) {
+                    return ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 2,
+                      itemBuilder: (_, __) => const EventCardSkeleton(),
+                    );
                   }
                   if (_homeController.upcomingEvents.isEmpty) {
                     return const Center(child: Text("No upcoming events"));
@@ -350,6 +380,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             SizedBox(height: 30.h),
           ],
+        ),
         ),
       ),
     );
@@ -442,8 +473,13 @@ class _HomeScreenState extends State<HomeScreen> {
       width: MediaQuery.of(context).size.width,
       height: 180.h,
       child: Obx(() {
-        if (_homeController.isLoadingFamily.value) {
-          return const Center(child: CircularProgressIndicator());
+        if (_homeController.isLoadingFamily.value &&
+            _homeController.familyEvents.isEmpty) {
+          return ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: 4,
+            itemBuilder: (_, __) => const EventChipSkeleton(),
+          );
         }
         if (_homeController.familyEvents.isEmpty) {
           return const Center(child: Text("No events found"));

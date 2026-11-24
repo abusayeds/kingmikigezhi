@@ -3,6 +3,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../base/custom_text.dart';
+import '../../../base/skeletons.dart';
 import '../../../../controllers/privacy_policy_controller.dart';
 
 class PrivacyPolicyScreen extends StatelessWidget {
@@ -36,7 +37,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
         centerTitle: true,
       ),
       body: Obx(() => _policyController.isLoading.value
-          ? const Center(child: CircularProgressIndicator())
+          ? const SimplePageSkeleton()
           : SingleChildScrollView(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),

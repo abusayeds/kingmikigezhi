@@ -68,8 +68,8 @@ dependencies:
   flutter_typeahead:
   google_fonts:
   http:
-
-
+  url_launcher: ^6.3.1
+  share_plus: ^10.1.4
 
   http_parser: any
   flutter_map: ^8.3.2

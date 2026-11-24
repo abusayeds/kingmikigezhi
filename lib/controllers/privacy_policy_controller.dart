@@ -15,7 +15,7 @@ class PrivacyPolicyController extends GetxController {
 
   Future<void> getPrivacy() async {
     try {
-      isLoading.value = true;
+      if (content.value.isEmpty) isLoading.value = true;
       final res = await apiService.get(ApiConstants.getPrivacySettings);
       if (res != null && res['data'] != null) {
         final data = res['data'];

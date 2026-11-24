@@ -34,7 +34,8 @@ class _StepTwoFormState extends State<StepTwoForm> {
   String? _selectedCompetitionLevel;
   String? _selectedType;
   String? _selectedCostOption;
-  final List<String> competitionLevel = ['Local-Easy', 'Local-Medium', 'Local-Difficult','Regional-Easy', 'Regional-Medium', 'Regional-Difficult','State-Easy', 'State-Medium', 'State-Difficult','National-Easy', 'National-Medium', 'National-Difficult','International-Easy', 'International-Medium', 'International-Difficult'];
+  final List<String> competitionLevel =
+      Addeventcontroller.allowedCompetitionLevels;
   final List<String> type = ['Onsite', 'Online', 'Hybrid'];
   final List<String> costOptions = ['Has Final Deadline', 'No Final Deadline'];
 
@@ -48,6 +49,10 @@ class _StepTwoFormState extends State<StepTwoForm> {
         competitionLevel.contains(addEventController.competitionLevel)
             ? addEventController.competitionLevel
             : null;
+    // Drop legacy/invalid values so update does not resubmit them.
+    if (_selectedCompetitionLevel == null) {
+      addEventController.competitionLevel = null;
+    }
     _selectedType =
         type.contains(addEventController.eventType) ? addEventController.eventType : null;
     _startsDateCTRL.text = addEventController.registrationDate ?? "";
@@ -93,37 +98,37 @@ class _StepTwoFormState extends State<StepTwoForm> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 24.w),
+      padding: EdgeInsets.fromLTRB(24.w, 4.h, 24.w, 12.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.symmetric(vertical: 8.h),
+            padding: EdgeInsets.only(bottom: 8.h),
             child: Text('Step 2: Details',
                 style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w600)),
           ),
           Text('Competition Level',
               style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
-          SizedBox(height: 12.h),
+          SizedBox(height: 6.h),
           _buildDropdown(
             value: _selectedCompetitionLevel,
             hint: "Select Competition Level",
             items: competitionLevel,
             onChanged: (v) => setState(() => _selectedCompetitionLevel = v),
           ),
-          SizedBox(height: 16.h),
+          SizedBox(height: 10.h),
           Text('Type', style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
-          SizedBox(height: 12.h),
+          SizedBox(height: 6.h),
           _buildDropdown(
             value: _selectedType,
             hint: "Select Type",
             items: type,
             onChanged: (v) => setState(() => _selectedType = v),
           ),
-          SizedBox(height: 12.h),
+          SizedBox(height: 10.h),
           Text('Registration Open',
               style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
-          SizedBox(height: 12.h),
+          SizedBox(height: 6.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -153,11 +158,10 @@ class _StepTwoFormState extends State<StepTwoForm> {
             ],
           ),
 
-          SizedBox(height: 12.h),
+          SizedBox(height: 10.h),
           Text('Deadline',
               style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
-
-          SizedBox(height: 12.h),
+          SizedBox(height: 6.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -186,9 +190,9 @@ class _StepTwoFormState extends State<StepTwoForm> {
               ),
             ],
           ),
-          SizedBox(height: 12.h),
+          SizedBox(height: 10.h),
           Text('Cost', style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
-          SizedBox(height: 12.h),
+          SizedBox(height: 6.h),
           CustomTextField(
             controller: costCRTL,
             hintText: '\$',
@@ -197,7 +201,7 @@ class _StepTwoFormState extends State<StepTwoForm> {
             hintTextStyle: AppStyles.fontSize14(color: AppColors.color414141),
           ),
 
-          SizedBox(height: 12.h),
+          SizedBox(height: 10.h),
           _buildDropdown(
             value: _selectedCostOption,
             hint: "Has Final Round?",
@@ -206,10 +210,10 @@ class _StepTwoFormState extends State<StepTwoForm> {
           ),
 
           if (_selectedCostOption == 'Has Final Deadline') ...[
-            SizedBox(height: 12.h),
+            SizedBox(height: 10.h),
             Text('Final Deadline',
                 style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
-            SizedBox(height: 12.h),
+            SizedBox(height: 6.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -218,10 +222,10 @@ class _StepTwoFormState extends State<StepTwoForm> {
                 SizedBox(width: 108.w, child: CustomTextField(controller: dayCRTL, hintText: 'Day')),
               ],
             ),
-            SizedBox(height: 16.h),
+            SizedBox(height: 10.h),
             Text('Late Fee',
                 style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
-            SizedBox(height: 12.h),
+            SizedBox(height: 6.h),
             CustomTextField(
               controller: lateFeeCRTL,
               hintText: '\$',
@@ -230,7 +234,7 @@ class _StepTwoFormState extends State<StepTwoForm> {
             ),
           ],
           
-          SizedBox(height: 24.h),
+          SizedBox(height: 16.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -265,7 +269,7 @@ class _StepTwoFormState extends State<StepTwoForm> {
               ),
             ],
           ),
-          SizedBox(height: 25.h),
+          SizedBox(height: 12.h),
         ],
       ),
     );

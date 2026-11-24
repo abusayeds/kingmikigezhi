@@ -548,9 +548,7 @@ class _CategoriesSearchAppliedScreenState
                         ),
                       ),
                       GestureDetector(
-                        onTap: () {
-                          Get.toNamed(AppRoutes.myInvitationPage);
-                        },
+                        onTap: () => openEventInvitationPage(event),
                         child: SvgPicture.asset(
                           AppIcons.share,
                           width: 16.w,

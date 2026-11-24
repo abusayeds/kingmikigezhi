@@ -1,3 +1,4 @@
+import 'package:event_sharing/helpers/app_feedback.dart';
 import 'package:event_sharing/services/api_service.dart';
 import 'package:event_sharing/utils/api_constants.dart';
 import 'package:get/get.dart';
@@ -34,14 +35,14 @@ class ConnectionController extends GetxController {
   Future<void> fetchInvitations({bool isRefresh = true}) async {
     if (isRefresh) {
       invitationPage.value = 1;
-      invitations.clear();
       hasMoreInvitations.value = true;
     }
 
     if (isLoadingInvitations.value || !hasMoreInvitations.value) return;
 
     try {
-      isLoadingInvitations.value = true;
+      // Only flash a loader when we have nothing cached yet.
+      isLoadingInvitations.value = invitations.isEmpty;
       final String url =
           '${ApiConstants.reciveRequestConnections}?page=${invitationPage.value}&limit=10';
 
@@ -51,7 +52,11 @@ class ConnectionController extends GetxController {
         final List<dynamic> data = response['data'];
         final meta = response['meta'];
 
-        invitations.addAll(data);
+        if (isRefresh) {
+          invitations.assignAll(data);
+        } else {
+          invitations.addAll(data);
+        }
         invitationTotal.value = meta['total'] ?? 0;
         hasMoreInvitations.value = meta['hasNext'] ?? false;
 
@@ -60,7 +65,7 @@ class ConnectionController extends GetxController {
         }
       }
     } catch (e) {
-      Get.snackbar('Error', 'Failed to load invitations: ${e.toString()}');
+      AppFeedback.error('Could not load invitations right now.');
     } finally {
       isLoadingInvitations.value = false;
     }
@@ -81,11 +86,11 @@ class ConnectionController extends GetxController {
           fetchConnections(isRefresh: true);
         }
         if (shouldRefresh) {
-          Get.snackbar('Success', response['message'] ?? 'Connection accepted');
+          AppFeedback.success(response['message']?.toString() ?? 'Connection accepted.');
         }
       }
     } catch (e) {
-      Get.snackbar('Error', 'Failed to accept connection: ${e.toString()}');
+      AppFeedback.error('Could not accept this connection.');
     }
   }
 
@@ -101,44 +106,48 @@ class ConnectionController extends GetxController {
         invitations.removeWhere((item) => item['id'] == requestId);
         invitationTotal.value--;
         if (shouldRefresh) {
-          Get.snackbar('Success', response['message'] ?? 'Connection rejected');
+          AppFeedback.success(response['message']?.toString() ?? 'Connection ignored.');
         }
       }
     } catch (e) {
-      Get.snackbar('Error', 'Failed to reject connection: ${e.toString()}');
+      AppFeedback.error('Could not ignore this connection.');
     }
   }
 
   // Accept all connection requests
   Future<void> acceptAllConnections() async {
     try {
-      final List<String> requestIds =
-          invitations.map((item) => item['id'] as String).toList();
+      final List<String> requestIds = invitations
+          .map((item) => item['id']?.toString() ?? '')
+          .where((id) => id.isNotEmpty)
+          .toList();
 
-      for (String id in requestIds) {
+      for (final id in requestIds) {
         await acceptConnection(id, shouldRefresh: false);
       }
       fetchConnections(isRefresh: true);
       fetchInvitations(isRefresh: true);
-      Get.snackbar('Success', 'All connections accepted');
+      AppFeedback.success('All connection requests accepted.');
     } catch (e) {
-      Get.snackbar('Error', 'Failed to accept all connections: ${e.toString()}');
+      AppFeedback.error('Could not accept all connections.');
     }
   }
 
   // Reject all connection requests
   Future<void> rejectAllConnections() async {
     try {
-      final List<String> requestIds =
-          invitations.map((item) => item['id'] as String).toList();
+      final List<String> requestIds = invitations
+          .map((item) => item['id']?.toString() ?? '')
+          .where((id) => id.isNotEmpty)
+          .toList();
 
-      for (String id in requestIds) {
+      for (final id in requestIds) {
         await rejectConnection(id, shouldRefresh: false);
       }
       fetchInvitations(isRefresh: true);
-      Get.snackbar('Success', 'All connections rejected');
+      AppFeedback.success('All connection requests ignored.');
     } catch (e) {
-      Get.snackbar('Error', 'Failed to reject all connections: ${e.toString()}');
+      AppFeedback.error('Could not ignore all connections.');
     }
   }
 
@@ -146,14 +155,13 @@ class ConnectionController extends GetxController {
   Future<void> fetchConnections({bool isRefresh = true}) async {
     if (isRefresh) {
       connectionPage.value = 1;
-      connections.clear();
       hasMoreConnections.value = true;
     }
 
     if (isLoadingConnections.value || !hasMoreConnections.value) return;
 
     try {
-      isLoadingConnections.value = true;
+      isLoadingConnections.value = connections.isEmpty;
       final String url =
           '${ApiConstants.myConnections}?page=${connectionPage.value}&limit=10';
 
@@ -163,7 +171,11 @@ class ConnectionController extends GetxController {
         final List<dynamic> data = response['data'];
         final meta = response['meta'];
 
-        connections.addAll(data);
+        if (isRefresh) {
+          connections.assignAll(data);
+        } else {
+          connections.addAll(data);
+        }
         connectionTotal.value = meta['total'] ?? 0;
         hasMoreConnections.value = meta['hasNext'] ?? false;
 
@@ -172,7 +184,7 @@ class ConnectionController extends GetxController {
         }
       }
     } catch (e) {
-      Get.snackbar('Error', 'Failed to load connections: ${e.toString()}');
+      AppFeedback.error('Could not load connections right now.');
     } finally {
       isLoadingConnections.value = false;
     }
@@ -188,10 +200,10 @@ class ConnectionController extends GetxController {
 
       if (response['success'] == true) {
         connections.removeWhere((item) => item['id'] == connectionId);
-        Get.snackbar('Success', 'Connection removed');
+        AppFeedback.success('Connection removed.');
       }
     } catch (e) {
-      Get.snackbar('Error', 'Failed to remove connection: ${e.toString()}');
+      AppFeedback.error('Could not remove this connection.');
     }
   }
 

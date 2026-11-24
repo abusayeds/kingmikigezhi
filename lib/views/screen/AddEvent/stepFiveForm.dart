@@ -1,11 +1,12 @@
+import 'package:event_sharing/helpers/app_feedback.dart';
 import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/custom_button.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
+import 'package:event_sharing/views/base/dropdown_field_loader.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_icons.dart';
@@ -57,14 +58,12 @@ class _StepFiveFormState extends State<StepFiveForm> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 24.w),
-      child: Column(children: [
-        SingleChildScrollView(
-          child: Column(
+      padding: EdgeInsets.fromLTRB(24.w, 4.h, 24.w, 12.h),
+      child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 8.h),
+                padding: EdgeInsets.only(bottom: 6.h),
                 child: Text(
                   "Step 4: Own History (Optional)",
                   style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w600),
@@ -74,17 +73,11 @@ class _StepFiveFormState extends State<StepFiveForm> {
                 'You can skip this step and still create the event.',
                 style: AppStyles.fontSize12(color: AppColors.hintColor),
               ),
-              SizedBox(height: 12.h),
+              SizedBox(height: 10.h),
               Text('Session', style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600)),
-              SizedBox(height: 12.h),
+              SizedBox(height: 6.h),
               Obx(() {
-                if (addEventController.isLoadingHistory.value) {
-                  return SizedBox(
-                    height: AppStyles.standardHeight,
-                    child: const Center(child: CircularProgressIndicator()),
-                  );
-                }
-
+                final isLoading = addEventController.isLoadingHistory.value;
                 final events = addEventController.historyEvents;
                 // Only valid entries, unique by id — dropdown shows eventName only
                 final seenIds = <String>{};
@@ -108,41 +101,57 @@ class _StepFiveFormState extends State<StepFiveForm> {
                     borderRadius: BorderRadius.circular(8.r),
                     border: Border.all(color: AppColors.primaryColor, width: 1),
                   ),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      value: selectedId,
-                      dropdownColor: AppColors.fillColor,
-                      menuWidth: 240.w,
-                      borderRadius: BorderRadius.circular(8.r),
-                      hint: Text(
-                        "Select History Event",
-                        style: AppStyles.fontSize14(color: AppColors.color414141),
-                      ),
-                      icon: SvgPicture.asset(
-                        AppIcons.downArrowIcon,
-                        width: 16.w,
-                        color: AppColors.primaryColor,
-                      ),
-                      isExpanded: true,
-                      items: validEvents.map((event) {
-                        final id = event['id'].toString();
-                        final name = event['eventName'].toString();
-                        return DropdownMenuItem<String>(
-                          value: id,
-                          child: Text(
-                            name,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(color: Colors.black),
+                  child: Row(
+                    children: [
+                      if (isLoading) ...[
+                        const DropdownFieldLoader(),
+                        SizedBox(width: 10.w),
+                      ],
+                      Expanded(
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            value: selectedId,
+                            dropdownColor: AppColors.fillColor,
+                            menuWidth: 240.w,
+                            borderRadius: BorderRadius.circular(8.r),
+                            hint: Text(
+                              isLoading
+                                  ? 'Loading history...'
+                                  : 'Select History Event',
+                              style: AppStyles.fontSize14(
+                                  color: AppColors.color414141),
+                            ),
+                            icon: SvgPicture.asset(
+                              AppIcons.downArrowIcon,
+                              width: 16.w,
+                              color: AppColors.primaryColor,
+                            ),
+                            isExpanded: true,
+                            items: validEvents.map((event) {
+                              final id = event['id'].toString();
+                              final name = event['eventName'].toString();
+                              return DropdownMenuItem<String>(
+                                value: id,
+                                child: Text(
+                                  name,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(color: Colors.black),
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: isLoading && validEvents.isEmpty
+                                ? null
+                                : (newValue) {
+                                    setState(() {
+                                      _selectedHistoryEventId = newValue;
+                                      addEventController.selectedHistoryEventId =
+                                          newValue;
+                                    });
+                                  },
                           ),
-                        );
-                      }).toList(),
-                      onChanged: (newValue) {
-                        setState(() {
-                          _selectedHistoryEventId = newValue;
-                          addEventController.selectedHistoryEventId = newValue;
-                        });
-                      },
-                    ),
+                        ),
+                      ),
+                    ],
                   ),
                 );
               }),
@@ -196,11 +205,15 @@ class _StepFiveFormState extends State<StepFiveForm> {
                     child: CustomButton(
                       onTap: () {
                         if (_selectedHistoryEventId == null) {
-                          Fluttertoast.showToast(msg: "Please select a history event");
+                          AppFeedback.validation(
+                            'Select a history event first.',
+                          );
                           return;
                         }
                         if (_selectedRound == null) {
-                          Fluttertoast.showToast(msg: "Please select a record");
+                          AppFeedback.validation(
+                            'Select a record / placement to add.',
+                          );
                           return;
                         }
                         final selectedEvent = addEventController.historyEvents.firstWhereOrNull(
@@ -380,17 +393,17 @@ class _StepFiveFormState extends State<StepFiveForm> {
                   )),
                 ],
               ),
-              SizedBox(height: 24.h),
+              SizedBox(height: 16.h),
               Obx(() {
                 if (!addEventController.showUserAgreementError.value) {
                   return const SizedBox.shrink();
                 }
                 return Padding(
-                  padding: EdgeInsets.only(bottom: 12.h),
+                  padding: EdgeInsets.only(bottom: 10.h),
                   child: Text(
-                    'Please accept the user agreement',
+                    'Please accept the user agreement to continue.',
                     style: TextStyle(
-                      color: Colors.red,
+                      color: const Color(0xFFC62828),
                       fontSize: 13.sp,
                       fontWeight: FontWeight.w500,
                     ),
@@ -429,11 +442,9 @@ class _StepFiveFormState extends State<StepFiveForm> {
                   ),
                 ],
               )),
-              SizedBox(height: 10.h),
+              SizedBox(height: 12.h),
             ],
-          ),
-        )
-      ]),
+      ),
     );
   }
 }

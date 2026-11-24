@@ -13,6 +13,7 @@ import 'package:get/get.dart';
 import '../../base/app_remote_image.dart';
 import '../../base/bottom_menu..dart';
 import '../../base/custom_text.dart';
+import '../../base/skeletons.dart';
 import 'search_applied_screen.dart';
 
 class CategoriesScreen extends StatefulWidget {
@@ -164,7 +165,22 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
 
   Widget _buildBody() {
     if (isLoading && categories.isEmpty) {
-      return const Center(child: CircularProgressIndicator());
+      return AppSkeleton(
+        child: GridView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            childAspectRatio: 1.0,
+            crossAxisSpacing: 8.0.w,
+            mainAxisSpacing: 8.0.h,
+          ),
+          itemCount: 9,
+          itemBuilder: (_, __) => SkeletonBox(
+            height: double.infinity,
+            radius: 16,
+          ),
+        ),
+      );
     }
 
     if (error != null && categories.isEmpty) {
@@ -296,8 +312,11 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
         GestureDetector(
           onTap: () async {
             final result = await Get.toNamed(AppRoutes.categoriesFilterScreen);
-            if (result != null) {
-              Get.toNamed(AppRoutes.searchEventScreen, arguments: result);
+            if (result is Map && result.isNotEmpty) {
+              Get.toNamed(
+                AppRoutes.searchEventScreen,
+                arguments: Map<String, dynamic>.from(result),
+              );
             }
           },
           child: Container(

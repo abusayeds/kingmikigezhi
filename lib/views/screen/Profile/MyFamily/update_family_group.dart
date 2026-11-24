@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:event_sharing/controllers/family_controller.dart';
+import 'package:event_sharing/helpers/route_args.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_icons.dart';
 import 'package:event_sharing/utils/app_images.dart';
@@ -42,8 +43,9 @@ class _UpdateFamilyGroupState extends State<UpdateFamilyGroup> {
 
     // First check route parameters, then arguments
     familyId = parameter['familyId'];
-    if (familyId == null && Get.arguments != null) {
-      familyId = Get.arguments['familyId'];
+    if (familyId == null) {
+      final argId = routeArgString('familyId');
+      familyId = argId.isEmpty ? null : argId;
     }
 
     if (familyId != null) {

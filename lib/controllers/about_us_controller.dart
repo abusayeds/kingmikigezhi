@@ -15,7 +15,7 @@ class AboutUsController extends GetxController {
 
   Future<void> getAboutUs() async {
     try {
-      isLoading.value = true;
+      if (content.value.isEmpty) isLoading.value = true;
       final res = await apiService.get(ApiConstants.getAboutSettings);
       if (res != null && res['data'] != null) {
         final data = res['data'];

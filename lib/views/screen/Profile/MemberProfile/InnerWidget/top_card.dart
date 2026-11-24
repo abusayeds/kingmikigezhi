@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../utils/app_colors.dart';
 import '../../../../../utils/app_images.dart';
+import '../../../../base/app_remote_image.dart';
 import '../../../../base/custom_text.dart';
 
 class TopCard extends StatelessWidget {
@@ -39,18 +40,11 @@ class TopCard extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(5.r),
                     child: image != null && image!.isNotEmpty
-                        ? Image.network(
-                            image!,
+                        ? AppRemoteImage(
+                            url: image,
                             fit: BoxFit.cover,
                             width: 120.w,
                             height: 120.h,
-                            errorBuilder: (context, error, stackTrace) =>
-                                Image.asset(
-                              AppImages.logo,
-                              fit: BoxFit.cover,
-                              width: 120.w,
-                              height: 120.h,
-                            ),
                           )
                         : Image.asset(
                             AppImages.logo,

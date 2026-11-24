@@ -16,6 +16,7 @@ import '../controllers/theme_controller.dart';
 import '../controllers/splash_controller.dart';
 import '../models/language_model.dart';
 import '../services/api_service.dart';
+import '../services/content_cache.dart';
 import '../utils/app_constants.dart';
 
 
@@ -26,6 +27,7 @@ Future<Map<String, Map<String, String>>> init() async {
 
   // Repository - permanent to prevent deletion when navigating
   Get.put(ApiService(sharedPreferences: Get.find()), permanent: true);
+  Get.put(ContentCache(), permanent: true);
   Get.put(AuthController(apiService: Get.find(), sharedPreferences: Get.find()),
       permanent: true);
 

@@ -3,6 +3,7 @@ import 'package:event_sharing/utils/media_url_utils.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shimmer/shimmer.dart';
 
 /// Drop-in replacement for [Image.network] that works on Flutter web
 /// even when the CDN/S3 bucket has no CORS headers.
@@ -22,6 +23,18 @@ class AppRemoteImage extends StatelessWidget {
     this.errorWidget,
   });
 
+  Widget _shimmer() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey.withOpacity(0.6),
+      highlightColor: Colors.grey.withOpacity(0.3),
+      child: Container(
+        width: width,
+        height: height,
+        color: Colors.grey.withOpacity(0.6),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final resolved = MediaUrlUtils.resolve(url);
@@ -35,7 +48,7 @@ class AppRemoteImage extends StatelessWidget {
         width: width,
         height: height,
         fit: fit,
-        placeholderBuilder: (_) => const Center(child: CircularProgressIndicator()),
+        placeholderBuilder: (_) => _shimmer(),
       );
     }
 
@@ -48,7 +61,7 @@ class AppRemoteImage extends StatelessWidget {
       errorBuilder: (context, error, stackTrace) => errorWidget ?? _fallback(),
       loadingBuilder: (context, child, progress) {
         if (progress == null) return child;
-        return const Center(child: CircularProgressIndicator());
+        return _shimmer();
       },
     );
   }

@@ -3,6 +3,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../base/custom_text.dart';
+import '../../../base/skeletons.dart';
 import '../../../../controllers/about_us_controller.dart';
 
 class AboutusScreen extends StatelessWidget {
@@ -37,7 +38,7 @@ class AboutusScreen extends StatelessWidget {
       ),
       body: Obx(
             () => _aboutUsController.isLoading.value
-            ? const Center(child: CircularProgressIndicator())
+            ? const SimplePageSkeleton()
             : SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.h, vertical: 20.h),

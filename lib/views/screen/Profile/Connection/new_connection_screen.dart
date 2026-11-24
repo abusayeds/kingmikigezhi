@@ -3,6 +3,8 @@ import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_icons.dart';
 import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/custom_button.dart';
+import 'package:event_sharing/views/base/pull_to_refresh.dart';
+import 'package:event_sharing/views/base/skeletons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -48,17 +50,30 @@ class _NewInvitationScreenState extends State<NewInvitationScreen> {
     return Scaffold(
       body: Obx(() => Stack(
         children: [
-          if (connectionController.invitations.isEmpty &&
-              !connectionController.isLoadingInvitations.value)
-            Center(
-              child: Text(
-                'No invitations',
-                style: AppStyles.fontSize16(color: AppColors.color414141),
+          if (connectionController.isLoadingInvitations.value &&
+              connectionController.invitations.isEmpty)
+            const Padding(
+              padding: EdgeInsets.all(12),
+              child: ConnectionListSkeleton(),
+            )
+          else if (connectionController.invitations.isEmpty)
+            PullToRefresh.empty(
+              onRefresh: () =>
+                  connectionController.fetchInvitations(isRefresh: true),
+              child: Center(
+                child: Text(
+                  'No invitations',
+                  style: AppStyles.fontSize16(color: AppColors.color414141),
+                ),
               ),
             )
           else
-            ListView.builder(
+            PullToRefresh(
+              onRefresh: () =>
+                  connectionController.fetchInvitations(isRefresh: true),
+              child: ListView.builder(
               controller: _scrollController,
+              physics: PullToRefresh.alwaysScrollable(),
               padding: EdgeInsets.all(12.r),
               itemCount: connectionController.invitations.length,
               itemBuilder: (context, index) {
@@ -181,6 +196,7 @@ class _NewInvitationScreenState extends State<NewInvitationScreen> {
                 );
               },
             ),
+            ),
           if (connectionController.invitations.isNotEmpty)
             Positioned(
               bottom: 15,
@@ -225,16 +241,13 @@ class _NewInvitationScreenState extends State<NewInvitationScreen> {
                 ),
               ),
             ),
-          if (connectionController.isLoadingInvitations.value)
-            Positioned(
+          if (connectionController.isLoadingInvitations.value &&
+              connectionController.invitations.isNotEmpty)
+            const Positioned(
               bottom: 80,
               left: 0,
               right: 0,
-              child: Center(
-                child: CircularProgressIndicator(
-                  color: AppColors.primaryColor,
-                ),
-              ),
+              child: ListLoadMoreSkeleton(),
             ),
         ],
       )),

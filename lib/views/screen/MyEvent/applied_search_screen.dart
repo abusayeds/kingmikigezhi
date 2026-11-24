@@ -5,6 +5,8 @@ import 'package:event_sharing/utils/app_icons.dart';
 
 import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
+import 'package:event_sharing/views/base/pull_to_refresh.dart';
+import 'package:event_sharing/views/base/skeletons.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -24,6 +26,15 @@ class AppliedSearchEventListScreen extends StatefulWidget {
 class _AppliedSearchEventListScreenState extends State<AppliedSearchEventListScreen> {
   final AppliedEventController controller = Get.put(AppliedEventController());
   final TextEditingController _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    // Always refresh so Apply → this screen shows the newest application.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.fetchAppliedEvents();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -93,13 +104,20 @@ class _AppliedSearchEventListScreenState extends State<AppliedSearchEventListScr
             //=================================> Event List view <========================
             Expanded(
               child: Obx(() {
-                if (controller.isLoading.value) {
-                  return const Center(child: CircularProgressIndicator());
+                if (controller.isLoading.value &&
+                    controller.appliedEvents.isEmpty) {
+                  return const EventListSkeleton();
                 }
                 if (controller.appliedEvents.isEmpty) {
-                  return const Center(child: Text("No applied events found"));
+                  return PullToRefresh.empty(
+                    onRefresh: () => controller.fetchAppliedEvents(),
+                    child: const Center(child: Text("No applied events found")),
+                  );
                 }
-                return ListView.builder(
+                return PullToRefresh(
+                  onRefresh: () => controller.fetchAppliedEvents(),
+                  child: ListView.builder(
+                  physics: PullToRefresh.alwaysScrollable(),
                   itemCount: controller.appliedEvents.length,
                   itemBuilder: (context, index) {
                     final appliedEvent = controller.appliedEvents[index];
@@ -136,74 +154,51 @@ class _AppliedSearchEventListScreenState extends State<AppliedSearchEventListScr
                                         mainAxisAlignment: MainAxisAlignment.start,
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          Text(event.eventName ?? "",style: AppStyles.fontSize14(fontWeight: FontWeight.w600)),
+                                          Text(
+                                            event.eventName ?? "",
+                                            style: AppStyles.fontSize14(
+                                                fontWeight: FontWeight.w600),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
 
                                           //=====================> Event Info Section <=========================
                                           Row(
                                             crossAxisAlignment: CrossAxisAlignment.start,
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  Padding(
-                                                    padding: const EdgeInsets.symmetric(vertical: 3.0),
-                                                    child: Row(
-                                                      children: [
-                                                        SvgPicture.asset(AppIcons.dotIconForFamily),
-                                                        SizedBox(width: 4.w),
-                                                        Text(event.schedule?.eventType ?? 'N/A', style: TextStyle(fontSize: 8.sp, color: AppColors.color414141)),
-                                                      ],
+                                              Expanded(
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    _infoRow(
+                                                      event.schedule?.eventType ??
+                                                          'N/A',
                                                     ),
-                                                  ),
-                                                  Padding(
-                                                    padding: const EdgeInsets.symmetric(vertical: 3.0),
-                                                    child: Row(
-                                                      children: [
-                                                        SvgPicture.asset(AppIcons.dotIconForFamily),
-                                                        SizedBox(width: 4.w),
-                                                        Text(event.location ?? 'N/A', style: TextStyle(fontSize: 8.sp, color: AppColors.color414141)),
-                                                      ],
+                                                    _infoRow(
+                                                      event.location ?? 'N/A',
                                                     ),
-                                                  ),
-                                                  Padding(
-                                                    padding: const EdgeInsets.symmetric(vertical: 3.0),
-                                                    child: Row(
-                                                      children: [
-                                                        SvgPicture.asset(AppIcons.dotIconForFamily),
-                                                        SizedBox(width: 4.w),
-                                                        Text('History: N/A', style: TextStyle(fontSize: 8.sp, color: AppColors.color808080)),
-                                                      ],
+                                                    _infoRow(
+                                                      'History: N/A',
+                                                      color: AppColors.color808080,
                                                     ),
-                                                  ),
-                                                ],
+                                                  ],
+                                                ),
                                               ),
-                                              Column(
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  Padding(
-                                                    padding: const EdgeInsets.symmetric(vertical: 3.0),
-                                                    child: Row(
-                                                      children: [
-                                                        SvgPicture.asset(AppIcons.dotIconForFamily),
-                                                        SizedBox(width: 4.w),
-                                                        Text('Cost: \$${event.schedule?.cost ?? '0'}', style: TextStyle(fontSize: 8.sp, color: AppColors.color414141)),
-                                                      ],
+                                              SizedBox(width: 6.w),
+                                              Expanded(
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    _infoRow(
+                                                      'Cost: \$${event.schedule?.cost ?? '0'}',
                                                     ),
-                                                  ),
-                                                  Padding(
-                                                    padding: const EdgeInsets.symmetric(vertical: 3.0),
-                                                    child: Row(
-                                                      children: [
-                                                        SvgPicture.asset(AppIcons.dotIconForFamily),
-                                                        SizedBox(width: 4.w),
-                                                        Text('Deadline: ${event.schedule?.deadline != null ? "${event.schedule!.deadline!.day}-${event.schedule!.deadline!.month}-${event.schedule!.deadline!.year}" : 'N/A'}', style: TextStyle(fontSize: 8.sp, color: AppColors.color414141)),
-                                                      ],
+                                                    _infoRow(
+                                                      'Deadline: ${event.schedule?.deadline != null ? "${event.schedule!.deadline!.day}-${event.schedule!.deadline!.month}-${event.schedule!.deadline!.year}" : 'N/A'}',
                                                     ),
-                                                  ),
-
-                                                ],
+                                                  ],
+                                                ),
                                               ),
                                             ],
                                           ),
@@ -212,9 +207,7 @@ class _AppliedSearchEventListScreenState extends State<AppliedSearchEventListScr
                                     ),
                                     //=====================> Share Icon <=========================
                                     GestureDetector(
-                                      onTap: (){
-                                        Get.toNamed(AppRoutes.myInvitationPage);
-                                      },
+                                      onTap: () => openEventInvitationPage(event),
                                       child: SvgPicture.asset(
                                         AppIcons.share,
                                         width: 16.w,
@@ -230,15 +223,19 @@ class _AppliedSearchEventListScreenState extends State<AppliedSearchEventListScr
                             Positioned(
                               bottom: 10,
                               right: 10,
-                              child: EventMoreMenuButton(
-                                event: event,
-                                iconColor: AppColors.greyColor,
+                              child: GestureDetector(
+                                onTap: () {},
+                                child: EventMoreMenuButton(
+                                  event: event,
+                                  iconColor: AppColors.greyColor,
+                                ),
                               ),
                             ),
                           ],
                         )
                     );
                   },
+                ),
                 );
               }),
             )
@@ -247,6 +244,29 @@ class _AppliedSearchEventListScreenState extends State<AppliedSearchEventListScr
       ),
     );
   }
+  Widget _infoRow(String text, {Color? color}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 3.0),
+      child: Row(
+        children: [
+          SvgPicture.asset(AppIcons.dotIconForFamily),
+          SizedBox(width: 4.w),
+          Expanded(
+            child: Text(
+              text,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: 8.sp,
+                color: color ?? AppColors.color414141,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   //============================> Search Bar Section <=================================
   _searchBar() {
     return Row(

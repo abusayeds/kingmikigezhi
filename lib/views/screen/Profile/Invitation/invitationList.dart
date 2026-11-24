@@ -5,11 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_icons.dart';
 import '../../../base/custom_button.dart';
 import '../../../base/custom_text.dart';
+import '../../../base/pull_to_refresh.dart';
+import '../../../base/skeletons.dart';
 
 class Invitationlist extends StatefulWidget {
   const Invitationlist({super.key});
@@ -28,13 +31,6 @@ class _InvitationlistState extends State<Invitationlist> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _invitationController.fetchReceivedInvitations();
     });
-  }
-
-  // Derive an eventId for accept-all/decline-all from first invitation
-  String get _eventId {
-    final list = _invitationController.receivedInvitations;
-    if (list.isEmpty) return '';
-    return list.first['eventId'] as String? ?? '';
   }
 
   @override
@@ -59,11 +55,15 @@ class _InvitationlistState extends State<Invitationlist> {
         centerTitle: true,
       ),
       body: Obx(() {
-        if (_invitationController.isLoadingReceived.value) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
         final invitations = _invitationController.receivedInvitations;
+
+        if (_invitationController.isLoadingReceived.value &&
+            invitations.isEmpty) {
+          return const Padding(
+            padding: EdgeInsets.all(12),
+            child: ConnectionListSkeleton(),
+          );
+        }
 
         return Stack(
           children: [
@@ -78,27 +78,41 @@ class _InvitationlistState extends State<Invitationlist> {
                 SizedBox(height: 8.h),
                 Expanded(
                   child: invitations.isEmpty
-                      ? const Center(
-                          child: Text('No invitations received'))
-                      : ListView.builder(
+                      ? PullToRefresh.empty(
+                          onRefresh: () => _invitationController
+                              .fetchReceivedInvitations(),
+                          child: const Center(
+                              child: Text('No invitations received')),
+                        )
+                      : PullToRefresh(
+                          onRefresh: () => _invitationController
+                              .fetchReceivedInvitations(),
+                          child: ListView.builder(
                           padding: EdgeInsets.all(12.r),
+                          physics: PullToRefresh.alwaysScrollable(),
                           itemCount: invitations.length,
                           itemBuilder: (context, index) {
-                            final invitation = invitations[index]
-                                as Map<String, dynamic>;
+                            final rawInvitation = invitations[index];
+                            final invitation = rawInvitation is Map<String, dynamic>
+                                ? rawInvitation
+                                : Map<String, dynamic>.from(
+                                    rawInvitation as Map);
                             final invitationId =
-                                invitation['id'] as String? ?? '';
+                                invitation['id']?.toString() ?? '';
 
                             // Sender info (nested structure may vary)
-                            final sender =
-                                invitation['sender'] as Map<String, dynamic>?
-                                    ?? invitation['inviter'] as Map<String, dynamic>?
-                                    ?? {};
+                            final rawSender =
+                                invitation['sender'] ?? invitation['inviter'];
+                            final sender = rawSender is Map<String, dynamic>
+                                ? rawSender
+                                : rawSender is Map
+                                    ? Map<String, dynamic>.from(rawSender)
+                                    : <String, dynamic>{};
                             final name =
                                 '${sender['firstName'] ?? ''} ${sender['lastName'] ?? ''}'
                                     .trim();
                             final profilePicture =
-                                sender['profilePicture'] as String? ?? '';
+                                sender['profilePicture']?.toString() ?? '';
                             final accountId =
                                 sender['accountId']?.toString() ??
                                     sender['id']?.toString() ??
@@ -137,6 +151,20 @@ class _InvitationlistState extends State<Invitationlist> {
                                                   fit: BoxFit.cover,
                                                   width: 90.r,
                                                   height: 90.r,
+                                                  placeholder: (_, __) =>
+                                                      Shimmer.fromColors(
+                                                    baseColor: Colors.grey
+                                                        .withOpacity(0.6),
+                                                    highlightColor: Colors
+                                                        .grey
+                                                        .withOpacity(0.3),
+                                                    child: Container(
+                                                      width: 90.r,
+                                                      height: 90.r,
+                                                      color: Colors.grey
+                                                          .withOpacity(0.6),
+                                                    ),
+                                                  ),
                                                   errorWidget: (_, __,
                                                           ___) =>
                                                       Icon(Icons.person,
@@ -259,6 +287,7 @@ class _InvitationlistState extends State<Invitationlist> {
                             );
                           },
                         ),
+                        ),
                 ),
               ],
             ),
@@ -275,10 +304,7 @@ class _InvitationlistState extends State<Invitationlist> {
                       Expanded(
                         child: CustomButton(
                           onTap: () {
-                            if (_eventId.isNotEmpty) {
-                              _invitationController
-                                  .declineAllInvitations(_eventId);
-                            }
+                            _invitationController.declineAllInvitations();
                           },
                           text: 'Ignore All',
                           textStyle: const TextStyle(
@@ -293,10 +319,7 @@ class _InvitationlistState extends State<Invitationlist> {
                       Expanded(
                         child: CustomButton(
                           onTap: () {
-                            if (_eventId.isNotEmpty) {
-                              _invitationController
-                                  .acceptAllInvitations(_eventId);
-                            }
+                            _invitationController.acceptAllInvitations();
                           },
                           text: 'Accept All',
                           textStyle: const TextStyle(

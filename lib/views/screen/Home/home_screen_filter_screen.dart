@@ -13,6 +13,7 @@ import '../../../utils/app_icons.dart';
 import '../../../utils/app_strings.dart';
 import '../../../utils/style.dart';
 import '../../base/custom_text.dart';
+import '../../base/dropdown_field_loader.dart';
 
 class FilterScreen extends StatefulWidget {
   const FilterScreen({super.key});
@@ -40,7 +41,11 @@ class _FilterScreenState extends State<FilterScreen> {
     _fetchPrograms();
   }
 
-  Future<void> _fetchPrograms() async {
+  Future<void> _fetchPrograms({bool silent = false}) async {
+    final showLoader = !silent && _apiPrograms.isEmpty;
+    if (showLoader && mounted) {
+      setState(() => _isLoadingPrograms = true);
+    }
     try {
       final apiService = Get.find<ApiService>();
       final List<Program> allPrograms = [];
@@ -59,15 +64,16 @@ class _FilterScreenState extends State<FilterScreen> {
         }
       }
 
+      if (!mounted) return;
       setState(() {
         _apiPrograms = allPrograms;
         _isLoadingPrograms = false;
       });
     } catch (e) {
       debugPrint("Error fetching programs: $e");
-      setState(() {
-        _isLoadingPrograms = false;
-      });
+      if (mounted) {
+        setState(() => _isLoadingPrograms = false);
+      }
     }
   }
 
@@ -143,33 +149,48 @@ class _FilterScreenState extends State<FilterScreen> {
                     ),
                     contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
                   ),
-                  child: DropdownButtonHideUnderline(
-                    child: _isLoadingPrograms 
-                      ? const Center(child: SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2)))
-                      : DropdownButton<Program>(
-                          padding: EdgeInsets.zero,
-                          iconDisabledColor: AppColors.primaryColor,
-                          icon: SvgPicture.asset(
-                            AppIcons.down_ArrowIcon,
-                            color: AppColors.primaryColor,
-                            height: 8.h,
+                  child: Row(
+                    children: [
+                      if (_isLoadingPrograms) ...[
+                        const DropdownFieldLoader(),
+                        SizedBox(width: 8.w),
+                      ],
+                      Expanded(
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<Program>(
+                            padding: EdgeInsets.zero,
+                            iconDisabledColor: AppColors.primaryColor,
+                            icon: SvgPicture.asset(
+                              AppIcons.down_ArrowIcon,
+                              color: AppColors.primaryColor,
+                              height: 8.h,
+                            ),
+                            iconEnabledColor: AppColors.primaryColor,
+                            isExpanded: true,
+                            value: _selectedProgram,
+                            hint: CustomText(
+                              text: _isLoadingPrograms
+                                  ? 'Loading programs...'
+                                  : 'Select Program',
+                              fontsize: 14.sp,
+                            ),
+                            items: _apiPrograms.map((Program value) {
+                              return DropdownMenuItem<Program>(
+                                value: value,
+                                child: Text(value.name ?? 'Unknown'),
+                              );
+                            }).toList(),
+                            onChanged: _isLoadingPrograms && _apiPrograms.isEmpty
+                                ? null
+                                : (Program? newValue) {
+                                    setState(() {
+                                      _selectedProgram = newValue;
+                                    });
+                                  },
                           ),
-                          iconEnabledColor: AppColors.primaryColor,
-                          isExpanded: true,
-                          value: _selectedProgram,
-                          hint: CustomText(text: 'Select Program', fontsize: 14.sp),
-                          items: _apiPrograms.map((Program value) {
-                            return DropdownMenuItem<Program>(
-                              value: value,
-                              child: Text(value.name ?? 'Unknown'),
-                            );
-                          }).toList(),
-                          onChanged: (Program? newValue) {
-                            setState(() {
-                              _selectedProgram = newValue;
-                            });
-                          },
                         ),
+                      ),
+                    ],
                   ),
                 ),
               ),

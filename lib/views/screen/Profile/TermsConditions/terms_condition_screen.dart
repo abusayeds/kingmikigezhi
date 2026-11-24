@@ -3,6 +3,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../base/custom_text.dart';
+import '../../../base/skeletons.dart';
 import '../../../../controllers/terms_conditions_controller.dart';
 
 class TermsConditionScreen extends StatelessWidget {
@@ -39,7 +40,7 @@ class TermsConditionScreen extends StatelessWidget {
         centerTitle: true,
       ),
       body: Obx(() => _termsConditionsController.isLoading.value
-          ? const Center(child: CircularProgressIndicator())
+          ? const SimplePageSkeleton()
           : SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),

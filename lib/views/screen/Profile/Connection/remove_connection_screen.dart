@@ -4,6 +4,8 @@ import 'package:event_sharing/utils/app_icons.dart';
 import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/custom_button.dart';
 import 'package:event_sharing/views/base/custom_text_field.dart';
+import 'package:event_sharing/views/base/pull_to_refresh.dart';
+import 'package:event_sharing/views/base/skeletons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -76,17 +78,30 @@ class _AddedConneectionScreenState extends State<AddedConneectionScreen> {
             ),
           ),
           Expanded(
-            child: connectionController.getFilteredConnections().isEmpty &&
-                    connectionController.connections.isEmpty &&
-                    !connectionController.isLoadingConnections.value
-                ? Center(
-                    child: Text(
-                      'No connections',
-                      style: AppStyles.fontSize16(color: AppColors.color414141),
+            child: connectionController.isLoadingConnections.value &&
+                    connectionController.connections.isEmpty
+                ? const Padding(
+                    padding: EdgeInsets.all(12),
+                    child: ConnectionListSkeleton(),
+                  )
+                : connectionController.getFilteredConnections().isEmpty &&
+                        connectionController.connections.isEmpty
+                ? PullToRefresh.empty(
+                    onRefresh: () =>
+                        connectionController.fetchConnections(isRefresh: true),
+                    child: Center(
+                      child: Text(
+                        'No connections',
+                        style: AppStyles.fontSize16(color: AppColors.color414141),
+                      ),
                     ),
                   )
-                : ListView.builder(
+                : PullToRefresh(
+                    onRefresh: () =>
+                        connectionController.fetchConnections(isRefresh: true),
+                    child: ListView.builder(
                     controller: _scrollController,
+                    physics: PullToRefresh.alwaysScrollable(),
                     itemCount: connectionController.getFilteredConnections().length,
                     itemBuilder: (context, index) {
                       final connection =
@@ -210,14 +225,11 @@ class _AddedConneectionScreenState extends State<AddedConneectionScreen> {
                       );
                     },
                   ),
+                  ),
           ),
-          if (connectionController.isLoadingConnections.value)
-            Padding(
-              padding: EdgeInsets.all(16.r),
-              child: CircularProgressIndicator(
-                color: AppColors.primaryColor,
-              ),
-            ),
+          if (connectionController.isLoadingConnections.value &&
+              connectionController.connections.isNotEmpty)
+            const ListLoadMoreSkeleton(),
         ],
       )),
     );

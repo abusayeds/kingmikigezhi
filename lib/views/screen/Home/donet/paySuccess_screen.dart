@@ -1,48 +1,17 @@
+import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/utils/app_colors.dart';
+import 'package:event_sharing/views/base/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'dart:async';
+import 'package:get/get.dart';
 
-
-class PaymentSuccessScreen extends StatefulWidget {
+class PaymentSuccessScreen extends StatelessWidget {
   const PaymentSuccessScreen({super.key});
-
-  @override
-  _PaymentSuccessScreenState createState() => _PaymentSuccessScreenState();
-}
-
-class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
-  final int _countdown = 5;
-  late Timer _timer;
-
-  @override
-  void initState() {
-    super.initState();
-    startTimer();
-  }
-
-  @override
-  void dispose() {
-    _timer.cancel();
-    super.dispose();
-  }
-
-  void startTimer() {
-    // _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-    //   setState(() {
-    //     if (_countdown > 0) {
-    //       _countdown--;
-    //     } else {
-    //       _timer.cancel();
-    //       Get.toNamed(AppRoutes.suggestionDonationPage);
-    //     }
-    //   });
-    // });
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(
@@ -50,54 +19,52 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
             color: Colors.black,
             size: 18.w,
           ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          onPressed: () => Get.offAllNamed(AppRoutes.homeScreen),
         ),
         centerTitle: true,
         backgroundColor: Colors.white,
         elevation: 0,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Success Icon
-            CircleAvatar(
-              radius: 40,
-              backgroundColor: AppColors.primaryColor,
-              child: const Icon(
-                Icons.check,
-                color: Colors.white,
-                size: 50,
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 24.w),
+          child: Column(
+            children: [
+              const Spacer(),
+              CircleAvatar(
+                radius: 40.r,
+                backgroundColor: AppColors.primaryColor,
+                child: Icon(
+                  Icons.check,
+                  color: Colors.white,
+                  size: 50.sp,
+                ),
               ),
-            ),
-            const SizedBox(height: 20),
-            // Payment Success Text
-            const Text(
-              'Payment Successful',
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
+              SizedBox(height: 20.h),
+              Text(
+                'Payment Successful',
+                style: TextStyle(
+                  fontSize: 22.sp,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
               ),
-            ),
-            const SizedBox(height: 10),
-            // Thank you message
-            const Text(
-              'Thank you for your support !',
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.grey,
+              SizedBox(height: 10.h),
+              Text(
+                'Thank you for your support!',
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  color: Colors.grey,
+                ),
               ),
-            ),
-            const SizedBox(height: 40),
-            // Countdown
-            Text(
-              '$_countdown' 's',
-              style:  const TextStyle(fontSize: 18, color: Colors.black87,fontWeight:FontWeight.bold),
-            ),
-          ],
+              const Spacer(),
+              CustomButton(
+                text: 'Back Home',
+                onTap: () => Get.offAllNamed(AppRoutes.homeScreen),
+              ),
+              SizedBox(height: 24.h),
+            ],
+          ),
         ),
       ),
     );

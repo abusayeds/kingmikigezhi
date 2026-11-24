@@ -12,7 +12,21 @@ import 'utils/message.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+  // Draw edge-to-edge; SafeArea (below) keeps UI clear of system nav / gesture bar.
+  await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      systemNavigationBarColor: Colors.transparent,
+      systemNavigationBarDividerColor: Colors.transparent,
+      systemNavigationBarIconBrightness: Brightness.dark,
+      statusBarIconBrightness: Brightness.dark,
+    ),
+  );
   Map<String, Map<String, String>> languages = await di.init();
   runApp(MyApp(
     languages: languages,
@@ -45,6 +59,18 @@ class MyApp extends StatelessWidget {
                 transitionDuration: const Duration(milliseconds: 500),
                 getPages: AppRoutes.page,
                 initialRoute: AppRoutes.splashScreen,
+                // Keep every page clear of system status/nav/gesture insets.
+                // top: false — AppBars already sit under the status bar correctly.
+                builder: (context, child) {
+                  return SafeArea(
+                    top: false,
+                    left: true,
+                    right: true,
+                    bottom: true,
+                    maintainBottomViewPadding: true,
+                    child: child ?? const SizedBox.shrink(),
+                  );
+                },
               );
             });
       });

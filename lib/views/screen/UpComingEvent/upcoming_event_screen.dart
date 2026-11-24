@@ -1,4 +1,5 @@
 import 'package:event_sharing/controllers/event_controller.dart';
+import 'package:event_sharing/controllers/home_controller.dart';
 import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/app_strings.dart';
@@ -10,6 +11,7 @@ import 'package:get/get.dart';
 import '../../../utils/app_icons.dart';
 import '../../base/custom_text.dart';
 import '../../base/custom_text_field.dart';
+import '../../base/skeletons.dart';
 
 class UpcomingEventScreen extends StatefulWidget {
   const UpcomingEventScreen({super.key});
@@ -27,6 +29,18 @@ class _UpcomingEventScreenState extends State<UpcomingEventScreen> {
   void initState() {
     super.initState();
     _scrollController.addListener(_scrollListener);
+    // Home uses HomeController; this screen uses EventController (separate list).
+    // Seed from home so "More" isn't empty while we refresh, then fetch fresh.
+    if (_eventController.upcomingEvents.isEmpty &&
+        Get.isRegistered<HomeController>()) {
+      final home = Get.find<HomeController>();
+      if (home.upcomingEvents.isNotEmpty) {
+        _eventController.upcomingEvents.assignAll(home.upcomingEvents);
+        _eventController.upcomingHasNext.value = home.upcomingHasNext.value;
+      }
+    }
+    _eventController.searchUpcomingQuery.value = '';
+    _eventController.fetchUpcomingEvents();
   }
 
   void _scrollListener() {
@@ -76,8 +90,16 @@ class _UpcomingEventScreenState extends State<UpcomingEventScreen> {
             //==========================> List View Section <=====================
             Expanded(
               child: Obx(() {
-                if (_eventController.isLoadingUpcoming.value && _eventController.upcomingEvents.isEmpty) {
-                  return const Center(child: CircularProgressIndicator());
+                if (_eventController.isLoadingUpcoming.value &&
+                    _eventController.upcomingEvents.isEmpty) {
+                  return ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: 3,
+                    itemBuilder: (_, __) => SizedBox(
+                      height: 275.h,
+                      child: const EventCardSkeleton(),
+                    ),
+                  );
                 }
 
                 if (_eventController.upcomingEvents.isEmpty) {
@@ -93,14 +115,17 @@ class _UpcomingEventScreenState extends State<UpcomingEventScreen> {
                     itemCount: _eventController.upcomingEvents.length + (_eventController.upcomingHasNext.value ? 1 : 0),
                     itemBuilder: (context, index) {
                       if (index == _eventController.upcomingEvents.length) {
-                        return const Center(child: CircularProgressIndicator());
+                        return const ListLoadMoreSkeleton();
                       }
                       final event = _eventController.upcomingEvents[index];
                       return GestureDetector(
                         onTap: () {
                           Get.toNamed(AppRoutes.eventDetailsScreen, arguments: event);
                         },
-                        child: EventCard(eventModel: event),
+                        child: SizedBox(
+                          height: 275.h,
+                          child: EventCard(eventModel: event),
+                        ),
                       );
                     },
                   ),

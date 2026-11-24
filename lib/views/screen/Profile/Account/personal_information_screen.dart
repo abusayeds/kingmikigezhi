@@ -6,6 +6,7 @@ import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/custom_text_field.dart';
 import 'package:event_sharing/helpers/route.dart';
 import 'package:event_sharing/views/base/custom_button.dart';
+import 'package:event_sharing/views/base/pull_to_refresh.dart';
 import 'package:event_sharing/views/screen/Profile/Account/top_profile_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -141,7 +142,10 @@ class _PersonalInformationScreenState
         final programs = _authController.editOptionPrograms;
         final years = _authController.editOptionYears;
 
-        return SingleChildScrollView(
+        return PullToRefresh(
+          onRefresh: () => _authController.fetchUserProfile(),
+          child: SingleChildScrollView(
+          physics: PullToRefresh.alwaysScrollable(),
           child: Padding(
             padding:
                 EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
@@ -560,6 +564,7 @@ class _PersonalInformationScreenState
               ],
             ),
           ),
+        ),
         );
       }),
     );

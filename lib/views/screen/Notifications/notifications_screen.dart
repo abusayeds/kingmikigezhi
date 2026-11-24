@@ -7,6 +7,8 @@ import '../../../controllers/notification_controller.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_icons.dart';
 import '../../base/custom_text.dart';
+import '../../base/pull_to_refresh.dart';
+import '../../base/skeletons.dart';
 
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});
@@ -21,6 +23,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   @override
   void initState() {
     super.initState();
+    // Silent when cached notifications already exist.
     _notificationController.getNotifications();
   }
 
@@ -99,42 +102,54 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
               child: Obx(() {
                 if (_notificationController.isLoading.value &&
                     _notificationController.notifications.isEmpty) {
-                  return const Center(child: CircularProgressIndicator());
+                  return const NotificationListSkeleton();
                 }
 
                 if (_notificationController.notifications.isEmpty) {
-                  return Center(
-                    child: Text(
-                      'No notifications yet',
-                      style: TextStyle(fontSize: 14.sp, color: Colors.grey),
+                  return PullToRefresh.empty(
+                    onRefresh: () =>
+                        _notificationController.getNotifications(force: true),
+                    child: Center(
+                      child: Text(
+                        'No notifications yet',
+                        style: TextStyle(fontSize: 14.sp, color: Colors.grey),
+                      ),
                     ),
                   );
                 }
 
-                return ListView.builder(
+                return PullToRefresh(
+                  onRefresh: () =>
+                      _notificationController.getNotifications(force: true),
+                  child: ListView.builder(
                   itemCount: _notificationController.notifications.length,
                   shrinkWrap: true,
-                  physics: const AlwaysScrollableScrollPhysics(),
+                  physics: PullToRefresh.alwaysScrollable(),
                   itemBuilder: (context, index) {
                     final notification = _notificationController.notifications[index];
                     return Padding(
                       padding: EdgeInsets.symmetric(vertical: 10.w),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: notification.isRead == true
-                              ? AppColors.colorEDF2F4
-                              : AppColors.colorD9A951,
-                        ),
-                        child: _notification(
-                          notification.title ?? '',
-                          notification.createdAt ?? DateTime.now(),
-                          notification.message ?? '',
-                          isRead: notification.isRead ?? false,
+                      child: GestureDetector(
+                        onTap: () =>
+                            _notificationController.openNotification(notification),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: notification.isRead == true
+                                ? AppColors.colorEDF2F4
+                                : AppColors.colorD9A951,
+                          ),
+                          child: _notification(
+                            notification.title ?? '',
+                            notification.createdAt ?? DateTime.now(),
+                            notification.message ?? '',
+                            isRead: notification.isRead ?? false,
+                          ),
                         ),
                       ),
                     );
                   },
+                ),
                 );
               }),
             ),
@@ -187,6 +202,16 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                           color: AppColors.color414141,
                           fontWeight: FontWeight.w500,
                         ),
+                        if (shorDescription.trim().isNotEmpty)
+                          CustomText(
+                            top: 4.h,
+                            text: shorDescription,
+                            fontsize: 13.sp,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.color414141,
+                            maxline: 2,
+                            textAlign: TextAlign.left,
+                          ),
                         Align(
                           alignment: Alignment.centerLeft,
                           child: CustomText(

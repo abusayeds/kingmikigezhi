@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:event_sharing/helpers/app_feedback.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../services/api_service.dart';
@@ -33,16 +33,25 @@ class InvitationController extends GetxController {
   }
 
   // ── Fetch my connections (people list for invitation) ─────────
-  Future<void> fetchMyConnections() async {
+  Future<void> fetchMyConnections({String? eventId}) async {
     try {
-      isLoadingConnections.value = true;
-      final response = await apiService.get(
-          '${ApiConstants.getMyConnections}?page=1&limit=100');
+      isLoadingConnections.value = myConnections.isEmpty;
+      // Prefer event-scoped share connections (flat user rows + alreadyInvited).
+      final url = (eventId != null && eventId.isNotEmpty)
+          ? '${ApiConstants.shareInvitationConnections(eventId)}?page=1&limit=100'
+          : '${ApiConstants.getMyConnections}?page=1&limit=100';
+      final response = await apiService.get(url);
       if (response != null && response['success'] == true) {
         myConnections.value = response['data'] ?? [];
+      } else {
+        AppFeedback.error(
+          response?['message']?.toString() ??
+              'Could not load connections. Please try again.',
+        );
       }
     } catch (e) {
       debugPrint('fetchMyConnections error: $e');
+      AppFeedback.error(e.toString(), title: 'Could not load connections');
     } finally {
       isLoadingConnections.value = false;
     }
@@ -51,7 +60,7 @@ class InvitationController extends GetxController {
   // ── Fetch received invitations ────────────────────────────────
   Future<void> fetchReceivedInvitations() async {
     try {
-      isLoadingReceived.value = true;
+      isLoadingReceived.value = receivedInvitations.isEmpty;
       final response =
           await apiService.get(ApiConstants.getReceiveInvitation);
       if (response != null && response['success'] == true) {
@@ -67,7 +76,7 @@ class InvitationController extends GetxController {
   // ── Fetch sent invitations ────────────────────────────────────
   Future<void> fetchSentInvitations() async {
     try {
-      isLoadingSent.value = true;
+      isLoadingSent.value = sentInvitations.isEmpty;
       final response =
           await apiService.get(ApiConstants.getSentInvitation);
       if (response != null && response['success'] == true) {
@@ -90,9 +99,7 @@ class InvitationController extends GetxController {
     String message = '',
   }) async {
     if (inviteeIds.isEmpty) {
-      Fluttertoast.showToast(
-          msg: 'Please select at least one person to invite.',
-          gravity: ToastGravity.BOTTOM);
+      AppFeedback.validation('Select at least one person to invite.');
       return false;
     }
     try {
@@ -107,19 +114,17 @@ class InvitationController extends GetxController {
       );
       isSending.value = false;
       if (response != null && response['success'] == true) {
-        Fluttertoast.showToast(
-            msg: response['message'] ?? 'Invitations sent!',
-            gravity: ToastGravity.BOTTOM);
+        // Success UI (toast + redirect) is handled by the caller screen.
         return true;
       }
+      AppFeedback.error(
+        response?['message']?.toString() ??
+            'Could not send the invitation. Please try again.',
+      );
       return false;
     } catch (e) {
       isSending.value = false;
-      Fluttertoast.showToast(
-          msg: 'Failed to send invitations: $e',
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.red,
-          textColor: Colors.white);
+      AppFeedback.error(e.toString(), title: 'Could not send invitation');
       return false;
     }
   }
@@ -131,15 +136,12 @@ class InvitationController extends GetxController {
           await apiService.patch(ApiConstants.acceptById(invitationId), body: {});
       if (response != null && response['success'] == true) {
         _removeFromReceived(invitationId);
-        Fluttertoast.showToast(
-            msg: response['message'] ?? 'Invitation accepted.',
-            gravity: ToastGravity.BOTTOM);
+        AppFeedback.success(response['message']?.toString() ?? 'Invitation accepted.');
         return true;
       }
       return false;
     } catch (e) {
-      Fluttertoast.showToast(
-          msg: 'Failed to accept: $e', gravity: ToastGravity.BOTTOM);
+      AppFeedback.error('Could not accept this invitation.');
       return false;
     }
   }
@@ -151,50 +153,41 @@ class InvitationController extends GetxController {
           .patch(ApiConstants.declineById(invitationId), body: {});
       if (response != null && response['success'] == true) {
         _removeFromReceived(invitationId);
-        Fluttertoast.showToast(
-            msg: response['message'] ?? 'Invitation declined.',
-            gravity: ToastGravity.BOTTOM);
+        AppFeedback.success(response['message']?.toString() ?? 'Invitation ignored.');
         return true;
       }
       return false;
     } catch (e) {
-      Fluttertoast.showToast(
-          msg: 'Failed to decline: $e', gravity: ToastGravity.BOTTOM);
+      AppFeedback.error('Could not ignore this invitation.');
       return false;
     }
   }
 
   // ── Accept all received invitations ──────────────────────────
-  Future<void> acceptAllInvitations(String eventId) async {
+  Future<void> acceptAllInvitations() async {
     try {
-      final response = await apiService
-          .patch(ApiConstants.acceptByAll(eventId), body: {});
+      final response =
+          await apiService.patch(ApiConstants.acceptByAll, body: {});
       if (response != null && response['success'] == true) {
         receivedInvitations.clear();
-        Fluttertoast.showToast(
-            msg: response['message'] ?? 'All invitations accepted.',
-            gravity: ToastGravity.BOTTOM);
+        AppFeedback.success(response['message']?.toString() ?? 'All invitations accepted.');
       }
     } catch (e) {
-      Fluttertoast.showToast(
-          msg: 'Failed to accept all: $e', gravity: ToastGravity.BOTTOM);
+      AppFeedback.error('Could not accept all invitations.');
     }
   }
 
-  // ── Decline all received invitations ─────────────────────────
-  Future<void> declineAllInvitations(String eventId) async {
+  // ── Decline / Ignore all received invitations ────────────────
+  Future<void> declineAllInvitations() async {
     try {
-      final response = await apiService
-          .patch(ApiConstants.declineByAll(eventId), body: {});
+      final response =
+          await apiService.patch(ApiConstants.declineByAll, body: {});
       if (response != null && response['success'] == true) {
         receivedInvitations.clear();
-        Fluttertoast.showToast(
-            msg: response['message'] ?? 'All invitations declined.',
-            gravity: ToastGravity.BOTTOM);
+        AppFeedback.success(response['message']?.toString() ?? 'All invitations ignored.');
       }
     } catch (e) {
-      Fluttertoast.showToast(
-          msg: 'Failed to decline all: $e', gravity: ToastGravity.BOTTOM);
+      AppFeedback.error('Could not ignore all invitations.');
     }
   }
 
@@ -203,12 +196,23 @@ class InvitationController extends GetxController {
   }
 
   // ── Helper: get the "other" user from a connection ────────────
-  /// The API returns requester + receiver. The current user is one of them.
-  /// This returns the other person's data.
+  /// Supports:
+  /// - share connections API (flat user object with `id`)
+  /// - my-connections API (`requester` + `receiver`)
   Map<String, dynamic> getConnectionPeer(
       Map<String, dynamic> connection, String currentUserId) {
+    if (connection['requester'] == null && connection['receiver'] == null) {
+      return connection;
+    }
     final requester = connection['requester'] as Map<String, dynamic>? ?? {};
     final receiver = connection['receiver'] as Map<String, dynamic>? ?? {};
-    return requester['id'] == currentUserId ? receiver : requester;
+    if (currentUserId.isNotEmpty && requester['id']?.toString() == currentUserId) {
+      return receiver;
+    }
+    if (currentUserId.isNotEmpty && receiver['id']?.toString() == currentUserId) {
+      return requester;
+    }
+    // Fallback when profile id is not loaded yet.
+    return receiver.isNotEmpty ? receiver : requester;
   }
 }

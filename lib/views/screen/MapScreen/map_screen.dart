@@ -707,105 +707,148 @@ class _MapScreenState extends State<MapScreen> {
                     SizedBox(height: 16.h),
 
                     //=========================> Country dropdown <=======================
-                    _isLoadingCountries
-                        ? const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 8),
-                            child: LinearProgressIndicator(),
-                          )
-                        : DropdownButtonFormField<Country>(
-                            key: ValueKey('country-${_selectedCountry?.id}'),
-                            initialValue: _selectedCountry,
-                            isExpanded: true,
-                            decoration: const InputDecoration(
-                              labelText: 'Country',
-                              border: OutlineInputBorder(),
-                            ),
-                            items: _countries
-                                .map(
-                                  (c) => DropdownMenuItem(
-                                    value: c,
-                                    child: Text(c.name),
+                    DropdownButtonFormField<Country>(
+                      key: ValueKey('country-${_selectedCountry?.id}'),
+                      initialValue: _selectedCountry,
+                      isExpanded: true,
+                      decoration: InputDecoration(
+                        labelText: _isLoadingCountries
+                            ? 'Loading countries...'
+                            : 'Country',
+                        border: const OutlineInputBorder(),
+                        prefixIcon: _isLoadingCountries
+                            ? Padding(
+                                padding: EdgeInsets.all(12.w),
+                                child: SizedBox(
+                                  width: 14.w,
+                                  height: 14.w,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 1.8,
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                      AppColors.primaryColor,
+                                    ),
                                   ),
-                                )
-                                .toList(),
-                            onChanged: _onCountryChanged,
-                          ),
+                                ),
+                              )
+                            : null,
+                      ),
+                      items: _countries
+                          .map(
+                            (c) => DropdownMenuItem(
+                              value: c,
+                              child: Text(c.name),
+                            ),
+                          )
+                          .toList(),
+                      onChanged:
+                          _isLoadingCountries ? null : _onCountryChanged,
+                    ),
                     SizedBox(height: 12.h),
 
                     //=========================> State dropdown <=======================
                     if (_selectedCountry != null)
-                      _isLoadingStates
-                          ? const Padding(
-                              padding: EdgeInsets.symmetric(vertical: 8),
-                              child: LinearProgressIndicator(),
+                      _states.isEmpty && !_isLoadingStates
+                          ? Padding(
+                              padding: EdgeInsets.symmetric(vertical: 8.h),
+                              child: CustomText(
+                                text:
+                                    'No states available for this country in the dataset.',
+                                fontsize: 11.sp,
+                                color: Colors.grey,
+                              ),
                             )
-                          : _states.isEmpty
-                              ? Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 8.h),
-                                  child: CustomText(
-                                    text:
-                                        'No states available for this country in the dataset.',
-                                    fontsize: 11.sp,
-                                    color: Colors.grey,
-                                  ),
-                                )
-                              : DropdownButtonFormField<CityState>(
-                                  key: ValueKey(
-                                      'state-${_selectedCountry?.id}-${_selectedState?.id}'),
-                                  initialValue: _selectedState,
-                                  isExpanded: true,
-                                  decoration: const InputDecoration(
-                                    labelText: 'State / Province',
-                                    border: OutlineInputBorder(),
-                                  ),
-                                  items: _states
-                                      .map(
-                                        (s) => DropdownMenuItem(
-                                          value: s,
-                                          child: Text(s.name),
+                          : DropdownButtonFormField<CityState>(
+                              key: ValueKey(
+                                  'state-${_selectedCountry?.id}-${_selectedState?.id}'),
+                              initialValue: _selectedState,
+                              isExpanded: true,
+                              decoration: InputDecoration(
+                                labelText: _isLoadingStates
+                                    ? 'Loading states...'
+                                    : 'State / Province',
+                                border: const OutlineInputBorder(),
+                                prefixIcon: _isLoadingStates
+                                    ? Padding(
+                                        padding: EdgeInsets.all(12.w),
+                                        child: SizedBox(
+                                          width: 14.w,
+                                          height: 14.w,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 1.8,
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                              AppColors.primaryColor,
+                                            ),
+                                          ),
                                         ),
                                       )
-                                      .toList(),
-                                  onChanged: _onStateChanged,
-                                ),
+                                    : null,
+                              ),
+                              items: _states
+                                  .map(
+                                    (s) => DropdownMenuItem(
+                                      value: s,
+                                      child: Text(s.name),
+                                    ),
+                                  )
+                                  .toList(),
+                              onChanged: _isLoadingStates || _states.isEmpty
+                                  ? null
+                                  : _onStateChanged,
+                            ),
                     SizedBox(height: 12.h),
 
                     //=========================> City dropdown <=======================
                     if (_selectedState != null)
-                      _isLoadingCities
-                          ? const Padding(
-                              padding: EdgeInsets.symmetric(vertical: 8),
-                              child: LinearProgressIndicator(),
+                      _cities.isEmpty && !_isLoadingCities
+                          ? Padding(
+                              padding: EdgeInsets.symmetric(vertical: 8.h),
+                              child: CustomText(
+                                text:
+                                    'No cities available for this state in the dataset.',
+                                fontsize: 11.sp,
+                                color: Colors.grey,
+                              ),
                             )
-                          : _cities.isEmpty
-                              ? Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 8.h),
-                                  child: CustomText(
-                                    text:
-                                        'No cities available for this state in the dataset.',
-                                    fontsize: 11.sp,
-                                    color: Colors.grey,
-                                  ),
-                                )
-                              : DropdownButtonFormField<City>(
-                                  key: ValueKey(
-                                      'city-${_selectedState?.id}-${_selectedCity?.id}'),
-                                  initialValue: _selectedCity,
-                                  isExpanded: true,
-                                  decoration: const InputDecoration(
-                                    labelText: 'City',
-                                    border: OutlineInputBorder(),
-                                  ),
-                                  items: _cities
-                                      .map(
-                                        (c) => DropdownMenuItem(
-                                          value: c,
-                                          child: Text(c.name),
+                          : DropdownButtonFormField<City>(
+                              key: ValueKey(
+                                  'city-${_selectedState?.id}-${_selectedCity?.id}'),
+                              initialValue: _selectedCity,
+                              isExpanded: true,
+                              decoration: InputDecoration(
+                                labelText: _isLoadingCities
+                                    ? 'Loading cities...'
+                                    : 'City',
+                                border: const OutlineInputBorder(),
+                                prefixIcon: _isLoadingCities
+                                    ? Padding(
+                                        padding: EdgeInsets.all(12.w),
+                                        child: SizedBox(
+                                          width: 14.w,
+                                          height: 14.w,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 1.8,
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                              AppColors.primaryColor,
+                                            ),
+                                          ),
                                         ),
                                       )
-                                      .toList(),
-                                  onChanged: _onCityChanged,
-                                ),
+                                    : null,
+                              ),
+                              items: _cities
+                                  .map(
+                                    (c) => DropdownMenuItem(
+                                      value: c,
+                                      child: Text(c.name),
+                                    ),
+                                  )
+                                  .toList(),
+                              onChanged: _isLoadingCities || _cities.isEmpty
+                                  ? null
+                                  : _onCityChanged,
+                            ),
                     SizedBox(height: 16.h),
 
                     CustomTextField(

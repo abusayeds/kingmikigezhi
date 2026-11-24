@@ -1,15 +1,21 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:event_sharing/controllers/auth_controller.dart';
 import 'package:event_sharing/controllers/invitation_controller.dart';
 import 'package:event_sharing/helpers/route.dart';
+import 'package:event_sharing/services/api_service.dart';
+import 'package:event_sharing/utils/api_constants.dart';
 import 'package:event_sharing/utils/app_colors.dart';
 import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/custom_button.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
+import 'package:event_sharing/views/base/skeletons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shimmer/shimmer.dart';
 
 class MyInvitationPage extends StatefulWidget {
   const MyInvitationPage({super.key});
@@ -23,8 +29,16 @@ class _MyInvitationPageState extends State<MyInvitationPage> {
       Get.find<InvitationController>();
   final AuthController _authController = Get.find<AuthController>();
 
-  // eventId passed via Get.arguments (optional)
-  String get _eventId => Get.arguments?['eventId'] ?? '';
+  Map<String, dynamic> get _args {
+    final raw = Get.arguments;
+    if (raw is Map<String, dynamic>) return raw;
+    if (raw is Map) return Map<String, dynamic>.from(raw);
+    return <String, dynamic>{};
+  }
+
+  String get _eventId => _args['eventId']?.toString() ?? '';
+  String get _eventLink => _args['eventLink']?.toString() ?? '';
+  String get _eventTitle => _args['eventTitle']?.toString() ?? 'Event';
 
   // Tracks which connection IDs are checked
   final Set<String> _selectedIds = {};
@@ -33,12 +47,26 @@ class _MyInvitationPageState extends State<MyInvitationPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _invitationController.fetchMyConnections();
+      if (_authController.userProfile.value == null) {
+        _authController.fetchUserProfile();
+      }
+      _invitationController.fetchMyConnections(eventId: _eventId);
     });
   }
 
-  String get _currentUserId =>
-      _authController.userProfile.value?['id'] ?? '';
+  String get _currentUserId {
+    final fromProfile = _authController.userProfile.value?['id']?.toString();
+    if (fromProfile != null && fromProfile.isNotEmpty) return fromProfile;
+    try {
+      final raw = Get.find<ApiService>()
+          .sharedPreferences
+          .getString(ApiConstants.keyUserData);
+      if (raw == null || raw.isEmpty) return '';
+      final decoded = jsonDecode(raw);
+      if (decoded is Map) return decoded['id']?.toString() ?? '';
+    } catch (_) {}
+    return '';
+  }
 
   void _toggleCheckbox(String userId, bool? value) {
     setState(() {
@@ -76,7 +104,7 @@ class _MyInvitationPageState extends State<MyInvitationPage> {
             Expanded(
               child: Obx(() {
                 if (_invitationController.isLoadingConnections.value) {
-                  return const Center(child: CircularProgressIndicator());
+                  return const ConnectionListSkeleton();
                 }
                 if (_invitationController.myConnections.isEmpty) {
                   return const Center(
@@ -91,7 +119,9 @@ class _MyInvitationPageState extends State<MyInvitationPage> {
                             as Map<String, dynamic>;
                     final peer = _invitationController
                         .getConnectionPeer(connection, _currentUserId);
-                    final userId = peer['id'] as String? ?? '';
+                    final userId = peer['id']?.toString() ?? '';
+                    final alreadyInvited = peer['alreadyInvited'] == true ||
+                        connection['alreadyInvited'] == true;
                     final name =
                         '${peer['firstName'] ?? ''} ${peer['lastName'] ?? ''}'
                             .trim();
@@ -130,6 +160,17 @@ class _MyInvitationPageState extends State<MyInvitationPage> {
                                   ? CachedNetworkImage(
                                       imageUrl: profilePicture,
                                       fit: BoxFit.cover,
+                                      placeholder: (_, __) =>
+                                          Shimmer.fromColors(
+                                        baseColor:
+                                            Colors.grey.withOpacity(0.6),
+                                        highlightColor:
+                                            Colors.grey.withOpacity(0.3),
+                                        child: Container(
+                                          color:
+                                              Colors.grey.withOpacity(0.6),
+                                        ),
+                                      ),
                                       errorWidget: (_, __, ___) =>
                                           Icon(Icons.person,
                                               size: 32.w,
@@ -167,15 +208,17 @@ class _MyInvitationPageState extends State<MyInvitationPage> {
                               ],
                             ),
                           ),
-                          // Checkbox
+                          // Checkbox (disabled if already invited)
                           Checkbox(
                             activeColor: AppColors.primaryColor,
                             side: BorderSide(
                               color: AppColors.primaryColor,
                               width: 1.w,
                             ),
-                            value: _selectedIds.contains(userId),
-                            onChanged: userId.isNotEmpty
+                            value: alreadyInvited
+                                ? true
+                                : _selectedIds.contains(userId),
+                            onChanged: (userId.isNotEmpty && !alreadyInvited)
                                 ? (v) => _toggleCheckbox(userId, v)
                                 : null,
                           ),
@@ -195,6 +238,8 @@ class _MyInvitationPageState extends State<MyInvitationPage> {
                             AppRoutes.shareInvitationPage,
                             arguments: {
                               'eventId': _eventId,
+                              'eventLink': _eventLink,
+                              'eventTitle': _eventTitle,
                               'inviteeIds': _selectedIds.toList(),
                             },
                           );

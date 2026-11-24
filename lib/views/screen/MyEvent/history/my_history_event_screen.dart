@@ -1,5 +1,7 @@
 import 'package:event_sharing/views/base/app_remote_image.dart';
 import 'package:event_sharing/views/base/custom_text_field.dart';
+import 'package:event_sharing/views/base/pull_to_refresh.dart';
+import 'package:event_sharing/views/base/skeletons.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -60,20 +62,23 @@ class _MyHistoryEventScreenState extends State<MyHistoryEventScreen> {
             Expanded(
               child: Obx(() {
                 if (_homeController.isLoadingHistory.value && _homeController.historyEvents.isEmpty) {
-                  return const Center(child: CircularProgressIndicator());
+                  return const EventListSkeleton();
                 }
                 if (_homeController.historyEvents.isEmpty) {
-                  return const Center(child: Text("No history events"));
+                  return PullToRefresh.empty(
+                    onRefresh: () => _homeController.fetchHistoryEvents(force: true),
+                    child: const Center(child: Text("No history events")),
+                  );
                 }
-                return ListView.builder(
+                return PullToRefresh(
+                  onRefresh: () => _homeController.fetchHistoryEvents(force: true),
+                  child: ListView.builder(
                   controller: _scrollController,
+                  physics: PullToRefresh.alwaysScrollable(),
                   itemCount: _homeController.historyEvents.length + (_homeController.historyHasNext.value ? 1 : 0),
                   itemBuilder: (context, index) {
                     if (index == _homeController.historyEvents.length) {
-                      return const Center(child: Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: CircularProgressIndicator(),
-                      ));
+                      return const ListLoadMoreSkeleton();
                     }
                     final EventModel event = _homeController.historyEvents[index];
                     String deadline = '';
@@ -193,9 +198,7 @@ class _MyHistoryEventScreenState extends State<MyHistoryEventScreen> {
                                     ),
                                     //=====================> Share Icon <=========================
                                     GestureDetector(
-                                      onTap: (){
-                                        Get.toNamed(AppRoutes.myInvitationPage);
-                                      },
+                                      onTap: () => openEventInvitationPage(event),
                                       child: SvgPicture.asset(
                                         AppIcons.share,
                                         width: 16.w,
@@ -211,9 +214,12 @@ class _MyHistoryEventScreenState extends State<MyHistoryEventScreen> {
                             Positioned(
                               bottom: 10,
                               right: 10,
-                              child: EventMoreMenuButton(
-                                event: event,
-                                iconColor: AppColors.greyColor,
+                              child: GestureDetector(
+                                onTap: () {},
+                                child: EventMoreMenuButton(
+                                  event: event,
+                                  iconColor: AppColors.greyColor,
+                                ),
                               ),
                             ),
                           ],
@@ -221,6 +227,7 @@ class _MyHistoryEventScreenState extends State<MyHistoryEventScreen> {
 
                     );
                   },
+                ),
                 );
               }),
             )
@@ -270,8 +277,14 @@ class _MyHistoryEventScreenState extends State<MyHistoryEventScreen> {
           ),
         ),
         GestureDetector(
-          onTap: () {
-            Get.toNamed(AppRoutes.myEventFilterScreen);
+          onTap: () async {
+            final result = await Get.toNamed(AppRoutes.myEventFilterScreen);
+            if (result is Map && result.isNotEmpty) {
+              Get.toNamed(
+                AppRoutes.searchEventScreen,
+                arguments: Map<String, dynamic>.from(result),
+              );
+            }
           },
           child: Container(
             decoration: BoxDecoration(

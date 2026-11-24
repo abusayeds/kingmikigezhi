@@ -15,7 +15,7 @@ class TermsConditionsController extends GetxController {
 
   Future<void> getTermsCondition() async {
     try {
-      isLoading.value = true;
+      if (content.value.isEmpty) isLoading.value = true;
       final res = await apiService.get(ApiConstants.getTermsSettings);
       if (res != null && res['data'] != null) {
         final data = res['data'];

@@ -1,11 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:event_sharing/controllers/contribution_controller.dart';
 import 'package:event_sharing/views/base/custom_text_field.dart';
+import 'package:event_sharing/views/base/pull_to_refresh.dart';
+import 'package:event_sharing/views/base/skeletons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../helpers/route.dart';
 import '../../../../utils/app_colors.dart';
@@ -90,23 +93,27 @@ class _MyContributionScreenState extends State<MyContributionScreen> {
               child: Obx(() {
                 if (_controller.isLoading.value &&
                     _controller.contributions.isEmpty) {
-                  return const Center(child: CircularProgressIndicator());
+                  return const EventListSkeleton();
                 }
                 if (_controller.contributions.isEmpty) {
-                  return const Center(
-                      child: Text('No contributions found'));
+                  return PullToRefresh.empty(
+                    onRefresh: () =>
+                        _controller.fetchContributions(force: true),
+                    child: const Center(
+                        child: Text('No contributions found')),
+                  );
                 }
-                return ListView.builder(
+                return PullToRefresh(
+                  onRefresh: () =>
+                      _controller.fetchContributions(force: true),
+                  child: ListView.builder(
                   controller: _scrollController,
+                  physics: PullToRefresh.alwaysScrollable(),
                   itemCount: _controller.contributions.length +
                       (_controller.hasNext.value ? 1 : 0),
                   itemBuilder: (context, index) {
                     if (index == _controller.contributions.length) {
-                      return Padding(
-                        padding: EdgeInsets.symmetric(vertical: 16.h),
-                        child: const Center(
-                            child: CircularProgressIndicator()),
-                      );
+                      return const ListLoadMoreSkeleton();
                     }
                     final item = _controller.contributions[index];
                     return GestureDetector(
@@ -141,14 +148,18 @@ class _MyContributionScreenState extends State<MyContributionScreen> {
                                         height: 75.0.h,
                                         width: 75.0.w,
                                         fit: BoxFit.cover,
-                                        placeholder: (_, __) => Container(
-                                          height: 75.h,
-                                          width: 75.w,
-                                          color: AppColors.fillColor,
-                                          child: const Center(
-                                              child:
-                                                  CircularProgressIndicator(
-                                                      strokeWidth: 2)),
+                                        placeholder: (_, __) =>
+                                            Shimmer.fromColors(
+                                          baseColor:
+                                              Colors.grey.withOpacity(0.6),
+                                          highlightColor:
+                                              Colors.grey.withOpacity(0.3),
+                                          child: Container(
+                                            height: 75.h,
+                                            width: 75.w,
+                                            color:
+                                                Colors.grey.withOpacity(0.6),
+                                          ),
                                         ),
                                         errorWidget: (_, __, ___) =>
                                             Container(
@@ -190,33 +201,38 @@ class _MyContributionScreenState extends State<MyContributionScreen> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         // Left column
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            _infoRow(
-                                                '${item.type ?? '-'} Event'),
-                                            SizedBox(height: 6.h),
-                                            _infoRow(
-                                                item.location ?? '-'),
-                                            SizedBox(height: 6.h),
-                                            _infoRow(
-                                                'History: ${item.history ?? '-'}'),
-                                          ],
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              _infoRow(
+                                                  '${item.type ?? '-'} Event'),
+                                              SizedBox(height: 6.h),
+                                              _infoRow(
+                                                  item.location ?? '-'),
+                                              SizedBox(height: 6.h),
+                                              _infoRow(
+                                                  'History: ${item.history ?? '-'}'),
+                                            ],
+                                          ),
                                         ),
+                                        SizedBox(width: 8.w),
                                         // Right column
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            _infoRow(
-                                                'Cost: \$${item.cost ?? '-'}'),
-                                            SizedBox(height: 6.h),
-                                            _infoRow(
-                                                'Deadline: ${_formatDeadline(item.deadline)}'),
-                                          ],
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              _infoRow(
+                                                  'Cost: \$${item.cost ?? '-'}'),
+                                              SizedBox(height: 6.h),
+                                              _infoRow(
+                                                  'Deadline: ${_formatDeadline(item.deadline)}'),
+                                            ],
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -263,6 +279,7 @@ class _MyContributionScreenState extends State<MyContributionScreen> {
                       ),
                     );
                   },
+                ),
                 );
               }),
             ),
@@ -277,7 +294,14 @@ class _MyContributionScreenState extends State<MyContributionScreen> {
       children: [
         SvgPicture.asset(AppIcons.dotIconForFamily),
         SizedBox(width: 4.w),
-        Text(text, style: TextStyle(fontSize: 8.sp)),
+        Expanded(
+          child: Text(
+            text,
+            style: TextStyle(fontSize: 8.sp),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
       ],
     );
   }

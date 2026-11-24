@@ -1,8 +1,13 @@
 import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:mime_type/mime_type.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../helpers/route.dart';
 import '../utils/api_constants.dart';
 
 class ApiService {
@@ -10,32 +15,31 @@ class ApiService {
 
   ApiService({required this.sharedPreferences});
 
+  /// Prevents parallel 401s from firing multiple logouts / refreshes.
+  bool _logoutInProgress = false;
+  Future<bool>? _refreshInFlight;
+
   // GET request
   Future<dynamic> get(String url, {Map<String, String>? headers}) async {
-    try {
-      final response = await http.get(
-        Uri.parse(url),
-        headers: headers ?? await _getHeaders(),
-      );
-      return _handleResponse(response);
-    } catch (e) {
-      throw _handleError(e);
-    }
+    return _sendWithAuthRetry(
+      url,
+      (hdrs) => http.get(Uri.parse(url), headers: hdrs),
+      headers: headers,
+    );
   }
 
   // POST request
   Future<dynamic> post(String url,
       {dynamic body, Map<String, String>? headers}) async {
-    try {
-      final response = await http.post(
+    return _sendWithAuthRetry(
+      url,
+      (hdrs) => http.post(
         Uri.parse(url),
-        headers: headers ?? await _getHeaders(),
-        body: jsonEncode(body),
-      );
-      return _handleResponse(response);
-    } catch (e) {
-      throw _handleError(e);
-    }
+        headers: hdrs,
+        body: _encodeJsonBody(body),
+      ),
+      headers: headers,
+    );
   }
 
   // Multipart request (supports POST, PATCH, etc.)
@@ -48,54 +52,49 @@ class ApiService {
     Map<String, String>? fileNames,
     Map<String, String>? headers,
   }) async {
-    try {
-      var request = http.MultipartRequest(method, Uri.parse(url));
+    return _sendWithAuthRetry(
+      url,
+      (hdrs) async {
+        final request = http.MultipartRequest(method, Uri.parse(url));
+        final requestHeaders = Map<String, String>.from(hdrs)
+          ..remove('Content-Type');
+        request.headers.addAll(requestHeaders);
 
-      // Add headers
-      var defaultHeaders = await _getHeaders();
-      defaultHeaders.remove('Content-Type'); // MultipartRequest sets its own Content-Type
-      if (headers != null) {
-        defaultHeaders.addAll(headers);
-      }
-      request.headers.addAll(defaultHeaders);
-
-      // Add fields
-      if (fields != null) {
-        request.fields.addAll(fields);
-      }
-
-      // Prefer in-memory bytes (required for Flutter web).
-      if (fileBytes != null) {
-        for (var entry in fileBytes.entries) {
-          if (entry.value.isEmpty) continue;
-          final filename = fileNames?[entry.key] ?? '${entry.key}.jpg';
-          final mimeType = mime(filename) ?? 'image/jpeg';
-          request.files.add(http.MultipartFile.fromBytes(
-            entry.key,
-            entry.value,
-            filename: filename,
-            contentType: MediaType.parse(mimeType),
-          ));
+        if (fields != null) {
+          request.fields.addAll(fields);
         }
-      } else if (files != null) {
-        for (var entry in files.entries) {
-          if (entry.value.isNotEmpty) {
-            String? mimeType = mime(entry.value);
-            request.files.add(await http.MultipartFile.fromPath(
+
+        if (fileBytes != null) {
+          for (final entry in fileBytes.entries) {
+            if (entry.value.isEmpty) continue;
+            final filename = fileNames?[entry.key] ?? '${entry.key}.jpg';
+            final mimeType = mime(filename) ?? 'image/jpeg';
+            request.files.add(http.MultipartFile.fromBytes(
               entry.key,
               entry.value,
-              contentType: mimeType != null ? MediaType.parse(mimeType) : null,
+              filename: filename,
+              contentType: MediaType.parse(mimeType),
             ));
           }
+        } else if (files != null) {
+          for (final entry in files.entries) {
+            if (entry.value.isNotEmpty) {
+              final mimeType = mime(entry.value);
+              request.files.add(await http.MultipartFile.fromPath(
+                entry.key,
+                entry.value,
+                contentType:
+                    mimeType != null ? MediaType.parse(mimeType) : null,
+              ));
+            }
+          }
         }
-      }
 
-      final streamedResponse = await request.send();
-      final response = await http.Response.fromStream(streamedResponse);
-      return _handleResponse(response);
-    } catch (e) {
-      throw _handleError(e);
-    }
+        final streamedResponse = await request.send();
+        return http.Response.fromStream(streamedResponse);
+      },
+      headers: headers,
+    );
   }
 
   // Multipart POST request (deprecated in favor of multipartRequest)
@@ -110,69 +109,250 @@ class ApiService {
   // PUT request
   Future<dynamic> put(String url,
       {dynamic body, Map<String, String>? headers}) async {
-    try {
-      final response = await http.put(
+    return _sendWithAuthRetry(
+      url,
+      (hdrs) => http.put(
         Uri.parse(url),
-        headers: headers ?? await _getHeaders(),
-        body: jsonEncode(body),
-      );
-      return _handleResponse(response);
-    } catch (e) {
-      throw _handleError(e);
-    }
+        headers: hdrs,
+        body: _encodeJsonBody(body),
+      ),
+      headers: headers,
+    );
   }
 
   // DELETE request
   Future<dynamic> delete(String url, {Map<String, String>? headers}) async {
-    try {
-      final response = await http.delete(
-        Uri.parse(url),
-        headers: headers ?? await _getHeaders(),
-      );
-      return _handleResponse(response);
-    } catch (e) {
-      throw _handleError(e);
-    }
+    return _sendWithAuthRetry(
+      url,
+      (hdrs) => http.delete(Uri.parse(url), headers: hdrs),
+      headers: headers,
+    );
   }
 
   // PATCH request
   Future<dynamic> patch(String url,
       {dynamic body, Map<String, String>? headers}) async {
-    try {
-      final response = await http.patch(
+    return _sendWithAuthRetry(
+      url,
+      (hdrs) => http.patch(
         Uri.parse(url),
-        headers: headers ?? await _getHeaders(),
-        body: jsonEncode(body),
-      );
+        headers: hdrs,
+        body: _encodeJsonBody(body),
+      ),
+      headers: headers,
+    );
+  }
+
+  /// Runs [request] with auth headers. On 401, tries one token refresh + retry;
+  /// if that fails (or refresh is impossible), clears the session and goes to sign-in.
+  Future<dynamic> _sendWithAuthRetry(
+    String url,
+    Future<http.Response> Function(Map<String, String> headers) request, {
+    Map<String, String>? headers,
+    bool retried = false,
+  }) async {
+    try {
+      final hdrs = headers ?? await _getHeaders();
+      final response = await request(hdrs);
+
+      if (_isUnauthorized(response) &&
+          !_isPublicAuthUrl(url) &&
+          !_logoutInProgress) {
+        if (!retried) {
+          final refreshed = await _refreshAccessToken();
+          if (refreshed) {
+            return _sendWithAuthRetry(
+              url,
+              request,
+              headers: null, // rebuild with new access token
+              retried: true,
+            );
+          }
+        }
+        await forceLogout(
+          reason: _messageFromResponse(response) ??
+              'Session expired. Please sign in again.',
+        );
+        throw ApiError(
+          message: 'Session expired. Please sign in again.',
+          statusCode: response.statusCode,
+        );
+      }
+
       return _handleResponse(response);
     } catch (e) {
       throw _handleError(e);
     }
   }
 
+  bool _isUnauthorized(http.Response response) {
+    if (response.statusCode == 401) return true;
+    if (response.statusCode != 403) return false;
+    final msg = (_messageFromResponse(response) ?? '').toLowerCase();
+    return msg.contains('token') ||
+        msg.contains('unauthorized') ||
+        msg.contains('unauthenticated') ||
+        msg.contains('invalidated');
+  }
+
+  /// Auth flows that may legitimately return 401 (wrong password, OTP, etc.).
+  bool _isPublicAuthUrl(String url) {
+    final path = Uri.tryParse(url)?.path.toLowerCase() ?? url.toLowerCase();
+    const publicPaths = [
+      '/auth/login',
+      '/auth/register',
+      '/auth/refresh',
+      '/auth/forgot-password',
+      '/auth/verify-forgot-password-otp',
+      '/auth/resend-forgot-password-otp',
+      '/auth/reset-password',
+      '/auth/verify-email',
+      '/auth/resend-verification-otp',
+      '/auth/reset-password/verify-otp',
+      '/users/check-username',
+    ];
+    return publicPaths.any(path.contains);
+  }
+
+  String? _messageFromResponse(http.Response response) {
+    try {
+      final body = jsonDecode(response.body);
+      if (body is Map && body['message'] != null) {
+        return body['message'].toString();
+      }
+    } catch (_) {}
+    return null;
+  }
+
+  Future<bool> _refreshAccessToken() async {
+    if (_refreshInFlight != null) {
+      return _refreshInFlight!;
+    }
+
+    _refreshInFlight = () async {
+      final refreshToken =
+          sharedPreferences.getString(ApiConstants.keyRefreshToken);
+      if (refreshToken == null || refreshToken.isEmpty) {
+        return false;
+      }
+
+      try {
+        final response = await http.post(
+          Uri.parse(ApiConstants.refreshToken),
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode({'refreshToken': refreshToken}),
+        );
+
+        if (response.statusCode < 200 || response.statusCode >= 300) {
+          return false;
+        }
+
+        final body = jsonDecode(response.body);
+        if (body is! Map || body['success'] != true) {
+          return false;
+        }
+
+        final data = body['data'];
+        // Backend may return tokens nested or flat.
+        final tokens = data is Map
+            ? (data['tokens'] is Map ? data['tokens'] as Map : data)
+            : null;
+        if (tokens == null) return false;
+
+        final access = tokens['accessToken']?.toString();
+        final refresh = tokens['refreshToken']?.toString() ?? refreshToken;
+        if (access == null || access.isEmpty) return false;
+
+        await saveTokens(
+          accessToken: access,
+          refreshToken: refresh,
+          accessTokenExpiresAt:
+              tokens['accessTokenExpiresAt']?.toString() ?? '',
+          refreshTokenExpiresAt:
+              tokens['refreshTokenExpiresAt']?.toString() ?? '',
+        );
+        return true;
+      } catch (e) {
+        debugPrint('Token refresh failed: $e');
+        return false;
+      }
+    }();
+
+    try {
+      return await _refreshInFlight!;
+    } finally {
+      _refreshInFlight = null;
+    }
+  }
+
+  /// Clears local session and navigates to sign-in (once).
+  Future<void> forceLogout({String? reason}) async {
+    if (_logoutInProgress) return;
+    _logoutInProgress = true;
+    try {
+      await clearUserData();
+      final route = Get.currentRoute;
+      final onAuthGate = route == AppRoutes.signInScreen ||
+          route == AppRoutes.onboardScreen ||
+          route == AppRoutes.splashScreen;
+      if (!onAuthGate) {
+        Get.offAllNamed(AppRoutes.signInScreen);
+      }
+      if (reason != null && reason.isNotEmpty) {
+        debugPrint('Forced logout: $reason');
+      }
+    } finally {
+      // Keep lock briefly so parallel 401s don't re-enter mid-navigation.
+      await Future<void>.delayed(const Duration(milliseconds: 300));
+      _logoutInProgress = false;
+    }
+  }
+
+  String _encodeJsonBody(dynamic body) {
+    if (body == null) return jsonEncode(<String, dynamic>{});
+    return jsonEncode(body);
+  }
+
   // Handle response
   dynamic _handleResponse(http.Response response) {
     final statusCode = response.statusCode;
-    final body = jsonDecode(response.body);
+    final raw = response.body.trim();
+
+    dynamic body;
+    if (raw.isEmpty) {
+      body = <String, dynamic>{'success': statusCode >= 200 && statusCode < 300};
+    } else {
+      try {
+        body = jsonDecode(raw);
+      } catch (_) {
+        if (statusCode >= 200 && statusCode < 300) {
+          return <String, dynamic>{'success': true, 'message': raw};
+        }
+        throw ApiError(
+          message: raw.isNotEmpty ? raw : 'Something went wrong',
+          statusCode: statusCode,
+        );
+      }
+    }
 
     if (statusCode >= 200 && statusCode < 300) {
       return body;
-    } else {
-      String errorMessage = 'Something went wrong';
+    }
 
-      // Handle different error response formats
+    String errorMessage = 'Something went wrong';
+    if (body is Map) {
       if (body['message'] != null) {
         if (body['message'] is List) {
-          // Handle validation errors array format
-          List messages = body['message'];
+          final messages = body['message'] as List;
           if (messages.isNotEmpty) {
-            var firstError = messages[0];
-            if (firstError['constraints'] != null) {
-              // Extract first constraint message
-              var constraints = firstError['constraints'];
-              errorMessage = constraints.values.first;
-            } else if (firstError['message'] != null) {
-              errorMessage = firstError['message'];
+            final firstError = messages[0];
+            if (firstError is Map && firstError['constraints'] != null) {
+              final constraints = firstError['constraints'];
+              if (constraints is Map && constraints.isNotEmpty) {
+                errorMessage = constraints.values.first.toString();
+              }
+            } else if (firstError is Map && firstError['message'] != null) {
+              errorMessage = firstError['message'].toString();
             } else {
               errorMessage = firstError.toString();
             }
@@ -192,12 +372,14 @@ class ApiService {
       } else if (body['error'] != null) {
         errorMessage = body['error'].toString();
       }
-
-      throw ApiError(
-        message: errorMessage,
-        statusCode: statusCode,
-      );
+    } else {
+      errorMessage = body.toString();
     }
+
+    throw ApiError(
+      message: errorMessage,
+      statusCode: statusCode,
+    );
   }
 
   // Handle errors
@@ -216,7 +398,7 @@ class ApiService {
 
   // Get headers
   Future<Map<String, String>> _getHeaders() async {
-    String? accessToken =
+    final accessToken =
         sharedPreferences.getString(ApiConstants.keyAccessToken);
 
     return {
@@ -240,6 +422,7 @@ class ApiService {
         ApiConstants.keyAccessTokenExpiresAt, accessTokenExpiresAt);
     await sharedPreferences.setString(
         ApiConstants.keyRefreshTokenExpiresAt, refreshTokenExpiresAt);
+    _logoutInProgress = false;
   }
 
   // Save user data
@@ -247,6 +430,7 @@ class ApiService {
     await sharedPreferences.setString(
         ApiConstants.keyUserData, jsonEncode(userData));
     await sharedPreferences.setBool(ApiConstants.keyIsLoggedIn, true);
+    _logoutInProgress = false;
   }
 
   // Get access token

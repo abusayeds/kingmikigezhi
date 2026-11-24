@@ -5,6 +5,7 @@ import 'package:event_sharing/utils/app_strings.dart';
 import 'package:event_sharing/views/base/custom_button.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:event_sharing/views/base/custom_text_field.dart';
+import 'package:event_sharing/views/base/dropdown_field_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -48,9 +49,11 @@ class _ContributionFilterScreenState extends State<ContributionFilterScreen> {
         : _controller.selectedTimeRange.value;
     _locationCTRL.text = _controller.selectedLocation.value;
 
-    // Fetch filter options if not already loaded
+    // Prefetch on enter; silent refresh if already cached.
     if (_controller.filterOptions.value == null) {
       _controller.fetchFilterOptions();
+    } else {
+      _controller.fetchFilterOptions(silent: true);
     }
   }
 
@@ -74,10 +77,7 @@ class _ContributionFilterScreenState extends State<ContributionFilterScreen> {
       ),
       //=======================> Body Section <============================
       body: Obx(() {
-        if (_controller.isLoadingFilters.value) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
+        final isLoading = _controller.isLoadingFilters.value;
         final options = _controller.filterOptions.value;
 
         final programs = options?.programs ?? [];
@@ -99,8 +99,9 @@ class _ContributionFilterScreenState extends State<ContributionFilterScreen> {
                   bottom: 8.h,
                 ),
                 _buildDropdown(
-                  hint: 'Select Program',
+                  hint: isLoading ? 'Loading programs...' : 'Select Program',
                   value: _selectedProgramId,
+                  isLoading: isLoading && programs.isEmpty,
                   items: programs
                       .map((e) => DropdownMenuItem<String>(
                             value: e.value,
@@ -119,8 +120,9 @@ class _ContributionFilterScreenState extends State<ContributionFilterScreen> {
                   bottom: 8.h,
                 ),
                 _buildDropdown(
-                  hint: 'Select Type',
+                  hint: isLoading ? 'Loading types...' : 'Select Type',
                   value: _selectedType,
+                  isLoading: isLoading && types.isEmpty,
                   items: types
                       .map((e) => DropdownMenuItem<String>(
                             value: e.value,
@@ -157,8 +159,11 @@ class _ContributionFilterScreenState extends State<ContributionFilterScreen> {
                   bottom: 8.h,
                 ),
                 _buildDropdown(
-                  hint: 'Select Category/Group',
+                  hint: isLoading
+                      ? 'Loading categories...'
+                      : 'Select Category/Group',
                   value: _selectedCategory,
+                  isLoading: isLoading && categories.isEmpty,
                   items: categories
                       .map((e) => DropdownMenuItem<String>(
                             value: e.value,
@@ -177,8 +182,11 @@ class _ContributionFilterScreenState extends State<ContributionFilterScreen> {
                   bottom: 8.h,
                 ),
                 _buildDropdown(
-                  hint: 'Select Time Range',
+                  hint: isLoading
+                      ? 'Loading time ranges...'
+                      : 'Select Time Range',
                   value: _selectedTimeRange,
+                  isLoading: isLoading && timeRanges.isEmpty,
                   items: timeRanges
                       .map((e) => DropdownMenuItem<String>(
                             value: e.value,
@@ -245,6 +253,7 @@ class _ContributionFilterScreenState extends State<ContributionFilterScreen> {
     required String? value,
     required List<DropdownMenuItem<String>> items,
     required ValueChanged<String?> onChanged,
+    bool isLoading = false,
   }) {
     return InputDecorator(
       decoration: InputDecoration(
@@ -262,6 +271,15 @@ class _ContributionFilterScreenState extends State<ContributionFilterScreen> {
           borderRadius: BorderRadius.circular(8.r),
         ),
         contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
+        prefixIcon: isLoading
+            ? Padding(
+                padding: EdgeInsets.only(left: 10.w, right: 6.w),
+                child: const DropdownFieldLoader(),
+              )
+            : null,
+        prefixIconConstraints: isLoading
+            ? BoxConstraints(minWidth: 28.w, minHeight: 14.w)
+            : null,
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
@@ -271,7 +289,7 @@ class _ContributionFilterScreenState extends State<ContributionFilterScreen> {
           value: value,
           hint: CustomText(text: hint, fontsize: 14.sp),
           items: items,
-          onChanged: items.isNotEmpty ? onChanged : null,
+          onChanged: isLoading || items.isEmpty ? null : onChanged,
         ),
       ),
     );

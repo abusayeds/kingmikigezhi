@@ -1,6 +1,8 @@
 import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/app_remote_image.dart';
 import 'package:event_sharing/views/base/custom_text_field.dart';
+import 'package:event_sharing/views/base/pull_to_refresh.dart';
+import 'package:event_sharing/views/base/skeletons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -29,6 +31,9 @@ class _MyTodayEventScreenState extends State<MyTodayEventScreen> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _homeController.fetchTodayEvents();
+    });
     _scrollController.addListener(() {
       if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
         _homeController.fetchTodayEvents(isLoadMore: true);
@@ -56,20 +61,23 @@ class _MyTodayEventScreenState extends State<MyTodayEventScreen> {
             Expanded(
               child: Obx(() {
                 if (_homeController.isLoadingToday.value && _homeController.todayEvents.isEmpty) {
-                  return const Center(child: CircularProgressIndicator());
+                  return const EventListSkeleton();
                 }
                 if (_homeController.todayEvents.isEmpty) {
-                  return const Center(child: Text("No events today"));
+                  return PullToRefresh.empty(
+                    onRefresh: () => _homeController.fetchTodayEvents(force: true),
+                    child: const Center(child: Text("No events today")),
+                  );
                 }
-                return ListView.builder(
+                return PullToRefresh(
+                  onRefresh: () => _homeController.fetchTodayEvents(force: true),
+                  child: ListView.builder(
                   controller: _scrollController,
+                  physics: PullToRefresh.alwaysScrollable(),
                   itemCount: _homeController.todayEvents.length + (_homeController.todayHasNext.value ? 1 : 0),
                   itemBuilder: (context, index) {
                     if (index == _homeController.todayEvents.length) {
-                      return const Center(child: Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: CircularProgressIndicator(),
-                      ));
+                      return const ListLoadMoreSkeleton();
                     }
                     final EventModel event = _homeController.todayEvents[index];
                     String deadline = '';
@@ -189,9 +197,7 @@ class _MyTodayEventScreenState extends State<MyTodayEventScreen> {
                                     ),
                                     //=====================> Share Icon <=========================
                                     GestureDetector(
-                                      onTap: (){
-                                        Get.toNamed(AppRoutes.myInvitationPage);
-                                      },
+                                      onTap: () => openEventInvitationPage(event),
                                       child: SvgPicture.asset(
                                         AppIcons.share,
                                         width: 16.w,
@@ -207,9 +213,12 @@ class _MyTodayEventScreenState extends State<MyTodayEventScreen> {
                             Positioned(
                               bottom: 10,
                               right: 10,
-                              child: EventMoreMenuButton(
-                                event: event,
-                                iconColor: AppColors.greyColor,
+                              child: GestureDetector(
+                                onTap: () {},
+                                child: EventMoreMenuButton(
+                                  event: event,
+                                  iconColor: AppColors.greyColor,
+                                ),
                               ),
                             ),
                           ],
@@ -217,6 +226,7 @@ class _MyTodayEventScreenState extends State<MyTodayEventScreen> {
 
                     );
                   },
+                ),
                 );
               }),
             )
@@ -266,8 +276,14 @@ class _MyTodayEventScreenState extends State<MyTodayEventScreen> {
           ),
         ),
         GestureDetector(
-          onTap: () {
-            Get.toNamed(AppRoutes.myEventFilterScreen);
+          onTap: () async {
+            final result = await Get.toNamed(AppRoutes.myEventFilterScreen);
+            if (result is Map && result.isNotEmpty) {
+              Get.toNamed(
+                AppRoutes.searchEventScreen,
+                arguments: Map<String, dynamic>.from(result),
+              );
+            }
           },
           child: Container(
             decoration: BoxDecoration(

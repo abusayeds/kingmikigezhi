@@ -1,4 +1,5 @@
 import 'package:event_sharing/controllers/auth_controller.dart';
+import 'package:event_sharing/views/base/app_remote_image.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -71,18 +72,11 @@ class _TopProfileCardState extends State<TopProfileCard> {
                 borderRadius: BorderRadius.circular(8.r),
                 child: profilePicture != null &&
                         profilePicture.toString().isNotEmpty
-                    ? Image.network(
-                        profilePicture,
+                    ? AppRemoteImage(
+                        url: profilePicture,
                         fit: BoxFit.cover,
                         width: 120.w,
                         height: 120.h,
-                        errorBuilder: (context, error, stackTrace) =>
-                            Image.asset(
-                          AppImages.logo,
-                          fit: BoxFit.cover,
-                          width: 120.w,
-                          height: 120.h,
-                        ),
                       )
                     : Image.asset(
                         AppImages.logo,

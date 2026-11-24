@@ -50,12 +50,19 @@ class SkillRowWidget extends StatelessWidget {
             children: [
               InkWell(
                 onTap: onEditTap,
-                child: SvgPicture.asset(editIconPath),
+                borderRadius: BorderRadius.circular(8),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SvgPicture.asset(editIconPath),
+                ),
               ),
-              const SizedBox(width: 4),
               InkWell(
                 onTap: onDeleteTap,
-                child: SvgPicture.asset(deleteIconPath),
+                borderRadius: BorderRadius.circular(8),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SvgPicture.asset(deleteIconPath),
+                ),
               ),
             ],
           ),

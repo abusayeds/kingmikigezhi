@@ -102,6 +102,7 @@ class ContributionController extends GetxController {
   /// Fetch contributions list with optional filters
   Future<void> fetchContributions({
     bool isLoadMore = false,
+    bool force = false,
     String? search,
     String? programId,
     String? type,
@@ -114,7 +115,10 @@ class ContributionController extends GetxController {
       currentPage.value++;
     } else {
       currentPage.value = 1;
-      isLoading.value = true;
+      // Silent revisit: keep showing existing rows while refreshing.
+      if (force || contributions.isEmpty) {
+        isLoading.value = contributions.isEmpty;
+      }
     }
 
     try {
@@ -164,9 +168,11 @@ class ContributionController extends GetxController {
   }
 
   /// Fetch filter options from API
-  Future<void> fetchFilterOptions() async {
+  /// [silent] refreshes options without replacing the screen with a spinner.
+  Future<void> fetchFilterOptions({bool silent = false}) async {
+    final showLoader = !silent && filterOptions.value == null;
     try {
-      isLoadingFilters.value = true;
+      if (showLoader) isLoadingFilters.value = true;
 
       final response = await apiService.get(ApiConstants.getFilterContributions);
 
@@ -217,7 +223,7 @@ class ContributionController extends GetxController {
     } catch (e) {
       print('fetchFilterOptions error: $e');
     } finally {
-      isLoadingFilters.value = false;
+      if (showLoader) isLoadingFilters.value = false;
     }
   }
 

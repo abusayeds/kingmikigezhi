@@ -1,3 +1,4 @@
+import 'package:event_sharing/helpers/route_args.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -29,9 +30,11 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   @override
   void initState() {
     super.initState();
-    final args = Get.arguments as Map<String, dynamic>?;
-    userEmail = args?['email'] ?? authController.getStoredEmail();
-    resetToken = args?['resetToken'] ?? authController.sharedPreferences.getString('reset_token') ?? '';
+    final args = routeArgsMap();
+    userEmail = args['email']?.toString() ?? authController.getStoredEmail();
+    resetToken = args['resetToken']?.toString() ??
+        authController.sharedPreferences.getString('reset_token') ??
+        '';
   }
 
   @override

@@ -1,5 +1,7 @@
 import 'package:event_sharing/views/base/app_remote_image.dart';
 import 'package:event_sharing/views/base/custom_text_field.dart';
+import 'package:event_sharing/views/base/pull_to_refresh.dart';
+import 'package:event_sharing/views/base/skeletons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -30,6 +32,9 @@ class _MyUpcomingEventScreenState extends State<MyUpcomingEventScreen> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _homeController.fetchUpcomingEvents();
+    });
     _scrollController.addListener(() {
       if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
         _homeController.fetchUpcomingEvents(isLoadMore: true);
@@ -57,20 +62,23 @@ class _MyUpcomingEventScreenState extends State<MyUpcomingEventScreen> {
             Expanded(
               child: Obx(() {
                 if (_homeController.isLoadingUpcoming.value && _homeController.upcomingEvents.isEmpty) {
-                  return const Center(child: CircularProgressIndicator());
+                  return const EventListSkeleton();
                 }
                 if (_homeController.upcomingEvents.isEmpty) {
-                  return const Center(child: Text("No upcoming events"));
+                  return PullToRefresh.empty(
+                    onRefresh: () => _homeController.fetchUpcomingEvents(force: true),
+                    child: const Center(child: Text("No upcoming events")),
+                  );
                 }
-                return ListView.builder(
+                return PullToRefresh(
+                  onRefresh: () => _homeController.fetchUpcomingEvents(force: true),
+                  child: ListView.builder(
                   controller: _scrollController,
+                  physics: PullToRefresh.alwaysScrollable(),
                   itemCount: _homeController.upcomingEvents.length + (_homeController.upcomingHasNext.value ? 1 : 0),
                   itemBuilder: (context, index) {
                     if (index == _homeController.upcomingEvents.length) {
-                      return const Center(child: Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: CircularProgressIndicator(),
-                      ));
+                      return const ListLoadMoreSkeleton();
                     }
                     final EventModel event = _homeController.upcomingEvents[index];
                     String deadline = '';
@@ -190,9 +198,7 @@ class _MyUpcomingEventScreenState extends State<MyUpcomingEventScreen> {
                                     ),
                                     //=====================> Share Icon <=========================
                                     GestureDetector(
-                                      onTap: (){
-                                        Get.toNamed(AppRoutes.myInvitationPage);
-                                      },
+                                      onTap: () => openEventInvitationPage(event),
                                       child: SvgPicture.asset(
                                         AppIcons.share,
                                         width: 16.w,
@@ -208,9 +214,12 @@ class _MyUpcomingEventScreenState extends State<MyUpcomingEventScreen> {
                             Positioned(
                               bottom: 10,
                               right: 10,
-                              child: EventMoreMenuButton(
-                                event: event,
-                                iconColor: AppColors.greyColor,
+                              child: GestureDetector(
+                                onTap: () {},
+                                child: EventMoreMenuButton(
+                                  event: event,
+                                  iconColor: AppColors.greyColor,
+                                ),
                               ),
                             ),
                           ],
@@ -218,6 +227,7 @@ class _MyUpcomingEventScreenState extends State<MyUpcomingEventScreen> {
 
                     );
                   },
+                ),
                 );
               }),
             )
@@ -267,8 +277,14 @@ class _MyUpcomingEventScreenState extends State<MyUpcomingEventScreen> {
           ),
         ),
         GestureDetector(
-          onTap: () {
-            Get.toNamed(AppRoutes.myEventFilterScreen);
+          onTap: () async {
+            final result = await Get.toNamed(AppRoutes.myEventFilterScreen);
+            if (result is Map && result.isNotEmpty) {
+              Get.toNamed(
+                AppRoutes.searchEventScreen,
+                arguments: Map<String, dynamic>.from(result),
+              );
+            }
           },
           child: Container(
             decoration: BoxDecoration(

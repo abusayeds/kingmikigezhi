@@ -56,18 +56,21 @@ class BottomMenu extends StatelessWidget {
       getItem(menuIndex == 3 ? AppIcons.selNavProfile : AppIcons.navProfile, 'Profile', theme, 3),
     ];
 
-    return Container(
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-              topRight: Radius.circular(10.r), topLeft: Radius.circular(10.r)),
-          color: AppColors.primaryColor,
-          boxShadow: const [
-            BoxShadow(color: Colors.black38, spreadRadius: 0, blurRadius: 10)
-          ]),
+    // Global SafeArea (main.dart) already keeps this above the system nav bar.
+    return Material(
+      color: AppColors.primaryColor,
+      elevation: 8,
+      shadowColor: Colors.black38,
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(10.r),
+        topRight: Radius.circular(10.r),
+      ),
       child: ClipRRect(
         borderRadius: BorderRadius.only(
-            topRight: Radius.circular(20.r), topLeft: Radius.circular(20.r)),
-        child:BottomNavigationBar(
+          topLeft: Radius.circular(20.r),
+          topRight: Radius.circular(20.r),
+        ),
+        child: BottomNavigationBar(
           backgroundColor: AppColors.primaryColor,
           type: BottomNavigationBarType.fixed,
           selectedItemColor: AppColors.white,
@@ -101,8 +104,7 @@ class BottomMenu extends StatelessWidget {
             }
           },
           items: menuItems,
-        )
-
+        ),
       ),
     );
   }

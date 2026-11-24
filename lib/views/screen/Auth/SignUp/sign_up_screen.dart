@@ -451,78 +451,35 @@ class _SignUpScreenState extends State<SignUpScreen> {
           bottom: 8.h,
         ),
         // -------- Country --------
-        _isLoadingCountries
-            ? Center(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 12.h),
-                  child: SizedBox(
-                    width: 20.w,
-                    height: 20.w,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(AppColors.primaryColor),
-                    ),
-                  ),
-                ),
-              )
-            : _buildGeoDropdownField<Country>(
-                value: _selectedCountry,
-                items: _countries,
-                hint: 'Country',
-                onChanged: _onCountryChanged,
-              ),
+        _buildGeoDropdownField<Country>(
+          value: _selectedCountry,
+          items: _countries,
+          hint: _isLoadingCountries ? 'Loading countries...' : 'Country',
+          isLoading: _isLoadingCountries,
+          onChanged: _isLoadingCountries ? null : _onCountryChanged,
+        ),
         SizedBox(height: 8.h),
         // -------- State --------
-        _isLoadingStates
-            ? Padding(
-                padding: EdgeInsets.symmetric(vertical: 8.h),
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: 14.w,
-                      height: 14.w,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 1.5,
-                        valueColor: AlwaysStoppedAnimation<Color>(AppColors.primaryColor),
-                      ),
-                    ),
-                    SizedBox(width: 8.w),
-                    Text('Loading states...', style: TextStyle(fontSize: 12.sp, color: Colors.grey)),
-                  ],
-                ),
-              )
-            : _buildGeoDropdownField<CityState>(
-                value: _selectedState,
-                items: _states,
-                hint: 'State / Province',
-                onChanged: _states.isNotEmpty ? _onStateChanged : null,
-              ),
+        _buildGeoDropdownField<CityState>(
+          value: _selectedState,
+          items: _states,
+          hint: _isLoadingStates ? 'Loading states...' : 'State / Province',
+          isLoading: _isLoadingStates,
+          onChanged: (!_isLoadingStates && _states.isNotEmpty)
+              ? _onStateChanged
+              : null,
+        ),
         SizedBox(height: 8.h),
         // -------- City --------
-        _isLoadingCities
-            ? Padding(
-                padding: EdgeInsets.symmetric(vertical: 8.h),
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: 14.w,
-                      height: 14.w,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 1.5,
-                        valueColor: AlwaysStoppedAnimation<Color>(AppColors.primaryColor),
-                      ),
-                    ),
-                    SizedBox(width: 8.w),
-                    Text('Loading cities...', style: TextStyle(fontSize: 12.sp, color: Colors.grey)),
-                  ],
-                ),
-              )
-            : _buildGeoDropdownField<City>(
-                value: _selectedCity,
-                items: _cities,
-                hint: 'City',
-                onChanged: _cities.isNotEmpty ? _onCityChanged : null,
-              ),
+        _buildGeoDropdownField<City>(
+          value: _selectedCity,
+          items: _cities,
+          hint: _isLoadingCities ? 'Loading cities...' : 'City',
+          isLoading: _isLoadingCities,
+          onChanged: (!_isLoadingCities && _cities.isNotEmpty)
+              ? _onCityChanged
+              : null,
+        ),
         if (_countryError != null)
           Padding(
             padding: EdgeInsets.only(top: 4.h),
@@ -541,6 +498,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     required List<T> items,
     required String hint,
     required Function(T?)? onChanged,
+    bool isLoading = false,
   }) {
     return Container(
       width: double.infinity,
@@ -550,34 +508,52 @@ class _SignUpScreenState extends State<SignUpScreen> {
         borderRadius: BorderRadius.circular(8.r),
         border: Border.all(color: AppColors.primaryColor, width: 1),
       ),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<T>(
-          value: value,
-          dropdownColor: AppColors.fillColor,
-          padding: EdgeInsets.symmetric(vertical: 6.w),
-          borderRadius: BorderRadius.circular(8.r),
-          hint: Text(
-            hint,
-            style: TextStyle(color: Colors.grey, fontSize: 14.sp),
-          ),
-          icon: SvgPicture.asset(
-            AppIcons.downArrowIcon,
-            width: 16.w,
-            color: AppColors.primaryColor,
-          ),
-          isExpanded: true,
-          items: items.map((T item) {
-            return DropdownMenuItem<T>(
-              value: item,
-              child: Text(
-                item.toString(),
-                style: TextStyle(color: Colors.black, fontSize: 14.sp),
-                overflow: TextOverflow.ellipsis,
+      child: Row(
+        children: [
+          if (isLoading) ...[
+            SizedBox(
+              width: 14.w,
+              height: 14.w,
+              child: CircularProgressIndicator(
+                strokeWidth: 1.5,
+                valueColor:
+                    AlwaysStoppedAnimation<Color>(AppColors.primaryColor),
               ),
-            );
-          }).toList(),
-          onChanged: onChanged,
-        ),
+            ),
+            SizedBox(width: 8.w),
+          ],
+          Expanded(
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton<T>(
+                value: value,
+                dropdownColor: AppColors.fillColor,
+                padding: EdgeInsets.symmetric(vertical: 6.w),
+                borderRadius: BorderRadius.circular(8.r),
+                hint: Text(
+                  hint,
+                  style: TextStyle(color: Colors.grey, fontSize: 14.sp),
+                ),
+                icon: SvgPicture.asset(
+                  AppIcons.downArrowIcon,
+                  width: 16.w,
+                  color: AppColors.primaryColor,
+                ),
+                isExpanded: true,
+                items: items.map((T item) {
+                  return DropdownMenuItem<T>(
+                    value: item,
+                    child: Text(
+                      item.toString(),
+                      style: TextStyle(color: Colors.black, fontSize: 14.sp),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  );
+                }).toList(),
+                onChanged: onChanged,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

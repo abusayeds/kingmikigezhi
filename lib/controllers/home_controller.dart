@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../helpers/feed_search_query.dart';
 import '../models/event_model.dart';
 import '../services/api_service.dart';
+import '../services/content_cache.dart';
 import '../utils/api_constants.dart';
 
 class HomeController extends GetxController implements GetxService {
@@ -17,11 +18,13 @@ class HomeController extends GetxController implements GetxService {
   final RxList<EventModel> familyEvents = <EventModel>[].obs;
   final RxList<EventModel> upcomingEvents = <EventModel>[].obs;
   final RxList<EventModel> historyEvents = <EventModel>[].obs;
+  final RxList<EventModel> createdEvents = <EventModel>[].obs;
 
   final RxBool isLoadingToday = false.obs;
   final RxBool isLoadingFamily = false.obs;
   final RxBool isLoadingUpcoming = false.obs;
   final RxBool isLoadingHistory = false.obs;
+  final RxBool isLoadingCreated = false.obs;
 
   // Pagination
   final RxInt todayPage = 1.obs;
@@ -30,6 +33,8 @@ class HomeController extends GetxController implements GetxService {
   final RxBool upcomingHasNext = false.obs;
   final RxInt historyPage = 1.obs;
   final RxBool historyHasNext = false.obs;
+  final RxInt createdPage = 1.obs;
+  final RxBool createdHasNext = false.obs;
 
   // Search Results
   final RxList<EventModel> searchedEvents = <EventModel>[].obs;
@@ -120,13 +125,17 @@ class HomeController extends GetxController implements GetxService {
     }
   }
 
-  Future<void> fetchTodayEvents({bool isLoadMore = false}) async {
+  /// [force] shows the first-load loading flag only when the list is empty.
+  /// When data already exists, refresh is silent (no spinner).
+  Future<void> fetchTodayEvents({bool isLoadMore = false, bool force = false}) async {
     if (isLoadMore) {
       if (!todayHasNext.value) return;
       todayPage.value++;
     } else {
       todayPage.value = 1;
-      isLoadingToday.value = true;
+      if (force || todayEvents.isEmpty) {
+        isLoadingToday.value = todayEvents.isEmpty;
+      }
     }
 
     try {
@@ -140,6 +149,9 @@ class HomeController extends GetxController implements GetxService {
         } else {
           todayEvents.value = newEvents;
         }
+        if (Get.isRegistered<ContentCache>()) {
+          ContentCache.to.putEvents(newEvents);
+        }
         
         todayHasNext.value = response['meta']['hasNext'] ?? false;
       }
@@ -150,8 +162,11 @@ class HomeController extends GetxController implements GetxService {
     }
   }
 
-  Future<void> fetchFamilyEvents(String relationShip) async {
-    isLoadingFamily.value = true;
+  Future<void> fetchFamilyEvents(String relationShip, {bool force = false}) async {
+    // Only show a loader when we have nothing to show yet.
+    if (force || familyEvents.isEmpty) {
+      isLoadingFamily.value = familyEvents.isEmpty;
+    }
     try {
       // Normalize legacy display labels to API relationShip values.
       String apiRelation = relationShip;
@@ -175,6 +190,9 @@ class HomeController extends GetxController implements GetxService {
         final List<dynamic> data = response['data'];
         familyEvents.value =
             data.map((json) => EventModel.fromJson(json)).toList();
+        if (Get.isRegistered<ContentCache>()) {
+          ContentCache.to.putEvents(familyEvents);
+        }
       }
     } catch (e) {
       debugPrint("Error fetching family events: $e");
@@ -183,13 +201,15 @@ class HomeController extends GetxController implements GetxService {
     }
   }
 
-  Future<void> fetchUpcomingEvents({bool isLoadMore = false}) async {
+  Future<void> fetchUpcomingEvents({bool isLoadMore = false, bool force = false}) async {
     if (isLoadMore) {
       if (!upcomingHasNext.value) return;
       upcomingPage.value++;
     } else {
       upcomingPage.value = 1;
-      isLoadingUpcoming.value = true;
+      if (force || upcomingEvents.isEmpty) {
+        isLoadingUpcoming.value = upcomingEvents.isEmpty;
+      }
     }
 
     try {
@@ -203,6 +223,9 @@ class HomeController extends GetxController implements GetxService {
         } else {
           upcomingEvents.value = newEvents;
         }
+        if (Get.isRegistered<ContentCache>()) {
+          ContentCache.to.putEvents(newEvents);
+        }
 
         upcomingHasNext.value = response['meta']['hasNext'] ?? false;
       }
@@ -213,13 +236,15 @@ class HomeController extends GetxController implements GetxService {
     }
   }
 
-  Future<void> fetchHistoryEvents({bool isLoadMore = false}) async {
+  Future<void> fetchHistoryEvents({bool isLoadMore = false, bool force = false}) async {
     if (isLoadMore) {
       if (!historyHasNext.value) return;
       historyPage.value++;
     } else {
       historyPage.value = 1;
-      isLoadingHistory.value = true;
+      if (force || historyEvents.isEmpty) {
+        isLoadingHistory.value = historyEvents.isEmpty;
+      }
     }
 
     try {
@@ -233,6 +258,9 @@ class HomeController extends GetxController implements GetxService {
         } else {
           historyEvents.value = newEvents;
         }
+        if (Get.isRegistered<ContentCache>()) {
+          ContentCache.to.putEvents(newEvents);
+        }
 
         historyHasNext.value = response['meta']['hasNext'] ?? false;
       }
@@ -240,6 +268,45 @@ class HomeController extends GetxController implements GetxService {
       debugPrint("Error fetching history events: $e");
     } finally {
       isLoadingHistory.value = false;
+    }
+  }
+
+  /// Events created by the signed-in user (`GET /events/feed/mine`).
+  Future<void> fetchCreatedEvents({bool isLoadMore = false, bool force = false}) async {
+    if (isLoadMore) {
+      if (!createdHasNext.value) return;
+      createdPage.value++;
+    } else {
+      createdPage.value = 1;
+      if (force || createdEvents.isEmpty) {
+        isLoadingCreated.value = createdEvents.isEmpty;
+      }
+    }
+
+    try {
+      final response = await apiService.get(
+        "${ApiConstants.getMyCreatedEvents}?page=${createdPage.value}&limit=10",
+      );
+      if (response['success'] == true) {
+        final List<dynamic> data = response['data'] ?? [];
+        final List<EventModel> newEvents =
+            data.map((json) => EventModel.fromJson(json)).toList();
+
+        if (isLoadMore) {
+          createdEvents.addAll(newEvents);
+        } else {
+          createdEvents.value = newEvents;
+        }
+        if (Get.isRegistered<ContentCache>()) {
+          ContentCache.to.putEvents(newEvents);
+        }
+
+        createdHasNext.value = response['meta']?['hasNext'] ?? false;
+      }
+    } catch (e) {
+      debugPrint("Error fetching created events: $e");
+    } finally {
+      isLoadingCreated.value = false;
     }
   }
 }

@@ -4,6 +4,7 @@ import 'package:event_sharing/utils/app_icons.dart';
 import 'package:event_sharing/utils/style.dart';
 import 'package:event_sharing/views/base/custom_button.dart';
 import 'package:event_sharing/views/base/custom_text.dart';
+import 'package:event_sharing/views/base/skeletons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -54,7 +55,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       body: Obx(() {
         if (_controller.isLoadingSettings.value ||
             _controller.isLoadingOptions.value) {
-          return const Center(child: CircularProgressIndicator());
+          return const SimplePageSkeleton();
         }
         return SingleChildScrollView(
           child: Padding(
